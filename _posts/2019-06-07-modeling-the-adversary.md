@@ -16,9 +16,7 @@ A threshold adversary is an adversary that controls some **_f_** nodes. There ar
 2. _n>2f_ where the adversary controls a minority of the nodes.
 3. _n>3f_ where the adversary controls less than a third of the nodes.
 
-After fixing the threshold, the next critical aspect is what type of corruption the adversary can inflict on the _f_ nodes.
-
-Lets start with the three basic adversaries: Crash, Omission, and Byzantine.
+The next critical aspect is what type of corruption the adversary can inflict on the _f_ nodes. There are three classic adversaries: Crash, Omission, and Byzantine.
 
 _Crash_ : after the node is corrupted it stops sending and receiving all messages.
 
@@ -35,7 +33,7 @@ The visibility of the adversary is the power of the adversary to see and control
 1. _Full information_ : here we assume the adversary sees the internal state of _all_ nodes and the content of _all_ message sent.
 3. _Private channels_ : in this model we assume the adversary cannot see the internal state of honest nodes and cannot see the internal content of messages between honest nodes. The adversary does know when a message is being sent and depending on the communication model can decide to delay it by any value that is allowed by the communication model.
 
-Finally we fix the adaptivity of the adversary. Again there are two basic modes: static and dynamic, but the dynamic model actually has many variants!
+Finally we fix the adaptivity of the adversary. Again there are two basic modes: static and adaptive. The adaptive model was several variants but here will cover only the simples one.
 
 1. _Static_ : the adversary has to decide which _f_ nodes to corrupt in advance before the execution of the protocol.
 
