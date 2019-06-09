@@ -1,9 +1,12 @@
 ---
-layout: post
-published: false
 title: Modeling the Adversary
-tags: dist101
+date: 2019-06-07 00:00:00 -07:00
+published: false
+tags:
+- dist101
+layout: post
 ---
+
 Once we fix the communication model (synchrony, asynchrony, or partial synchrony), we then need to fix the adversary model.
 
 The simplest model is that of a _threshold adversary_ that we now define: consider a static group of **_n_** nodes. We will later consider dynamic and permissionless models.

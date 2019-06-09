@@ -1,9 +1,12 @@
 ---
-layout: post
-published: false
 title: What is the difference between
-tags: research
+date: 2019-06-09 00:00:00 -07:00
+published: false
+tags:
+- research
+layout: post
 ---
+
 ## A New Post
 
 Enter text in [Markdown](http://daringfireball.net/projects/markdown/). Use the toolbar above, or click the **?** button for formatting help.

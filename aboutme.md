@@ -1,9 +1,7 @@
 ---
-layout: page
 title: About me
-
+layout: page
 ---
-
 
 [Homepage](https://research.vmware.com/researchers/ittai-abraham)
 
