@@ -36,9 +36,9 @@ Before saying how these protocols are different it is important to say how simil
 
 ## The conceptual difference: rotating leaders vs stable leaders
 As mentioned above, all these protocol have the ability to replace leaders. 
-One key conceptual difference between \{PBFT,SBFT\} and \{Tendermint, HotStuff\} is that the latter are based on the _stable leaders_ paradigm where a leaders is changed only when a problem is detected, so a leader may stay for many commands, while in Tendermint and Hotstuff a leader is changed after a single attempt to commit a command. 
+One key conceptual difference between \{PBFT,SBFT\} and \{Tendermint, HotStuff\} is that PBFT,SBFT are based on the _stable leaders_ paradigm where a leaders is changed only when a problem is detected, so a leader may stay for many commands, while in Tendermint and Hotstuff a leader is rotated after a single attempt to commit a command. 
 
-As in many things its a **trade-off**. One the one hand, maintaining a stable leader means less overhead and better performance due to stability when the leader is honest and trusted. On the other hand there are some types of behaviours (like setting the internal order of commands in a block) that a stable malicious leader can create a consistent bias. Constantly rotating the leader provides a stronger _fairness_ guarantee.
+As in many things its a **trade-off**. One the one hand, maintaining a stable leader means less overhead and better performance due to stability when the leader is honest and trusted. On the other hand there are some types of behaviours (like setting the internal order of commands in a block) that a stable malicious leader can cause an undetectable but consistent bias. Constantly rotating the leader provides a stronger _fairness_ guarantee.
 
 ## Technical differences in the leader commit phase
 While PBFT uses all-to-all messages that creates _O(n<sup>2</sup>)_ communication complexity during the leader commit phase. It has been long observed that this phase can be transformed to a linear communication pattern that creates _O(n)_ communication complexity. All the other three protocols use this approach to get a linear cost for the leader commit phase.
