@@ -49,4 +49,4 @@ Finally we fix the adaptivity of the adversary. Again there are two basic modes:
 
 1. _Static_ : the adversary has to decide which _f_ nodes to corrupt in advance before the execution of the protocol.
 
-2. _Adaptive_ : the adversary can decide dynamically as the protocol progresses who to corrupt. The main parameter that still needs to be decided is how long it takes between the adversary _decision_ to corrupt and the _event_ that the control is passed to the adversary. One standard assumption is that is instantaneous.
+2. _Adaptive_ : the adversary can decide dynamically as the protocol progresses who to corrupt. The main parameter that still needs to be decided is how long it takes between the adversary _decision_ to corrupt and the _event_ that the control is passed to the adversary. One standard assumption is that this is instantaneous. We will later review several other options and discuss important nuances in this standard assumption.
