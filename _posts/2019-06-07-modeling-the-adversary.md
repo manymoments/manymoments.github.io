@@ -1,10 +1,10 @@
 ---
-layout: post
 title: Modeling the Adversary
-date: 'Fri Jun 07 2019 10:00:00 GMT+0300 (Israel Daylight Time)'
+date: 2019-06-07 10:00:00 -07:00
 published: false
 tags:
-  - dist101
+- dist101
+layout: post
 ---
 
 Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), we then need to fix the adversary model.
