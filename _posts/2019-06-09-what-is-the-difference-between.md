@@ -18,7 +18,7 @@ In this post I will try to compare four of my favorite protocols for BFT SMR:
 
 4. [HotStuff](https://research.vmware.com/files/attachments/0/0/0/0/0/7/7/podc.pdf). A new BFT algorithm that provides both linearity and responsiveness.
 
-I am going to provide a detailed comparison at the protocol level (not the system level). Much of it can be found in this table, which essentially shows that no one protocol pareto dominates all the others.
+I am going to provide a detailed comparison at the protocol level from the lens of the theory of distributed computing. In particular this is not a comparison of the system level. Much of the comparison can be summarized in this table, which essentially shows that no one protocol pareto dominates all the others.
 
 |           | Best case Latency     | Normal case Communication     | View Change Communication     | View Change Responsive    |
 |---------- |--------------------   |----------------------------   |----------------------------   |-----------------------    |
@@ -40,8 +40,8 @@ One key conceptual difference between \{PBFT,SBFT\} and \{Tendermint, HotStuff\}
 
 As in many things its a **trade-off**. One the one hand, maintaining a stable leader means less overhead and better performance due to stability when the leader is honest and trusted. On the other hand there are some types of behaviours (like setting the internal order of commands in a block) that a stable malicious leader can cause an undetectable but consistent bias. Constantly rotating the leader provides a stronger _fairness_ guarantee.
 
-## Technical differences in the leader commit phase
-While PBFT uses all-to-all messages that creates _O(n<sup>2</sup>)_ communication complexity during the leader commit phase. It has been long observed that this phase can be transformed to a linear communication pattern that creates _O(n)_ communication complexity. All the other three protocols use this approach to get a linear cost for the leader commit phase.
+## Technical differences in the normal case leader commit phase
+While PBFT uses all-to-all messages that creates _O(n<sup>2</sup>)_ communication complexity during the normal case leader commit phase. It has been long observed that this phase can be transformed to a linear communication pattern that creates _O(n)_ communication complexity. All the other three protocols use this approach to get a linear cost for the leader commit phase.
 
 ## Technical differences in the view change
 Traditionally, the view charge mechanism in PBFT is not optimized to be on the critical path. Algorithmically, it required at least _O(n<sup>2</sup>)_ words to be sent. SBFT also has a similar _O(n<sup>2</sup>)_ word view change complexity.
