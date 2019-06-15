@@ -7,7 +7,7 @@ tags:
 layout: post
 ---
 
-In this post I will try to compare found protocols:
+In this post I will try to compare four of my favorite protocols for BFT SMR:
 
 1. [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf). The gold standard for BFT State Machine Replication systems.
 
@@ -30,13 +30,13 @@ I am going to provide a detailed comparison at the protocol level (not the syste
 
 Before saying how these protocols are different it is important to say how similar they are:
 
-1. They are all protocols for state machine replication (SMR) agains a Byzantine adversary.
+1. They are all protocols for state machine replication (SMR) against a Byzantine adversary.
 2. All work in the Partial synchrony model and obtain safety (always) and liveness (after GST) in the face of an adversary that controls _f_ replicas out of a total of _n=3f+1_ replicas. 
-3. All these protocol are based on the classic leader-based approach where leaders are replaced in a _view change_ protocol.
+3. All these protocols are based on the classic leader-based Primary-Backup approach where leaders are replaced in a _view change_ protocol.
 
 ## The conceptual difference: rotating leaders vs stable leaders
 As mentioned above, all these protocol have the ability to replace leaders. 
-One key conceptual difference between PBFT,SBFT and Tendermint and HotStuff is that the latter are based on the _stable leaders_ paradigm where a leaders is changed only when a problem is detected, so a leader may stay for many commands, while in Tendermint and Hotstuff a leader is changed after a single attempt to commit a command. 
+One key conceptual difference between \{PBFT,SBFT\} and \{Tendermint, HotStuff\} is that the latter are based on the _stable leaders_ paradigm where a leaders is changed only when a problem is detected, so a leader may stay for many commands, while in Tendermint and Hotstuff a leader is changed after a single attempt to commit a command. 
 
 As in many things its a **trade-off**. One the one hand, maintaining a stable leader means less overhead and better performance due to stability when the leader is honest and trusted. On the other hand there are some types of behaviours (like setting the internal order of commands in a block) that a stable malicious leader can create a consistent bias. Constantly rotating the leader provides a stronger _fairness_ guarantee.
 
