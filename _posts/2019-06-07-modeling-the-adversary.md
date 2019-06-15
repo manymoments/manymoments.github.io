@@ -1,13 +1,13 @@
 ---
+layout: post
 title: Modeling the Adversary
-date: 2019-06-07 00:00:00 -07:00
+date: 'Fri Jun 07 2019 10:00:00 GMT+0300 (Israel Daylight Time)'
 published: false
 tags:
-- dist101
-layout: post
+  - dist101
 ---
 
-Once we fix the communication model (synchrony, asynchrony, or partial synchrony), we then need to fix the adversary model.
+Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), we then need to fix the adversary model.
 
 The simplest model is that of a _threshold adversary_ that we now define: consider a static group of **_n_** nodes. We will later consider dynamic and permissionless models.
 
