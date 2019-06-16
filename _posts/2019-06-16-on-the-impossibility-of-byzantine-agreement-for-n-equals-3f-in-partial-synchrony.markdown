@@ -19,7 +19,7 @@ The adversary will launch the classic split-brain attack:
 1. Since it controls delays during the asynchronous phase, it will delay all communication between _A_ and _C_.
 2. The corrupt parties in _B_ will behave as if they have input of 1 towards _A_ and as if they have input of 0 towards _C_.
 
-We now claim that if the adversary does this and delays messages for long enough (say _4x_) the parties in _A_ will decide 1 and the parties in _B_ will decide 0 with a constant probability. The proof uses the powerful idea of **indistinguishability**.
+We now claim that if the adversary does this and delays messages for long enough (say waits for _4x_ messages) then the parties in _A_ will decide 1 and the parties in _B_ will decide 0 with a (large) constant probability. The proof uses the powerful idea of **indistinguishability**.
 
 The view of the parties in _A_ during this execution is identical to a synchronous execution where _A,B_ are honest and start with 1 while _C_ have crashed.
 
