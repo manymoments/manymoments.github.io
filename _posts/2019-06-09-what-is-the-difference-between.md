@@ -7,9 +7,9 @@ tags:
 layout: post
 ---
 
-In this post I will try to compare four of my favorite protocols for BFT SMR:
+In this post I will try to compare four of my favorite protocols for Byzantine Fault Tolerant ([BFT](https://en.wikipedia.org/wiki/Byzantine_fault)) State Machine Replication ([SMR](https://en.wikipedia.org/wiki/State_machine_replication)):
 
-1. [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf). The gold standard for BFT State Machine Replication systems.
+1. [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf). The gold standard for BFT SMR.
 
 2. [Tendermint](https://arxiv.org/abs/1807.04938). A modern BFT algorithm that also uses peer-to-peer gossip protocol among nodes.
 
@@ -18,7 +18,7 @@ In this post I will try to compare four of my favorite protocols for BFT SMR:
 
 4. [HotStuff](https://research.vmware.com/files/attachments/0/0/0/0/0/7/7/podc.pdf). A new BFT algorithm that provides both linearity and responsiveness.
 
-I am going to provide a detailed comparison at the protocol level from the lens of the theory of distributed computing. In particular this is not a comparison of the system level. Much of the comparison can be summarized in this table, which essentially shows that no one protocol pareto dominates all the others.
+This post provides a comparison at the protocol level from the lens of the theory of distributed computing. In particular this is not a comparison of the system or the software. Much of the comparison can be summarized in this table, which essentially shows that no one protocol pareto dominates all the others.
 
 |           | Best case Latency     | Normal case Communication     | View Change Communication     | View Change Responsive    |
 |---------- |--------------------   |----------------------------   |----------------------------   |-----------------------    |
@@ -31,7 +31,7 @@ I am going to provide a detailed comparison at the protocol level from the lens 
 Before saying how these protocols are different it is important to say how similar they are:
 
 1. They are all protocols for state machine replication (SMR) against a Byzantine adversary.
-2. All work in the Partial synchrony model and obtain safety (always) and liveness (after GST) in the face of an adversary that controls _f_ replicas out of a total of _n=3f+1_ replicas. 
+2. All work in the Partial synchrony model (see [here](https://ittaiab.github.io/2019-06-01-2019-5-31-models/)) and obtain safety (always) and liveness (after GST) in the face of an adversary that controls _f_ replicas out of a total of _n=3f+1_ replicas (see [here](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) for threshold adversary). 
 3. All these protocols are based on the classic leader-based Primary-Backup approach where leaders are replaced in a _view change_ protocol.
 
 ## The conceptual difference: rotating leaders vs stable leaders
