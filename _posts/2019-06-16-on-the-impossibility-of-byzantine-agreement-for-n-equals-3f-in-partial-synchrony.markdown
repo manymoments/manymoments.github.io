@@ -25,7 +25,11 @@ The view of the parties in _A_ during this execution is identical to a synchrono
 
 Similarly, the view of the parties in _C_ during this execution is identical to a synchronous execution where _C,B_ are honest and start with 0 while _A_ have crashed.
 
-Note that this lower bound holds even if we have a secure setup.
+A few notes:
+
+1. This lower bound holds even if we assume a secure setup between the parties.
+2. This lower bound holds even if the adversary can only crash nodes.
+3. This lower bound holds even if the adversary is static
 
 
 
