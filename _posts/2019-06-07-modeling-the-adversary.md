@@ -3,6 +3,7 @@ title: Modeling the adversary
 date: 2019-06-07 10:00:00 -07:00
 tags:
 - dist101
+- models
 layout: post
 ---
 
