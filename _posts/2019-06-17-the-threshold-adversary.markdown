@@ -35,7 +35,7 @@ Let's consider two examples of potential resources:
 
 1. In Nakamoto Consensus (the consensus mechanism used by Bitcoin), one can consider the resource being the the total computational power of the participants. The assumption is then that the adversary controls less CPU power than the honest nodes (a minority adversary). In fact, the authors explicitly write the assumption on a resource bounded threshold adversary:
 > The system is secure as long as honest nodes collectively control more CPU power than any cooperating group of attacker nodes.
-> -- <cite>[Bitcoin whitepaper](https://bitcoin.org/bitcoin.pdf </cite>
+> -- <cite>[Bitcoin whitepaper](https://bitcoin.org/bitcoin.pdf) </cite>
 
 2. In systems that use [proof-of-stake](https://www.investopedia.com/terms/p/proof-stake-pos.asp) the assumption is that the resource is some set of coins. It is then natural to assume that the adversary controls a threshold of the total coins.
 > it requires that the total voting power of faulty processes is smaller than one third of the total voting power
