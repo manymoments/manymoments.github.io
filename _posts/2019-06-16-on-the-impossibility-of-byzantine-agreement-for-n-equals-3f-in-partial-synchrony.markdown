@@ -1,5 +1,5 @@
 ---
-title: On the impossibility of Byzantine Agreement for _n=3f_ in Partial Synchrony
+title: On the impossibility of Byzantine Agreement for _n=3f_ in Partial synchrony
 date: 2019-06-16 07:06:00 -07:00
 published: false
 tags:
@@ -28,8 +28,8 @@ Similarly, the view of the parties in _C_ during this execution is identical to 
 A few notes:
 
 1. This lower bound holds even if we assume a secure setup between the parties.
-2. This lower bound holds even if the adversary can only crash nodes.
-3. This lower bound holds even if the adversary is static
+2. This lower bound holds even if the adversary is static
+3. A similar lower bound for crash (or omission) failures holds for $n\leq 2f$.
 
 
 
