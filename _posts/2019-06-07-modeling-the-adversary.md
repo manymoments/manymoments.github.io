@@ -37,7 +37,7 @@ There are other types of corruptions (most notable are variants of _Covert_ [adv
 ### Computational power of the adversary
 The computational power of the adversary is the next choice. There are two basic options:
 1. _Unbounded_ : the adversary has  unbounded computational power.
-2. _Computationally bounded_ : typically meaning that the adversary cannot (except with negligible probability) break the cryptographic primitives being used. For example, typically assume the adversary cannot forge signatures of nodes not in his control. 
+2. _Computationally bounded_ : typically meaning that the adversary cannot (except with negligible probability) break the cryptographic primitives being used. For example, typically assume the adversary cannot forge signatures of nodes not in his control (see [Goldreich's chapter one](http://www.wisdom.weizmann.ac.il/~oded/PSBookFrag/part1N.pdf) for traditional CS formal definitions). 
 
 ### Visibility of the adversary 
 The visibility is the power of the adversary to see and control messages and states of the non-corrupted parties. Again, there are two basic variants.
