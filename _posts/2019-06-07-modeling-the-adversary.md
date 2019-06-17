@@ -1,15 +1,16 @@
 ---
 title: Modeling the adversary
 date: 2019-06-07 10:00:00 -07:00
+published: false
 tags:
 - dist101
 - models
 layout: post
 ---
 
-Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), we then need to fix the adversary model.
+Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), and we fix a [threshold adversary]() we still need to make important modeling decisions about the adversary power.
 
-The simplest model is that of a _threshold adversary_ that we now define: consider a static group of **_n_** nodes. We will later consider dynamic and permissionless models.
+Here we will use the simplest model is that of a _threshold adversary_ with a static group of **_n_** nodes. We will later consider dynamic and permissionless models.
 
 There are 5 important parameters for a threshold adversary: (1) the size of the threshold, (2) the type of corruption, (3) the computational power of the adversary, (4) the visibility of the adversary, (5) the adaptivity of the adversary.
 
