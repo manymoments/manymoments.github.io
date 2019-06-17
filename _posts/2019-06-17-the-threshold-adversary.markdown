@@ -27,13 +27,13 @@ A threshold adversary is an adversary that controls some **_f_** nodes. There ar
 In this model instead of having a static total _n_ that represents the total number of nodes or participating parties, we assume some general **_bounded resource_** (see Szabo definition of [scarce object](https://nakamotoinstitute.org/scarce-objects/)). A generalized threshold adversary is an adversary that controls some **_fraction_** of this _bounded resource_. Again, there are three typical thresholds:
 
 1. The adversary can control any amount of the bounded resource (but not all of it).
-2. The adversary controls at most a minority of the total resource. Sometimes there is an explicit parameter $\epsilon$ and the assumption is that the adversary controls at most $1/2 - \epsilon$ fraction of the bounded resource.
-3. The adversary controls less than $1/3$ (or less than $1/3 - \epsilon$) of the bounded resource. 
+2. The adversary controls at most a minority of the total resource. Sometimes there is an explicit parameter $0< \epsilon << 1$ and the assumption is that the adversary controls at most $1/2 - \epsilon$ fraction of the bounded resource (say at most 49 percent).
+3. The adversary controls less than $1/3$ (or less than $1/3 - \epsilon$) fraction of the total bounded resource. 
 
 
 Let's consider two common examples of potential bound resources:
 
-1. In Nakamoto Consensus (the consensus mechanism used by Bitcoin), one can consider the resource being the the total CPU power of the participants. The assumption is then that the adversary controls less CPU power than the honest nodes (a minority adversary). In fact, the Nakamoto authors explicitly write the assumption of a resource bounded _minority_ adversary:
+1. In Nakamoto Consensus (the consensus mechanism used by Bitcoin), one can consider the bounded resource being the the total CPU power of the participants. The assumption is then that the adversary controls less CPU power than the honest nodes (a minority adversary). In fact, the Nakamoto authors explicitly write the assumption of a resource bounded _minority_ adversary:
 > The system is secure as long as honest nodes collectively control more CPU power than any cooperating group of attacker nodes.
 > -- <cite>[Bitcoin whitepaper](https://bitcoin.org/bitcoin.pdf) </cite>
 
