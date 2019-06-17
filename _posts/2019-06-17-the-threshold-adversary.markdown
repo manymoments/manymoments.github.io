@@ -16,7 +16,7 @@ Once we fix the communication model (synchrony, asynchrony, or partial synchrony
 We need some way to limit the power of the adversary corruption. Lets begin with the traditional notion as used in Distributed Computing and Cryptography. 
 
 ## Traditional threshold adversary 
-The simplest model is that of a _threshold adversary_ that we now define: consider a static group of **_n_** nodes. We will later consider dynamic and permissionless models.
+The simplest model is that of a _threshold adversary_: given a static group of **_n_** nodes. 
 
 A threshold adversary is an adversary that controls some **_f_** nodes. There are three typical thresholds:
 1. $n>f$ where the adversary can control all parties but one. Often called the _dishonest majority_ adversary.
@@ -24,20 +24,20 @@ A threshold adversary is an adversary that controls some **_f_** nodes. There ar
 3. $n>3f$ where the adversary controls less than a third of the nodes. Often called the _dishonst third_ adversary.
 
 ## Generalized bounded resource threshold adversary 
-In this model the static total _n_ does not represent the number of parties, but a general bounded resource. A generalized threshold adversary is an adversary that controls some **_fraction_** of this bounded resource. Again, there are three typical thresholds:
+In this model the static total _n_ does not represent the number of parties, but a general _bounded resource_ (see Szabo definition of [scarce object](https://nakamotoinstitute.org/scarce-objects/)). A generalized threshold adversary is an adversary that controls some **_fraction_** of this bounded resource. Again, there are three typical thresholds:
 
-1. The adversary can control any amount of the resource less than _n_.
-2. The adversary controls at most a minority of the resource. Sometimes there is an explicit parameter $\epsilon$ and the assumption is that the adversary controls at most $1/2 - \epsilon$ fraction of the resource.
-3. The adversary controls less than $1/3$ or less than $1/3 - \epsilon$ of the resource. 
+1. The adversary can control any amount of the bounded resource (but not all of it).
+2. The adversary controls at most a minority of the total resource. Sometimes there is an explicit parameter $\epsilon$ and the assumption is that the adversary controls at most $1/2 - \epsilon$ fraction of the bounded resource.
+3. The adversary controls less than $1/3$ (or less than $1/3 - \epsilon$) of the bounded resource. 
 
 
-Let's consider two examples of potential resources:
+Let's consider two common examples of potential bound resources:
 
-1. In Nakamoto Consensus (the consensus mechanism used by Bitcoin), one can consider the resource being the the total computational power of the participants. The assumption is then that the adversary controls less CPU power than the honest nodes (a minority adversary). In fact, the authors explicitly write the assumption on a resource bounded threshold adversary:
+1. In Nakamoto Consensus (the consensus mechanism used by Bitcoin), one can consider the resource being the the total CPU power of the participants. The assumption is then that the adversary controls less CPU power than the honest nodes (a minority adversary). In fact, the Nakamoto authors explicitly write the assumption of a resource bounded _minority_ adversary:
 > The system is secure as long as honest nodes collectively control more CPU power than any cooperating group of attacker nodes.
 > -- <cite>[Bitcoin whitepaper](https://bitcoin.org/bitcoin.pdf) </cite>
 
-2. In systems that use [proof-of-stake](https://www.investopedia.com/terms/p/proof-stake-pos.asp) the assumption is that the resource is some set of coins. It is then natural to assume that the adversary controls a threshold of the total coins.
+2. In systems that use [proof-of-stake](https://www.investopedia.com/terms/p/proof-stake-pos.asp) the assumption is that the resource is some set of coins. It is then natural to assume that the adversary controls a threshold of the total coins. On can often map voting power based on relative amount of coins. For example Tendermint mentions the total voting power of the adversary is bounded by a third:
 > it requires that the total voting power of faulty processes is smaller than one third of the total voting power
 > -- <cite> [Tendermint whitepaper](https://arxiv.org/pdf/1807.04938.pdf) </cite>
 
