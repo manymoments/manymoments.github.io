@@ -23,10 +23,10 @@ A threshold adversary is an adversary that controls some **_f_** nodes. There ar
 2. $n>2f$ where the adversary controls a minority of the nodes. Often called the _dishonst minority_ adversary.
 3. $n>3f$ where the adversary controls less than a third of the nodes. Often called the _dishonst third_ adversary.
 
-There are many examples of classical protocols that work in above models. 
-1. The [Dolev Strong](https://www.cs.huji.ac.il/~dolev/pubs/authenticated.pdf) Broadcast protocol solves Byzantine broadcast assuming an adversary that can control up to $n-1$ parties out of $n$ in the Synchronous model.
+There are many examples of protocols that work in the above threshold models. Here are some classics:
+1. The Dolev,Strong [Broadcast protocol](https://www.cs.huji.ac.il/~dolev/pubs/authenticated.pdf)  solves Byzantine broadcast assuming an adversary that can control up to $n-1$ parties out of $n$ in the Synchronous model.
 2. Lamport's [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol solves state machine replication assuming an adversary that can control less than $n/2$ parties out of $n$ in the Partially synchronous model.
-3. Ben Or's [randomized protocol](http://www.cs.utexas.edu/users/lorenzo/corsi/cs380d/papers/p27-ben-or.pdf) solves Byzantine agreement in the asynchronous setting assuming $5f<n$. This was later [improved by Bracha](https://core.ac.uk/download/pdf/82523202.pdf) to the optimal $3f<n$ bound.
+3. Ben Or's [randomized protocol](http://www.cs.utexas.edu/users/lorenzo/corsi/cs380d/papers/p27-ben-or.pdf) solves Byzantine agreement in the Asynchronous model assuming a $5f<n$ threshold. This was later [improved by Bracha](https://core.ac.uk/download/pdf/82523202.pdf) to the optimal $3f<n$ bound.
 
 ## Generalized bounded resource threshold adversary 
 In this model instead of having a static total _n_ that represents the total number of nodes or participating parties, we assume some general **_bounded resource_** (see Szabo definition of [scarce object](https://nakamotoinstitute.org/scarce-objects/)). A generalized threshold adversary is an adversary that controls some **_fraction_** of this _bounded resource_. Again, there are three typical thresholds:
