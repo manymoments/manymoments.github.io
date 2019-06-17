@@ -36,13 +36,13 @@ There are other types of corruptions (most notable are variants of _Covert_ [adv
 
 ### Computational power of the adversary
 The computational power of the adversary is the next choice. There are two basic options:
-1. _Unbounded_ : the adversary has  unbounded computational power.
+1. _Unbounded_ : the adversary has  unbounded computational power. 
 2. _Computationally bounded_ : typically meaning that the adversary cannot (except with negligible probability) break the cryptographic primitives being used. For example, typically assume the adversary cannot forge signatures of nodes not in his control (see [Goldreich's chapter one](http://www.wisdom.weizmann.ac.il/~oded/PSBookFrag/part1N.pdf) for traditional CS formal definitions). 
 
 ### Visibility of the adversary 
 The visibility is the power of the adversary to see and control messages and states of the non-corrupted parties. Again, there are two basic variants.
 
-1. _Full information_ : here we assume the adversary sees the internal state of _all_ parties and the content of _all_ message sent.
+1. _Full information_ : here we assume the adversary sees the internal state of _all_ parties and the content of _all_ message sent. This often limits the protocol designer. See for example: [Feige's](www.wisdom.weizmann.ac.il/~feige/Others/leader.ps) selection protocols, or  [Ben-Or etal's](https://people.csail.mit.edu/vinodv/BA.pdf) Byzantine agreement. 
 3. _Private channels_ : in this model we assume the adversary cannot see the internal state of honest parties and cannot see the internal content of messages between honest parties. The adversary does know when a message is being sent and depending on the communication model can decide to delay it by any value that is allowed by the communication model.
 
 ### Adaptivity of the adversary 
