@@ -7,21 +7,26 @@ tags:
 - models
 ---
 
+Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), we then need some way to limit the power of the adversary corruption. 
+
+
 > Power tends to corrupt, and absolute power corrupts absolutely.
 > -- <cite> [John Dalberg-Acton 1887](https://en.wikipedia.org/wiki/John_Dalberg-Acton,_1st_Baron_Acton) </cite>
 
-
-Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), we then need to fix the adversary model.
-
-We need some way to limit the power of the adversary corruption. Lets begin with the traditional notion as used in Distributed Computing and Cryptography. 
+As John observed, if the adversary has no limits to his power, then there is very little we can do. Lets begin with the traditional notion of a _threshold adversary_ as used in Distributed Computing and Cryptography. 
 
 ## Traditional threshold adversary 
-The simplest model is that of a _threshold adversary_: given a static group of **_n_** nodes. 
+The simplest model is that of a _threshold adversary_ given a static group of **_n_** nodes. 
 
 A threshold adversary is an adversary that controls some **_f_** nodes. There are three typical thresholds:
 1. $n>f$ where the adversary can control all parties but one. Often called the _dishonest majority_ adversary (or [anytrust](https://www.ohmygodel.com/publications/d3-eurosec12.pdf) model).
 2. $n>2f$ where the adversary controls a minority of the nodes. Often called the _dishonst minority_ adversary.
 3. $n>3f$ where the adversary controls less than a third of the nodes. Often called the _dishonst third_ adversary.
+
+There are many examples of classical protocols that work in above models. 
+1. The [Dolev Strong](https://www.cs.huji.ac.il/~dolev/pubs/authenticated.pdf) Broadcast protocol solves Byzantine broadcast assuming an adversary that can control up to $n-1$ parties out of $n$ in the Synchronous model.
+2. Lamport's [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol solves state machine replication assuming an adversary that can control less than $n/2$ parties out of $n$ in the Partially synchronous model.
+3. Ben Or's [randomized protocol](http://www.cs.utexas.edu/users/lorenzo/corsi/cs380d/papers/p27-ben-or.pdf) solves Byzantine agreement in the asynchronous setting assuming $5f<n$. This was later [improved by Bracha](https://core.ac.uk/download/pdf/82523202.pdf) to the optimal $3f<n$ bound.
 
 ## Generalized bounded resource threshold adversary 
 In this model instead of having a static total _n_ that represents the total number of nodes or participating parties, we assume some general **_bounded resource_** (see Szabo definition of [scarce object](https://nakamotoinstitute.org/scarce-objects/)). A generalized threshold adversary is an adversary that controls some **_fraction_** of this _bounded resource_. Again, there are three typical thresholds:
