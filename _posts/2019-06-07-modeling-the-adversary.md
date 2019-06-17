@@ -10,14 +10,14 @@ layout: post
 
 Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), and we fix a [threshold adversary]() we still need to make important modeling decisions about the adversary power.
 
-Here we will use the simplest model is that of a _threshold adversary_ with a static group of **_n_** nodes. We will later consider dynamic and permissionless models.
+Here we will use the simplest model of a _threshold adversary_ with a static group of **_n_** nodes. We will later consider dynamic and permissionless models.
 
 There are 5 important parameters for a threshold adversary: (1) the size of the threshold, (2) the type of corruption, (3) the computational power of the adversary, (4) the visibility of the adversary, (5) the adaptivity of the adversary.
 
 
 ### Size of the threshold
 A threshold adversary is an adversary that controls some **_f_** nodes. There are three typical thresholds:
-1. $n>f$ where the adversary can control all parties but one. Sometime called dishonest majority.
+1. $n>f$ where the adversary can control all parties but one. 
 2. $n>2f$ where the adversary controls a minority of the nodes.
 3. $n>3f$ where the adversary controls less than a third of the nodes.
 
@@ -30,7 +30,7 @@ _Omission_ : once corrupted, the adversary can decide, for each message sent or 
 
 _Byzantine_ : this gives the adversary full power to control the node and take any (arbitrary) action on the corrupted node.
 
-Note that each corruption subsumes the previous.
+Note that each corruption type subsumes the previous.
 There are other types of corruptions (most notable are variants of _Covert_ [adversaries](https://eprint.iacr.org/2007/060.pdf)) that we will cover later.
 
 
