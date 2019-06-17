@@ -19,12 +19,12 @@ We need some way to limit the power of the adversary corruption. Lets begin with
 The simplest model is that of a _threshold adversary_: given a static group of **_n_** nodes. 
 
 A threshold adversary is an adversary that controls some **_f_** nodes. There are three typical thresholds:
-1. $n>f$ where the adversary can control all parties but one. Often called the _dishonest majority_ adversary.
+1. $n>f$ where the adversary can control all parties but one. Often called the _dishonest majority_ adversary (or [anytrust](https://www.ohmygodel.com/publications/d3-eurosec12.pdf) model).
 2. $n>2f$ where the adversary controls a minority of the nodes. Often called the _dishonst minority_ adversary.
 3. $n>3f$ where the adversary controls less than a third of the nodes. Often called the _dishonst third_ adversary.
 
 ## Generalized bounded resource threshold adversary 
-In this model the static total _n_ does not represent the number of parties, but a general _bounded resource_ (see Szabo definition of [scarce object](https://nakamotoinstitute.org/scarce-objects/)). A generalized threshold adversary is an adversary that controls some **_fraction_** of this bounded resource. Again, there are three typical thresholds:
+In this model instead of having a static total _n_ that represents the total number of nodes or participating parties, we assume some general **_bounded resource_** (see Szabo definition of [scarce object](https://nakamotoinstitute.org/scarce-objects/)). A generalized threshold adversary is an adversary that controls some **_fraction_** of this _bounded resource_. Again, there are three typical thresholds:
 
 1. The adversary can control any amount of the bounded resource (but not all of it).
 2. The adversary controls at most a minority of the total resource. Sometimes there is an explicit parameter $\epsilon$ and the assumption is that the adversary controls at most $1/2 - \epsilon$ fraction of the bounded resource.
