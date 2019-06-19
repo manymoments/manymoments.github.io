@@ -7,7 +7,7 @@ tags:
 - models
 ---
 
-Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), we then need some way to limit the power of the adversary corruption. 
+Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), we then need some way to limit the power of the adversary. 
 
 
 > Power tends to corrupt, and absolute power corrupts absolutely.
@@ -35,6 +35,7 @@ In this model instead of having a static total _n_ that represents the total num
 2. The adversary controls at most a minority of the total resource. Sometimes there is an explicit parameter $0< \epsilon << 1$ and the assumption is that the adversary controls at most $1/2 - \epsilon$ fraction of the bounded resource (say at most 49 percent).
 3. The adversary controls less than $1/3$ (or less than $1/3 - \epsilon$) fraction of the total bounded resource. 
 
+There may be mechanisms where the total amount of the bounded resource changes over time, so the above restrictions have to hold at all times.
 
 Let's consider two common examples of potential bound resources:
 
