@@ -34,18 +34,18 @@ Note that each corruption type subsumes the previous.
 There are other types of corruptions (most notable are variants of _Covert_ [adversaries](https://eprint.iacr.org/2007/060.pdf)) that we will cover later.
 
 
-### Computational power of the adversary
+### Computational power 
 The computational power of the adversary is the next choice. There are two basic variants:
 1. _Unbounded_ : the adversary has  unbounded computational power. This model often leads to notions of _perfect security_.
 2. _Computationally bounded_ : typically meaning that the adversary cannot (except with negligible probability) break the cryptographic primitives being used. For example, typically assume the adversary cannot forge signatures of nodes not in his control (see [Goldreich's chapter one](http://www.wisdom.weizmann.ac.il/~oded/PSBookFrag/part1N.pdf) for traditional CS formal definitions). 
 
-### Visibility of the adversary 
+### Visibility 
 The visibility is the power of the adversary to see the messages and the states of the non-corrupted parties. Again, there are two basic variants:
 
 1. _Full information_ : here we assume the adversary sees the internal state of _all_ parties and the content of _all_ message sent. This often limits the protocol designer. See for example: [Feige's](www.wisdom.weizmann.ac.il/~feige/Others/leader.ps) selection protocols, or  [Ben-Or etal's](https://people.csail.mit.edu/vinodv/BA.pdf) Byzantine agreement. 
 3. _Private channels_ : in this model we assume the adversary cannot see the internal state of honest parties and cannot see the internal content of messages between honest parties. The adversary does know when a message is being sent and depending on the communication model can decide to delay it by any value that is allowed by the communication model.
 
-### Adaptivity of the adversary 
+### Adaptivity 
 Adaptivity is the ability of the adversary to corrupt dynamically based on information the adversary learns during the execution. There are two basic variants: static and adaptive. The adaptive model has several sub-variants but we will cover here only the simplest one.
 
 1. _Static_ : the adversary has to decide which _f_ nodes to corrupt in advance before the execution of the protocol.
