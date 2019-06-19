@@ -10,7 +10,7 @@ layout: post
 
 Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), and we fix a [threshold adversary](https://ittaiab.github.io/2019-06-17-the-threshold-adversary/) we still need to make important modeling decisions about the adversary power.
 
-Here we will use the simplest model of a _threshold adversary_ with a static group of **_n_** nodes. We will later consider dynamic, permissionless and bounded resource models.
+Here we will use the simplest model of a _threshold adversary_ that can control up to _f_ nodes given a static group of **_n_** nodes. We will later consider dynamic, permissionless and bounded resource models.
 
 
 In addition to the size of the threshold ($n>f$, $n>2f$, or $n>3f$), there are 4 more important parameters:
