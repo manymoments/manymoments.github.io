@@ -1,11 +1,11 @@
 ---
-layout: post
 title: The power of the adversary
-date: 'Fri Jun 07 2019 20:00:00 GMT+0300 (Israel Daylight Time)'
+date: 2019-06-07 20:00:00 -07:00
 published: false
 tags:
-  - dist101
-  - models
+- dist101
+- models
+layout: post
 ---
 
 Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), and we fix a [threshold adversary](https://ittaiab.github.io/2019-06-17-the-threshold-adversary/) we still need to make important modeling decisions about the adversary power.
