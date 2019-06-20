@@ -44,23 +44,23 @@ As in many cases this is a **trade-off**. One the one hand, maintaining a stable
 While PBFT uses all-to-all messages that creates _O(n<sup>2</sup>)_ communication complexity during the normal case leader commit phase. It has been [long observed](https://www.cs.unc.edu/~reiter/papers/1994/CCS.pdf) that this phase can be transformed to a linear communication pattern that creates _O(n)_ communication complexity. All the other three protocols use this approach to get a linear cost for the leader commit phase.
 
 ## Technical differences in the view change
-Traditionally, the view charge mechanism in PBFT is not optimized to be on the critical path. Algorithmically, it required at least _O(n<sup>2</sup>)_ words to be sent (and some PBFT variants that do not use public key signatures use more). SBFT also has a similar _O(n<sup>2</sup>)_ word view change complexity.
+Traditionally, the view charge mechanism in PBFT is not optimized to be on the critical path. Algorithmically, it required at least _O(n<sup>2</sup>)_ words to be sent (and some PBFT variants that do not use public key signatures use more). SBFT also has a _O(n<sup>2</sup>)_ word view change complexity (but the protocol itself has new non-trivial nuances).
 
-In Tendermint and HotStuff, leader rotation (view change) is part of the critical path because a rotation is done essentially every constant number of rounds, so much more effort is put to optimize this part. Algorithmically, the major innovation of Tendermint is a new view change protocol that requires just _O(n)_ messages.  Hotstuff has a similar _O(n)_ word view change complexity.
+In Tendermint and HotStuff, leader rotation (view change) is part of the critical path because a rotation is done essentially every constant number of rounds, so much more effort is put to optimize this part. Algorithmically, the major innovation of Tendermint is a new view change protocol that requires just _O(n)_ messages.  Hotstuff has a _O(n)_ word view change complexity (but the protocol itself has new non-trivial nuances).
 
 One may ask if the Tendermint view change improvement makes it strictly better than PBFT. The quick answer is that Tendermont does not pareto dominate PBFT, its (not surprisingly) a subtle trade-off with latency and responsiveness.
 
 ## Differences in Latency and Responsiveness
-Latency is measured as the number of round trips it takes to commit a transaction given an honest leader and after GST. To be precise we will measure this from the time the transaction gets to the Primary till the first time any participant (leader/replica/client) learns that the transaction is committed. Note that there may be additional latency from the client perspective and potentially due to the learning and checkpointing requirements. These additional latencies are perpendicular to the consensus protocol.
+Latency is measured as the number of round trips it takes to commit a transaction given an honest leader and after GST. To be precise we will measure this from the time the transaction gets to the honest leader till the first time a participant (leader/replica/client) learns that the transaction is committed. Note that there may be additional latency from the client perspective and/or potentially due to the learning and checkpointing requirements. These additional latencies are perpendicular to the consensus protocol and hence are ignored/abstracted away in this analysis.
 
 PBFT has a 2 round-trip latency and so does Tendermint. However, the tendermint view change is not _optimistically responsive_ while the PBFT view change is optimistically responsive. 
-A protocol is _optimistically reponsive_ if (for a series of non-faulty primaries) it makes progress at the speed of the network without needing to wait for a predefined time-out that is associated with the Partial synchrony model. Both PBFT and SBFT are responsive, while Tendermint is not.
+A protocol is _optimistically reponsive_ if (for a series of non-faulty leaders) it makes progress at the speed of the network without needing to wait for a predefined time-out that is associated with the Partial synchrony model. Both PBFT and SBFT are optimistically responsive, while Tendermint is not.
 
 In particular, it can be shown that even after GST, if the Tendermint protocol does not have a wait period in its view change phase, then a malicious attacker can cause it to lose all liveness and make no progress. With a time-out, Tendermint has no liveness problems (after GST) but this means that it incurs a time-out that happens on the critical path and means it cannot progress faster even if the network delays are significantly smaller than the fixed timeout.
 
-It's important to note that in many applications, not being responsive may be a reasonable design choice. The importance of reponsivness depends on the use case, on the importance of throughput and the variability of the network delays during stable periods. 
+In many applications, not being responsive may be a reasonable design choice. The importance of reponsivness depends on the use case, on the importance of maximizing throughput and the variability of the network delays during stable periods. 
 
-Nevertheless one may ask: can we get a linear view change that is also optimistically responsive?
+Nevertheless one may ask: can we get a protocol that has a linear view change that is also optimistically responsive?
 
 This is exactly where HotStuff comes into the picture. HotStuff extends the Tendermint view change approach and provides a protocol that is both linear in complexity and responsive! So does HotStuff strictly dominate Tendermont? No, again its a trade-off. The Hotstuff commit path induces a latency of 3 round-trips instead of 2 round-trips for PBFT and Tendermint.
 
