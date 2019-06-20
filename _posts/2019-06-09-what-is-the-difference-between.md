@@ -79,7 +79,7 @@ In PBFT the primary maintains a _window_ of open slots and is allowed to concurr
 
 The basic Hotstuff protocol works sequentially on each slot. So throughput is limited to one slot per 3 rounds. The _Chained HotStuff_ protocol significantly improves this to 1 slot per round by using _pipelining_. Basically, each message sent is the first round message for some slot $i$, the second round message for slot $i-1$ and the third round message for slot $i-2$. So while still working sequentially, Chained HotStuff provides the throughput of one slot per round.  The idea of chaining follows from reducing the number of message types. A similar approach for message type reduction was suggested in [Casper](https://ethresear.ch/t/casper-ffg-with-one-message-type-and-simpler-fork-choice-rule/103).
 
-What is the effect of allowing concurrency in the slot commit phase or pipelining the commit slots? this depends on the execution part. Recall that [committing a block is separated from executing it](https://www.cs.rochester.edu/meetings/sosp2003/papers/p195-yin.pdf). Typically the execution is sequential, and often the execution is the performance bottleneck for throughput. If the execution is the bottleneck - then this is what needs to be optimized - more on than in later posts.  
+Recall that [committing a block is separated from executing it](https://www.cs.rochester.edu/meetings/sosp2003/papers/p195-yin.pdf). Typically the execution is sequential, and often after optimizing the commit throughput (via pipeline or concurrency) the sequential execution becomes the performance bottleneck for throughput. If the execution is ineed the bottleneck - then this is what needs to be optimized - more on this in later posts.  
  
 
 
