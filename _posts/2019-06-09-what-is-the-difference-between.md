@@ -50,7 +50,7 @@ In Tendermint and HotStuff, leader rotation (view change) is part of the critica
 
 One may ask if the Tendermint view change improvement makes it strictly better than PBFT. The quick answer is that Tendermont does not pareto dominate PBFT, its (not surprisingly) a subtle trade-off with latency and responsiveness.
 
-## Technical differences in Latency and Responsiveness
+## Differences in Latency and Responsiveness
 Latency is measured as the number of round trips it takes to commit a transaction given an honest leader and after GST. To be precise we will measure this from the time the transaction gets to the Primary till the first time any participant (leader/replica/client) learns that the transaction is committed. Note that there may be additional latency from the client perspective and potentially due to the learning and checkpointing requirements. These additional latencies are perpendicular to the consensus protocol.
 
 PBFT has a 2 round-trip latency and so does Tendermint. However, the tendermint view change is not _optimistically responsive_ while the PBFT view change is optimistically responsive. 
@@ -73,13 +73,13 @@ SBFT gets a best-case one-round latency. So is it optimal? No, again it's a trad
 
 # On Throughput: pipeline and concurrency 
 
-There is yet another important difference between the PBFT implementation and the _Chained_ HotStuff variant which related to different approaches to improve throughput.
+There is yet another important difference between the PBFT implementation and the _Chained_ HotStuff variant which is related to the different approaches to improve throughput.
 
-In PBFT the primary maintains a _window_ of open slots and is allowed to concurrently work on committing all open slots in his active window. Conceptually, this is like TCP where a sender does not have to wait for the ACK of packet $i$ before sending message $i+1$. Experiments that modify the window size have validated empirically that this window can significantly increase throughput by allowing the primary to concurrently coordinate several actions of slot commitments. SBFT uses a similar mechanism.
+In PBFT, the primary maintains a _window_ of open slots and is allowed to concurrently work on committing all open slots in his active window. Conceptually, this is like TCP where a sender does not have to wait for the ACK of packet $i$ before sending message $i+1$. Experiments that modify the window size have validated empirically that this window can significantly increase throughput by allowing the primary to concurrently coordinate several actions of slot commitments. SBFT uses a similar mechanism.
 
-The basic Hotstuff protocol works sequentially on each slot. So throughput is limited to one slot per 3 rounds. The _Chained HotStuff_ protocol significantly improves this to 1 slot per round by using _pipelining_. Basically, each message sent is the first round message for some slot $i$, the second round message for slot $i-1$ and the third round message for slot $i-2$. So while still working sequentially, Chained HotStuff provides the throughput of one slot per round.  The idea of chaining follows from reducing the number of message types. A similar approach for message type reduction was suggested in [Casper](https://ethresear.ch/t/casper-ffg-with-one-message-type-and-simpler-fork-choice-rule/103).
+The basic Hotstuff protocol works sequentially to commit each block. So throughput is limited to one block per 3 rounds. The _Chained HotStuff_ protocol significantly improves this to 1 block per round by using _pipelining_. Basically, each message sent is the first round message for some slot $i$, the second round message for slot $i-1$ and the third round message for slot $i-2$. So while still working sequentially, Chained HotStuff provides the throughput of one block per round.  The idea of chaining follows from reducing the number of message types. A similar approach for message type reduction was suggested in [Casper](https://ethresear.ch/t/casper-ffg-with-one-message-type-and-simpler-fork-choice-rule/103). Reducing the types of message and chaining also induces a simpler protocol. This allows simpler and cleaner software implementations.
 
-Recall that [committing a block is separated from executing it](https://www.cs.rochester.edu/meetings/sosp2003/papers/p195-yin.pdf). Typically the execution is sequential, and often after optimizing the commit throughput (via pipeline or concurrency) the sequential execution becomes the performance bottleneck for throughput. If the execution is ineed the bottleneck - then this is what needs to be optimized - more on this in later posts.  
+Recall that [committing a block can be separated from executing it](https://www.cs.rochester.edu/meetings/sosp2003/papers/p195-yin.pdf). Typically the execution must be sequential, and often after optimizing the commit throughput (via pipeline or concurrency) the sequential execution becomes the performance bottleneck for throughput. If the execution is ineed the bottleneck - then this is what needs to be optimized - more on this in later posts.  
  
 
 
