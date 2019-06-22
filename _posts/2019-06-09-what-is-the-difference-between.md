@@ -18,7 +18,7 @@ In this post I will compare four of my favorite protocols for Byzantine Fault To
 
 4. [HotStuff](https://research.vmware.com/files/attachments/0/0/0/0/0/7/7/podc.pdf). A new BFT protocol that provides both linearity and responsiveness. The recent [LibraBFT](https://developers.libra.org/docs/assets/papers/libra-consensus-state-machine-replication-in-the-libra-blockchain.pdf) is based on HotStuff. More on that in a later post.
 
-This post provides a comparison at the **protocol level** from the lens of the _theory of distributed computing_. In particular this is not a comparison of the systems or their software. Much of the comparison can be summarized in this table, which essentially shows that no one protocol pareto dominates all the others.
+This post provides a comparison at the **protocol level** from the lens of the _theory of distributed computing_. In particular this is not a comparison of the systems or their software. Much of the comparison can be summarized in this table, which essentially shows that there are subtle trade-offs - no one protocol dominates all the others in all dimensions.
 
 |           | Best case Latency     | Normal case Communication     | View Change Communication     | View Change Responsive    |
 |---------- |--------------------   |----------------------------   |----------------------------   |-----------------------    |
@@ -28,7 +28,7 @@ This post provides a comparison at the **protocol level** from the lens of the _
 | HotStuff  | 3                     | O(n)                          | O(n)                          | Yes                       |
 
 
-Before saying how these protocols are different it is important to say how similar they are:
+Before saying how these protocols are different lets focus on how similar they actually are:
 
 1. They are all protocols for state machine replication (SMR) against a Byzantine adversary. All assume a threshold adversary controlling less than a third (see [here](https://ittaiab.github.io/2019-06-17-the-threshold-adversary/)).
 2. All work in the Partial synchrony model (see [here](https://ittaiab.github.io/2019-06-01-2019-5-31-models/)) and obtain safety (always) and liveness (after GST) in the face of an adversary that controls _f_ replicas out of a total of _n=3f+1_ replicas. 
@@ -36,9 +36,9 @@ Before saying how these protocols are different it is important to say how simil
 
 ## The conceptual difference: rotating leaders vs stable leaders
 As mentioned above, all these protocol have the ability to replace leaders. 
-One key conceptual difference between \{PBFT,SBFT\} and \{Tendermint, HotStuff\} is that PBFT,SBFT are based on the _stable leaders_ paradigm where a leader is changed only when a problem is detected, so a leader may stay for many commands. Tendermint and Hotstuff is based on the _rotating leader_ paradigm. A leader is rotated after a single attempt to commit a command. So leader rotation (view-change) is part of the normal operation of the system.
+One key conceptual difference between \{PBFT,SBFT\} and \{Tendermint, HotStuff\} is that PBFT,SBFT are based on the _stable leaders_ paradigm where a leader is changed only when a problem is detected, so a leader may stay for many blocks. Tendermint and Hotstuff is based on the _rotating leader_ paradigm. A leader is rotated after a single attempt to commit a block. So leader rotation (view-change) is part of the normal operation of the system.
 
-As in many cases this is a **trade-off**. One the one hand, maintaining a stable leader means less client overhead and better performance due to stability when the leader is honest and trusted.  On the other hand, there are some types of malicious behaviours that a stable malicious leader can cause and remain undetected. For example  a malicious leader can bias the internal order of commands in a block. Constantly rotating the leader provides a stronger _fairness_ guarantee.
+As in many cases this is a **trade-off**. One the one hand, maintaining a stable leader means less client overhead and better performance due to stability when the leader is honest and trusted.  On the other hand, there are some types of malicious behaviours that a stable malicious leader can cause and remain undetected. For example  a malicious leader can bias the internal order of commands inside a block. Constantly rotating the leader provides a stronger _fairness_ guarantee.
 
 ## Technical differences in the normal case leader commit phase
 While PBFT uses all-to-all messages that creates _O(n<sup>2</sup>)_ communication complexity during the normal case leader commit phase. It has been [long observed](https://www.cs.unc.edu/~reiter/papers/1994/CCS.pdf) that this phase can be transformed to a linear communication pattern that creates _O(n)_ communication complexity. All the other three protocols use this approach to get a linear cost for the leader commit phase.
@@ -48,7 +48,7 @@ Traditionally, the view charge mechanism in PBFT is not optimized to be on the c
 
 In Tendermint and HotStuff, leader rotation (view change) is part of the critical path because a rotation is done essentially every constant number of rounds, so much more effort is put to optimize this part. Algorithmically, the major innovation of Tendermint is a new view change protocol that requires just _O(n)_ messages.  Hotstuff has a _O(n)_ word view change complexity (but the protocol itself has new non-trivial nuances).
 
-One may ask if the Tendermint view change improvement makes it strictly better than PBFT. The quick answer is that Tendermont does not pareto dominate PBFT, its (not surprisingly) a subtle trade-off with latency and responsiveness.
+One may ask if the Tendermint view change improvement makes it strictly better (dominates in every aspect) than PBFT. The answer is that Tendermont does not dominate PBFT in all aspects, there is a subtle trade-off with latency and responsiveness.
 
 ## Differences in Latency and Responsiveness
 Latency is measured as the number of round trips it takes to commit a transaction given an honest leader and after GST. To be precise we will measure this from the time the transaction gets to the honest leader till the first time a participant (leader/replica/client) learns that the transaction is committed. Note that there may be additional latency from the client perspective and/or potentially due to the learning and checkpointing requirements. These additional latencies are perpendicular to the consensus protocol and hence are ignored/abstracted away in this analysis.
@@ -62,7 +62,7 @@ In many applications, not being responsive may be a reasonable design choice. Th
 
 Nevertheless one may ask: can we get a protocol that has a linear view change that is also optimistically responsive?
 
-This is exactly where HotStuff comes into the picture. HotStuff extends the Tendermint view change approach and provides a protocol that is both linear in complexity and responsive! So does HotStuff strictly dominate Tendermont? No, again its a trade-off. The Hotstuff commit path induces a latency of 3 round-trips instead of 2 round-trips for PBFT and Tendermint.
+This is exactly where HotStuff comes into the picture. HotStuff extends the Tendermint view change approach and provides a protocol that is both linear in complexity and responsive! So does HotStuff strictly dominate Tendermont in all aspects? No, again its a trade-off: the Hotstuff commit path induces a latency of 3 round-trips instead of 2 round-trips for PBFT and Tendermint.
 
 Again it is natural to ask, is the difference between latency of 2 and 3 round-trips important? Again the answer is that the importance of latency depends on the use case. Many applications may not care if the latency is even, say, 10 round-trips while others may want to minimize latency as much as possible. 
 
@@ -77,7 +77,9 @@ There is yet another important difference between the PBFT implementation and th
 
 In PBFT, the primary maintains a _window_ of open slots and is allowed to concurrently work on committing all open slots in his active window. Conceptually, this is like TCP where a sender does not have to wait for the ACK of packet $i$ before sending message $i+1$. Experiments that modify the window size have validated empirically that this window can significantly increase throughput by allowing the primary to concurrently coordinate several actions of slot commitments. SBFT uses a similar mechanism.
 
-The basic Hotstuff protocol works sequentially to commit each block. So throughput is limited to one block per 3 rounds. The _Chained HotStuff_ protocol significantly improves this to 1 block per round by using _pipelining_. Basically, each message sent is the first round message for some slot $i$, the second round message for slot $i-1$ and the third round message for slot $i-2$. So while still working sequentially, Chained HotStuff provides the throughput of one block per round.  The idea of chaining follows from reducing the number of message types. A similar approach for message type reduction was suggested in [Casper](https://ethresear.ch/t/casper-ffg-with-one-message-type-and-simpler-fork-choice-rule/103). Reducing the types of message and chaining also induces a simpler protocol. This allows simpler and cleaner software implementations.
+The basic Hotstuff protocol works sequentially to commit each block. So throughput is limited to one block per 3 rounds. The _Chained HotStuff_ protocol significantly improves this to an amortized _1 block per round_ by using _pipelining_. Basically, each message sent is the first round message for some slot $i$, the second round message for slot $i-1$ and the third round message for slot $i-2$. So while still working sequentially, Chained HotStuff provides the throughput of one block per round.  The idea of chaining follows from reducing the number of message types. A similar approach for message type reduction was suggested in [Casper](https://ethresear.ch/t/casper-ffg-with-one-message-type-and-simpler-fork-choice-rule/103). Reducing the types of message and chaining also induces a simpler protocol. This allows simpler and cleaner software implementations.
+
+From a theoretical perspective, the concurrent approach can also obtain the optimal amortized 1 block per round that the pipelined approach obtains. However the pipelined approach also reduces the number of bits sent (by aggregating several messages into one), this is something that the concurrent approach does not currenlty do. 
 
 Recall that [committing a block can be separated from executing it](https://www.cs.rochester.edu/meetings/sosp2003/papers/p195-yin.pdf). Typically the execution must be sequential, and often after optimizing the commit throughput (via pipeline or concurrency) the sequential execution becomes the performance bottleneck for throughput. If the execution is ineed the bottleneck - then this is what needs to be optimized - more on this in later posts.  
  
