@@ -76,7 +76,7 @@ In fact, if you do care about minimizing latency, then in the best-case even one
 SBFT gets a best-case one-round latency. So is it optimal? It's a trade-off. While SBFT has the best best-case latency, it has a view change protocol that has $O(n^2)$ complexity in the worst case. 
 
 
-## On using randomness
+## On using Randomness
 
 From a theoretical perspective, the importance of a linear view change that it implies that after GST, a good leader will be found after at most $O(f)$ rounds for a total of $O(n^2)$ messages (and words).  
 
