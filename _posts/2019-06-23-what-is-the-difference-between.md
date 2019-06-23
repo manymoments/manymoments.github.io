@@ -81,8 +81,9 @@ SBFT gets a best-case one-round latency. So is it optimal? It's a trade-off. Whi
 From a theoretical perspective, the importance of a linear view change that it implies that after GST, a good leader will be found after at most $O(f)$ rounds for a total of $O(n^2)$ messages (and words).  
 
 Randomization is a powerful tool in distributed computing and cryptography. All the protocols mentioned above are deterministic. One can use a random leader election to gain better bounds and against more adaptive adversaries and models. Two protocols that extend HotStuff and use randomization in powerful ways:
-1.  [VABA](https://research.vmware.com/files/attachments/0/0/0/0/0/7/8/practical_aba_2_.pdf) gets $O(1)$ expected rounds even in the asynchronous model and a strong adaptive adversary.
-2.[LibraBFT](https://developers.libra.org/docs/assets/papers/libra-consensus-state-machine-replication-in-the-libra-blockchain.pdf) can get $O(1)$ expected rounds in the partial synchronous model and a somewhat adaptive adversary. 
+1. [VABA](https://research.vmware.com/files/attachments/0/0/0/0/0/7/8/practical_aba_2_.pdf) gets $O(1)$ expected rounds even in the asynchronous model and a strong adaptive adversary.
+
+2. [LibraBFT](https://developers.libra.org/docs/assets/papers/libra-consensus-state-machine-replication-in-the-libra-blockchain.pdf) can get $O(1)$ expected rounds in the partial synchronous model and a somewhat adaptive adversary. 
 More on this in later posts.
 
 ## Acknowledgments
