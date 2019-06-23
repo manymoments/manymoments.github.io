@@ -22,7 +22,7 @@ This post provides a comparison at the protocol level from the lens of the theor
 |           | Best case Latency     | Normal case Communication     | View Change Communication     | View Change Responsive    |
 |---------- |--------------------   |----------------------------   |----------------------------   |-----------------------    |
 | PBFT      | 2                     |  O(n<sup>2</sup>)                     | O(n<sup>2</sup>)                      | Yes                       |
-| TNDRMNT   | 2                     | O(n) (*)                       | O(n)                          | No                        |
+| Tendermint   | 2                     | O(n) (*)                       | O(n)                          | No                        |
 | SBFT      | 1                     | O(n)                          | O(n<sup>2</sup>)                      | Yes                       |
 | HotStuff  | 3                     | O(n)                          | O(n)                          | Yes                       |
 
@@ -31,7 +31,7 @@ Before saying how these protocols are different it is important to say how simil
 
 1. They are all protocols for state machine replication (SMR) against a Byzantine adversary.
 2. All work in the Partial synchrony model (see [here](https://ittaiab.github.io/2019-06-01-2019-5-31-models/)) and obtain safety (always) and liveness (after GST) in the face of an adversary that controls _f_ replicas out of a total of _n=3f+1_ replicas (see [here](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) for threshold adversary). 
-3. All these protocols are based on the classic leader-based Primary-Backup approach where leaders are replaced in a _view change_ protocol.
+3. All these protocols are based on the classic leader-based [Primary-Backup](http://pmg.csail.mit.edu/papers/vr.pdf) approach where leaders are replaced in a _view change_ protocol.
 
 ## The conceptual difference: rotating leaders vs stable leaders
 As mentioned above, all these protocol have the ability to replace leaders. 
