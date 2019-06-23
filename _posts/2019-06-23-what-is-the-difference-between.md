@@ -45,10 +45,10 @@ As in many case this is a **trade-off**. One the one hand, maintaining a stable 
 
 
 ## Technical differences in the normal case leader commit phase
-While PBFT uses all-to-all messages that creates _O(n<sup>2</sup>)_ communication complexity during the normal case leader commit phase. It has been [long observed](https://www.cs.unc.edu/~reiter/papers/1994/CCS.pdf) that this phase can be transformed to a linear communication pattern that creates _O(n)_ communication complexity. Both SBFT and HotStuff use this approach to get a linear cost for the leader commit phase. Tendermint uses a gossip all-to-all mechanism, so $n \log n$ messages and $n^2$ words. Nevertheless is easy to consider a variant of Tendermont that does $O(n)$ communication in the normal case leader commit phase as well.
+While PBFT uses all-to-all messages that creates $O(n^2)$ communication complexity during the normal case leader commit phase. It has been [long observed](https://www.cs.unc.edu/~reiter/papers/1994/CCS.pdf) that this phase can be transformed to a linear communication pattern that creates _O(n)_ communication complexity. Both SBFT and HotStuff use this approach to get a linear cost for the leader commit phase. Tendermint uses a gossip all-to-all mechanism, so $n \log n$ messages and $n^2$ words. Nevertheless is easy to consider a variant of Tendermont that does $O(n)$ communication in the normal case leader commit phase as well.
 
 ## Technical differences in the view change
-Traditionally, the view charge mechanism in PBFT is not optimized to be on the critical path. Algorithmically, it required at least _O(n<sup>2</sup>)_ words to be sent (and some PBFT variants that do not use public key signatures use more). SBFT also has a similar _O(n<sup>2</sup>)_ word view change complexity.
+Traditionally, the view charge mechanism in PBFT is not optimized to be on the critical path. Algorithmically, it required at least $O(n^2)$ words to be sent (and some PBFT variants that do not use public key signatures use more). SBFT also has a similar $O(n^2)$ word view change complexity.
 
 In Tendermint and HotStuff, leader rotation (view change) is part of the critical path because a rotation is done essentially every 3 rounds, so much more effort is put to optimize this part. Algorithmically, the major innovation of Tendermint is a view change protocol that requires just _O(n)_ messages.  Hotstuff has a similar _O(n)_ word view change complexity.
 
@@ -73,7 +73,7 @@ It is natural to ask, is the difference between latency of 2 and 3 round-trips i
 ## Reducing Latency
 In fact, if you do care about minimizing latency, then in the best-case even one-round latency is possible! This is exactly what SBFT achieves. This is not as easy as it [looks](https://arxiv.org/abs/1712.01367). 
 
-SBFT gets a best-case one-round latency. So is it optimal? It's a trade-off. While SBFT has the best best-case latency, it has a view change protocol that has _O(n<sup>2</sup>)_ complexity in the worst case. 
+SBFT gets a best-case one-round latency. So is it optimal? It's a trade-off. While SBFT has the best best-case latency, it has a view change protocol that has $O(n^2)$ complexity in the worst case. 
 
 
 ## On using randomness
