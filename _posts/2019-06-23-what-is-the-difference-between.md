@@ -44,14 +44,14 @@ As in many case this is a **trade-off**. One the one hand, maintaining a stable 
 
 
 ## Technical differences in the normal case leader commit phase
-While PBFT uses all-to-all messages that creates $O(n^2)$ communication complexity during the normal case leader commit phase. It has been [long observed](https://www.cs.unc.edu/~reiter/papers/1994/CCS.pdf) that this phase can be transformed to a linear communication pattern that creates $O(n)$ communication complexity. Both SBFT and HotStuff use this approach to get a linear cost for the leader commit phase. Tendermint uses a gossip all-to-all mechanism, so $O(n \log n)$ messages and $O(n^2)$ words. Since this is not essential for the protocol, in the table above I consider a variant of Tendermont that does $O(n)$ communication in the normal case leader commit phase as well.
+While PBFT uses all-to-all messages that creates $O(n^2)$ communication complexity during the normal case leader commit phase. It has been [long observed](https://www.cs.unc.edu/~reiter/papers/1994/CCS.pdf) that this phase can be transformed to a linear communication pattern that creates $O(n)$ communication complexity. Both SBFT and HotStuff use this approach to get a linear cost for the leader commit phase. Tendermint uses a gossip all-to-all mechanism, so $O(n \log n)$ messages and $O(n^2)$ words. Since this is not essential for the protocol, in the table above I consider a variant of Tendermint that does $O(n)$ communication in the normal case leader commit phase as well.
 
 ## Technical differences in the view change
 Traditionally, the view charge mechanism in PBFT is not optimized to be on the critical path. Algorithmically, it required at least $O(n^2)$ words to be sent (and some PBFT variants that do not use public key signatures use more). SBFT also has a similar $O(n^2)$ word view change complexity.
 
 In Tendermint and HotStuff, leader rotation (view change) is part of the critical path because a rotation is done essentially every 3 rounds, so much more effort is put to optimize this part. Algorithmically, the major innovation of Tendermint is a view change protocol that requires just $O(n)$ messages.  Hotstuff has a similar $O(n)$ word view change complexity.
 
-One may ask if the Tendermint view change improvement makes it strictly better than PBFT. The answer is that Tendermint does not dominate PBFT in all aspects, its (not surprisingly) a subtle trade-off with latency and responsiveness.
+One may ask if the Tendermint view change improvement makes it strictly better than PBFT. The answer is that Tendermint does not dominate PBFT in all aspects, it's (not surprisingly) a subtle trade-off with latency and responsiveness.
 
 ## Technical differences in Latency and Responsiveness
 Latency is measured as the number of round trips it takes to commit a transaction given an honest leader and after GST. To be precise we will measure this from the time the transaction gets to the leader till the first time any participant (leader/replica/client) learns that the transaction is committed. Note that there may be additional latency from the client perspective and potentially due to the learning and checkpointing requirements. These additional latencies are perpendicular to the consensus protocol.
@@ -65,7 +65,7 @@ It's important to note that in many applications, not being responsive may be a 
 
 Nevertheless one may ask: can we get a linear view change that is also responsive?
 
-This is exactly where HotStuff comes into the picture. HotStuff extends the Tendermint view change approach and provides a protocol that is both linear in complexity and responsive! So does HotStuff strictly dominate Tendermont? No, its a trade-off. The Hotstuff commit path induces a latency of 3 round-trips instead of 2 round-trips for PBFT and Tendermint.
+This is exactly where HotStuff comes into the picture. HotStuff extends the Tendermint view change approach and provides a protocol that is both linear in complexity and responsive! So does HotStuff strictly dominate Tendermont? No, it's a trade-off. The Hotstuff commit path induces a latency of 3 round-trips instead of 2 round-trips for PBFT and Tendermint.
 
 It is natural to ask, is the difference between latency of 2 and 3 round-trips important? Again the answer is that the importance of latency depends on the use case. Many applications may not care if the latency is even, say, 10 round-trips while others may want to minimize latency as much as possible. 
 
