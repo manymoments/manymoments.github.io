@@ -59,7 +59,7 @@ Latency is measured as the number of round trips it takes to commit a transactio
 PBFT has a 2 round-trip latency and so does Tendermint. However, the Tendermint view change is not _responsive_ while the PBFT view change is responsive. 
 A protocol is _reponsive_ if it makes progress at the speed of the network without needing to wait for a predefined time-out that is associated with the Partial synchrony model. Both PBFT and SBFT are responsive, while Tendermint is not.
 
-In particular, it can be shown that even after GST, if the Tendermint protocol does not have a wait period in its view change phase, then a malicious attacker can cause it to lose all liveness and make no progress. With a time-out, Tendermint has no liveness problems (after GST) but this means that it incurs a time-out that happens on the critical path and means it cannot progress faster even if the network delays are significantly smaller than the fixed timeout.
+In particular, it can be shown that even after GST, if the Tendermint protocol does not have a wait period (time-out) in its view change phase, then a malicious attacker can cause it to lose all liveness and make no progress. With a time-out, Tendermint has no liveness problems (after GST) but this means that it incurs a time-out that happens on the critical path. So it cannot progress faster even if the network delays are significantly smaller than the fixed time-out.
 
 It's important to note that in many applications, not being responsive may be a reasonable design choice. The importance of reponsivness depends on the use case, on the importance of throughput and the variability of the network delays during stable periods. 
 
@@ -69,7 +69,7 @@ This is exactly where HotStuff comes into the picture. HotStuff extends the Tend
 
 It is natural to ask, is the difference between latency of 2 and 3 round-trips important? Again the answer is that the importance of latency depends on the use case. Many applications may not care if the latency is even, say, 10 round-trips while others may want to minimize latency as much as possible. 
 
-## Reducing Latency
+## Minimizing Latency
 In fact, if you do care about minimizing latency, then in the best-case even one-round latency is possible! This is exactly what SBFT achieves. This is not as easy as it [looks](https://arxiv.org/abs/1712.01367). 
 
 SBFT gets a best-case one-round latency. So is it optimal? It's a trade-off. While SBFT has the best best-case latency, it has a view change protocol that has $O(n^2)$ complexity in the worst case. 
