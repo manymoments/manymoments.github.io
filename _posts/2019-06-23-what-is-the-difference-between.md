@@ -22,7 +22,7 @@ This post provides a comparison at the protocol level from the lens of the theor
 |           | Best case Latency     | Normal case Communication     | View Change Communication     | View Change Responsive    |
 |---------- |--------------------   |----------------------------   |----------------------------   |-----------------------    |
 | PBFT      | 2                     |  O(n<sup>2</sup>)                     | O(n<sup>2</sup>)                      | Yes                       |
-| TNDRMNT   | 2                     | O(n)                          | O(n)                          | No                        |
+| TNDRMNT   | 2                     | O(n) (*)                       | O(n)                          | No                        |
 | SBFT      | 1                     | O(n)                          | O(n<sup>2</sup>)                      | Yes                       |
 | HotStuff  | 3                     | O(n)                          | O(n)                          | Yes                       |
 
