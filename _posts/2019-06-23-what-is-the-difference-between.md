@@ -30,7 +30,7 @@ This post provides a comparison at the protocol level from the lens of the theor
 Before saying how these protocols are different it is important to say how similar they are:
 
 1. They are all protocols for state machine replication (SMR) against a Byzantine adversary.
-2. All work in the Partial synchrony model (see [here](https://ittaiab.github.io/2019-06-01-2019-5-31-models/)) and obtain safety (always) and liveness (after GST) in the face of an adversary that controls _f_ replicas out of a total of _n=3f+1_ replicas (see [here](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) for threshold adversary). 
+2. All work in the Partial synchrony model (see [here](https://ittaiab.github.io/2019-06-01-2019-5-31-models/)) and obtain safety (always) and liveness (after GST) in the face of an adversary that controls $f$ replicas out of a total of $n=3f+1$ replicas (see [here](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) for threshold adversary). 
 3. All these protocols are based on the classic leader-based [Primary-Backup](http://pmg.csail.mit.edu/papers/vr.pdf) approach where leaders are replaced in a _view change_ protocol.
 
 ## The conceptual difference: rotating leaders vs stable leaders
@@ -44,12 +44,12 @@ As in many case this is a **trade-off**. One the one hand, maintaining a stable 
 
 
 ## Technical differences in the normal case leader commit phase
-While PBFT uses all-to-all messages that creates $O(n^2)$ communication complexity during the normal case leader commit phase. It has been [long observed](https://www.cs.unc.edu/~reiter/papers/1994/CCS.pdf) that this phase can be transformed to a linear communication pattern that creates _O(n)_ communication complexity. Both SBFT and HotStuff use this approach to get a linear cost for the leader commit phase. Tendermint uses a gossip all-to-all mechanism, so $n \log n$ messages and $n^2$ words. Nevertheless is easy to consider a variant of Tendermont that does $O(n)$ communication in the normal case leader commit phase as well.
+While PBFT uses all-to-all messages that creates $O(n^2)$ communication complexity during the normal case leader commit phase. It has been [long observed](https://www.cs.unc.edu/~reiter/papers/1994/CCS.pdf) that this phase can be transformed to a linear communication pattern that creates $O(n)$ communication complexity. Both SBFT and HotStuff use this approach to get a linear cost for the leader commit phase. Tendermint uses a gossip all-to-all mechanism, so $O(n \log n)$ messages and $O(n^2)$ words. Since this is not essential for the protocol, in the table above I consider a variant of Tendermont that does $O(n)$ communication in the normal case leader commit phase as well.
 
 ## Technical differences in the view change
 Traditionally, the view charge mechanism in PBFT is not optimized to be on the critical path. Algorithmically, it required at least $O(n^2)$ words to be sent (and some PBFT variants that do not use public key signatures use more). SBFT also has a similar $O(n^2)$ word view change complexity.
 
-In Tendermint and HotStuff, leader rotation (view change) is part of the critical path because a rotation is done essentially every 3 rounds, so much more effort is put to optimize this part. Algorithmically, the major innovation of Tendermint is a view change protocol that requires just _O(n)_ messages.  Hotstuff has a similar _O(n)_ word view change complexity.
+In Tendermint and HotStuff, leader rotation (view change) is part of the critical path because a rotation is done essentially every 3 rounds, so much more effort is put to optimize this part. Algorithmically, the major innovation of Tendermint is a view change protocol that requires just $O(n)$ messages.  Hotstuff has a similar $O(n)$ word view change complexity.
 
 One may ask if the Tendermint view change improvement makes it strictly better than PBFT. The quick answer is that Tendermont does not pareto dominate PBFT, its (not surprisingly) a subtle trade-off with latency and responsiveness.
 
