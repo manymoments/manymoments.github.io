@@ -1,7 +1,6 @@
 ---
 title: What is the difference between PBFT, Tendermint, SBFT and HotStuff ?
 date: 2019-06-23 00:00:00 -07:00
-published: false
 tags:
 - research
 layout: post
@@ -84,7 +83,9 @@ Randomization is a powerful tool in distributed computing and cryptography. All 
 1. [VABA](https://research.vmware.com/files/attachments/0/0/0/0/0/7/8/practical_aba_2_.pdf) gets $O(1)$ expected rounds even in the asynchronous model and a strong adaptive adversary.
 
 2. [LibraBFT](https://developers.libra.org/docs/assets/papers/libra-consensus-state-machine-replication-in-the-libra-blockchain.pdf) can get $O(1)$ expected rounds in the partial synchronous model and a somewhat adaptive adversary. 
-More on this in later posts.
+
+
+More on randomness and these two protocols in later posts.
 
 ## Acknowledgments
 Special thanks to [Dahlia Malkhi](https://dahliamalkhi.wordpress.com/cv/) for reviewing a draft and sending insightful comments.
