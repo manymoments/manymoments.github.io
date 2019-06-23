@@ -35,12 +35,12 @@ Before saying how these protocols are different it is important to say how simil
 
 ## The conceptual difference: rotating leaders vs stable leaders
 As mentioned above, all these protocol have the ability to replace leaders. 
-One key conceptual difference between \{PBFT,SBFT\} and \{Tendermint, HotStuff\} is that PBFT,SBFT are based on the _stable leaders_ paradigm where a leaders is changed only when a problem is detected, so a leader may stay for many commands. Tendermint and Hotstuff is based on the _rotating leader_ paradigm. A leader is rotated after a single attempt to commit a command. So leader rotation (view-change) is part of the normal operation of the system.
+One key conceptual difference between \{PBFT,SBFT\} and \{Tendermint, HotStuff\} is that \{PBFT,SBFT\} are based on the _stable leaders_ paradigm where a leaders is changed only when a problem is detected, so a leader may stay for many commands. \{Tendermint and Hotstuff\} are based on the _rotating leader_ paradigm. A leader is rotated after a single attempt to commit a command. So leader rotation (view-change) is part of the normal operation of the system.
 
 
 Note that \{PBFT,SBFT\} could be rather easily modified to run in the _rotating leader_ paradigm and similarly \{Tendermint, HotStuff\} could be rather easily modified to run in the _stable leaders_ paradigm.
 
-As in many case this is a **trade-off**. One the one hand, maintaining a stable leader means less overhead and better performance due to stability when the leader is honest and trusted. On the other hand there are some types of behaviours (like setting the internal order of commands in a block) that a stable malicious leader can cause an undetectable but consistent bias. Constantly rotating the leader provides a stronger _fairness_ guarantee.
+As in many case this is a **trade-off**. One the one hand, maintaining a stable leader means less overhead and better performance due to stability when the leader is honest and trusted. On the other hand, a stable malicious leader can cause undetectable malicious actions. For example setting the internal order of commands in a block in a biased manner. Constantly rotating the leader provides a stronger _fairness_ guarantee.
 
 
 ## Technical differences in the normal case leader commit phase
@@ -51,12 +51,12 @@ Traditionally, the view charge mechanism in PBFT is not optimized to be on the c
 
 In Tendermint and HotStuff, leader rotation (view change) is part of the critical path because a rotation is done essentially every 3 rounds, so much more effort is put to optimize this part. Algorithmically, the major innovation of Tendermint is a view change protocol that requires just $O(n)$ messages.  Hotstuff has a similar $O(n)$ word view change complexity.
 
-One may ask if the Tendermint view change improvement makes it strictly better than PBFT. The quick answer is that Tendermont does not pareto dominate PBFT, its (not surprisingly) a subtle trade-off with latency and responsiveness.
+One may ask if the Tendermint view change improvement makes it strictly better than PBFT. The answer is that Tendermint does not dominate PBFT in all aspects, its (not surprisingly) a subtle trade-off with latency and responsiveness.
 
 ## Technical differences in Latency and Responsiveness
 Latency is measured as the number of round trips it takes to commit a transaction given an honest leader and after GST. To be precise we will measure this from the time the transaction gets to the leader till the first time any participant (leader/replica/client) learns that the transaction is committed. Note that there may be additional latency from the client perspective and potentially due to the learning and checkpointing requirements. These additional latencies are perpendicular to the consensus protocol.
 
-PBFT has a 2 round-trip latency and so does Tendermint. However, the tendermint view change is not _responsive_ while the PBFT view change is responsive. 
+PBFT has a 2 round-trip latency and so does Tendermint. However, the Tendermint view change is not _responsive_ while the PBFT view change is responsive. 
 A protocol is _reponsive_ if it makes progress at the speed of the network without needing to wait for a predefined time-out that is associated with the Partial synchrony model. Both PBFT and SBFT are responsive, while Tendermint is not.
 
 In particular, it can be shown that even after GST, if the Tendermint protocol does not have a wait period in its view change phase, then a malicious attacker can cause it to lose all liveness and make no progress. With a time-out, Tendermint has no liveness problems (after GST) but this means that it incurs a time-out that happens on the critical path and means it cannot progress faster even if the network delays are significantly smaller than the fixed timeout.
@@ -90,7 +90,7 @@ Recall that [committing a block can be separated from executing it](https://www.
 
 ## On using Randomness
 
-From a theoretical perspective, the importance of a linear view change and a linear normal case leader commit phase is that together it implies that after GST, a good leader will be found after at most $O(f)$ rounds for a total of $O(n^2)$ messages (and words).  Hotstuff is the first protocol that obtains these bounds.
+From a theoretical perspective, the importance of a linear view change and a linear normal case leader commit phase is that together it implies that after GST, a good leader will be found after at most $O(f)$ rounds for a total of $O(n^2)$ messages (and words).  HotStuff is the first protocol that obtains these bounds.
 
 Randomization is a powerful tool in distributed computing and cryptography. All the protocols mentioned above are deterministic. One can use a random leader election to gain better bounds and against more adaptive adversaries and models. Two protocols that extend HotStuff and use randomization in powerful ways:
 1. [VABA](https://research.vmware.com/files/attachments/0/0/0/0/0/7/8/practical_aba_2_.pdf) gets $O(1)$ expected rounds even in the asynchronous model and a strong adaptive adversary.
