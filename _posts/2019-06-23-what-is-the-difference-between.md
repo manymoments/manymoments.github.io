@@ -90,9 +90,9 @@ Recall that [committing a block can be separated from executing it](https://www.
 
 ## On using Randomness
 
-From a theoretical perspective, the importance of a linear view change and a linear normal case leader commit phase is that together it implies that after GST, a good leader will be found after at most $O(f)$ rounds for a total of $O(n^2)$ messages (and words).  HotStuff is the first protocol that obtains these bounds.
+From a theoretical perspective, the importance of a linear view change and a linear normal case leader commit phase is that together they imply that after GST, a good leader will be found after at most $O(f)$ rounds for a total of $O(n^2)$ messages (and words).  HotStuff is the first protocol that obtains these bounds.
 
-Randomization is a powerful tool in distributed computing and cryptography. All the protocols mentioned above are deterministic. One can use a random leader election to gain better bounds and against more adaptive adversaries and models. Two protocols that extend HotStuff and use randomization in powerful ways:
+Randomization is a powerful tool in distributed computing and cryptography. All the protocols mentioned above are deterministic. One can use a random leader election to gain better bounds and against more adaptive adversaries and models. There are two new protocols that extend HotStuff and use randomization in powerful ways:
 1. [VABA](https://research.vmware.com/files/attachments/0/0/0/0/0/7/8/practical_aba_2_.pdf) gets $O(1)$ expected rounds even in the asynchronous model and a strong adaptive adversary.
 
 2. [LibraBFT](https://developers.libra.org/docs/assets/papers/libra-consensus-state-machine-replication-in-the-libra-blockchain.pdf) can get $O(1)$ expected rounds in the partial synchronous model and a somewhat adaptive adversary. 
@@ -101,7 +101,7 @@ Randomization is a powerful tool in distributed computing and cryptography. All 
 More on randomness and these two protocols in later posts.
 
 ## Acknowledgments
-Special thanks to [Dahlia Malkhi](https://dahliamalkhi.wordpress.com/cv/) for reviewing a draft and sending insightful comments.
+Special thanks to [Dahlia Malkhi](https://dahliamalkhi.wordpress.com/cv/) and [Benny Pinkas](http://www.pinkas.net/) for reviewing a draft and sending insightful comments.
 
 
 
