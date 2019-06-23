@@ -75,7 +75,7 @@ In fact, if you do care about minimizing latency, then in the best-case even one
 SBFT gets a best-case one-round latency. So is it optimal? It's a trade-off. While SBFT has the best best-case latency, it has a view change protocol that has $O(n^2)$ complexity in the worst case. 
 
 
-## On Throughput: pipeline and concurrency 
+## On Throughput: Pipeline and Concurrency 
 
 There is yet another important difference between the PBFT implementation and the _Chained_ HotStuff variant which is related to the different approaches to improve throughput.
 
