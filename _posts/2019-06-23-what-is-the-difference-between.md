@@ -15,7 +15,7 @@ In this post I will try to compare four of my favorite protocols for Byzantine F
 
 3. [SBFT](https://research.vmware.com/files/attachments/0/0/0/0/0/7/2/sbft_scaling_up_byzantine_fault_tolerance_5_.pdf). A BFT system that builds on PBFT for better scalability and best-case latency. Here is a [github repository](https://github.com/vmware/concord-bft) that implements the SBFT protocol.
 
-4. [HotStuff](https://research.vmware.com/files/attachments/0/0/0/0/0/7/7/podc.pdf). A new BFT protocol that provides both linearity and responsiveness.
+4. [HotStuff](https://research.vmware.com/files/attachments/0/0/0/0/0/7/7/podc.pdf). A new BFT protocol that provides both linearity and responsiveness. The recent [LibraBFT](https://developers.libra.org/docs/assets/papers/libra-consensus-state-machine-replication-in-the-libra-blockchain.pdf) is based on HotStuff. More on that in a later post.
 
 This post provides a comparison at the protocol level from the lens of the theory of distributed computing. In particular this is not a comparison of the system or the software. It's a comparison of the *fundamental measures* by which one should look at these different protocols. Much of the comparison can be summarized in this table, which essentially shows that no one protocol pareto dominates all the others.
 
