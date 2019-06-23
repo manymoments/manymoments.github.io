@@ -88,7 +88,7 @@ From a theoretical perspective, the concurrent approach can also obtain the opti
 Recall that [committing a block can be separated from executing it](https://www.cs.rochester.edu/meetings/sosp2003/papers/p195-yin.pdf). Typically the execution must be sequential, and often after optimizing the commit throughput (via pipeline or concurrency) the sequential execution becomes the performance bottleneck for throughput. If the execution is ineed the bottleneck - then this is what needs to be optimized - more on this in later posts.  
  
 
-## On using Randomness
+## On Randomness
 
 From a theoretical perspective, the importance of a linear view-change and a linear normal case leader commit phase is that together they imply that after GST, a good leader will be found after at most $O(f)$ rounds for a total of $O(n^2)$ messages (and words).  HotStuff is the first protocol that obtains these bounds.
 
