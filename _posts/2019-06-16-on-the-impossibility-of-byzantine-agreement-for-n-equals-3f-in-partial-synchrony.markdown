@@ -25,11 +25,19 @@ The view of the parties in _A_ during this execution is identical to a synchrono
 
 Similarly, the view of the parties in _C_ during this execution is identical to a synchronous execution where _C,B_ are honest and start with 0 while _A_ have crashed.
 
-A few notes:
+## Notes
 
 1. This lower bound holds even if we assume a secure setup between the parties.
-2. This lower bound holds even if the adversary is static
-3. A similar lower bound for crash (or omission) failures holds for $n\leq 2f$.
+2. This lower bound holds even if the adversary is static.
+3. This lower bound holds even for protocols that solve Byzantine Agreement with some small constant error probability.
+4. A similar lower bound for crash (or omission) failures holds for $n\leq 2f$. This is a good exercise. 
 
+## More formal definitions
 
+In the most basic binary Byzantine Agreement problem there are $n$ nodes and each node has an input of either 0 or 1. Each honest node must decide on a value 0 or 1. Once decided a node cannot change his mind. We say that a protocol solves Byzantine Agreement if
+1. (validity): if all honest have the same input then this is the decision of all honest.
+2. (agreement): no two honest decide different values.
+3. (termination): all honest eventually decide.
+
+This definition can be extended to randomized protocols that allow some $0<\epsilon <0.1$ probability of error.
 
