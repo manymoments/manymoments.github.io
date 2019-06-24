@@ -34,8 +34,8 @@ Before saying how these protocols are different it is important to say how simil
 3. All these protocols are based on the classic leader-based [Primary-Backup](http://pmg.csail.mit.edu/papers/vr.pdf) approach where leaders are replaced in a _view-change_ protocol.
 
 ## The conceptual difference: rotating leaders vs stable leaders
-As mentioned above, all these protocol have the ability to replace leaders. 
-One key conceptual difference between \{PBFT,SBFT\} and \{Tendermint, HotStuff\} is that \{PBFT,SBFT\} are based on the _stable leaders_ paradigm where a leaders is changed only when a problem is detected, so a leader may stay for many commands. \{Tendermint and Hotstuff\} are based on the _rotating leader_ paradigm. A leader is rotated after a single attempt to commit a command. So leader rotation (view-change) is part of the normal operation of the system.
+As mentioned above, all these protocol have the ability to replace leaders via a _view-change_ protocol. 
+One key conceptual difference between \{PBFT,SBFT\} and \{Tendermint, HotStuff\} is that \{PBFT,SBFT\} are based on the _stable leaders_ paradigm where a leader is changed only when a problem is detected, so a leader may stay for many commands/blocks. \{Tendermint and Hotstuff\} are based on the _rotating leader_ paradigm. A leader is rotated after a single attempt to commit a command/block. In this paradigm leader rotation (view-change) is part of the normal operation of the system.
 
 
 Note that \{PBFT,SBFT\} could be rather easily modified to run in the _rotating leader_ paradigm and similarly \{Tendermint, HotStuff\} could be rather easily modified to run in the _stable leaders_ paradigm.
@@ -67,7 +67,7 @@ Nevertheless one may ask: can we get a linear view-change that is also responsiv
 
 This is exactly where HotStuff comes into the picture. HotStuff extends the Tendermint view-change approach and provides a protocol that is both linear in complexity and responsive! So does HotStuff strictly dominate Tendermont on all dimensions? No, it's a **trade-off**. The Hotstuff commit path induces a latency of 3 round-trips instead of 2 round-trips for PBFT and Tendermint.
 
-It is natural to ask, is the difference between latency of 2 and 3 round-trips important? Again the answer is that the importance of latency depends on the use case. Many applications may not care if the latency is even, say, 10 round-trips while others may want to minimize latency as much as possible. 
+It is natural to ask, is the difference between latency of 2 round-trips and 3 round-trips important? Again the answer is that the importance of latency depends on the use case. Many applications may not care if the latency is even, say, 10 round-trips while others may want to minimize latency as much as possible. 
 
 ## Minimizing Latency
 In fact, if you do care about minimizing latency, then in the best-case even one-round latency is possible! This is exactly what SBFT achieves. This is not as easy as it [looks](https://arxiv.org/abs/1712.01367). 
