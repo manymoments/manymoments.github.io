@@ -34,7 +34,7 @@ Before saying how these protocols are different it is important to say how simil
 3. All these protocols are based on the classic leader-based [Primary-Backup](http://pmg.csail.mit.edu/papers/vr.pdf) approach where leaders are replaced in a _view-change_ protocol.
 
 ## The conceptual difference: rotating leaders vs stable leaders
-As mentioned above, all these protocol have the ability to replace leaders via a _view-change_ protocol. 
+As mentioned above, all these protocols have the ability to replace leaders via a _view-change_ protocol. 
 One key conceptual difference between \{PBFT,SBFT\} and \{Tendermint, HotStuff\} is that \{PBFT,SBFT\} are based on the _stable leaders_ paradigm where a leader is changed only when a problem is detected, so a leader may stay for many commands/blocks. \{Tendermint and Hotstuff\} are based on the _rotating leader_ paradigm. A leader is rotated after a single attempt to commit a command/block. In this paradigm leader rotation (view-change) is part of the normal operation of the system.
 
 
