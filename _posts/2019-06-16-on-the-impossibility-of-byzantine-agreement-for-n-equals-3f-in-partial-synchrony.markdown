@@ -23,7 +23,7 @@ Lower bounds in distributed computing are very helpful. Clearly they prevent you
 In this post we discuss the classic impossibility result of [DLS88 - Theorem 4.4](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf):  **Consensus cannot be solved under partial synchrony against a Byzantine adversary if $f \geq n/3$.**
 
 
-As described in an earlier [post](https://ittaiab.github.io/2019-06-01-2019-5-31-models/}{partial synchrony), either we have a GST event at an unknown time (or we have an unknown $\Delta$). Thus, the time to decide cannot depend on GST occurring  (or on knowing $\Delta$). 
+As described in an earlier post on [partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/), either we have a GST event at an unknown time (or we have an unknown $\Delta$). Thus, the time to decide cannot depend on GST occurring  (or on knowing $\Delta$). 
 
 Seeking a contradiction, let us assume there is a protocol that claims to solve Byzantine Agreement with $f \geq n/3$ Byzantine parties. Divide the $n$ processors into three sets: $A$, $B$, and $C$ each with at least one party and at most $f$ parties in each set. We consider the following three worlds and explain the worlds from the view of $A$, $B$, and $C$. In all three worlds, we will assume that all messages between $A <-> B$ and $B <-> C$ arrive immediately; but all messages between $A$ and $C$ are delayed by the adversary.
 
