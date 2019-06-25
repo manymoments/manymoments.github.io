@@ -27,7 +27,7 @@ In this post we discuss a classic impossibility result:
 
 As described in an earlier post on [partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/), either we have a GST event at an unknown time (or we have an unknown $\Delta$). Thus, the time to decide cannot depend on GST occurring  (or on knowing $\Delta$). 
 
-Seeking a contradiction, let us assume there is a protocol that claims to solve Byzantine Agreement with $f \geq n/3$ Byzantine parties. Divide the $n$ processors into three sets: $A$, $B$, and $C$ each with at least one party and at most $f$ parties in each set. We consider the following three worlds and explain the worlds from the view of $A$, $B$, and $C$. In all three worlds, we will assume that all messages between $A \langle -- \rangle B$ and $B \langle -- \rangle C$ arrive immediately; but all messages between $A$ and $C$ are delayed by the adversary.
+Seeking a contradiction, let us assume there is a protocol that claims to solve Byzantine Agreement with $f \geq n/3$ Byzantine parties. Divide the $n$ processors into three sets: $A$, $B$, and $C$ each with at least one party and at most $f$ parties in each set. We consider the following three worlds and explain the worlds from the view of $A$, $B$, and $C$. In all three worlds, we will assume that all messages between $A \longleftrightarrow B$ and $B \longleftrightarrow C$ arrive immediately; but all messages between $A$ and $C$ are delayed by the adversary.
 
 For the proof approach we introduce two simple (but powerful) techniques. These two techniques are used in many other proofs so it's worthwhile to get to know them.
 
