@@ -37,7 +37,7 @@ The second techniques is **hybridization**,  this is where we build intermediate
 
 Here we go:
 
-*World 1*: Suppose parties in $A$ and $B$ start with the value 1. Parties in C have crashed. Since $|C| \leq f$, the parties will eventually decide. For agreement to hold, all the parties in A and B will output 1. From the perspective of $A$ (and also $B$), they cannot distinguish between a crashed (or Byzantine) $C$ vs.\ an honest $C$ whose messages are delayed.
+*World 1*: Suppose parties in $A$ and $B$ start with the value 1. Parties in $C$ have crashed. Since $|C| \leq f$, the parties will eventually decide. For agreement to hold, all the parties in A and B will output 1. From the perspective of $A$ (and also $B$), they cannot distinguish between a crashed (or Byzantine) $C$ vs.\ an honest $C$ whose messages are delayed.
 
 ![DLS world 1](/uploads/dls-world1.jpg)
 
