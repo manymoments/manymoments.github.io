@@ -1,7 +1,6 @@
 ---
 title: On the impossibility of Byzantine Agreement for $n \leq 3 f$  in Partial synchrony
 date: 2019-06-16 07:06:00 -07:00
-published: false
 tags:
 - dist101
 - lowerbound
@@ -40,11 +39,15 @@ Here we go:
 
 *World 1*: Suppose parties in $A$ and $B$ start with the value 1. Parties in C have crashed. Since $|C| \leq f$, the parties will eventually decide. For agreement to hold, all the parties in A and B will output 1. From the perspective of $A$ (and also $B$), they cannot distinguish between a crashed (or Byzantine) $C$ vs.\ an honest $C$ whose messages are delayed.
 
-![DLS world 1](/dls-world1.jpg)
+![DLS world 1](/uploads/dls-world1.jpg)
 
 *World 2*: This will be a world similar to world 1 where the roles of $A$ and $C$ are interchanged. The parties in $B$ and $C$  start with the value 0.  Parties in $A$ have crashed. Again, $C$ cannot distinguish between a crashed $A$ vs.\ an honest $A$ whose messages are delayed.
 
+![DLS world 2](/uploads/dls-world2.jpg)
+
 *World 3*: We will now create a \emph{hybrid} world where the view of $A$ in this world will be indistinguishable to the view of $A$ in world 1 and the view of $C$ in this world will be indistinguishable to the view of $C$ to world 2. $A$ will start with value 1 and $C$ will start with value 0. The adversary will use it Byzantine power to corrupt $B$ to perform a \emph{split-brain} attack  and to make $A$ and $C$ each believe that they are in their respective worlds. $B$ will equivocate and act as if the starting value is 1 with $A$ and as if it is 0 with $C$. Since messages between A and C are delayed by the adversary, then by an indistinguishability argument, $A$ will commit to 1 and $C$ will commit to 0 (recall the time to decide cannot depend on GST or $\Delta$). This violates the agreement property.
+
+![DLS world 3](/uploads/dls-world3.jpg)
 
 Some important observations:
 1. The impossibility holds even if the adversary is static, i.e., we fixed the set $B$ as the adversary to begin with.
