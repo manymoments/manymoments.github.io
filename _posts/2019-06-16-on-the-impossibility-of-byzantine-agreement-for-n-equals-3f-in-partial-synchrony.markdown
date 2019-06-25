@@ -1,7 +1,6 @@
 ---
 title: On the impossibility of Byzantine Agreement for $n \leq 3 f$  in Partial synchrony
 date: 2019-06-16 07:06:00 -07:00
-published: false
 tags:
 - dist101
 - lowerbound
@@ -15,12 +14,11 @@ authors:
 </p>
 
 
+Lower bounds in distributed computing are very important. They prevent you from trying to do impossible things. Even more importantly understanding them well often helps in finding ways to focus on what is optimally possible or ways to circumvent them by altering the assumptions or problem formulation.
+
 
 > Its either easy or impossible
 > -- <cite>Salvador Dali</cite>
-
-Lower bounds in distributed computing are very important. They prevent you from trying to do impossible things. Even more importantly understanding them well often helps in finding ways to focus on what is optimally possible or ways to circumvent them by altering the assumptions or problem formulation.
-
 
 In this post we discuss a classic impossibility result of [DLS88 - Theorem 4.4](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf):  **Consensus cannot be solved under partial synchrony against a Byzantine adversary if $f \geq n/3$.**
 
