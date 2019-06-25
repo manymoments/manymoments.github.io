@@ -10,8 +10,8 @@ authors:
 ---
 
 <p align="center">
-  co-authored with [Kartik](https://users.cs.duke.edu/~kartik/) [Nayak](https://twitter.com/kartik1507)
-</p>
+  co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
+
 
 
 Lower bounds in distributed computing are very important. They prevent you from trying to do impossible things. Even more importantly understanding them well often helps in finding ways to focus on what is optimally possible or ways to circumvent them by altering the assumptions or problem formulation.
