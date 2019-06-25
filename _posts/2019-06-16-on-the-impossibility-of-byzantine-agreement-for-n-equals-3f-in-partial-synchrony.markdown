@@ -10,6 +10,12 @@ authors:
 - Ittai Abraham
 ---
 
+<p align="center">
+  co-authored with [Kartik](https://users.cs.duke.edu/~kartik/) [Nayak](https://twitter.com/kartik1507)
+</p>
+
+
+
 The following is a simplified and high level overview of the [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf) lower bound from section 4.3 (in particular see Theorem 4.4).
 
 One of the most basic lower bounds is the impossibility of Byzantine Agreement when $n \leq  3f$ in Partial Synchrony. Here we consider the case $n=3f$ but it can easily be adapted to any $n \leq 3f$.
