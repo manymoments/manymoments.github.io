@@ -14,7 +14,7 @@ authors:
 </p>
 
 
-Lower bounds in distributed computing are very helpful. Obviously they prevent you from wasting time trying to do impossible things :-). Even more importantly, understanding them well often helps in finding ways to focus on what is optimally possible or ways to circumvent them by altering the assumptions or problem formulation.
+Lower bounds in distributed computing are very helpful. Obviously, they prevent you from wasting time trying to do impossible things :-). Even more importantly, understanding them well often helps in finding ways to focus on what is optimally possible or ways to circumvent them by altering the assumptions or problem formulation.
 
 
 > Its either easy or impossible
@@ -29,11 +29,11 @@ As described in an earlier post on [partial synchrony](https://ittaiab.github.io
 
 Seeking a contradiction, let us assume there is a protocol that claims to solve Byzantine Agreement with $f \geq n/3$ Byzantine parties. Divide the $n$ processors into three sets: $A$, $B$, and $C$ each with at least one party and at most $f$ parties in each set. We consider the following three worlds and explain the worlds from the view of $A$, $B$, and $C$. In all three worlds, we will assume that all messages between $A <-> B$ and $B <-> C$ arrive immediately; but all messages between $A$ and $C$ are delayed by the adversary.
 
-For the proof approach we introduce two extremely powerful techniques that have many applications: 
+For the proof approach we introduce two simple (but powerful) techniques. These two techniques are used in many other proofs so it's worthwhile to get to know them.
 
-The first is **indistinguishability**, this is where some parties can not tell between two (or more) potential worlds. Their distribution of views looks exactly the same so they must decide the same way in both cases. This leads to the following initial proof approach: imagine that there were two worlds 1 and 2 such that in world 1 the honest must decide 1 and in world 2 the honest must decide 0. If there was some honest party for which world 1 and world 2 are indistinguishable then we would drive a contradiction.  Unfortunately we cannot use such a simple argument for this lower bound.
+The first is **indistinguishability**, this is where some parties can not tell between two (or more) potential worlds. Their distribution of views looks exactly the same so they must decide the same way in both worlds. This leads to the following initial proof approach: imagine that there were two worlds: world 1 and worlds 2. Imagine that in world 1 the honest must decide 1 and in world 2 the honest must decide 0. If there was some honest party for which world 1 and world 2 are indistinguishable then we would drive a contradiction.  Unfortunately we cannot use such a simple argument for this lower bound.
 
-The second techniques is **hybridization**,  this is where we build intermediate worlds between the two contradicting worlds and use a chain of indistinguishability arguments to create a series of statements that leads to the final contradiction. 
+The second technique is **hybridization**,  this is where we build intermediate worlds between the two contradicting worlds and use a chain of indistinguishability arguments to create a series of statements that leads to the final contradiction. 
 
 Here we go, lets define worlds 1, 2, and 3:
 
