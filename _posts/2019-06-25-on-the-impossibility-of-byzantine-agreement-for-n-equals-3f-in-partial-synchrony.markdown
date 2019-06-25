@@ -38,9 +38,9 @@ The second technique is **hybridization**,  this is where we build intermediate 
 Here we go, lets define worlds 1, 2, and 3:
 
 **World 1:**
-![DLS world 1](/uploads/dls-world1.jpg?s=200)
+![DLS world 1](/uploads/dls-world1.jpg?s=20)
 
-TestIn World 1 parties in $A$ and $B$ start with the value 1. Parties in $C$ have crashed. Since $C$ is at most $f$ participants, the parties in $A$ and $B$ must eventually decide. For agreement to hold, all the parties in $A$ and $B$ will output 1. From the perspective of $A$ (and also $B$), they cannot distinguish between a crashed (or Byzantine) $C$ vs. an honest $C$ whose messages are delayed.
+In World 1 parties in $A$ and $B$ start with the value 1. Parties in $C$ have crashed. Since $C$ is at most $f$ participants, the parties in $A$ and $B$ must eventually decide. For agreement to hold, all the parties in $A$ and $B$ will output 1. From the perspective of $A$ (and also $B$), they cannot distinguish between a crashed (or Byzantine) $C$ vs. an honest $C$ whose messages are delayed.
 
 **World 2:**
 ![DLS world 2](/uploads/dls-world2.jpg)
