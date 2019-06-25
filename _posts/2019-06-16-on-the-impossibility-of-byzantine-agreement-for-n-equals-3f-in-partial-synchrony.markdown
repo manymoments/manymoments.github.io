@@ -14,7 +14,7 @@ authors:
 </p>
 
 
-Lower bounds in distributed computing are very helpful. Clearly they prevent you from wasting time trying to do impossible things. Even more importantly, understanding them well often helps in finding ways to focus on what is optimally possible or ways to circumvent them by altering the assumptions or problem formulation.
+Lower bounds in distributed computing are very helpful. Obviously they prevent you from wasting time trying to do impossible things :-). Even more importantly, understanding them well often helps in finding ways to focus on what is optimally possible or ways to circumvent them by altering the assumptions or problem formulation.
 
 
 > Its either easy or impossible
