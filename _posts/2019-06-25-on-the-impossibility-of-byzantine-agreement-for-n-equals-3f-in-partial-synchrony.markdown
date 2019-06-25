@@ -27,7 +27,7 @@ In this post we discuss a classic impossibility result:
 
 As described in an earlier post on [partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/), either we have a GST event at an unknown time (or we have an unknown $\Delta$). Thus, the time to decide cannot depend on GST occurring  (or on knowing $\Delta$). 
 
-Seeking a contradiction, let us assume there is a protocol that claims to solve Byzantine Agreement with $f \geq n/3$ Byzantine parties. Divide the $n$ processors into three sets: $A$, $B$, and $C$ each with at least one party and at most $f$ parties in each set. We consider the following three worlds and explain the worlds from the view of $A$, $B$, and $C$. In all three worlds, we will assume that all messages between $A <-> B$ and $B <-> C$ arrive immediately; but all messages between $A$ and $C$ are delayed by the adversary.
+Seeking a contradiction, let us assume there is a protocol that claims to solve Byzantine Agreement with $f \geq n/3$ Byzantine parties. Divide the $n$ processors into three sets: $A$, $B$, and $C$ each with at least one party and at most $f$ parties in each set. We consider the following three worlds and explain the worlds from the view of $A$, $B$, and $C$. In all three worlds, we will assume that all messages between $A \langle -- \rangle B$ and $B \langle -- \rangle C$ arrive immediately; but all messages between $A$ and $C$ are delayed by the adversary.
 
 For the proof approach we introduce two simple (but powerful) techniques. These two techniques are used in many other proofs so it's worthwhile to get to know them.
 
@@ -40,12 +40,12 @@ Here we go, lets define worlds 1, 2, and 3:
 **World 1:**
 ![DLS world 1](/uploads/dls-world1.jpg)
 
-In World 1 parties in $A$ and $B$ start with the value 1. Parties in $C$ have crashed. Since $C$ is at most $f$ participants, the parties in $A$ and $B$ must eventually decide. For agreement to hold, all the parties in $A$ and $B$ will output 1. From the perspective of $A$ (and also $B$), they cannot distinguish between a crashed (or Byzantine) $C$ vs.\ an honest $C$ whose messages are delayed.
+In World 1 parties in $A$ and $B$ start with the value 1. Parties in $C$ have crashed. Since $C$ is at most $f$ participants, the parties in $A$ and $B$ must eventually decide. For agreement to hold, all the parties in $A$ and $B$ will output 1. From the perspective of $A$ (and also $B$), they cannot distinguish between a crashed (or Byzantine) $C$ vs. an honest $C$ whose messages are delayed.
 
 **World 2:**
 ![DLS world 2](/uploads/dls-world2.jpg)
 
-World 2 will be a world similar to world 1 where the roles of $A$ and $C$ are interchanged. The parties in $B$ and $C$  start with the value 0.  Parties in $A$ have crashed. Again, $C$ cannot distinguish between a crashed $A$ vs.\ an honest $A$ whose messages are delayed. So all the parties in $C$ and $B$ will output 0.
+World 2 will be a world similar to world 1 where the roles of $A$ and $C$ are interchanged. The parties in $B$ and $C$  start with the value 0.  Parties in $A$ have crashed. Again, $C$ cannot distinguish between a crashed $A$ vs. an honest $A$ whose messages are delayed. So all the parties in $C$ and $B$ will output 0.
 
 
 **World 3:**
