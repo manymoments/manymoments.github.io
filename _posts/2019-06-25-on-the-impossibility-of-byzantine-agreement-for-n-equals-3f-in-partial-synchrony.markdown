@@ -56,9 +56,9 @@ World 3 will be a *hybrid* world where the view of $A$ in this world will be ind
 
 
 Some important observations:
-1. The impossibility holds even if the adversary is static, i.e., we fixed the set $B$ as the adversary to begin with.
+1. The impossibility holds even if the adversary is static, i.e., we fix the set $B$ that the adversary corrupts before starting the execution.
     
-2. he impossibility holds even if there is a trusted setup phase...
+2. The impossibility holds even if there is a trusted setup phase, for example if the parties have a PKI setup. More on setup in a later post.
     
 3. The impossibility above importantly assumes (i) a Byzantine adversary for $B$, and (ii) messages between $A$ and $C$ can be delayed sufficiently. Even if one of these two conditions do not hold, we can tolerate $f \geq n/3$. If we only have crash faults, then Paxos and many other protocols can tolerate a minority corruption. If messages are guaranteed to arrive within a fixed known time bound (i.e., assuming synchrony), then we can tolerate a minority corruption (see for example [here](https://eprint.iacr.org/2006/065.pdf), [here](https://eprint.iacr.org/2018/1028.pdf), and [here](https://eprint.iacr.org/2019/270.pdf)).
 
