@@ -4,7 +4,7 @@ date: 2019-06-16 07:06:00 -07:00
 tags:
 - dist101
 - lowerbound
-authors:
+author:
 - Kartik Nayak
 - Ittai Abraham
 ---
