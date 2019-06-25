@@ -16,8 +16,8 @@ authors:
 
 
 
-- Its either easy or impossible
-- Salvador Dali
+> Its either easy or impossible
+> -- <cite>Salvador Dali</cite>
 
 Lower bounds in distributed computing are very important. They prevent you from trying to do impossible things. Even more importantly understanding them well often helps in finding ways to focus on what is optimally possible or ways to circumvent them by altering the assumptions or problem formulation.
 
