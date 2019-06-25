@@ -1,12 +1,12 @@
 ---
 title: Defining Consensus
+published: false
 tags:
 - dist101
 - lowerbound
 authors:
 - Kartik Nayak
 - Ittai Abraham
-published: false
 ---
 
 <p align="center">
