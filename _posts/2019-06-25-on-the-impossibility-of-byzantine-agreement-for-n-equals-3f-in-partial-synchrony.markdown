@@ -62,11 +62,10 @@ Some important observations:
     
 3. The impossibility above importantly assumes (i) a Byzantine adversary for $B$, and (ii) messages between $A$ and $C$ can be delayed sufficiently. Even if one of these two conditions do not hold, we can tolerate $f \geq n/3$. If we only have crash faults, then Paxos and many other protocols can tolerate a minority corruption. If messages are guaranteed to arrive within a fixed known time bound (i.e., assuming synchrony), then we can tolerate a minority corruption (see for example [here](https://eprint.iacr.org/2006/065.pdf), [here](https://eprint.iacr.org/2018/1028.pdf), and [here](https://eprint.iacr.org/2019/270.pdf)).
 
-4. For agreement to hold, it is essential that if one party decides on a value, all other parties decide on the same value. Under partial synchrony, since parties are not even guaranteed to be able to communicate with each other throughout the protocol, they always ensure that a majority of honest parties ``agree'' to a value before deciding (otherwise two minorities can commit to different values). Among 3f+1 parties, f can be Byzantine; thus f+1 honest parties form a majority among the remaining 2f+1. Hence, partially synchronous protocols typically communicate with 2f+1 (out of 3f+1) parties before deciding: f+1 honest majority + (up to) f Byzantine. 
+4. For agreement to hold, it is essential that if one party decides on a value, all other parties decide on the same value. Under partial synchrony, since parties are not even guaranteed to be able to communicate with each other throughout the protocol, they always ensure that a majority of honest parties ``agree'' to a value before deciding (otherwise two minorities can commit to different values). Among $3f+1$ parties, f can be Byzantine; thus f+1 honest parties form a majority among the remaining $2f+1$. Hence, partially synchronous protocols typically communicate with $2f+1$ (out of $3f+1$) parties before deciding: f+1 honest majority + (up to) f Byzantine. 
+On the other hand, under synchrony even a single honest party can inform all other honest parties. Thus, synchronous parties typically communicate with $f+1$ out of $2f+1$ parties.
     
-5. On the other hand, under synchrony even a single honest party can inform all other honest parties. Thus, synchronous parties typically communicate with f+1 out of 2f+1 parties.
-    
-6. A similar lower bound holds for crash (or omission) failures if $n \leq 2f$. This is a good exercise to check you understand the arguments above.
+6. A similar lower bound holds for crash (or omission) failures if $n \leq 2f$. This is a good exercise to test your understanding of the arguments above.
 
 
 
