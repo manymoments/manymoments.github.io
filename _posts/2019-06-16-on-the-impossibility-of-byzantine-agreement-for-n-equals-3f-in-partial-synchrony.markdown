@@ -14,13 +14,13 @@ authors:
 </p>
 
 
-Lower bounds in distributed computing are very important. They prevent you from trying to do impossible things. Even more importantly understanding them well often helps in finding ways to focus on what is optimally possible or ways to circumvent them by altering the assumptions or problem formulation.
+Lower bounds in distributed computing are very helpful. Clearly they prevent you from wasting time trying to do impossible things. Even more importantly, understanding them well often helps in finding ways to focus on what is optimally possible or ways to circumvent them by altering the assumptions or problem formulation.
 
 
 > Its either easy or impossible
 > -- <cite>Salvador Dali</cite>
 
-In this post we discuss a classic impossibility result of [DLS88 - Theorem 4.4](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf):  **Consensus cannot be solved under partial synchrony against a Byzantine adversary if $f \geq n/3$.**
+In this post we discuss the classic impossibility result of [DLS88 - Theorem 4.4](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf):  **Consensus cannot be solved under partial synchrony against a Byzantine adversary if $f \geq n/3$.**
 
 
 As described in an earlier [post](https://ittaiab.github.io/2019-06-01-2019-5-31-models/}{partial synchrony), either we have a GST event at an unknown time (or we have an unknown $\Delta$). Thus, the time to decide cannot depend on GST occurring  (or on knowing $\Delta$). 
