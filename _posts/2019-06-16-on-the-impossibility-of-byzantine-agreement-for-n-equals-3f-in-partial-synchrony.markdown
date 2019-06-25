@@ -5,7 +5,9 @@ published: false
 tags:
 - dist101
 - lowerbound
-author: Kartik Nayak
+authors:
+- Kartik Nayak
+- Ittai Abraham
 ---
 
 The following is a simplified and high level overview of the [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf) lower bound from section 4.3 (in particular see Theorem 4.4).
