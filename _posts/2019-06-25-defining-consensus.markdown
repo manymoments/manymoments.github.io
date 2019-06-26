@@ -1,5 +1,6 @@
 ---
 title: Defining Consensus
+date: 2019-06-25 00:00:00 -07:00
 published: false
 tags:
 - dist101
