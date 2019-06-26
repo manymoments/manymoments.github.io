@@ -1,5 +1,5 @@
 ---
-title: Defining Consensus
+title: What is Consensus?
 date: 2019-06-25 00:00:00 -07:00
 published: false
 tags:
@@ -13,7 +13,26 @@ authors:
   co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
 </p>
 
-While we broadly understand "consensus" as the notion of different parties agreeing with each other, in the literature we see multiple problems with slightly different nuances. In this post, we summarize these problem definitions and their differences.
+We all broadly understand "consensus" as the notion of different parties agreeing with each other. In distributed computing, Consensus is one of the core functionalities. In this post, we define the Consensus problem and discuss some variants and their differences.
+
+Lets begin with the simplest problem of binary agreement.
+
+
+## The Binary Agreement problem
+In this problem we assume a set of $n$ nodes where each node $i$ has some input $b_i$ which is either 0 or 1. A protocol that solves Binary Agreement must have the following properties.
+
+**(agreement):** no two honest nodes *decide* on different values.
+
+**(weak validity):** if all honest nodes have the same value $b$ then $b$ must be the decision value.
+
+**(termination):** all honest nodes must eventually decide and terminate.
+
+
+
+
+
+
+
 
 One of the most intuitive problems is that of **Byzantine Broadcast (BB)** where among the $n$ parties participating in the protocol, there is a "designated sender" known to all the parties. The designated sender starts with an input $v$ whereas all other parteis do not have an input. Intuitively, the honest parties need to agree upon a value sent by this designated sender. However, since the sender can potentially be Byzantine, honest parties need to agree on the sender's value only if it is honest; otherwise they agree upon any other value. More formally, Byzantine broadcast requires the following three conditions to hold:
 - Consistency: If two honest parties agree upon values $v_1$ and $v_2$, then $v_1 = v_2$.
