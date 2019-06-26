@@ -1,5 +1,5 @@
 ---
-title: On the impossibility of Byzantine Agreement for $n \leq 3 f$  in Partial synchrony
+title: On the impossibility of Byzantine Agreement for $n \leq 3 f$ under partial synchrony
 date: 2019-06-25 07:06:00 -07:00
 tags:
 - dist101
@@ -71,7 +71,7 @@ Some important observations:
 4. For agreement to hold, it is essential that if one party decides on a value, all other parties decide on the same value. Under partial synchrony, since parties are not even guaranteed to be able to communicate with each other before they decide, they always ensure that a majority of honest parties ``agree'' to a value before deciding (otherwise two minorities can commit to different values). Among $3f+1$ parties, $f$ can be Byzantine; thus $f+1$ honest parties form a majority among the remaining $2f+1$. Hence, partially synchronous protocols typically communicate with $2f+1$ (out of $3f+1$) parties before deciding: $f+1$ honest majority + (up to) $f$ Byzantine. 
 On the other hand, under synchrony even a single honest party can inform all other honest parties. Thus, synchronous parties typically communicate with $f+1$ out of $2f+1$ parties.
     
-6. A similar lower bound holds for crash (or omission) failures if $n \leq 2f$ in the partial synchrony model. This is a good exercise to test your understanding of the arguments above.
+5. A similar lower bound holds for crash (or omission) failures if $n \leq 2f$ in the partial synchrony model. This is a good exercise to test your understanding of the arguments above.
 
 
 
