@@ -15,6 +15,9 @@ authors:
 
 We all broadly understand "consensus" as the notion of different parties agreeing with each other. In distributed computing, Consensus is one of the core functionalities. In this post, we define the Consensus problem and discuss some variants and their differences.
 
+> In modern parliaments, the passing of decrees is hindered by disagreement among legislators
+> -- <cite> Leslie Lamport, [Part-Time Parliament](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) </cite>
+
 Lets begin with the simplest consensus problem: agreement.
 
 
