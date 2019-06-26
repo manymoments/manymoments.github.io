@@ -1,7 +1,6 @@
 ---
 title: What is Consensus?
-date: 2019-06-25 00:00:00 -07:00
-published: false
+date: 2019-06-27 00:00:00 -07:00
 tags:
 - dist101
 authors:
