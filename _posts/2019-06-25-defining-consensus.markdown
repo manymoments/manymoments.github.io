@@ -10,7 +10,7 @@ authors:
 ---
 
 <p align="center">
-  co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
+  co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik Nayak</a>
 </p>
 
 We all broadly understand "consensus" as the notion of different parties agreeing with each other. In distributed computing, consensus is one of the core functionalities. In this post, we define the consensus problem and discuss some variants and their differences.
