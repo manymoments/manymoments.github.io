@@ -22,7 +22,7 @@ Lower bounds in distributed computing are very helpful. Obviously, they prevent 
 
 In this post we discuss a classic impossibility result:
 
-**[DLS88 - Theorem 4.4](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf):  [Consensus](https://ittaiab.github.io/2019-06-27-defining-consensus/) cannot be solved under partial synchrony against a Byzantine adversary if $f \geq n/3$.**
+**[DLS88 - Theorem 4.4](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf): It is impossible to solve  [Agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) under partial synchrony against a Byzantine adversary if $f \geq n/3$.**
 
 
 As described in an earlier post on [partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/), either we have a GST event at an unknown time (or we have an unknown $\Delta$). Thus, the time to decide cannot depend on GST occurring  (or on knowing $\Delta$). 
