@@ -1,5 +1,6 @@
 ---
-title: On the impossibility of Byzantine Agreement for $n \leq 3 f$ under partial synchrony
+title: On the impossibility of Byzantine Agreement for $n \leq 3 f$ under partial
+  synchrony
 date: 2019-06-25 07:06:00 -07:00
 tags:
 - dist101
