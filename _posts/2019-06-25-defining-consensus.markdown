@@ -13,16 +13,16 @@ authors:
   co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik Nayak</a>
 </p>
 
-We all broadly understand "consensus" as the notion of different parties agreeing with each other. In distributed computing, consensus is one of the core functionalities. In this post, we define the consensus problem and discuss some variants and their differences.
+We all broadly understand "consensus" as the notion of different parties agreeing with each other. In distributed computing, Consensus is one of the core functionalities. In this post, we define the consensus problem and discuss some variants and their differences.
 
 > In modern parliaments, the passing of decrees is hindered by disagreement among legislators
 > -- <cite> Leslie Lamport, [Part-Time Parliament](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) </cite>
 
-Lets begin with the simplest consensus problem: agreement.
+Let us begin with the simplest consensus problem: agreement.
 
 
 ## The Agreement Problem
-In this problem we assume a set of $n$ nodes where each node $i$ has some input $v_i$ from some known set of input values $v_i \in V$. A protocol that solves Agreement must have the following properties.
+In this problem, we assume a set of $n$ nodes where each node $i$ has some input $v_i$ from some known set of input values $v_i \in V$. A protocol that solves Agreement must have the following properties.
 
 **(agreement):** no two honest nodes *decide* on different values.
 
@@ -34,7 +34,7 @@ In this problem we assume a set of $n$ nodes where each node $i$ has some input 
 
 Obviously, Agreement is easily solvable if all nodes are honest and the system is synchronous. To make the problem non-trivial we need to fix the communication model [synchrony, asynchrony or partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/) and then fix the [threshold of the adversary](https://ittaiab.github.io/2019-06-17-the-threshold-adversary/) and other details about the [power](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) of the adversary.
 
-In the _binary agreement problem_ we assume the set of possible inputs $V$ contains just two values: 0 and 1.
+In the _binary agreement problem_, we assume the set of possible inputs $V$ contains just two values: 0 and 1.
 
 For lower bounds it's often beneficial to define an even easier problem of _agreement  with weak validity_ where we replace validity with:
 
