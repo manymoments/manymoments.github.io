@@ -25,17 +25,21 @@ For Byzantine agreement, there is often a risk of a circular argument: With a PK
 Generalizing the PKI setup, we can consider any setup procedure that requires an ideal functionality that does not hide information. The advantage of these functionalities is that it's often easier to detect that they failed. 
 
 For example, suppose you assume a trusted PKI but later discover that some party did not get the correct public key. This is easy to verify.
+
+## Setup for threshold signatures
+One example of such a setup is the use of threshold signatures (see [Shoup](https://www.iacr.org/archive/eurocrypt2000/1807/18070209-new.pdf) or [BLS](https://www.iacr.org/archive/asiacrypt2001/22480516.pdf) [threshold](https://www.iacr.org/archive/pkc2003/25670031/25670031.pdf)). This scheme requires a trusted setup that distributes shares of a secret private key.
  
 
-## Setups that require secrets
+## Setups that require secrets to compute a common public value
 
 These types of setups are very powerful. Having some trusted pre-computed procedure with secret values often provides significant benefits.  The risk of these setups is that the properties of the system now depend on the *privacy* of the setup. It is much harder to detect the event of information leak during setup (an attacker that learns secrets can hide this knowledge).
 
-### Setup for threshold signatures
-One example of such a setup is the use of threshold signatures (see [Shoup](https://www.iacr.org/archive/eurocrypt2000/1807/18070209-new.pdf) or [BLS](https://www.iacr.org/archive/asiacrypt2001/22480516.pdf) [threshold](https://www.iacr.org/archive/pkc2003/25670031/25670031.pdf)). This scheme requires a trusted setup that distributes shares of a secret private key.
+The advantage of requiring the setup to publish a common public value is that it's relatively easy to ensure this property (relative to sending private values to parties). This model is often referred to as a *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model).
+
+
 
 ### Setup for efficient secret sharing
-[Kate, Zaverucha, and Goldberg](https://www.cypherpunks.ca/~iang/pubs/PolyCommit-AsiaCrypt.pdf) propose a setup that requires a trusted setup to generate a random public generator $g$ and a secret key $alpha$. The setup then needs to broadcast powers of the form $g^(\alpha^i)$. These powers are often referred to as a *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model).
+[Kate, Zaverucha, and Goldberg](https://www.cypherpunks.ca/~iang/pubs/PolyCommit-AsiaCrypt.pdf) propose a setup that requires a trusted setup to generate a random public generator $g$ and a secret key $alpha$. The setup then needs to broadcast powers of the form $g^(\alpha^i)$. 
 
 ### Setup for efficient Zero-Knowledge
 Several Zero-Knowledge protocols require CRS setups. Often implementing these setups in a trusted manner requires some [MPC](http://u.cs.biu.ac.il/~lindell/MPC-resources.html) protocol. For example see [here](https://eprint.iacr.org/2017/1050). In fact just running an SMPC protocol is not enough, often a whole [setup ceremony](https://z.cash/technology/paramgen/) is necessary.
