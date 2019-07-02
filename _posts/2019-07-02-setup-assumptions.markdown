@@ -27,7 +27,12 @@ Generalizing the PKI setup, we can consider any setup procedure that requires an
 For example, suppose you assume a trusted PKI but later discover that some party did not get the correct public key. This is easy to verify.
 
 ## Setup for threshold signatures
+
+Some setups require the use of secret values. These procedures require assuming the privacy is not violated during setup.
+
 One example of such a setup is the use of threshold signatures (see [Shoup](https://www.iacr.org/archive/eurocrypt2000/1807/18070209-new.pdf) or [BLS](https://www.iacr.org/archive/asiacrypt2001/22480516.pdf) [threshold](https://www.iacr.org/archive/pkc2003/25670031/25670031.pdf)). This scheme requires a trusted setup that distributes shares of a secret private key.
+
+There are two things that can fail in such a setup, the first is that the secret is leaked and the second is that some parties receive incorrect shares. There are ways for a party to verify the validity of their shares. 
  
 
 ## Setups that require secrets to compute a common public value
