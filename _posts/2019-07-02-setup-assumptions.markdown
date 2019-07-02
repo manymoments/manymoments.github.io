@@ -53,3 +53,6 @@ Several Zero-Knowledge protocols require CRS setups. Often implementing these se
 On the one hand assuming a trusted setup allows running very efficient protocols but on the other hand shifts considerable amount of trust from the online phase of the system to some historic setup phase. This introduces new risks and security holes. 
 
 One potential solution is to have a never-ending setup phase. In these schemes there is a *continuously updatable CRS*. One recent example is [SONIC](https://eprint.iacr.org/2019/099.pdf).
+
+## Multiple setups generating multiple common reference strings
+Yet another approach is to have many setups and assume that some fraction of them is done in a trusted manner. See [Groth and Ostrovsky](https://eprint.iacr.org/2006/407.pdf).
