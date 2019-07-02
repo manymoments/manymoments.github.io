@@ -1,11 +1,11 @@
 ---
-layout: post
 title: Setup assumptions
-date: 'Tue Jul 02 2019 21:29:00 GMT+0300 (Eastern European Summer Time)'
+date: 2019-07-02 21:29:00 -07:00
 published: false
 tags:
-  - dist101
-  - models
+- dist101
+- models
+layout: post
 ---
 
 Some protocols in distributed computing and cryptography require a **trusted setup**. In this post we will review some of the common assumptions and discuss the implications of trustung the setup and what happens if it fails.
