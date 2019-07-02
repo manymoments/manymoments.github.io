@@ -7,7 +7,9 @@ tags:
 layout: post
 ---
 
-Some protocols in distributed computing and cryptography require a **trusted setup**. In this post we will review some of the common assumptions and discuss the implications of trustung the setup and what happens if it fails.
+Some protocols in distributed computing and cryptography require a **trusted setup**. In this post we will review some of the common assumptions and discuss the implications of trusting the setup and what happens if it fails.
+
+When any system is described, one of the first things you need to ask is: *what are the setup assumptions?*
 
 
 ## No setup
