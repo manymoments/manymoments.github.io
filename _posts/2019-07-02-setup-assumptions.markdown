@@ -1,7 +1,6 @@
 ---
 title: Setup assumptions
 date: 2019-07-02 21:29:00 -07:00
-published: false
 tags:
 - dist101
 - models
