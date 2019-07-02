@@ -35,6 +35,8 @@ Some trusted setups require the use of secret values. These procedures require a
 One example of such a setup is the use of threshold signatures (see [Shoup](https://www.iacr.org/archive/eurocrypt2000/1807/18070209-new.pdf) or [BLS](https://www.iacr.org/archive/asiacrypt2001/22480516.pdf) [threshold](https://www.iacr.org/archive/pkc2003/25670031/25670031.pdf)). This scheme requires a trusted setup that distributes shares of a secret private key.
 
 There are two things that can fail in such a setup, the first is that the secret is leaked and the second is that some parties receive incorrect shares. There are ways for a party to verify the validity of their shares, so the main risk is when parties are offline.
+
+Setting up a threshold signature scheme is often referred to as a Distributed Key Generation [DKG](https://en.wikipedia.org/wiki/Distributed_key_generation) algorithm. This setup is a specialized form of a [SMPC](https://en.wikipedia.org/wiki/Secure_multi-party_computation) protocol.
  
 
 ## Setups that require secrets to compute a common public value
@@ -49,7 +51,7 @@ The advantage of requiring the setup to publish a common public value is that it
 [Kate, Zaverucha, and Goldberg](https://www.cypherpunks.ca/~iang/pubs/PolyCommit-AsiaCrypt.pdf) propose a scheme that requires a trusted setup to generate a random public generator $g$ and a secret key $alpha$. The setup then broadcast powers of the form $g^(\alpha^i)$. 
 
 ### Setup for efficient Zero-Knowledge
-Several Zero-Knowledge protocols require CRS setups. Often implementing these setups in a trusted manner requires some [MPC](http://u.cs.biu.ac.il/~lindell/MPC-resources.html) protocol. For example see [here](https://eprint.iacr.org/2017/1050). In fact just running an SMPC protocol is not enough, often a whole [setup ceremony](https://z.cash/technology/paramgen/) is necessary.
+Several Zero-Knowledge protocols require CRS setups. Often implementing these setups in a trusted manner requires some non-trivial [MPC](http://u.cs.biu.ac.il/~lindell/MPC-resources.html) protocol. For example, see [here](https://eprint.iacr.org/2017/1050). In fact just running an SMPC protocol is not enough, often a whole [setup ceremony](https://z.cash/technology/paramgen/) is necessary.
 
 ### It's not a setup if its a never ending event
 On the one hand assuming a trusted setup allows running very efficient protocols but on the other hand shifts considerable amount of trust from the online phase of the system to some historic setup phase. This introduces new risks and security holes. 
