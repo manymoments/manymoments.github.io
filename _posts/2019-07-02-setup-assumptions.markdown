@@ -24,7 +24,7 @@ In this post we will review some of the common types of setup assumptions. We wi
 3. *Private setup with public output*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](...).
 4. *Generic setup*: often called the *offline phase* in the context of SMPC protocols. Here the setup phase computes rather complex output that is party dependant. For example, OT extensions and Beaver Tripletts.
 
-Lets details these four setup variants, give some examples and discuss their advantages and disadvantages. In the end we will also discuss some potential alternatives for having a setup pahse.
+Lets detail these four setup variants, give some examples and discuss their advantages and disadvantages. In the end we will also discuss some potential alternatives for having a setup phase.
 
 ............
 
@@ -32,8 +32,11 @@ Lets details these four setup variants, give some examples and discuss their adv
 ## No setup
 When a protocol has no setup then there is nothing to worry about. It's easier to trust such protocols. On the other hand, there are inherent limitations. For example, the [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible for $n \geq 3f$ when there is no setup.
 
-## PKI setup
-Protocols that assume a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) assume that parties are computationally bounded, each party holds a private key and has broadcast its corresponding public key to all other parties.
+
+
+## Fully public setup
+
+The canonical example are protocols that assume a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) assume that parties are computationally bounded, each party holds a private key and has broadcast its corresponding public key to all other parties.
 
 This assumption implicitly assumes a trust third party that provides a [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) functionality for every party. 
 
@@ -43,7 +46,7 @@ For Byzantine agreement, there is often a risk of a circular argument: With a PK
 
 Generalizing the PKI setup, we can consider any setup procedure that requires an ideal functionality that does not hide information. The advantage of these functionalities is that it's often easier to detect that they failed. 
 
-For example, suppose you assume a trusted PKI but later discover that some party did not get the correct public key. If the public output of the setup is verifiable, then propegating this output can sometimes help.
+For example, suppose you assume a trusted PKI but later discover that some party did not get the correct public key. If the public output of the setup is verifiable, then propagating this output can sometimes help.
 
 ## Setup for threshold signatures
 
