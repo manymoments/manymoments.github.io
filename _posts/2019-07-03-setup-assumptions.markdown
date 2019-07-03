@@ -60,7 +60,7 @@ Here we give two examples:
 2. Setup for efficient Zero-Knowledge
 Several efficient Zero-Knowledge protocols require CRS setups. Often implementing these setups in a trusted manner requires some non-trivial [MPC](http://u.cs.biu.ac.il/~lindell/MPC-resources.html) protocol. For example, see [Bowe, Gabizon and Miers](https://eprint.iacr.org/2017/1050). In fact just running an SMPC protocol is not enough, often a whole [setup ceremony](https://z.cash/technology/paramgen/) is necessary in order to create a publicly trusted setup.
 
-## Generic Setup
+## Generic Setup protocols
 This is the most general form of setup. Obviously the big advantage here is the power to run powerful protocols and the risk is also that the complexity of these protocols creates a relatively large attack surface.
 
 We focus here on two type of examples: Distributed Key Generation and Offline phases for Secure Multi-Party Computation.
