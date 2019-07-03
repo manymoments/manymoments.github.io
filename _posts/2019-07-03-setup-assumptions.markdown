@@ -10,7 +10,7 @@ layout: post
 
 When any system is described, one of the first things you need to ask is: *what are the setup assumptions?*
 
-You can ask this question for any of your favorite systems. 
+You can ask this for any of your favorite systems. 
 Here is a good question: does Bitcoin have any setup assumptions?
 
 Many protocols in distributed computing and cryptography require a **trusted setup**. A trusted setup is a special case of a multi-phase protocol. We will call the first phase the *setup phase* and the second phase the *main phase*. There are two properties that often distinguish a setup phase from the main phase:
@@ -19,13 +19,13 @@ Many protocols in distributed computing and cryptography require a **trusted set
 
 2. The setup phase is often *input independant*, namely, it does not use the private inputs of the parties. Furthermore, sometimes the setup phase is even *function independent*, meaning that the specific function that the parties wish to compute is irrelevant; the parties at this phase only know that they want to compute *some* function. As such, the setup and main phases are often called *offline* (or *preprocessing*) and *online* respectively (i.e. parties may run the offline phase when they realize that *in some later point in time* they will want to run some function on inputs they do not know yet). 
 
-You can think of a setup assumption as an ideal functionality ran by a completely trusted entity that we take for granted. For instance, assumming Public-Key Infrastracture means that we assume there is a completely trusted entity to which every party submits its own public encryption (and verification) key and that entity broadcasts those keys to all parties. 
+You can think of a setup assumption as an ideal functionality ran by a completely trusted entity that we take for granted. For instance, assuming Public-Key Infrastructure means that we assume there is a completely trusted entity to which every party submits its own public encryption (and verification) key and that entity broadcasts those keys to all parties. 
 In this post we will review some of the common types of trusted setup assumptions by looking at the ideal functionalities that they imply.
 
 1. *No setup*: This is simplest assumption.
-2. *Fully public setup*: We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires a [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/).
-3. *Private setup with public output*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](...).
-4. *Generic setup*: often called the *offline phase* in the context of SMPC protocols. Here the setup phase computes rather complex output that is party dependant. For example, OT extensions(...) and Beaver Tripletts(...).
+2. *Fully public setup*: We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires just [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) to convey the public keys.
+3. *Private setup with public output*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
+4. *Generic setup*: often called the *offline phase* in the context of SMPC protocols. Here the setup phase computes rather complex output that is party dependant. For example, [OT and multiplication triples](https://github.com/bristolcrypto/SPDZ-2).
 
 Lets detail these four setup variants, give some examples and discuss their advantages and disadvantages. In the end we will also discuss some potential alternatives for having a setup phase.
 
@@ -34,15 +34,10 @@ Lets detail these four setup variants, give some examples and discuss their adva
 When a protocol has no setup then there is nothing to worry about. It's easier to trust such protocols. On the other hand, there are inherent limitations. For example, the [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible for $n \geq 3f$ when there is no setup.
 
 
-
-
 ## Fully public setup
+The canonical example are protocols that use a trust third party to [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) the public keys of all parties. 
 
-The canonical example are protocols that assume a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) assume that parties are computationally bounded, each party holds a private key and has broadcast its corresponding public key to all other parties.
-
-This assumption implicitly assumes a trust third party that provides a [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) functionality for every party. 
-
-For Byzantine agreement, there is often a risk of a circular argument: With a PKI setup it is possible to solve Byzantine agreement in the synchronous model for $n=2f+1$. But setting up a PKI requires broadcast which requires $n>3f$ if there is no PKI.
+For Byzantine agreement, there is a risk of a circular argument: With a PKI setup it is possible to solve Byzantine agreement in the synchronous model for $n=2f+1$. But setting up a PKI requires broadcast which requires $n>3f$ if there is no PKI.
 
 ## Setups with only public operations
 
