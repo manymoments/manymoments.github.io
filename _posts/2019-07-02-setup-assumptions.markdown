@@ -1,11 +1,11 @@
 ---
+layout: post
 title: Setup assumptions
-date: 2019-07-02 21:29:00 -07:00
+date: 'Wed Jul 03 2019 07:29:00 GMT+0300 (Israel Daylight Time)'
 published: false
 tags:
-- dist101
-- models
-layout: post
+  - dist101
+  - models
 ---
 
 When any system is described, one of the first things you need to ask is: *what are the setup assumptions?*
@@ -13,14 +13,14 @@ When any system is described, one of the first things you need to ask is: *what 
 You can ask this question for any of your favorite systems. 
 Here is a good question: does Bitcoin have any setup assumptions?
 
-Many protocols in distributed computing and cryptography require a **trusted setup**. A trusted setup is a special case of a multi-phase protocol. We will call the first phase the *setup phase* and the second phase the *main phase*. There are two properties that often distinguish a setup phase from the main protocol:
+Many protocols in distributed computing and cryptography require a **trusted setup**. A trusted setup is a special case of a multi-phase protocol. We will call the first phase the *setup phase* and the second phase the *main phase*. There are two properties that often distinguish a setup phase from the main phase:
 
 1. Typically the main phase implements some repeated task. The setup phase is done once and enables repeating many instances of the main phase.
 
-2. The setup phase is often *input independant*, it does not use some of the private inputs of the parties.
+2. The setup phase is often *input independant*, namely, it does not use the private inputs of the parties. Furthermore, sometimes the setup phase is even *function independent*, meaning that the specific function that the parties wish to compute is irrelevant; the parties at this phase only know that they want to compute *some* function. As such, the setup and main phases are often called *offline* (or *preprocessing*) and *online* respectively (i.e. parties may run the offline phase when they realize that *in some later point in time* they will want to run some function on inputs they do not know yet). 
 
-
-In this post we will review some of the common types of trusted setup assumptions. We will categorize them by looking at the properties of the ideal functionality that is required in order to implement the setup phase.
+You can think of a setup assumption as an ideal functionality ran by a completely trusted entity that we take for granted. For instance, assumming Public-Key Infrastracture means that we assume there is a completely trusted entity to which every party submits its own public encryption (and verification) key and that entity broadcasts those keys to all parties. 
+In this post we will review some of the common types of trusted setup assumptions by looking at the ideal functionalities that they imply.
 
 1. *No setup*: This is simplest assumption.
 2. *Fully public setup*: We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires a [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/).
