@@ -10,27 +10,29 @@ layout: post
 
 When any system is described, one of the first things you need to ask is: *what are the setup assumptions?*
 
+You can ask this question for any of your favorite systems. 
+Here is a good question: does Bitcoin have any setup assumptions?
+
 Many protocols in distributed computing and cryptography require a **trusted setup**. A trusted setup is a special case of a multi-phase protocol. We will call the first phase the *setup phase* and the second phase the *main phase*. There are two properties that often distinguish a setup phase from the main protocol:
 
 1. Typically the main phase implements some repeated task. The setup phase is done once and enables repeating many instances of the main phase.
 
-2. The setup phase is often *input independant*, it does not use the private inputs of the parties.
+2. The setup phase is often *input independant*, it does not use some of the private inputs of the parties.
 
 
-In this post we will review some of the common types of setup assumptions. We will categorize them by looking at the properties of the ideal functionality that represents the setup phase.
+In this post we will review some of the common types of trusted setup assumptions. We will categorize them by looking at the properties of the ideal functionality that is required in order to implement the setup phase.
 
 1. *No setup*: This is simplest assumption.
 2. *Fully public setup*: We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires a [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/).
 3. *Private setup with public output*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](...).
-4. *Generic setup*: often called the *offline phase* in the context of SMPC protocols. Here the setup phase computes rather complex output that is party dependant. For example, OT extensions and Beaver Tripletts.
+4. *Generic setup*: often called the *offline phase* in the context of SMPC protocols. Here the setup phase computes rather complex output that is party dependant. For example, OT extensions(...) and Beaver Tripletts(...).
 
 Lets detail these four setup variants, give some examples and discuss their advantages and disadvantages. In the end we will also discuss some potential alternatives for having a setup phase.
-
-............
 
 
 ## No setup
 When a protocol has no setup then there is nothing to worry about. It's easier to trust such protocols. On the other hand, there are inherent limitations. For example, the [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible for $n \geq 3f$ when there is no setup.
+
 
 
 
