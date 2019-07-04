@@ -1,11 +1,11 @@
 ---
-layout: post
 title: Setup assumptions
-date: 'Wed Jul 03 2019 17:29:00 GMT+0300 (Israel Daylight Time)'
+date: 2019-07-03 17:29:00 -07:00
 published: false
 tags:
-  - dist101
-  - models
+- dist101
+- models
+layout: post
 ---
 
 <p align="center">
