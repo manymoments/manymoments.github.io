@@ -1,11 +1,11 @@
 ---
+layout: post
 title: Setup assumptions
-date: 2019-07-03 07:29:00 -07:00
+date: 'Wed Jul 03 2019 17:29:00 GMT+0300 (Israel Daylight Time)'
 published: false
 tags:
-- dist101
-- models
-layout: post
+  - dist101
+  - models
 ---
 
 <p align="center">
@@ -17,18 +17,20 @@ When any system is described, one of the first things you need to ask is: *what 
 You can ask this for any of your favorite systems. 
 Here is a good question: does Bitcoin have any setup assumptions?
 
-Many protocols in distributed computing and cryptography require a **trusted setup**. A trusted setup is a special case of a multi-phase protocol. We will call the first phase the *setup phase* and the second phase the *main phase*. There are two properties that often distinguish a setup phase from the main phase:
+Many protocols in distributed computing and cryptography require a **trusted setup**. A trusted setup is a special case of a multi-phase protocol. We call the first phase the *setup phase* and the second phase the *main phase*. There are two properties that often distinguish a setup phase from the main phase:
 
 1. Typically the main phase implements some repeated task. The setup phase is done once and enables repeating many instances of the main phase.
 
 2. The setup phase is often *input independant*, namely, it does not use the private inputs of the parties. Furthermore, sometimes the setup phase is even *function independent*, meaning that the specific function that the parties wish to compute is irrelevant; the parties at this phase only know that they want to compute *some* function. As such, the setup and main phases are often called *offline* (or *preprocessing*) and *online* respectively (i.e. parties may run the offline phase when they realize that *in some later point in time* they will want to run some function on inputs they do not know yet). 
 
-You can think of a setup assumption as an ideal functionality run by a completely trusted entity that we take for granted. For instance, assuming Public-Key Infrastructure means that we assume there is a completely trusted entity to which every party submits its own public encryption (and verification) key and that entity broadcasts those keys to all parties. 
+You can think of a setup phase as an ideal functionality run by a completely trusted entity that we take for granted. For instance, assuming Public-Key Infrastructure means that we assume there is a completely trusted entity to which every party submits its own public encryption (and verification) key and that entity broadcasts those keys to all parties. 
 In this post we will review some of the common types of trusted setup assumptions by looking at the ideal functionalities that they imply.
 
-1. *No setup*: This is simplest assumption.
-2. *Fully public setup*: We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires just [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) to convey the public keys.
-3. *Private setup with public output*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
+We can model the ideal functionality implied by a setup phase as the evaluation $r_1,r_2,...,r_n \gets F(R)$. That is, suppose there are $n$ parties, the functionality evaluates the function $F$ on a uniformly random string $R$ hands an ouptut $r_i$ to the $i$-th party engaged in the protocol. Note that the function may result with different, possibly correlated, $r_i$'s. In the following we argue that most of those functionalities fall into one of out of four categories below, depending on whether its input $R$ and/or outputs $r_i$'s are kept private from the parties. INTERNAL: I think this abstraction is not sufficient for the categorization we want to make, I want to think about it a little bit more.
+
+1. *Minimal setup*: This is simplest case, in which we don't even run $F$ in the setup phase (in other words, the setup phase does not require randomness). Note that even here we do rely on a functionality that at least assigns identities to the parties. INTERNAL: Does bitcoin needs this functionality that assign identities? I think this point should be rephrased..
+2. *Public input and output*: We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires just [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) to convey the public keys. 
+3. *Private input and public output*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
 4. *Generic setup*: often called the *offline phase* in the context of SMPC protocols. Here the setup phase computes rather complex output that is party dependant. For example, [OT and multiplication triples](https://github.com/bristolcrypto/SPDZ-2).
 
 Lets detail these four setup variants, give some examples and discuss their advantages and disadvantages. In the end we will also discuss some potential alternatives for having a setup phase.
