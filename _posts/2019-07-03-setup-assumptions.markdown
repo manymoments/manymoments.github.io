@@ -1,5 +1,5 @@
 ---
-title: Setup assumptions
+title: The Trusted Setup Phase
 date: 2019-07-03 17:29:00 -07:00
 published: false
 tags:
@@ -12,10 +12,10 @@ layout: post
   co-authored with <a href="https://www.yanai.io/">Avishay Yanai</a>
 </p>
 
-When any system is described, one of the first things you need to ask is: *what are the setup assumptions?*
+When any system is described, one of the first things you need to ask is: *does it have a trusted setup phase?*
 
 You can ask this for any of your favorite systems. 
-Here is a good question: does Bitcoin have any setup assumptions?
+Here is a good question: does Bitcoin have a trusted setup phase?
 
 Many protocols in distributed computing and cryptography require a **trusted setup**. A trusted setup is a special case of a multi-phase protocol. We call the first phase the *setup phase* and the second phase the *main phase*. There are two properties that often distinguish a setup phase from the main phase:
 
@@ -26,7 +26,7 @@ Many protocols in distributed computing and cryptography require a **trusted set
 You can think of a setup phase as an ideal functionality run by a completely trusted entity that we take for granted. For instance, assuming Public-Key Infrastructure means that we assume there is a completely trusted entity to which every party submits its own public encryption (and verification) key and that entity broadcasts those keys to all parties. 
 In this post we will review some of the common types of trusted setup assumptions by looking at the ideal functionalities that they imply.
 
-We can model the ideal functionality implied by a setup phase as the evaluation $r_1,r_2,...,r_n \gets F(R)$. That is, suppose there are $n$ parties, the functionality evaluates the function $F$ on a uniformly random string $R$ hands an ouptut $r_i$ to the $i$-th party engaged in the protocol. Note that the function may result with different, possibly correlated, $r_i$'s. In the following we argue that most of those functionalities fall into one of out of four categories below, depending on whether its input $R$ and/or outputs $r_i$'s are kept private from the parties. INTERNAL: I think this abstraction is not sufficient for the categorization we want to make, I want to think about it a little bit more.
+We can model the ideal functionality implied by a setup phase as the evaluation $r_1,r_2,...,r_n \gets F(R)$. That is, suppose there are $n$ parties, the functionality evaluates the function $F$ on a uniformly random string $R$ and outputs $r_i$ to the $i$-th party engaged in the protocol. Note that the function may result with different, possibly correlated, $r_i$'s. In the following we argue that most of those functionalities fall into one of out of four categories below, depending on whether its input $R$ and/or outputs $r_i$'s are kept private from the parties. INTERNAL: I think this abstraction is not sufficient for the categorization we want to make, I want to think about it a little bit more.
 
 1. *Minimal setup*: This is simplest case, in which we don't even run $F$ in the setup phase (in other words, the setup phase does not require randomness). Note that even here we do rely on a functionality that at least assigns identities to the parties. INTERNAL: Does bitcoin needs this functionality that assign identities? I think this point should be rephrased..
 2. *Public input and output*: We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires just [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) to convey the public keys. 
