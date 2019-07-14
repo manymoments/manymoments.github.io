@@ -37,7 +37,7 @@ This is the simplest case, in which we don't really use the trusted entity.
 2. *Fully public setup*: 
 We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) only to relay the public keys. 
 3. *Partially public setup*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
-4. *Fully secret (or generic) setup*: often called the *offline phase* in the context of secure multiparty computation (MPC) protocols. Here the setup phase computes rather complex output that is party dependant. For example, [OT and multiplication triples](https://github.com/bristolcrypto/SPDZ-2).
+4. *Fully secret (or generic) setup*: often called the *offline phase* in the context of secure multiparty computation (MPC) protocols. Here the setup phase computes rather complex output that is party dependant. For example, a phase that creates [OT and multiplication triplets](https://github.com/bristolcrypto/SPDZ-2).
 
 Lets detail these four setup variants, give some examples and discuss their advantages and disadvantages. In the end we will also discuss some potential alternatives for having a setup phase. We use $n$ to denote the number of parties engaged in a system and $f$ the number of 'faulty' (or Byzantine) parties (who may behave arbitrarily).
 
@@ -61,7 +61,7 @@ Risks: failure of this setup often means equivocation. Giving different parties 
 ## Partially public setup
 
 *Partially public* means that the output from the trusted entity, $T$, is known to all parties, however it may be required the parties' inputs $x_1,...,x_n$ and $T$'s random string, $r$, should be kept secret. 
-As an example, consider a system that continuosly receives messages from users such that in some future time $t$ all messages should be revealed (at once). Such a system may use a trusted setup as follows: the function $F$ receives no inputs from the parties, and proceeds as follows: generate a key-pair $(sk,pk)$ for an encryption scheme, then generate a [time-lock-puzzle](http://people.csail.mit.edu/rivest/RivestShamirWagner-timelock.pdf) $p$ that hides $sk$ until time $t$ arrives; finally, output to all parties the puzzle $p$ and the encryption key $pk$, which concludes the setup phase. 
+As an example, consider a system that continuously receives messages from users such that in some future time $t$ all messages should be revealed (at once). Such a system may use a trusted setup as follows: the function $F$ receives no inputs from the parties, and proceeds as follows: generate a key-pair $(sk,pk)$ for an encryption scheme, then generate a [time-lock-puzzle](http://people.csail.mit.edu/rivest/RivestShamirWagner-timelock.pdf) $p$ that hides $sk$ until time $t$ arrives; finally, output to all parties the puzzle $p$ and the encryption key $pk$, which concludes the setup phase. 
 In the main phase, users can encrypt their messages using $pk$ and broadcast them. In addition, they begin to solve the puzzle so that in time $t$ they will obtain the decryption key $sk$, which allows them to dectypt all messages. Note that all outputs of the functionality $F$ are public to all parties, but the internal state of the trusted entity (namely, the random string by which the pair $(sk,pk)$ was generated) must kept secret.
 
 (I'M NOT CONFIDENT ABOUT THE FOLLOWING, COULDNT FIT IT TO THE ABSTRACTION I DESCRIBED IN THE INTRODUCTION)
@@ -104,13 +104,16 @@ Then, in the main phase of the protocol (AKA online phase) the parties share the
 - *Scaling* - Given a value $c$ known to all parties, they can compute a sharing of $z=cx$ by each party locally computes $z_i=cx_i$. Again, it follows that $z_1+...+z_n = (cx_1+...+cx_n) = c(x_1+...+x_n)=cx$.
 - *Multiplication* - The parties can compute a sharing of $z=xy$ by *sacrificing* a single multiplication triple from the setup. For simplicity, denote a sharing (x_1+...+x_n) by \[x\]. The parties have the sharings \[x\], \[y\] and the triple \[a\],\[b\],\[c\] from the setup (remember that $c=ab$). The parties open the differences \[s\]=\[x\]-\[a\] and \[t\]=\[y\]-\[b\]. These does not leak any information since the values $a$ and $b$ are chosen uniformly by the trusted setup, thus, the values $s$ and $t$ are uniform and do not reveal anything about $x$ and $y$. Then the parties compute $\[xy\] = s\[y\] + t\[x\] + st - \[c\]$. This computation is composed of scaling and addition/subtraction only and can be computed locally by the parties to obtain a sharing of \[z\]=\[xy\].
 
-Risks and advantages: As mentioned above, such a setup phase has a large attack surface. The output from the setup phase must be kept secret, that is, in the above procedure for multiplication, note that if some coallition of $t$ parties obtain the shares $a_1,...,a_n$ of all parties then they can learn the secret value $x$ by computing \[x\]=\[s\]-\[a\]. Note that privacy is not the only concern in such setup phases, we must make sure that the triples are correct, namely, that $ab$ indeed equals $c$ since otherwise the output of the computation would not be correct. Protecting the triples from leakage and from being influenced by malicious parties is a hard task and therefore incurs a huge overhead to MPC protocols. On the other hand, given the output multiplication triples from the setup phase the main phase of the protocol becomes super fast.
+Risks and advantages: As mentioned above, such a setup phase has a large attack surface. The output from the setup phase must be kept secret, that is, in the above procedure for multiplication, note that if some coalition of $t$ parties obtain the shares $a_1,...,a_n$ of all parties then they can learn the secret value $x$ by computing \[x\]=\[s\]-\[a\]. Note that privacy is not the only concern in such setup phases, we must make sure that the triples are correct, namely, that $ab$ indeed equals $c$ since otherwise the output of the computation would not be correct. Protecting the triples from leakage and from being influenced by malicious parties is a hard task and therefore incurs a huge overhead to MPC protocols. On the other hand, given the output multiplication triples from the setup phase the main phase of the protocol becomes super fast.
 
 # Are there alternatives to Trusted Setups?
 
-Here we mention two alternatives:
-1. On the one hand assuming a trusted setup allows running very efficient protocols but on the other hand shifts considerable amount of trust from the online phase of the system to some historic setup phase. This introduces new risks and security holes. 
+Here we mention a few alternatives:
+
+1. Using proof of work! 
+
+2. A setup shifts considerable amount of trust from the online phase of the system to some historic setup phase. This introduces new risks and security holes. 
 One potential alternative is to have a never-ending setup phase. In such schemes there is a *continuously updatable CRS*. One recent example is [SONIC](https://eprint.iacr.org/2019/099.pdf).
 
-2. Another approach is to have multiple setups generating multiple common reference strings.
+3. Another approach is to have multiple setups generating multiple common reference strings.
 In this approach we only assume that *some* of them are done faithfully. See [Groth and Ostrovsky](https://eprint.iacr.org/2006/407.pdf).
