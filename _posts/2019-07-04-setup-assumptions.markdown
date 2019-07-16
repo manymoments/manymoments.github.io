@@ -33,8 +33,8 @@ In the following we argue that most of those functionalities fall into one of ou
 
 1. *No setup*: 
 This is the simplest case, in which we don't really use any trusted entity or any trusted setup. The minimal communication assumption is that parties have access to some type of broadcast or diffusion channel.
-2. *Minimal identity setup*:
-Here we assume there is some set of initial parties $P_1,...,P_n$ and each two parties have a reliable communication channel between them. In particular, when party $i$ receives a message on the $(i,j)$ channel it knows that party $j$ sent this message.
+2. *Pairwise setup*:
+Here we assume there is some set of initial parties $P_1,...,P_n$ and each two parties have a reliable communication channel between them. In particular, in the simplest pairwise setup assumption when party $i$ receives a message on the $(i,j)$ channel it knows that party $j$ sent this message.
 3. *Fully public setup*: 
 We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) only to relay the public keys. 
 4. *Partially public setup*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
@@ -62,9 +62,9 @@ GGLP https://eprint.iacr.org/2016/991.pdf
 
 
 
-## Minimal identity setup
+## Pairwise setup
 This is a classic assumption in distributed cryptography and distributed computing.
-The [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible for $n \geq 3f$ when there is a minimal setup and no computational assumptions.
+The [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible for $n \geq 3f$ when there is a minimal setup.
 
 With computational assumptions it is possible to circumvent FLM via puzzles...
 
