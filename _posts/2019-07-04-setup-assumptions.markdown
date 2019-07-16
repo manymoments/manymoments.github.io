@@ -12,11 +12,10 @@ layout: post
   co-authored with <a href="https://www.yanai.io/">Avishay Yanai</a>
 </p>
 
-When any system is described, one of the first things you need to ask is: *does it have a trusted setup phase?*
+When you want to understand a decentralized system, one of the first things you need to ask is: *does it have a trusted setup phase?*
 
 You can ask this for any of your favorite systems. 
 Here is a good question: does Bitcoin have a trusted setup phase?
-YOU WANT TO ANSWER THIS QUESTION? ACCORDING TO THE PAPER YOU SENT ME TODAY BITCOIN HAS NO SETUP?
 
 Many protocols in distributed computing and cryptography require a **trusted setup**. A trusted setup is a special case of a multi-phase protocol. We call the first phase the *setup phase* and the second phase the *main phase*. There are two properties that often distinguish a setup phase from the main phase:
 
@@ -30,22 +29,49 @@ In this post we will review some of the common types of trusted setup assumption
 One way to model that trusted entity follows:
 There is an initial set of parties $P_1,...,P_n$ who interact with the trusted entity $T$. The parties may send inputs $x_1,...,x_n$ to $T$ (where $x_i$ is $P_i$'s input), who in turn, runs some function $F(r, x_1,...,x_n)$ where $r$ is a uniformly random string, obtains outputs $y_1,...,y_n$ and hands $y_i$ to $P_i$. This process may repeat multiple times. As this already describes an idealized world, we always assume that the communication channels between the parties and the trusted entity are secure.
 
-In the following we argue that most of those functionalities fall into one of out of four categories below:
+In the following we argue that most of those functionalities fall into one of out of five categories below:
 
 1. *No setup*: 
-This is the simplest case, in which we don't really use the trusted entity.
-2. *Fully public setup*: 
+This is the simplest case, in which we don't really use any trusted entity or any trusted setup. The minimal communication assumption is that parties have access to some type of broadcast or diffusion channel.
+2. *Minimal identity setup*:
+Here we assume there is some set of initial parties $P_1,...,P_n$ and each two parties have a reliable communication channel between them. In particular, when party $i$ receives a message on the $(i,j)$ channel it knows that party $j$ sent this message.
+3. *Fully public setup*: 
 We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) only to relay the public keys. 
-3. *Partially public setup*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
-4. *Fully secret (or generic) setup*: often called the *offline phase* in the context of secure multiparty computation (MPC) protocols. Here the setup phase computes rather complex output that is party dependant. For example, a phase that creates [OT and multiplication triplets](https://github.com/bristolcrypto/SPDZ-2).
+4. *Partially public setup*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
+5. *Fully secret (or generic) setup*: often called the *offline phase* in the context of secure multiparty computation (MPC) protocols. Here the setup phase computes rather complex output that is party dependant. For example, a phase that creates [OT and multiplication triplets](https://github.com/bristolcrypto/SPDZ-2).
 
 Lets detail these four setup variants, give some examples and discuss their advantages and disadvantages. In the end we will also discuss some potential alternatives for having a setup phase. We use $n$ to denote the number of parties engaged in a system and $f$ the number of 'faulty' (or Byzantine) parties (who may behave arbitrarily).
 
 
 ## No setup
-When a protocol has no setup then there is nothing to worry about. It's easier to trust such protocols. On the other hand, there are inherent limitations. For example, the [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible for $n \geq 3f$ when there is no setup.
+When a protocol has no setup then there is nothing to worry about. It's easier to trust such protocols. On the other hand, there are inherent limitations.
 
-IS THERE AN EXAMPLE OF A (MEANINGFULL) FUNCTIONALITY THAT CAN BE REALIZED WITHOUT SETUP?
+MENTION DDN https://www.cs.huji.ac.il/~dolev/pubs/nmc.pdf
+
+and Barak https://eprint.iacr.org/2007/464.pdf
+
+USING PUZZLES (Aspnes): http://www.cs.yale.edu/publications/techreports/tr1332.pdf
+
+anonmous BA https://allquantor.at/blockchainbib/pdf/okun2008efficient.pdf
+
+KMS https://eprint.iacr.org/2014/857.pdf
+
+AD https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf
+
+GGLP https://eprint.iacr.org/2016/991.pdf
+
+
+
+## Minimal identity setup
+This is a classic assumption in distributed cryptography and distributed computing.
+The [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible for $n \geq 3f$ when there is a minimal setup and no computational assumptions.
+
+With computational assumptions it is possible to circumvent FLM via puzzles...
+
+
+
+TALK ABOUT BA and BGW...
+
 
 
 ## Fully public setup
@@ -62,7 +88,7 @@ Risks: failure of this setup often means equivocation. Giving different parties 
 
 *Partially public* means that the output from the trusted entity, $T$, is known to all parties, however it may be required the parties' inputs $x_1,...,x_n$ and $T$'s random string, $r$, should be kept secret. 
 As an example, consider a system that continuously receives messages from users such that in some future time $t$ all messages should be revealed (at once). Such a system may use a trusted setup as follows: the function $F$ receives no inputs from the parties, and proceeds as follows: generate a key-pair $(sk,pk)$ for an encryption scheme, then generate a [time-lock-puzzle](http://people.csail.mit.edu/rivest/RivestShamirWagner-timelock.pdf) $p$ that hides $sk$ until time $t$ arrives; finally, output to all parties the puzzle $p$ and the encryption key $pk$, which concludes the setup phase. 
-In the main phase, users can encrypt their messages using $pk$ and broadcast them. In addition, they begin to solve the puzzle so that in time $t$ they will obtain the decryption key $sk$, which allows them to dectypt all messages. Note that all outputs of the functionality $F$ are public to all parties, but the internal state of the trusted entity (namely, the random string by which the pair $(sk,pk)$ was generated) must kept secret.
+In the main phase, users can encrypt their messages using $pk$ and broadcast them. In addition, they begin to solve the puzzle so that in time $t$ they will obtain the decryption key $sk$, which allows them to decrypt all messages. Note that all outputs of the functionality $F$ are public to all parties, but the internal state of the trusted entity (namely, the random string by which the pair $(sk,pk)$ was generated) must kept secret.
 
 (I'M NOT CONFIDENT ABOUT THE FOLLOWING, COULDNT FIT IT TO THE ABSTRACTION I DESCRIBED IN THE INTRODUCTION)
 Having a trusted pre-computed procedure with secret values often provides significant benefits.  The risk of these setups is that the properties of the system now depend on the *privacy* of the setup. It is much harder to detect the event of information leak during setup (an attacker that learns secrets can hide this knowledge).
@@ -108,9 +134,9 @@ Risks and advantages: As mentioned above, such a setup phase has a large attack 
 
 # Are there alternatives to Trusted Setups?
 
-Here we mention a few alternatives:
+Here we mention some potential alternatives:
 
-1. Using proof of work! 
+1. Using puzzles... 
 
 2. A setup shifts considerable amount of trust from the online phase of the system to some historic setup phase. This introduces new risks and security holes. 
 One potential alternative is to have a never-ending setup phase. In such schemes there is a *continuously updatable CRS*. One recent example is [SONIC](https://eprint.iacr.org/2019/099.pdf).
