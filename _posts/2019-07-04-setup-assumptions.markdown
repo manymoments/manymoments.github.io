@@ -96,10 +96,9 @@ We focus here on two type of examples: Distributed Key Generation and Offline ph
 ### Distributed Key Generation and setup for threshold signatures
 
 [Threshold](https://www.iacr.org/archive/eurocrypt2000/1807/18070209-new.pdf) signatures [schemes](https://www.iacr.org/archive/pkc2003/25670031/25670031.pdf) often provide benefits in terms of reduced word complexity and reduced total computation cost (see for example [here](https://eprint.iacr.org/2000/034.pdf)). The problem with threshold signatures is that they require a setup.
-Setting up a threshold signature scheme is often referred to as a Distributed Key Generation [DKG]
-(https://en.wikipedia.org/wiki/Distributed_key_generation) algorithm. 
+Setting up a threshold signature scheme is often referred to as a Distributed Key Generation [DKG](https://en.wikipedia.org/wiki/Distributed_key_generation) setup. 
 
-The DKG functionality receives no inputs from the parties, generates a $(sk,pk)$ pair, outputs $pk$ to everyone and shares $sk$ to the parties such that party $P_i$ receives $sk_i$, which must be kept secret from other parties.
+The DKG functionality receives just random bits from each party, generates a $(sk,pk)$ pair, outputs $pk$ to everyone and shares $sk$ to the parties such that party $P_i$ receives $sk_i$, which must be kept secret from other parties.
 
 Risks: There are two things that can fail in such a setup, the first is that the secret is leaked when collusion reaches the threshold and the second is that some parties might receive incorrect shares. There are ways for a party to verify the validity of their shares, so the main risk is when parties are offline.
 
