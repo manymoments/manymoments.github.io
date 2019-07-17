@@ -35,10 +35,10 @@ In the following we argue that most of those functionalities fall into one of ou
 This is the simplest case, in which we don't really use any trusted entity or any trusted setup. The minimal communication assumption is that parties have access to some type of broadcast or diffusion channel.
 2. *Pairwise setup*:
 Here we assume there is some set of initial parties $P_1,...,P_n$ and each two parties have a reliable communication channel between them. In particular, in the simplest pairwise setup assumption when party $i$ receives a message on the $(i,j)$ channel it knows that party $j$ sent this message.
-3. *Fully public setup*: 
+3. *Broadcast setup*: 
 We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) only to relay the public keys. 
-4. *Partially public setup*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
-5. *Fully secret (or generic) setup*: often called the *offline phase* in the context of secure multiparty computation (MPC) protocols. Here the setup phase computes rather complex output that is party dependant. For example, a phase that creates [OT and multiplication triplets](https://github.com/bristolcrypto/SPDZ-2).
+4. *Private setup with public output*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
+5. *Private (or generic) setup*: often called the *offline phase* in the context of secure multiparty computation (MPC) protocols. Here the setup phase computes rather complex output that is party dependant. For example, a phase that creates [OT and multiplication triplets](https://github.com/bristolcrypto/SPDZ-2).
 
 Lets detail these four setup variants, give some examples and discuss their advantages and disadvantages. In the end we will also discuss some potential alternatives for having a setup phase. We use $n$ to denote the number of parties engaged in a system and $f$ the number of 'faulty' (or Byzantine) parties (who may behave arbitrarily).
 
@@ -46,41 +46,27 @@ Lets detail these four setup variants, give some examples and discuss their adva
 ## No setup
 When a protocol has no setup then there is nothing to worry about. It's easier to trust such protocols. On the other hand, there are inherent limitations.
 
-MENTION DDN https://www.cs.huji.ac.il/~dolev/pubs/nmc.pdf
+No trusted setup means the adversary can launch man-in-the-middle attacked. In traditional cryptography (where the adversarial is polynomially bounded) this type of model was first studied by [Dolev, Dwork and Naor](https://www.cs.huji.ac.il/~dolev/pubs/nmc.pdf) and later generalized to arbitrary computations by [Barak etal.](https://eprint.iacr.org/2007/464.pdf). Yet another line of research is focused on Byzantine Agreement using minimal channel assumptions, see for example [Okun and Barak](https://allquantor.at/blockchainbib/pdf/okun2008efficient.pdf).
 
-and Barak https://eprint.iacr.org/2007/464.pdf
 
-USING PUZZLES (Aspnes): http://www.cs.yale.edu/publications/techreports/tr1332.pdf
-
-anonmous BA https://allquantor.at/blockchainbib/pdf/okun2008efficient.pdf
-
-KMS https://eprint.iacr.org/2014/857.pdf
-
-AD https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf
-
-GGLP https://eprint.iacr.org/2016/991.pdf
+Another line of research handling the no setup assumption is based on more refined notion on the computational limits of the adversary. For example see [Aspnes etal.](http://www.cs.yale.edu/publications/techreports/tr1332.pdf) and several approaches directly inspired by bitcoin type puzzles (see [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf)).
 
 
 
 ## Pairwise setup
 This is a classic assumption in distributed cryptography and distributed computing.
-The [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible for $n \geq 3f$ when there is a minimal setup.
+The [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible for $n \geq 3f$ when there is a minimal setup. Again note that this lower bound holds against a traditional polynomially bounded adversary, but not against more fine grain notions that can take advantage of computational puzzles like proof-of-work.
 
-With computational assumptions it is possible to circumvent FLM via puzzles...
-
-
-
-TALK ABOUT BA and BGW...
+For $n>3f$ this setup allows perfect implementation of any functionality. This is the celebrated results of [BGW88](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.116.2968&rep=rep1&type=pdf), see [here](https://eprint.iacr.org/2011/136.pdf) for a full proof.
 
 
-
-## Fully public setup
-*Fully public* means that the security of the system wouldn't be damaged even if the trusted entity is 'transparent', namely, all inputs/outputs it receives/sends and its random string are publicly known. 
+## Broadcast setup
+*Broadcast* means that the security of the system wouldn't be damaged even if the trusted entity is 'transparent', namely, all inputs/outputs it receives/sends and its random string are publicly known. 
 The canonical examples are protocols that use a trusted entity to [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) the public keys of all parties.
 
-For Byzantine agreement, there is a risk of a circular argument: With a PKI setup it is possible to solve Byzantine agreement in the synchronous model for $n=2f+1$. But setting up a PKI requires broadcast which requires $n>3f$ if there is no PKI.
+For Byzantine agreement, there is a risk of a circular argument: With a PKI setup it is possible to solve Byzantine agreement in the synchronous model for $n=2f+1$ and Byzantine broadcast for $n=f+1$. But setting up a PKI requires *broadcast* which requires $n>3f$ if there is no PKI (in some models).
 
-Advantages: an important advantage of a fully public setup is its relative simplicity and reduced attack surface.
+Advantages: an important advantage of a fully public setup is its relative simplicity and reduced attack surface. 
 
 Risks: failure of this setup often means equivocation. Giving different parties different keys may cause later protocols to fail.
 
