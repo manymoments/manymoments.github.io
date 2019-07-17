@@ -76,7 +76,6 @@ Risks: failure of this setup often means equivocation. Giving different parties 
 As an example, consider a system that continuously receives messages from users such that in some future time $t$ all messages should be revealed (at once). Such a system may use a trusted setup as follows: the function $F$ receives no inputs from the parties, and proceeds as follows: generate a key-pair $(sk,pk)$ for an encryption scheme, then generate a [time-lock-puzzle](http://people.csail.mit.edu/rivest/RivestShamirWagner-timelock.pdf) $p$ that hides $sk$ until time $t$ arrives; finally, output to all parties the puzzle $p$ and the encryption key $pk$, which concludes the setup phase. 
 In the main phase, users can encrypt their messages using $pk$ and broadcast them. In addition, they begin to solve the puzzle so that in time $t$ they will obtain the decryption key $sk$, which allows them to decrypt all messages. Note that all outputs of the functionality $F$ are public to all parties, but the internal state of the trusted entity (namely, the random string by which the pair $(sk,pk)$ was generated) must kept secret.
 
-(I'M NOT CONFIDENT ABOUT THE FOLLOWING, COULDNT FIT IT TO THE ABSTRACTION I DESCRIBED IN THE INTRODUCTION)
 Having a trusted pre-computed procedure with secret values often provides significant benefits.  The risk of these setups is that the properties of the system now depend on the *privacy* of the setup. It is much harder to detect the event of information leak during setup (an attacker that learns secrets can hide this knowledge).
 
 The advantage of requiring the setup to publish a common public value is that it's relatively easy to ensure this property (relative to sending private values to parties). This model is often referred to as a *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model.
@@ -122,10 +121,10 @@ Risks and advantages: As mentioned above, such a setup phase has a large attack 
 
 Here we mention some potential alternatives:
 
-1. Using puzzles... 
 
-2. A setup shifts considerable amount of trust from the online phase of the system to some historic setup phase. This introduces new risks and security holes. 
+
+1. A setup shifts considerable amount of trust from the online phase of the system to some historic setup phase. This introduces new risks and security holes. 
 One potential alternative is to have a never-ending setup phase. In such schemes there is a *continuously updatable CRS*. One recent example is [SONIC](https://eprint.iacr.org/2019/099.pdf).
 
-3. Another approach is to have multiple setups generating multiple common reference strings.
+2. Another approach is to have multiple setups generating multiple common reference strings.
 In this approach we only assume that *some* of them are done faithfully. See [Groth and Ostrovsky](https://eprint.iacr.org/2006/407.pdf).
