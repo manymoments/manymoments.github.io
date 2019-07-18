@@ -1,11 +1,12 @@
 ---
-title: The Trusted Setup Phase
-date: 2019-07-18 13:29:00 -07:00
-tags:
-- dist101
-- models
-- crypto101
 layout: post
+title: The Trusted Setup Phase
+date: 'Thu Jul 18 2019 23:29:00 GMT+0300 (Israel Daylight Time)'
+tags:
+  - dist101
+  - models
+  - crypto101
+published: true
 ---
 
 <p align="center">
@@ -113,7 +114,7 @@ Risks: There are two things that can fail in such a setup, the first is that the
 ### Trusted setup for secure computation
 Protocols for [secure multiparty computation (MPC)](https://en.wikipedia.org/wiki/Secure_multi-party_computation) allows a set of $n$ parties $P_1,...,P_n$ to compute a circuit $C$ (Boolean or arithmetic) over their private inputs $x_1,...,x_n$, and reveal only the output $y=C(x_1,...,x_n)$ (suppose all parties should learn the same output). For instance, the circuit $C$ may compute the summation of all inputs.
 
-Modern MPC protocols are designed to work in an offline-online manner, where the offline serves as a setup phase, which is typically fully private. One prevalent example is a trusted setup that shares *multiplication triples* (AKA *Beaver triples*) to the parties. Specifically, the trusted setup hands random $a_i, b_i$ and $c_i$ to party $P_i$ such that $(a_1 + ... + a_n)x(b_1 + ... + b_n)=(c_1 + ... + c_n)$. 
+Modern MPC protocols are designed to work in an offline-online manner, where the offline serves as a setup phase, which is typically fully private. One prevalent example is a trusted setup that shares *multiplication triples* (AKA *Beaver triples*) to the parties. Specifically, the trusted setup hands random $a_i, b_i$ and $c_i$ to party $P_i$ such that $(a_1 + ... + a_n)ֿ\cdot(b_1 + ... + b_n)=(c_1 + ... + c_n)$. 
 Then, in the main phase of the protocol (AKA online phase) the parties share their inputs, namely, party $P_i$ shares its input $x'$ by sending $x'_j$ to party $P_j$ such that $x'_1 + ... + x'_n = x'$. The parties now can compute any arithmetic operation over the shared values, that is, given a sharing of secret values $x$ and $y$, such that party $P_i$ holds $x_i$ and $y_i$ where $x_1+...+x_n=x$ and $y_1+...+y_n=y$, then the parties may perform the following procedures (we omit some details in the description below):
 
 - *Opening* - Given a sharing $x_1,...,x_n$ the parties can obtain $x=x_1+...+x_n$.
