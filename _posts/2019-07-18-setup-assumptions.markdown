@@ -1,7 +1,6 @@
 ---
 title: The Trusted Setup Phase
 date: 2019-07-18 13:29:00 -07:00
-published: false
 tags:
 - dist101
 - models
@@ -15,7 +14,7 @@ layout: post
 When you want to understand a decentralized system, one of the first things you need to ask is: *does it have a trusted setup phase?*
 
 You can ask this for any of your favorite systems. 
-Here is a good question: does Bitcoin have a trusted setup phase?
+Here is a good question: do Bitcoin and Ethereum have a trusted setup phase?
 
 Many protocols in distributed computing and cryptography require a **trusted setup**. A trusted setup is a special case of a multi-phase protocol. We call the first phase the *setup phase* and the second phase the *main phase*. There are two properties that often distinguish a setup phase from the main phase:
 
@@ -32,7 +31,7 @@ There is an initial set of parties $P_1,...,P_n$ who interact with the trusted e
 In the following we argue that most of those functionalities fall into one of out of the five categories below:
 
 1. *No setup*: 
-This is the simplest case, in which we don't really use any trusted entity or any trusted setup. The minimal communication assumption is that parties have access to some type of communication medium. Often, though, "no setup" also refers to a setting where parties' indentities are globally known.
+This is the simplest case, in which we don't really use any trusted entity or any trusted setup. The minimal communication assumption is that parties have access to some type of communication medium. Often, though, "no setup" also refers to a setting where parties' identities are globally known.
 2. *Pairwise setup*:
 Here we assume there is some set of initial parties $P_1,...,P_n$ and each two parties have a reliable communication channel between them. In particular, in the simplest pairwise setup assumption when party $P_i$ receives a message on the $(i,j)$ channel it knows that party $P_j$ sent this message.
 3. *Broadcast setup*: 
@@ -49,7 +48,7 @@ When a protocol has no setup then there is nothing to worry about. It's easier t
 A setting with no setup has two main flavors: the first assums *really nothing* on the knowledge of the parties and is sometimes called [*anonymous channel model*](https://allquantor.at/blockchainbib/pdf/okun2008efficient.pdf), the second assumes there is a global knowledge on the identities of all parties, which is quite acceptable in many real world application.
 Both flavors suffer from not-authenticated channels, meaning that the adversary can launch man-in-the-middle attacks arbitrarily. 
 
-In traditional cryptography (where the adversary is polynomially bounded) this type of model was first studied by [Dolev, Dwork and Naor](https://www.cs.huji.ac.il/~dolev/pubs/nmc.pdf), for specific tasks like non-malleable encryption and zero-knowledge and later generalized to arbitrary computations by [Barak etal.](https://eprint.iacr.org/2007/464.pdf) (the latter assums global identities). Yet another line of research is focused on Byzantine Agreement in the anonymous channel model, see for example [Okun and Barak](https://allquantor.at/blockchainbib/pdf/okun2008efficient.pdf).
+In traditional cryptography (where the adversary is polynomially bounded) this type of model was first studied by [Dolev, Dwork and Naor](https://www.cs.huji.ac.il/~dolev/pubs/nmc.pdf), for specific tasks like non-malleable encryption and zero-knowledge and later generalized to arbitrary computations by [Barak etal.](https://eprint.iacr.org/2007/464.pdf) (the latter assumes global identities). Yet another line of research is focused on Byzantine Agreement in the anonymous channel model, see for example [Okun and Barak](https://allquantor.at/blockchainbib/pdf/okun2008efficient.pdf).
 
 
 Another line of research, in the anonymous model, is based on more refined assumption on the adversarial power, namely, the assumption limits the computational power of the adversary (e.g. hash rate) *compared to the computational power of the honest parties*. It was shown possible to construct a limited notion of PKI *from scratch* even in this slim model. For example see [Aspnes etal.](http://www.cs.yale.edu/publications/techreports/tr1332.pdf) and several approaches directly inspired by bitcoin type puzzles (see [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf)).
