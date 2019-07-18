@@ -65,7 +65,7 @@ Here we assume that the communication channel between every pair of parties is a
 This is a classic assumption in distributed cryptography and distributed computing.
 The [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible when $n \leq 3f$ even given this setup, and even against a traditional polynomially bounded adversary.
 
-For $n>3f$, on the other hand, this setup allows perfect implementation of any functionality. This is the celebrated results of [BGW88](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.116.2968&rep=rep1&type=pdf), see [here](https://eprint.iacr.org/2011/136.pdf) for a full proof.
+For $n>3f$, on the other hand, this setup allows perfect implementation of any functionality. This is the celebrated result of [BGW88](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.116.2968&rep=rep1&type=pdf), see [here](https://eprint.iacr.org/2011/136.pdf) for a full proof.
 
 
 ## 3. Broadcast setup
