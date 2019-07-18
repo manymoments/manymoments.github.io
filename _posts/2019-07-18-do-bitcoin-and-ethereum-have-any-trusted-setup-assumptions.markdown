@@ -20,7 +20,7 @@ After making the [white paper](https://bitcoin.org/bitcoin.pdf) public in 2008, 
 
 So our short answer to the question: Does Bitcoin have a trusted setup assumption is:
 
-YES! bitcoin assumes that the Financial Times is a good source of unpredictable randomness (and hence its cryptographic hash is a good [Common Random String](https://en.wikipedia.org/wiki/Common_reference_string_model). This seed is used to guarantee that no adversary has an significant head start in mining Bitcoin and cannot use its head start to double-spend.
+YES! bitcoin assumes that the Financial Times is a good source of unpredictable randomness (and hence its cryptographic hash is a good [Common Random String](https://en.wikipedia.org/wiki/Common_reference_string_model). This seed is used to guarantee that no adversary has any significant head start in mining Bitcoin and cannot use its head start to double-spend.
 
 A similar story can be told about Ethereum:
 
@@ -32,5 +32,5 @@ After making the [yellow paper](https://bitcoin.org/bitcoin.pdf) public in 2008,
 
 So our short answer to the question: Does Ethereum have a trusted setup assumption is:
 
-YES! ethereum assumes that the [Oliympic testnet](https://blog.ethereum.org/2015/05/09/olympic-frontier-pre-release/) is a good source of unpredictable randomness (and hence its cryptographic hash is a good [Common Random String](https://en.wikipedia.org/wiki/Common_reference_string_model). This seed is used to guarantee that no adversary has an significant head start in mining Etehreum and cannot use its head start to double-spend.
+YES! ethereum assumes that the [Oliympic testnet](https://blog.ethereum.org/2015/05/09/olympic-frontier-pre-release/) is a good source of unpredictable randomness (and hence its cryptographic hash is a good [Common Random String](https://en.wikipedia.org/wiki/Common_reference_string_model). This seed is used to guarantee that no adversary has any significant head start in mining Ethereum and cannot use its head start to double-spend.
 
