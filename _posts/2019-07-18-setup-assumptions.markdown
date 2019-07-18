@@ -12,9 +12,6 @@ layout: post
   co-authored with <a href="https://www.yanai.io/">Avishay</a> <a href="https://twitter.com/AvishaiY">Yanai</a>
 </p>
 
-
-@AvishaiY
-
 When you want to understand a decentralized system, one of the first things you need to ask is: *does it have a trusted setup phase?*
 
 You can ask this for any of your favorite systems. 
