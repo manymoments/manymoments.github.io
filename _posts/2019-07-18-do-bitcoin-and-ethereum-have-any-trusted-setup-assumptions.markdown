@@ -1,8 +1,8 @@
 ---
-layout: post
 title: Do Bitcoin and Ethereum have any trusted setup assumptions?
-date: 'Thu Jul 18 2019 17:13:00 GMT+0300 (Israel Daylight Time)'
+date: 2019-07-18 17:13:00 -07:00
 published: false
+layout: post
 ---
 
 <p align="center">
