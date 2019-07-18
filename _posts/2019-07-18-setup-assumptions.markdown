@@ -1,11 +1,11 @@
 ---
+layout: post
 title: The Trusted Setup Phase
-date: 2019-07-18 03:29:00 -07:00
+date: 'Thu Jul 18 2019 13:29:00 GMT+0300 (Israel Daylight Time)'
 published: false
 tags:
-- dist101
-- models
-layout: post
+  - dist101
+  - models
 ---
 
 <p align="center">
@@ -23,44 +23,48 @@ Many protocols in distributed computing and cryptography require a **trusted set
 
 2. The setup phase is often *input independant*, namely, it does not use the private inputs of the parties. Furthermore, sometimes the setup phase is even *function independent*, meaning that the specific function that the parties wish to compute is irrelevant; the parties at this phase only know that they want to compute *some* function. As such, the setup and main phases are often called *offline* (or *preprocessing*) and *online* respectively (i.e. parties may run the offline phase when they realize that *in some later point in time* they will want to run some function on inputs they do not know yet). 
 
-You can think of a setup phase as an ideal functionality run by a completely trusted entity, denoted $T$, that we take for granted. For instance, assuming Public-Key Infrastructure means that we assume there is a completely trusted entity to which every party submits its own public encryption (and verification) key and that entity broadcasts those keys to all parties. 
+You can think of a setup phase as an ideal functionality run by a completely trusted entity, denoted $T$, that we take for granted. For instance, assuming Public-Key Infrastructure (PKI) means that we assume there is a completely trusted entity to which every party submits its own public encryption (and verification) key and that entity broadcasts those keys to all parties. 
 In this post we will review some of the common types of trusted setup assumptions by looking at the ideal functionalities that they imply.
 
 One way to model that trusted entity follows:
-There is an initial set of parties $P_1,...,P_n$ who interact with the trusted entity $T$. The parties may send inputs $x_1,...,x_n$ to $T$ (where $x_i$ is $P_i$'s input), who in turn, runs some function $F(r, x_1,...,x_n)$ where $r$ is a uniformly random string, obtains outputs $y_1,...,y_n$ and hands $y_i$ to $P_i$. This process may repeat multiple times. As this already describes an idealized world, we always assume that the communication channels between the parties and the trusted entity are secure.
+There is an initial set of parties $P_1,...,P_n$ who interact with the trusted entity $T$. The parties may send inputs $x_1,...,x_n$ to $T$ (where $x_i$ is $P_i$'s input), who in turn, runs some function $F(r, x_1,...,x_n)$ where $r$ is a uniformly random string, obtains outputs $y_1,...,y_n$ and hands $y_i$ to $P_i$. This process may be "reactive", namely, it may repeat multiple times. As this already describes an idealized world, we always assume that the communication channels between the parties and the trusted entity are secure.
 
-In the following we argue that most of those functionalities fall into one of out of five categories below:
+In the following we argue that most of those functionalities fall into one of out of the five categories below:
 
 1. *No setup*: 
-This is the simplest case, in which we don't really use any trusted entity or any trusted setup. The minimal communication assumption is that parties have access to some type of broadcast or diffusion channel.
+This is the simplest case, in which we don't really use any trusted entity or any trusted setup. The minimal communication assumption is that parties have access to some type of communication medium. Often, though, "no setup" also refers to a setting where parties' indentities are globally known.
 2. *Pairwise setup*:
-Here we assume there is some set of initial parties $P_1,...,P_n$ and each two parties have a reliable communication channel between them. In particular, in the simplest pairwise setup assumption when party $i$ receives a message on the $(i,j)$ channel it knows that party $j$ sent this message.
+Here we assume there is some set of initial parties $P_1,...,P_n$ and each two parties have a reliable communication channel between them. In particular, in the simplest pairwise setup assumption when party $P_i$ receives a message on the $(i,j)$ channel it knows that party $P_j$ sent this message.
 3. *Broadcast setup*: 
 We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) only to relay the public keys. 
-4. *Private setup with public output*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
-5. *Private (or generic) setup*: often called the *offline phase* in the context of secure multiparty computation (MPC) protocols. Here the setup phase computes rather complex output that is party dependant. For example, a phase that creates [OT and multiplication triplets](https://github.com/bristolcrypto/SPDZ-2).
+4. *Partially public setup*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
+5. *Fully private setup*: often called the *offline phase* in the context of secure multiparty computation (MPC) protocols. Here the setup phase computes rather complex output that is party dependant. For example, a phase that creates [OT and multiplication triplets](https://github.com/bristolcrypto/SPDZ-2).
 
 Lets detail these four setup variants, give some examples and discuss their advantages and disadvantages. In the end we will also discuss some potential alternatives for having a setup phase. We use $n$ to denote the number of parties engaged in a system and $f$ the number of 'faulty' (or Byzantine) parties (who may behave arbitrarily).
 
 
-## No setup
+## 1. No setup
 When a protocol has no setup then there is nothing to worry about. It's easier to trust such protocols. On the other hand, there are inherent limitations.
 
-No trusted setup means the adversary can launch man-in-the-middle attacked. In traditional cryptography (where the adversarial is polynomially bounded) this type of model was first studied by [Dolev, Dwork and Naor](https://www.cs.huji.ac.il/~dolev/pubs/nmc.pdf) and later generalized to arbitrary computations by [Barak etal.](https://eprint.iacr.org/2007/464.pdf). Yet another line of research is focused on Byzantine Agreement using minimal channel assumptions, see for example [Okun and Barak](https://allquantor.at/blockchainbib/pdf/okun2008efficient.pdf).
+A setting with no setup has two main flavors: the first assums *really nothing* on the knowledge of the parties and is sometimes called [*anonymous channel model*](https://allquantor.at/blockchainbib/pdf/okun2008efficient.pdf), the second assumes there is a global knowledge on the identities of all parties, which is quite acceptable in many real world application.
+Both flavors suffer from not-authenticated channels, meaning that the adversary can launch man-in-the-middle attacks arbitrarily. 
+
+In traditional cryptography (where the adversary is polynomially bounded) this type of model was first studied by [Dolev, Dwork and Naor](https://www.cs.huji.ac.il/~dolev/pubs/nmc.pdf), for specific tasks like non-malleable encryption and zero-knowledge and later generalized to arbitrary computations by [Barak etal.](https://eprint.iacr.org/2007/464.pdf) (the latter assums global identities). Yet another line of research is focused on Byzantine Agreement in the anonymous channel model, see for example [Okun and Barak](https://allquantor.at/blockchainbib/pdf/okun2008efficient.pdf).
 
 
-Another line of research handling the no setup assumption is based on more refined notion on the computational limits of the adversary. For example see [Aspnes etal.](http://www.cs.yale.edu/publications/techreports/tr1332.pdf) and several approaches directly inspired by bitcoin type puzzles (see [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf)).
+Another line of research, in the anonymous model, is based on more refined assumption on the adversarial power, namely, the assumption limits the computational power of the adversary (e.g. hash rate) *compared to the computational power of the honest parties*. It was shown possible to construct a limited notion of PKI *from scratch* even in this slim model. For example see [Aspnes etal.](http://www.cs.yale.edu/publications/techreports/tr1332.pdf) and several approaches directly inspired by bitcoin type puzzles (see [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf)).
 
 
 
-## Pairwise setup
+## 2. Pairwise setup
+Here we assume that the communication channel between every pair of parties is authenticated.
 This is a classic assumption in distributed cryptography and distributed computing.
-The [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible for $n \geq 3f$ when there is a minimal setup. Again note that this lower bound holds against a traditional polynomially bounded adversary, but not against more fine grain notions that can take advantage of computational puzzles like proof-of-work.
+The [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible when $n \leq 3f$ even given this setup, and even against a traditional polynomially bounded adversary.
 
-For $n>3f$ this setup allows perfect implementation of any functionality. This is the celebrated results of [BGW88](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.116.2968&rep=rep1&type=pdf), see [here](https://eprint.iacr.org/2011/136.pdf) for a full proof.
+For $n>3f$, on the other hand, this setup allows perfect implementation of any functionality. This is the celebrated results of [BGW88](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.116.2968&rep=rep1&type=pdf), see [here](https://eprint.iacr.org/2011/136.pdf) for a full proof.
 
 
-## Broadcast setup
+## 3. Broadcast setup
 *Broadcast* means that the security of the system wouldn't be damaged even if the trusted entity is 'transparent', namely, all inputs/outputs it receives/sends and its random string are publicly known. 
 The canonical examples are protocols that use a trusted entity to [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) the public keys of all parties.
 
@@ -70,7 +74,7 @@ Advantages: an important advantage of a fully public setup is its relative simpl
 
 Risks: failure of this setup often means equivocation. Giving different parties different keys may cause later protocols to fail.
 
-## Partially public setup
+## 4. Partially public setup
 
 *Partially public* means that the output from the trusted entity, $T$, is known to all parties, however it may be required the parties' inputs $x_1,...,x_n$ and $T$'s random string, $r$, should be kept secret. 
 As an example, consider a system that continuously receives messages from users such that in some future time $t$ all messages should be revealed (at once). Such a system may use a trusted setup as follows: the function $F$ receives no inputs from the parties, and proceeds as follows: generate a key-pair $(sk,pk)$ for an encryption scheme, then generate a [time-lock-puzzle](http://people.csail.mit.edu/rivest/RivestShamirWagner-timelock.pdf) $p$ that hides $sk$ until time $t$ arrives; finally, output to all parties the puzzle $p$ and the encryption key $pk$, which concludes the setup phase. 
@@ -81,13 +85,13 @@ Having a trusted pre-computed procedure with secret values often provides signif
 The advantage of requiring the setup to publish a common public value is that it's relatively easy to ensure this property (relative to sending private values to parties). This model is often referred to as a *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model.
 Here we give two examples:
 
-1. Setup for efficient Verifiable Secret Sharing
-[Kate, Zaverucha, and Goldberg](https://www.cypherpunks.ca/~iang/pubs/PolyCommit-AsiaCrypt.pdf) propose a scheme that requires a trusted setup to generate a random public generator $g$ and a secret key $alpha$. The setup then broadcast powers of the form $g^(\alpha^i)$. Using this setup one can obtain the most efficient [Asynchronous Verifiable Secret Sharing](https://eprint.iacr.org/2012/619). 
+1. Setup for efficient Verifiable Secret Sharing --
+[Kate, Zaverucha, and Goldberg](https://www.cypherpunks.ca/~iang/pubs/PolyCommit-AsiaCrypt.pdf) propose a scheme that requires a trusted setup to generate a random public generator $g$ and a secret key $\alpha$. The setup then broadcast powers of the form $g^(\alpha^i)$. Using this setup one can obtain the most efficient [Asynchronous Verifiable Secret Sharing](https://eprint.iacr.org/2012/619). 
 
-2. Setup for efficient Zero-Knowledge
-Several efficient Zero-Knowledge protocols require CRS setups. Often implementing these setups in a trusted manner requires some non-trivial [MPC](http://u.cs.biu.ac.il/~lindell/MPC-resources.html) protocol. For example, see [Bowe, Gabizon and Miers](https://eprint.iacr.org/2017/1050). In fact just running an SMPC protocol is not enough, often a whole [setup ceremony](https://z.cash/technology/paramgen/) is necessary in order to create a publicly trusted setup.
+2. Setup for efficient Zero-Knowledge --
+Several efficient Zero-Knowledge protocols require CRS setups. Often implementing these setups in a trusted manner requires some non-trivial [MPC](http://u.cs.biu.ac.il/~lindell/MPC-resources.html) protocol. For example, see [Bowe, Gabizon and Miers](https://eprint.iacr.org/2017/1050). In fact just running an MPC protocol is not enough, often a whole [setup ceremony](https://z.cash/technology/paramgen/) is necessary in order to establish public verifiability.
 
-## Fully secret setup
+## 5. Fully private setup
 This is the most general form of setup, in which even the outputs that the functionality hands to the parties should be kept secret from one another. Obviously, the big advantage here is that such setups allow running powerful protocols on top of them. As instantiation (or realization) of such setup functionalities are quite complex, they typically expose a larger attack surface.
 
 We focus here on two type of examples: Distributed Key Generation and Offline phases for Secure Multi-Party Computation.
