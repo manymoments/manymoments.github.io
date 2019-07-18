@@ -1,12 +1,11 @@
 ---
-layout: post
 title: The Trusted Setup Phase
-date: 'Thu Jul 18 2019 23:29:00 GMT+0300 (Israel Daylight Time)'
+date: 2019-07-18 23:29:00 -07:00
 tags:
-  - dist101
-  - models
-  - crypto101
-published: true
+- dist101
+- models
+- crypto101
+layout: post
 ---
 
 <p align="center">
