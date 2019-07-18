@@ -11,10 +11,15 @@ layout: post
   co-authored with <a href="https://www.yanai.io/">Avishay</a> <a href="https://twitter.com/AvishaiY">Yanai</a>
 </p>
 
+
+> By failing to prepare, you are preparing to fail
+> <cite> [The Biblical World, 1919](https://quoteinvestigator.com/2018/07/08/plan/) </cite>
+
 When you want to understand a decentralized system, one of the first things you need to ask is: *does it have a trusted setup phase?*
 
+
 You can ask this for any of your favorite systems. 
-Here is a good question: do Bitcoin and Ethereum have a trusted setup phase?
+Here is a good question: [do Bitcoin and Ethereum have a trusted setup phase?](...)
 
 Many protocols in distributed computing and cryptography require a **trusted setup**. A trusted setup is a special case of a multi-phase protocol. We call the first phase the *setup phase* and the second phase the *main phase*. There are two properties that often distinguish a setup phase from the main phase:
 
