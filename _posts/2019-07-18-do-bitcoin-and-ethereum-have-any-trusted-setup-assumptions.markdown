@@ -13,7 +13,9 @@ Clearly both Bitcoin and Ethereum depend on the security of certain hash functio
 Consider the following [Conspiracy theory](https://en.wikipedia.org/wiki/Conspiracy_theory):
 
 Bitcoin was invented by the NASA in the 1960's. They have been working on an alternative fork for almost 60 years (in addition to their [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories)). Back in the 1960's, they inserted into the [Bitcoin Genesis block](https://en.bitcoin.it/wiki/Genesis_block) the text:  
+
 >>The Times 03/Jan/2009 Chancellor on brink of second bailout for banks
+
 After making the [white paper](https://bitcoin.org/bitcoin.pdf) public in 2008, they coerced the financial times in the UK to publish exactly this title on 03 Jan 2009.
 
 So our short answer to the question: Does Bitcoin have a trusted setup assumption is:
@@ -23,7 +25,9 @@ YES! bitcoin assumes that the Financial Times is a good source of unpredictable 
 A similar story can be told about Ethereum:
 
 Ethereum was invented by the NASA in the 1960's. They have been working on an alternative fork for almost 60 years (in addition to the [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories)). Back in the 1960's, they inserted into the [Ethereum Genesis block](https://ethereum.stackexchange.com/questions/71804/what-is-the-meaning-of-ethereum-mainnet-genesis-block-extradata-value) the hash:  
+
 >>0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa
+
 After making the [yellow paper](https://bitcoin.org/bitcoin.pdf) public in 2008, they published this [post](https://blog.ethereum.org/2015/07/27/final-steps/) and referred to fake ceremony that essentially replicated their testnet runs from the 1960's. 
 
 So our short answer to the question: Does Ethereum have a trusted setup assumption is:
