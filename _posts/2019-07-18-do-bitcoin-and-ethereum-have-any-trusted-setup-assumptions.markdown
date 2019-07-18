@@ -8,8 +8,7 @@ published: false
   co-authored with <a href="https://people.csail.mit.edu/alinush/">Alin Tomescu </a> and <a href="https://www.yanai.io/">Avishay Yanai</a>
 </p>
 
-Clearly both Bitcoin and Ethereum depend on the security of certain hash functions and certain elliptic curve based cryptography. In this post we ask if they also depend on some [Trusted Setup Assumption](ittaiab.github.io/2019-07-18-setup-assumptions/  edit
-).
+Clearly both Bitcoin and Ethereum depend on the security of certain hash functions and certain elliptic curve based cryptography. In this post we ask if they also depend on some [Trusted Setup Assumptions](ittaiab.github.io/2019-07-18-setup-assumptions/].
 
 Consider the following [Conspiracy theory](https://en.wikipedia.org/wiki/Conspiracy_theory):
 
