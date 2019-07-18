@@ -18,9 +18,7 @@ layout: post
 
 When you want to understand a decentralized system, one of the first things you need to ask is: *does it have a trusted setup phase?*
 
-
-You can ask this for any of your favorite systems. 
-Here is a good question: [do Bitcoin and Ethereum have a trusted setup phase?](...)
+Here is a question: [do Bitcoin and Ethereum have a trusted setup phase?](https://ittaiab.github.io/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/)
 
 Many protocols in distributed computing and cryptography require a **trusted setup**. A trusted setup is a special case of a multi-phase protocol. We call the first phase the *setup phase* and the second phase the *main phase*. There are two properties that often distinguish a setup phase from the main phase:
 
@@ -51,10 +49,10 @@ Lets detail these five setup variants, give some examples and discuss their adva
 ## 1. No setup
 When a protocol has no setup then there is nothing to worry about. It's easier to trust such protocols. On the other hand, there are inherent limitations.
 
-A setting with no setup has two main flavors: the first assums *really nothing* on the knowledge of the parties and is sometimes called [*anonymous channel model*](https://allquantor.at/blockchainbib/pdf/okun2008efficient.pdf), the second assumes there is a global knowledge on the identities of all parties, which is quite acceptable in many real world application.
+A setting with no setup has two main flavors: the first assumes *really nothing* on the knowledge of the parties and is sometimes called [*anonymous channel model*](https://allquantor.at/blockchainbib/pdf/okun2008efficient.pdf), the second assumes there is a global knowledge on the identities of all parties, which is quite acceptable in many real world application.
 Both flavors suffer from not-authenticated channels, meaning that the adversary can launch man-in-the-middle attacks arbitrarily. 
 
-In traditional cryptography (where the adversary is polynomially bounded) this type of model was first studied by [Dolev, Dwork and Naor](https://www.cs.huji.ac.il/~dolev/pubs/nmc.pdf), for specific tasks like non-malleable encryption and zero-knowledge and later generalized to arbitrary computations by [Barak etal.](https://eprint.iacr.org/2007/464.pdf) (the latter assumes global identities). Yet another line of research is focused on Byzantine Agreement in the anonymous channel model, see for example [Okun and Barak](https://allquantor.at/blockchainbib/pdf/okun2008efficient.pdf).
+In traditional cryptography (where the adversary is polynomially bounded) this type of model was first studied by [Dolev, Dwork and Naor](https://www.cs.huji.ac.il/~dolev/pubs/nmc.pdf), for specific tasks like non-malleable encryption and zero-knowledge and later generalized to arbitrary computations by [Barak etal.](https://eprint.iacr.org/2007/464.pdf) (the latter assumes global identities). 
 
 
 Another line of research, in the anonymous model, is based on more refined assumption on the adversarial power, namely, the assumption limits the computational power of the adversary (e.g. hash rate) *compared to the computational power of the honest parties*. It was shown possible to construct a limited notion of PKI *from scratch* even in this slim model. For example see [Aspnes etal.](http://www.cs.yale.edu/publications/techreports/tr1332.pdf) and several approaches directly inspired by bitcoin type puzzles (see [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf)).
