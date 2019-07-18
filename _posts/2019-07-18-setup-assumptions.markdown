@@ -119,14 +119,9 @@ Then, in the main phase of the protocol (AKA online phase) the parties share the
 
 Risks and advantages: As mentioned above, such a setup phase has a large attack surface. The output from the setup phase must be kept secret, that is, in the above procedure for multiplication, note that if some coalition of $t$ parties obtain the shares $a_1,...,a_n$ of all parties then they can learn the secret value $x$ by computing \[x\]=\[s\]-\[a\]. Note that privacy is not the only concern in such setup phases, we must make sure that the triples are correct, namely, that $ab$ indeed equals $c$ since otherwise the output of the computation would not be correct. Protecting the triples from leakage and from being influenced by malicious parties is a hard task and therefore incurs a huge overhead to MPC protocols. On the other hand, given the output multiplication triples from the setup phase the main phase of the protocol becomes super fast.
 
-# Are there alternatives to Trusted Setups?
-
+## Are there alternatives to Trusted Setups?
 Here we mention some potential alternatives:
-
-
-
 1. A setup shifts considerable amount of trust from the online phase of the system to some historic setup phase. This introduces new risks and security holes. 
 One potential alternative is to have a never-ending setup phase. In such schemes there is a *continuously updatable CRS*. One recent example is [SONIC](https://eprint.iacr.org/2019/099.pdf).
-
 2. Another approach is to have multiple setups generating multiple common reference strings.
 In this approach we only assume that *some* of them are done faithfully. See [Groth and Ostrovsky](https://eprint.iacr.org/2006/407.pdf).
