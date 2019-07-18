@@ -39,7 +39,7 @@ We assume setup whose implementation requires no secrets. The canonical example 
 4. *Partially public setup*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
 5. *Fully private setup*: often called the *offline phase* in the context of secure multiparty computation (MPC) protocols. Here the setup phase computes rather complex output that is party dependant. For example, a phase that creates [OT and multiplication triplets](https://github.com/bristolcrypto/SPDZ-2).
 
-Lets detail these four setup variants, give some examples and discuss their advantages and disadvantages. In the end we will also discuss some potential alternatives for having a setup phase. We use $n$ to denote the number of parties engaged in a system and $f$ the number of 'faulty' (or Byzantine) parties (who may behave arbitrarily).
+Lets detail these five setup variants, give some examples and discuss their advantages and disadvantages. In the end we will also discuss some potential alternatives for having a setup phase. We use $n$ to denote the number of parties engaged in a system and $f$ the number of 'faulty' (or Byzantine) parties (who may behave arbitrarily).
 
 
 ## 1. No setup
