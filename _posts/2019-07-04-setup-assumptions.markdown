@@ -1,11 +1,11 @@
 ---
+layout: post
 title: The Trusted Setup Phase
-date: 2019-07-04 13:29:00 -07:00
+date: 'Thu Jul 04 2019 23:29:00 GMT+0300 (Israel Daylight Time)'
 published: false
 tags:
-- dist101
-- models
-layout: post
+  - dist101
+  - models
 ---
 
 <p align="center">
@@ -85,11 +85,11 @@ Having a trusted pre-computed procedure with secret values often provides signif
 The advantage of requiring the setup to publish a common public value is that it's relatively easy to ensure this property (relative to sending private values to parties). This model is often referred to as a *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model.
 Here we give two examples:
 
-1. Setup for efficient Verifiable Secret Sharing
-[Kate, Zaverucha, and Goldberg](https://www.cypherpunks.ca/~iang/pubs/PolyCommit-AsiaCrypt.pdf) propose a scheme that requires a trusted setup to generate a random public generator $g$ and a secret key $alpha$. The setup then broadcast powers of the form $g^(\alpha^i)$. Using this setup one can obtain the most efficient [Asynchronous Verifiable Secret Sharing](https://eprint.iacr.org/2012/619). 
+1. Setup for efficient Verifiable Secret Sharing --
+[Kate, Zaverucha, and Goldberg](https://www.cypherpunks.ca/~iang/pubs/PolyCommit-AsiaCrypt.pdf) propose a scheme that requires a trusted setup to generate a random public generator $g$ and a secret key $\alpha$. The setup then broadcast powers of the form $g^(\alpha^i)$. Using this setup one can obtain the most efficient [Asynchronous Verifiable Secret Sharing](https://eprint.iacr.org/2012/619). 
 
-2. Setup for efficient Zero-Knowledge
-Several efficient Zero-Knowledge protocols require CRS setups. Often implementing these setups in a trusted manner requires some non-trivial [MPC](http://u.cs.biu.ac.il/~lindell/MPC-resources.html) protocol. For example, see [Bowe, Gabizon and Miers](https://eprint.iacr.org/2017/1050). In fact just running an SMPC protocol is not enough, often a whole [setup ceremony](https://z.cash/technology/paramgen/) is necessary in order to create a publicly trusted setup.
+2. Setup for efficient Zero-Knowledge --
+Several efficient Zero-Knowledge protocols require CRS setups. Often implementing these setups in a trusted manner requires some non-trivial [MPC](http://u.cs.biu.ac.il/~lindell/MPC-resources.html) protocol. For example, see [Bowe, Gabizon and Miers](https://eprint.iacr.org/2017/1050). In fact just running an MPC protocol is not enough, often a whole [setup ceremony](https://z.cash/technology/paramgen/) is necessary in order to establish public verifiability.
 
 ## 5. Fully private setup
 This is the most general form of setup, in which even the outputs that the functionality hands to the parties should be kept secret from one another. Obviously, the big advantage here is that such setups allow running powerful protocols on top of them. As instantiation (or realization) of such setup functionalities are quite complex, they typically expose a larger attack surface.
