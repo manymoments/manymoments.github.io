@@ -35,5 +35,5 @@ After making the [yellow paper](https://bitcoin.org/bitcoin.pdf) public in 2014,
 
 **YES!** ethereum assumes that the [Oliympic testnet](https://blog.ethereum.org/2015/05/09/olympic-frontier-pre-release/) is a good source of unpredictable randomness and timestamp (and hence its cryptographic hash is a good [Common Random String](https://en.wikipedia.org/wiki/Common_reference_string_model)). This seed is used to guarantee that no adversary has any significant head start in mining Ethereum and cannot use its head start to double-spend.
 
-## Trust, bu Verify
-Just to clear, we believe that both systems used highly secure sources of unpredictable randomness. The main goal of this post is to highlight the fact that some trusted setup is needed in both systems. It is vitally important to have a secure randomness beacon that can generate timestamped cryptographically secure unpredictable randomness.
+## Trust, but Verify
+Just to clear, while [NASA is indeed interested in blockchain](https://cointelegraph.com/news/nasa-publishes-proposal-for-air-traffic-management-blockchain-based-on-hyperledger), we believe that both Bitcoin and Ethereum used highly secure sources of unpredictable randomness. The main goal of this post is to highlight the fact that some trusted setup is needed in both systems. It is vitally important to have a secure randomness beacon that can generate timestamped cryptographically secure unpredictable randomness.
