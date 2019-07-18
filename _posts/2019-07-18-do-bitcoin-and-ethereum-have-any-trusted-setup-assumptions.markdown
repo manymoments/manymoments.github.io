@@ -24,7 +24,7 @@ YES! bitcoin assumes that the Financial Times is a good source of unpredictable 
 
 A similar [Conspiracy theory](https://en.wikipedia.org/wiki/Conspiracy_theory) can be told about Ethereum:
 
-Ethereum was invented by the NASA in the 1960's. They have been working on an alternative fork for almost 60 years (in addition to the [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories)). Back in the 1960's, they inserted into the [Ethereum Genesis block](https://ethereum.stackexchange.com/questions/71804/what-is-the-meaning-of-ethereum-mainnet-genesis-block-extradata-value) the hash:  
+Ethereum was invented by the NASA in the 1960's. They have been working on an alternative fork for almost 60 years (in addition to their [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories)). Back in the 1960's, they inserted into the [Ethereum Genesis block](https://ethereum.stackexchange.com/questions/71804/what-is-the-meaning-of-ethereum-mainnet-genesis-block-extradata-value) the hash:  
 
 >>0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa
 
@@ -34,4 +34,4 @@ So our short answer to the question: Does Ethereum have a trusted setup assumpti
 
 YES! ethereum assumes that the [Oliympic testnet](https://blog.ethereum.org/2015/05/09/olympic-frontier-pre-release/) is a good source of unpredictable randomness (and hence its cryptographic hash is a good [Common Random String](https://en.wikipedia.org/wiki/Common_reference_string_model). This seed is used to guarantee that no adversary has any significant head start in mining Ethereum and cannot use its head start to double-spend.
 
-Just to clear, we believe that both systems used highly secure sources of unpredictable randomness and the main goal of this post is to highlight the important of having a secure randomness beacon that can generate timestamped cryptographically secure unpredictable randomness. 
+Just to clear, we believe that both systems used highly secure sources of unpredictable randomness. The main goal of this post is to highlight the fact that some trusted setup is needed. It is vitally important to have a secure randomness beacon that can generate timestamped cryptographically secure unpredictable randomness. 
