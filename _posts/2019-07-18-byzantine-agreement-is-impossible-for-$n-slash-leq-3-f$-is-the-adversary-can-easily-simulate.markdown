@@ -28,3 +28,14 @@ The extension of this lower bound to computationally bounded adversaries is non-
 
 
 ## The proof.. TODO...
+
+
+talk about the fact that the main point in the proof is the ability of the adversary to simulate 4 nodes (2 bad and 4 good)...
+
+Cases were you can simulate:
+1. everything is deterministic
+2. there is no setup and you have a polynomial advantage over the good guys
+
+cases where you cannot simulate
+1. there is a PKI (even if you have a polynomial advantage)
+2. use computational puzzles...
