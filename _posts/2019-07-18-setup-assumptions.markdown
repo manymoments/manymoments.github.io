@@ -4,6 +4,7 @@ date: 2019-07-18 13:29:00 -07:00
 tags:
 - dist101
 - models
+- crypto101
 layout: post
 ---
 
