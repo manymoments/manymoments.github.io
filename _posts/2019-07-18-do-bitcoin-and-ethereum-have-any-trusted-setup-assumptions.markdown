@@ -15,12 +15,12 @@ Both Bitcoin and Ethereum depend on the security of certain cryptographic hash f
 
 ### The Bitcoin untrusted setup [conspiracy theory](https://en.wikipedia.org/wiki/Conspiracy_theory)
 
-Bitcoin was invented by NASA in the 1960's. NASA has been secretly working on an alternative Bitcoin fork for almost 60 years (in addition to working on a [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories)). They plan to publish their alternative (and longer) fork in 2020.
+Bitcoin was invented by NASA in the 1960's. NASA has been secretly working on an alternative fork from the Bitcoin genesis block for almost 60 years (in addition to working on a [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories)). They plan to publish their alternative (and longer) fork in 2020 which will cause all existing Bitcoin transactions to become aborted orphans...
 
 Back in the 1960's, they inserted into their [Bitcoin Genesis block](https://en.bitcoin.it/wiki/Genesis_block) the text:  
 >The Times 03/Jan/2009 Chancellor on brink of second bailout for banks
 
-After making their [white paper](https://bitcoin.org/bitcoin.pdf) public in 2008, NASA coerced the financial times in the UK to publish an article with the exact title above on January 3rd 2009. 
+After making their [white paper](https://bitcoin.org/bitcoin.pdf) public in 2008, NASA coerced the Financial Times in the UK to publish an article with the exact title above on January 3rd 2009. 
 
 ### Does Bitcoin have a trusted setup assumption?
 
@@ -28,7 +28,7 @@ After making their [white paper](https://bitcoin.org/bitcoin.pdf) public in 2008
 
 ### The Ethereum untrusted setup [conspiracy theory](https://en.wikipedia.org/wiki/Conspiracy_theory)
 
-Ethereum was invented by NASA in the 1960's. NASA has been secretly working on an alternative fork for almost 60 years (in addition to working on their [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories))... 
+Ethereum was invented by NASA in the 1960's. NASA has been secretly working on an alternative fork from the Ethereum genesis block for almost 60 years (in addition to working on their [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories))... 
 
 Back in the 1960's, they inserted into their [Ethereum Genesis block](https://ethereum.stackexchange.com/questions/71804/what-is-the-meaning-of-ethereum-mainnet-genesis-block-extradata-value) the hash:  
 >0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa
@@ -41,7 +41,7 @@ Well, can you believe that block 1028201 was prepared long ago?!
 
 ### Does Ethereum have a trusted setup assumption?
 
-**YES!** ethereum assumes that the [Oliympic testnet](https://blog.ethereum.org/2015/05/09/olympic-frontier-pre-release/) is a trusted source of unpredictable randomness and timestamp (and hence its cryptographic hash is a good [Common Random String](https://en.wikipedia.org/wiki/Common_reference_string_model)). This seed is used to guarantee that no adversary has any significant head start in mining Ethereum and cannot use its head start to double-spend.
+**YES!** ethereum assumes that block #1028201 of the [Oliympic testnet](https://blog.ethereum.org/2015/05/09/olympic-frontier-pre-release/) is a trusted source of unpredictable randomness and timestamp (and hence its cryptographic hash is a good [Common Random String](https://en.wikipedia.org/wiki/Common_reference_string_model)). This seed is used to guarantee that no adversary has any significant head start in mining Ethereum and cannot use its head start to double-spend.
 
 ## Trust, but Verify
 Just to clear, while [NASA is indeed interested in blockchain](https://cointelegraph.com/news/nasa-publishes-proposal-for-air-traffic-management-blockchain-based-on-hyperledger), we believe that both Bitcoin and Ethereum used highly secure sources of unpredictable randomness. The main goal of this post is to highlight the fact that some trusted setup is needed in both systems. It is vitally important to have a secure randomness beacon that can generate timestamped cryptographically secure unpredictable randomness.
