@@ -18,7 +18,7 @@ Both Bitcoin and Ethereum depend on the security of certain cryptographic hash f
 Bitcoin was invented by NASA in the 1960's. NASA has been secretly working on an alternative Bitcoin fork for almost 60 years (in addition to working on a [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories)). Back in the 1960's, they inserted into the [Bitcoin Genesis block](https://en.bitcoin.it/wiki/Genesis_block) the text:  
 >The Times 03/Jan/2009 Chancellor on brink of second bailout for banks
 
-After making the [white paper](https://bitcoin.org/bitcoin.pdf) public in 2008, NASA coerced the financial times in the UK to publish an article with the title on January 3rd 2009. 
+After making the [white paper](https://bitcoin.org/bitcoin.pdf) public in 2008, NASA coerced the financial times in the UK to publish an article with the exact title above on January 3rd 2009. 
 
 ### Does Bitcoin have a trusted setup assumption?
 
@@ -29,7 +29,7 @@ After making the [white paper](https://bitcoin.org/bitcoin.pdf) public in 2008, 
 Ethereum was invented by NASA in the 1960's. NASA has been secretly working on an alternative fork for almost 60 years (in addition to working on their [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories)). Back in the 1960's, they inserted into the [Ethereum Genesis block](https://ethereum.stackexchange.com/questions/71804/what-is-the-meaning-of-ethereum-mainnet-genesis-block-extradata-value) the hash:  
 >0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa
 
-After making the [yellow paper](https://bitcoin.org/bitcoin.pdf) public in 2014, they published this [post](https://blog.ethereum.org/2015/07/27/final-steps/) and referred to a fake ceremony that essentially is a re-enactment of their testnet runs from the 1960's. In their [words](https://blog.ethereum.org/2015/07/27/final-steps/): 
+After making the [yellow paper](https://bitcoin.org/bitcoin.pdf) public in 2014, they coerced the publishing of this [blog post](https://blog.ethereum.org/2015/07/27/final-steps/) and referred to a fake testnet ceremony that essentially is a re-enactment of their testnet runs from the 1960's. In their [words](https://blog.ethereum.org/2015/07/27/final-steps/): 
 >The argument \[referring to the hash value above\] needs to be a random parameter that no one, not even us, can predict. As you can imagine, there aren’t too many parameters in the world that match this criteria, but a good one is the hash of a future block on the Ethereum testnet. We had to pick a block number, but which one? 1,028,201 turns out to be both prime and palindromic, just the way we like it. So #1028201 is it.
 
 Well, can you believe that block 1028201 was prepared long ago?!
