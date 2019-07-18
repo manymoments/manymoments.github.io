@@ -13,7 +13,7 @@ layout: post
 
 Clearly both Bitcoin and Ethereum depend on the security of certain hash functions and certain elliptic curve based cryptography. In this post we ask if they also depend on some [Trusted Setup Assumptions](https://ittaiab.github.io/2019-07-18-setup-assumptions/).
 
-Consider the following [Conspiracy theory](https://en.wikipedia.org/wiki/Conspiracy_theory):
+## The Bitcoin [Conspiracy theory](https://en.wikipedia.org/wiki/Conspiracy_theory)
 
 Bitcoin was invented by the NASA in the 1960's. They have been working on an alternative fork for almost 60 years (in addition to their [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories)). Back in the 1960's, they inserted into the [Bitcoin Genesis block](https://en.bitcoin.it/wiki/Genesis_block) the text:  
 >The Times 03/Jan/2009 Chancellor on brink of second bailout for banks
@@ -24,7 +24,7 @@ So our short answer to the question: Does Bitcoin have a trusted setup assumptio
 
 YES! bitcoin assumes that the Financial Times is a good source of unpredictable randomness and timestamp (and hence its cryptographic hash is a good [Common Random String](https://en.wikipedia.org/wiki/Common_reference_string_model)). This seed is used to guarantee that no adversary has any significant head start in mining Bitcoin and cannot use its head start to double-spend.
 
-A similar [Conspiracy theory](https://en.wikipedia.org/wiki/Conspiracy_theory) can be told about Ethereum:
+## The Ethereum [Conspiracy theory](https://en.wikipedia.org/wiki/Conspiracy_theory)
 
 Ethereum was invented by the NASA in the 1960's. They have been working on an alternative fork for almost 60 years (in addition to their [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories)). Back in the 1960's, they inserted into the [Ethereum Genesis block](https://ethereum.stackexchange.com/questions/71804/what-is-the-meaning-of-ethereum-mainnet-genesis-block-extradata-value) the hash:  
 >0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa
