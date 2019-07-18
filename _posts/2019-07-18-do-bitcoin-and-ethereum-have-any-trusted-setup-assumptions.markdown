@@ -12,7 +12,7 @@ Clearly both Bitcoin and Ethereum depend on the security of certain hash functio
 
 Consider the following [Conspiracy theory](https://en.wikipedia.org/wiki/Conspiracy_theory):
 
-Bitcoin was invented by the NASA in the 1960's. They have been working on an alternative fork for almost 60 years (in addition to the [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories)). Back in the 1960's, they inserted into the [Bitcoin Genesis block](https://en.bitcoin.it/wiki/Genesis_block) the text:  
+Bitcoin was invented by the NASA in the 1960's. They have been working on an alternative fork for almost 60 years (in addition to their [moon landing](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories)). Back in the 1960's, they inserted into the [Bitcoin Genesis block](https://en.bitcoin.it/wiki/Genesis_block) the text:  
 >>The Times 03/Jan/2009 Chancellor on brink of second bailout for banks
 After making the [white paper](https://bitcoin.org/bitcoin.pdf) public in 2008, they coerced the financial times in the UK to publish exactly this title on 03 Jan 2009.
 
