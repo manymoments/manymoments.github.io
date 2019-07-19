@@ -26,7 +26,7 @@ defaults:
     show-avatar: true
 url: https://ittaiab.github.io
 baseurl: 
-description: Some Decentralized Thoughts
+description: Decentralized thoughts about decentralization
 navbar-links:
   About Me: aboutme
 avatar: "/img/ittai.jpg"
@@ -49,8 +49,8 @@ share-links-active:
   google: false
   linkedin: false
 staticman:
-  repository: ittaiab.github.io
-  branch: master
+  repository: 
+  branch: 
   endpoint: 
   reCaptcha:
     siteKey: 
