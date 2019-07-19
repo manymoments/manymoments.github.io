@@ -41,7 +41,7 @@ Here we assume there is some set of initial parties $P_1,...,P_n$ and each two p
 3. *Broadcast setup*: 
 We assume setup whose implementation requires no secrets. The canonical example is a [PKI setup](https://en.wikipedia.org/wiki/Public_key_infrastructure) that requires [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) only to relay the public keys. 
 4. *Partially public setup*: often called the *Common Reference String* [CRS](https://en.wikipedia.org/wiki/Common_reference_string_model) model. Many cryptographic protocols leverage this setup for improved efficiency. A special case of this setup is a [randomness beacon](http://www.copenhagen-interpretation.com/home/cryptography/cryptographic-beacons).
-5. *Fully private setup*: often called the *offline phase* in the context of secure multiparty computation (MPC) protocols. Here the setup phase computes rather complex output that is party dependant. For example, a phase that creates [OT and multiplication triplets](https://github.com/bristolcrypto/SPDZ-2).
+5. *Fully private setup*: often called the *offline phase* in the context of secure multiparty computation (MPC) protocols. Here the setup phase computes rather complex output that is party dependant. For example, a phase that creates [OT and multiplication triplets](https://github.com/bristolcrypto/SPDZ-2) in SPDZ-2.
 
 Lets detail these five setup variants, give some examples and discuss their advantages and disadvantages. In the end we will also discuss some potential alternatives for having a setup phase. We use $n$ to denote the number of parties engaged in a system and $f$ the number of 'faulty' (or Byzantine) parties (who may behave arbitrarily).
 
@@ -55,16 +55,16 @@ Both flavors suffer from not-authenticated channels, meaning that the adversary 
 In traditional cryptography (where the adversary is polynomially bounded) this type of model was first studied by [Dolev, Dwork and Naor](https://www.cs.huji.ac.il/~dolev/pubs/nmc.pdf), for specific tasks like non-malleable encryption and zero-knowledge and later generalized to arbitrary computations by [Barak etal.](https://eprint.iacr.org/2007/464.pdf) (the latter assumes global identities). 
 
 
-Another line of research, in the anonymous model, is based on more refined assumption on the adversarial power, namely, the assumption limits the computational power of the adversary (e.g. hash rate) *compared to the computational power of the honest parties*. It was shown possible to construct a limited notion of PKI *from scratch* even in this slim model. For example see [Aspnes etal.](http://www.cs.yale.edu/publications/techreports/tr1332.pdf) and several approaches directly inspired by bitcoin type puzzles (see [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf)).
+Another line of research, in the anonymous model, is based on more refined assumption on the adversarial power, namely, the assumption limits the computational power of the adversary (e.g. hash rate) *compared to the computational power of the honest parties*. It was shown possible to construct a limited notion of PKI *from scratch* even in this slim model. For example see [Aspnes, Jackson and Krishnamurthy](http://www.cs.yale.edu/publications/techreports/tr1332.pdf) and several approaches directly inspired by bitcoin type puzzles (see [Katz, Miller and Shi](https://eprint.iacr.org/2014/857.pdf), [Andrychowicz and Dziembowski](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [Garay, Kiayias, Kiayias and Panagiotakos](https://eprint.iacr.org/2016/991.pdf)).
 
 
 
 ## 2. Pairwise setup
 Here we assume that the communication channel between every pair of parties is authenticated.
 This is a classic assumption in distributed cryptography and distributed computing.
-The [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible when $n \leq 3f$ even given this setup, and even against a traditional polynomially bounded adversary.
+The [Fisher, Lynch and Merritt 1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bounds show that even weak forms of Byzantine Agreement are impossible when $n \leq 3f$ even given this setup, and even against a traditional polynomially bounded adversary.
 
-For $n>3f$, on the other hand, this setup allows perfect implementation of any functionality. This is the celebrated result of [BGW88](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.116.2968&rep=rep1&type=pdf), see [here](https://eprint.iacr.org/2011/136.pdf) for a full proof.
+For $n>3f$, on the other hand, this setup allows perfect implementation of any functionality. This is the celebrated result of [Ben-Or, Goldwasser and Widgerson 1988](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.116.2968&rep=rep1&type=pdf), see [Asharov† and Lindell](https://eprint.iacr.org/2011/136.pdf) for a full proof.
 
 
 ## 3. Broadcast setup
@@ -82,7 +82,7 @@ Risks: failure of this setup often means equivocation. Giving different parties 
 ## 4. Partially public setup
 
 *Partially public* means that the output from the trusted entity, $T$, is known to all parties, however it may be required the parties' inputs $x_1,...,x_n$ and $T$'s random string, $r$, should be kept secret. 
-As an example, consider a system that continuously receives messages from users such that in some future time $t$ all messages should be revealed (at once). Such a system may use a trusted setup as follows: the function $F$ receives no inputs from the parties, and proceeds as follows: generate a key-pair $(sk,pk)$ for an encryption scheme, then generate a [time-lock-puzzle](http://people.csail.mit.edu/rivest/RivestShamirWagner-timelock.pdf) $p$ that hides $sk$ until time $t$ arrives; finally, output to all parties the puzzle $p$ and the encryption key $pk$, which concludes the setup phase. 
+As an example, consider a system that continuously receives messages from users such that in some future time $t$ all messages should be revealed (at once). Such a system may use a trusted setup as follows: the function $F$ receives no inputs from the parties, and proceeds as follows: generate a key-pair $(sk,pk)$ for an encryption scheme, then generate a Rivest, Shamir and Wagner [time-lock-puzzle](http://people.csail.mit.edu/rivest/RivestShamirWagner-timelock.pdf) $p$ that hides $sk$ until time $t$ arrives; finally, output to all parties the puzzle $p$ and the encryption key $pk$, which concludes the setup phase. 
 In the main phase, users can encrypt their messages using $pk$ and broadcast them. In addition, they begin to solve the puzzle so that in time $t$ they will obtain the decryption key $sk$, which allows them to decrypt all messages. Note that all outputs of the functionality $F$ are public to all parties, but the internal state of the trusted entity (namely, the random string by which the pair $(sk,pk)$ was generated) must kept secret.
 
 Having a trusted pre-computed procedure with secret values often provides significant benefits.  The risk of these setups is that the properties of the system now depend on the *privacy* of the setup. It is much harder to detect the event of information leak during setup (an attacker that learns secrets can hide this knowledge).
