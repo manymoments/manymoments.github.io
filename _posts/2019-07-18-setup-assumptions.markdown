@@ -129,3 +129,6 @@ Here we mention some potential alternatives:
 One potential alternative is to have a never-ending setup phase. In such schemes there is a *continuously updatable CRS*. One recent example is [SONIC](https://eprint.iacr.org/2019/099.pdf).
 2. Another approach is to have multiple setups generating multiple common reference strings.
 In this approach we only assume that *some* of them are done faithfully. See [Groth and Ostrovsky](https://eprint.iacr.org/2006/407.pdf).
+
+### Please leave comments on [Twitter](https://twitter.com/ittaia/status/1151977685154971648?s=20)!!
+
