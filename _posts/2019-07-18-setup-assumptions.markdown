@@ -71,7 +71,9 @@ For $n>3f$, on the other hand, this setup allows perfect implementation of any f
 *Broadcast* means that the security of the system wouldn't be damaged even if the trusted entity is 'transparent', namely, all inputs/outputs it receives/sends and its random string are publicly known. 
 The canonical examples are protocols that use a trusted entity to [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) the public keys of all parties.
 
-For Byzantine agreement, there is a risk of a circular argument: With a PKI setup it is possible to solve Byzantine agreement in the synchronous model for $n=2f+1$ and Byzantine broadcast for $n=f+1$. But setting up a PKI requires *broadcast* which requires $n>3f$ if there is no PKI (in some models).
+Having a PKI both improves the complexity of asynchronous Byzantine Agreement (for example, see [Cachin, Kursawe and Shoup](https://eprint.iacr.org/2000/034.pdf)) and improves the fault tolerance to $n=2f+1$ for asynchronous Byzantine Agreement (for example, see [Katz and Koo](https://eprint.iacr.org/2006/065.pdf)).
+
+Note, there is a risk of a circular argument: With a PKI setup it is possible to solve Byzantine agreement in the synchronous model for $n=2f+1$ and Byzantine broadcast for $n=f+1$ (see [Dolev and Strong](https://www.cs.huji.ac.il/~dolev/pubs/authenticated.pdf)). But setting up a PKI requires *broadcast* which requires $n>3f$ if there is no PKI (in the standard models).
 
 Advantages: an important advantage of a fully public setup is its relative simplicity and reduced attack surface. 
 
@@ -89,7 +91,7 @@ The advantage of requiring the setup to publish a common public value is that it
 Here we give two examples:
 
 1. Setup for efficient Verifiable Secret Sharing --
-[Kate, Zaverucha, and Goldberg](https://www.cypherpunks.ca/~iang/pubs/PolyCommit-AsiaCrypt.pdf) propose a scheme that requires a trusted setup to generate a random public generator $g$ and a secret key $\alpha$. The setup then broadcast powers of the form $g^(\alpha^i)$. Using this setup one can obtain the most efficient [Asynchronous Verifiable Secret Sharing](https://eprint.iacr.org/2012/619). 
+[Kate, Zaverucha, and Goldberg](https://www.cypherpunks.ca/~iang/pubs/PolyCommit-AsiaCrypt.pdf) propose a scheme that requires a trusted setup to generate a random public generator $g$ and a secret key $\alpha$. The setup then broadcasts powers of the form $g^{(\alpha^i)}$. Using this setup one can obtain the most efficient [Asynchronous Verifiable Secret Sharing](https://eprint.iacr.org/2012/619). 
 
 2. Setup for efficient Zero-Knowledge --
 Several efficient Zero-Knowledge protocols require CRS setups. Often implementing these setups in a trusted manner requires some non-trivial [MPC](http://u.cs.biu.ac.il/~lindell/MPC-resources.html) protocol. For example, see [Bowe, Gabizon and Miers](https://eprint.iacr.org/2017/1050). In fact just running an MPC protocol is not enough, often a whole [setup ceremony](https://z.cash/technology/paramgen/) is necessary in order to establish public verifiability.
