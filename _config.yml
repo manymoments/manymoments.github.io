@@ -49,8 +49,8 @@ share-links-active:
   google: false
   linkedin: false
 staticman:
-  repository: 
-  branch: 
+  repository: ittaiab.github.io
+  branch: master
   endpoint: 
   reCaptcha:
     siteKey: 
