@@ -53,4 +53,4 @@ Adaptivity is the ability of the adversary to corrupt dynamically based on infor
 
 2. _Adaptive_ : the adversary can decide dynamically as the protocol progresses who to corrupt based on what the adversary learns over time. The main parameter that still needs to be decided is how long it takes between the adversary _decision_ to corrupt and the _event_ that the control is passed to the adversary. One standard assumption is that this is instantaneous. We will later review several other options (for example, see [here](https://users.cs.duke.edu/~kartik/papers/podc2019.pdf)).
 
-### Please leave comments on [Twitter](https://twitter.com/ittaia/status/1141481767121170434?s=20)!!
+### Please leave comments on [Twitter](https://twitter.com/ittaia/status/1141481767121170434?s=20)
