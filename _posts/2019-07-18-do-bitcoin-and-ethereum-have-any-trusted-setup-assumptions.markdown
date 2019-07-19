@@ -44,3 +44,5 @@ Well, can you believe that block 1028201 was prepared long ago?!
 
 ## Trust, but Verify
 Just to be clear, while [NASA is indeed interested in blockchain](https://cointelegraph.com/news/nasa-publishes-proposal-for-air-traffic-management-blockchain-based-on-hyperledger), we believe that both Bitcoin and Ethereum used highly secure sources of unpredictable randomness. The main goal of this post is to highlight the fact that some trusted setup is needed in both systems. In the language of this [blog post](https://ittaiab.github.io/2019-07-18-setup-assumptions/), both systems depend on a trusted setup phase that in both cases creates a public random string which is unpredictable and timestamped. It is vitally important to have a secure randomness beacon that can generate such timestamped cryptographically secure unpredictable randomness.
+
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1151978530374389769?s=20)!!
