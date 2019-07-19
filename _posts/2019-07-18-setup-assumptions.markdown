@@ -71,7 +71,7 @@ For $n>3f$, on the other hand, this setup allows perfect implementation of any f
 *Broadcast* means that the security of the system wouldn't be damaged even if the trusted entity is 'transparent', namely, all inputs/outputs it receives/sends and its random string are publicly known. 
 The canonical examples are protocols that use a trusted entity to [broadcast](https://ittaiab.github.io/2019-06-27-defining-consensus/) the public keys of all parties.
 
-Having a PKI both improves the complexity of asynchronous Byzantine Agreement (for example, see [Cachin, Kursawe and Shoup](https://eprint.iacr.org/2000/034.pdf)) and improves the fault tolerance to $n=2f+1$ for asynchronous Byzantine Agreement (for example, see [Katz and Koo](https://eprint.iacr.org/2006/065.pdf)).
+Having a PKI both improves the complexity of asynchronous Byzantine Agreement (for example, see [Cachin, Kursawe and Shoup](https://eprint.iacr.org/2000/034.pdf)) and improves the fault tolerance to $n=2f+1$ for synchronous Byzantine Agreement (for example, see [Katz and Koo](https://eprint.iacr.org/2006/065.pdf)).
 
 Note, there is a risk of a circular argument: With a PKI setup it is possible to solve Byzantine agreement in the synchronous model for $n=2f+1$ and Byzantine broadcast for $n=f+1$ (see [Dolev and Strong](https://www.cs.huji.ac.il/~dolev/pubs/authenticated.pdf)). But setting up a PKI requires *broadcast* which requires $n>3f$ if there is no PKI (in the standard models).
 
