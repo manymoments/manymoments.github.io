@@ -64,14 +64,14 @@ World 3 will be a *hybrid* world where the view of $A$ in this world will be ind
 Some important observations:
 1. The impossibility holds even if the adversary is static, i.e., we fix the set $B$ that the adversary corrupts before starting the execution.
     
-2. The impossibility holds even if there is a trusted setup phase, for example if the parties have a PKI setup. More on setup in a later post.
+2. The impossibility holds even if there is a [trusted setup phase](https://ittaiab.github.io/2019-07-18-setup-assumptions/), for example if the parties have a PKI setup. 
     
 3. The impossibility above importantly assumes (i) a Byzantine adversary for $B$, and (ii) messages between $A$ and $C$ can be delayed sufficiently. Even if one of these two conditions do not hold, we can tolerate $f \geq n/3$. If we only have crash faults, then Paxos and many other protocols can tolerate a minority corruption. If messages are guaranteed to arrive within a fixed known time bound (i.e., assuming synchrony), then we can tolerate a minority corruption (see for example [here](https://eprint.iacr.org/2006/065.pdf), [here](https://eprint.iacr.org/2018/1028.pdf), and [here](https://eprint.iacr.org/2019/270.pdf)).
 
 4. For agreement to hold, it is essential that if one party decides on a value, all other parties decide on the same value. Under partial synchrony, since parties are not even guaranteed to be able to communicate with each other before they decide, they always ensure that a majority of honest parties ``agree'' to a value before deciding (otherwise two minorities can commit to different values). Among $3f+1$ parties, $f$ can be Byzantine; thus $f+1$ honest parties form a majority among the remaining $2f+1$. Hence, partially synchronous protocols typically communicate with $2f+1$ (out of $3f+1$) parties before deciding: $f+1$ honest majority + (up to) $f$ Byzantine. 
 On the other hand, under synchrony even a single honest party can inform all other honest parties. Thus, synchronous parties typically communicate with $f+1$ out of $2f+1$ parties.
     
-5. A similar lower bound holds for crash (or omission) failures if $n \leq 2f$ in the partial synchrony model. This is a good exercise to test your understanding of the arguments above.
+5. A similar lower bound holds for crash (or omission) failures if $n \leq 2f$ in the partial synchrony model. This is a good exercise to test your understanding of the arguments above!
 
 
-### Please leave comments on [Twitter](https://twitter.com/ittaia/status/1144014000113328129?s=20)!!
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1144014000113328129?s=20)
