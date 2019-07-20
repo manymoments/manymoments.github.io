@@ -9,33 +9,33 @@ published: false
   co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
 </p>
 
+In this series of posts we are revisiting classic lower bounds from the 1980's. Most of them focused on *deterministic* protocols and computationally *unbounded* adversaries. Part of our goal is to provide a more modern view that also considers *randomized* protocols and *computational restrictions* on the adversary.
 
-Lower bounds in distributed computing are very helpful. Obviously, they prevent you from wasting time trying to do impossible things :-). Even more importantly, understanding them well often helps in finding ways to focus on what is optimally possible or ways to circumvent them by altering the assumptions or problem formulation.
+In our [first post](https://ittaiab.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) we reviewed the classic lower for [Partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound turned out to be very robust, it holds even against a static adversary and even if there is [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/).
 
 
-> Its either easy or impossible
-> -- <cite>Salvador Dali</cite>
+In this post we discuss a classic impossibility result in the [synchronous model](https://ittaiab.github.io/2019-06-01-2019-5-31-models/):
 
-In this post we discuss a classic impossibility result in the [synchronous model](blog post):
-
-**[FLM85](...): It is impossible to solve  [Agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) against a computationally unbounded Byzantine adversary if $f \geq n/3$.**
+**[Fisher, Lynch and Merritt 1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf): It is impossible to solve  [Agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) against a computationally unbounded Byzantine adversary if $f \geq n/3$.**
 
 TODO: This lower bound first appeared in the original Lamport paper... but here we present the FLM proof...
 
-The extension of this lower bound to computationally bounded adversaries is non-trivial:
-1. Under the classic computational assumptions that assume the adversary is polynomially bounded, this lower bound still holds. The only know way to circumvent it is to assume both a [trusted PKI setup](..) and a [computationally bounded](...) adversary.
-2. Under more fine grained assumptions where the adversaries power to solve certain computational puzzles is restricted, it is in fact possible to circumvent this lower bound. See [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf).
+The extension of this lower bound to [computationally bounded adversaries](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) is non-trivial:
+1. Under the *classic* computational assumptions that assume the adversary is *polynomially bounded*, this lower bound still holds. The only know way to circumvent it is to assume both a [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/) and a [computationally bounded](http://www.ccs.neu.edu/home/alina/classes/Spring2018/Lecture3.pdf) adversary.
+2. Under more fine grained assumptions where the adversaries power to solve certain computational puzzles is restricted, it is in fact possible to circumvent this lower bound! See [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf).
 
 
-## The proof.. TODO...
+## The proof.. TODO... 
 
 
-talk about the fact that the main point in the proof is the ability of the adversary to simulate 4 nodes (2 bad and 4 good)...
+TODO: talk about the fact that the main point in the proof is the ability of the adversary to **simulate** 4 nodes (2 bad and 4 good)...
+
+### discussion
 
 Cases were you can simulate:
 1. everything is deterministic
 2. there is no setup and you have a polynomial advantage over the good guys
 
-cases where you cannot simulate
-1. there is a PKI (even if you have a polynomial advantage)
-2. use computational puzzles...
+Cases where you cannot simulate
+1. there is a PKI (even if you have a polynomial advantage)...
+2. use computational puzzles and assume tight computational bounds...
