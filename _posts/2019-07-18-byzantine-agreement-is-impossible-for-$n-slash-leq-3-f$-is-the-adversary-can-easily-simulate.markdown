@@ -42,3 +42,6 @@ Cases were you can simulate:
 Cases where you cannot simulate
 1. there is a PKI (even if you have a polynomial advantage)...
 2. use computational puzzles and assume tight computational bounds...
+
+Please leave comments on [Twitter](...)
+
