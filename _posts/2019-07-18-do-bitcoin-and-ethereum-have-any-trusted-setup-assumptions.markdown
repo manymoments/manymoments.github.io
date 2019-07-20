@@ -32,7 +32,7 @@ Ethereum was invented by NASA in the 1960's. NASA has been secretly working on a
 Back in the 1960's, they inserted into their [Ethereum Genesis block](https://ethereum.stackexchange.com/questions/71804/what-is-the-meaning-of-ethereum-mainnet-genesis-block-extradata-value) the hash:  
 >0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa
 
-After making their [yellow paper](https://bitcoin.org/bitcoin.pdf) public in 2014, they coerced the publishing of this [blog post](https://blog.ethereum.org/2015/07/27/final-steps/) and caused it to refer to a [fake testnet ceremony called Olympic](https://blog.ethereum.org/2015/05/09/olympic-frontier-pre-release/)
+After making their [yellow paper](https://ethereum.github.io/yellowpaper/paper.pdf) public in 2014, they coerced the publishing of this [blog post](https://blog.ethereum.org/2015/07/27/final-steps/) and caused it to refer to a [fake testnet ceremony called Olympic](https://blog.ethereum.org/2015/05/09/olympic-frontier-pre-release/)
 that essentially is a re-enactment of their testnet runs from the 1960's. In their [words](https://blog.ethereum.org/2015/07/27/final-steps/): 
 >The argument \[referring to the hash value above\] needs to be a random parameter that no one, not even us, can predict. As you can imagine, there aren’t too many parameters in the world that match this criteria, but a good one is the hash of a future block on the Ethereum testnet. We had to pick a block number, but which one? 1,028,201 turns out to be both prime and palindromic, just the way we like it. So #1028201 is it.
 
