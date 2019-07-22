@@ -19,7 +19,8 @@ In our [first post](https://ittaiab.github.io/2019-06-25-on-the-impossibility-of
 
 In this post we discuss another classic impossibility result. This time in the [synchronous model](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound shows that 3 people cannot solve Byzantine agreement, - this is why you need at least 4.
 
-Informally this lower bound captures the obvious informal fact that if there are only three people A,B,C and say B and C blame each other for being corrupt and lying, then A has no way to decide correctly who to believe and who to label as corrupt. 
+Informally this lower bound captures the obvious fact:
+*if there are only three people A,B,C and say B and C blame each other for being corrupt and lying, then A has no way to decide correctly who to believe and who to label as corrupt.* 
 
 **[Fisher, Lynch and Merritt 1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf): It is impossible to solve  [Agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) against a computationally unbounded Byzantine adversary if $f \geq n/3$.**
 
