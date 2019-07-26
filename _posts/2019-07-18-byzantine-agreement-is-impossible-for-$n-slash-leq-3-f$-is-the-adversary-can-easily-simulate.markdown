@@ -27,14 +27,14 @@ The high-level approach to the lower bound will be similar to our previous lower
 
 In the previous lower bound, we used messages delays due to partial synchrony to create the indistinguishability arguments. In this lower bound, we are crucially going to rely on the ability of an adversary to simulate two different worlds and present different views of the worlds to different parties. The simulation is possible only due to the non-existence of a trusted set-up phase.
 
-Here we go, lets define worlds 1, 2, and 3:
+Suppose there is a protocol that can achieve Byzantine agreement with three parties. Here we go, lets define worlds 1, 2, and 3:
 
 **World 1:**
 <p align="center">
   <img src="/uploads/FLM-world1.jpg" width="256" title="FLM world 1">
 </p>
 
-In World 1 parties in $A$ and $B$ start with the value 1. Corrupt parties $C$ simulates...
+In World 1, parties $A$ and $B$ start with the value 1. Corrupt party $C$ communicates with $B$ as if its input is 1 and based on the messages it receives from $A$ and $B$ in this world. It then simulates an execution where $A$, $B$, $C$ have inputs, 1, 0, and 0. Observe that in the simulated world, its framing $B$ to have input 0. Thus, for every round of the protocol, when it needs to send a messages to $A$, it sends whatever message would have been sent in the simulated world. Party $A$ cannot differentiate between a message from the simulated world and the real world due to the absence of trusted set-up.
 
 **World 2:**
 <p align="center">
