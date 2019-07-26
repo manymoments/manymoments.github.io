@@ -16,16 +16,16 @@ In this series of posts we are revisiting classic lower bounds from the 1980's. 
 
 In our [first post](https://ittaiab.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) we reviewed the classic lower for [Partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound turned out to be very robust, it holds even against a static adversary and even if there is [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/).
 
+In this post we discuss another classic impossibility result. This time in the [synchronous model](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound shows that 3 parties cannot solve Byzantine agreement in a plain authenticated channel model without setup assumptions.
 
-In this post we discuss another classic impossibility result. This time in the [synchronous model](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound shows that 3 people cannot solve Byzantine agreement, - this is why you need at least 4.
+Informally this lower bound captures the following:
+*if there are only three parties $A,B,C$ and say $B$ and $C$ blame each other for lying and provide no proof-of-malice to $A$, then $A$ has no way to decide between $B$ and $C$. $A$ has no way to know who to trust and agree with.* 
 
-Informally this lower bound captures the following obvious fact:
-*if there are only three people $A,B,C$ and say $B$ and $C$ blame each other for being corrupt and lying, then $A$ has no way to decide correctly between $B$ and $C$. $A$ has no way to know who to trust and who to label as corrupt.* 
+**[Fisher, Lynch and Merritt 1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf): It is impossible to solve  [Agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) against a computationally unbounded Byzantine adversary if $f \geq n/3$.** IS THIS COMPUTATIONALLY BOUNDED OR JUST IN A WORLD WITHOUT SETUP ASSUMPTIONS?
 
-**[Fisher, Lynch and Merritt 1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf): It is impossible to solve  [Agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) against a computationally unbounded Byzantine adversary if $f \geq n/3$.**
+The high-level approach to the lower bound will be similar to our previous lower bound. We will use two powerful techniques: *indistinguishability* (where some parties can not tell between two potential worlds) and *hybridization* (where we build intermediate worlds between the two contradicting worlds and use a chain of indistinguishability arguments for a contradiction.). 
 
-Just like our previous lower bound we will use two powerful techniques: *indistinguishability* (where some parties can not tell between two potential worlds) and *hybridization* (where we build intermediate worlds between the two contradicting worlds and use a chain of indistinguishability arguments for a contradiction.).
-
+In the previous lower bound, we used messages delays due to partial synchrony to create the indistinguishability arguments. In this lower bound, we are crucially going to rely on the ability of an adversary to simulate two different worlds and present different views of the worlds to different parties. The simulation is possible only due to the non-existence of a trusted set-up phase.
 
 Here we go, lets define worlds 1, 2, and 3:
 
