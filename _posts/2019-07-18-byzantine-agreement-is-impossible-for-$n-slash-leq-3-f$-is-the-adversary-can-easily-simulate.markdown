@@ -34,22 +34,27 @@ Suppose there is a protocol that can achieve Byzantine agreement with three part
   <img src="/uploads/FLM-world1.jpg" width="256" title="FLM world 1">
 </p>
 
-In World 1, parties $A$ and $B$ start with the value 1. Corrupt party $C$ communicates with $B$ as if its input is 1 and based on the messages it receives from $A$ and $B$ in this world. It then simulates an execution where $A$, $B$, $C$ have inputs, 1, 0, and 0. Observe that in the simulated world, its framing $B$ to have input 0. Thus, for every round of the protocol, when it needs to send a messages to $A$, it sends whatever message would have been sent in the simulated world. Party $A$ cannot differentiate between a message from the simulated world and the real world due to the absence of trusted set-up.
+In World 1, parties $A$ and $B$ start with input 1. Corrupt party $C$ simulates the worlds of four players, $C, A', B', C'$ connected in a peculiar fashion as shown in the figure. $C$ starts with input 1 whereas, $A', B'$ and $C'$ start with input 0. Thus, $A$ interacts with an instance of $C$ that starts with input 1 and $B$ interacts with an instance of $C$, i.e., $C'$ with input 0. Intuitively, by sending messages to $B$ based on what it receives from $A'$, $C$ is framing $A$ as if $A$ started with input 0. Similarly, $C'$ is framing $B$ by sending messages received from $B'$. The connections in the peculiar order ensures that the simulated parties can send appropriate messages.
+
+Now, since validity property holds despite what the corrupt party $C$ does, $A$ and $B$ commit to 1.
 
 **World 2:**
 <p align="center">
   <img src="/uploads/FLM-world2.jpg" width="256" title="FLM world 2">
 </p>
 
-In World 2 party $B$ starts with 1 and party $C$ starts with the value 0. Corrupt parties $A$ simulates...
+In World 2, parties $B$ and $C$ start with input 0. Corrupt party $A$ simulates the worlds of four players, $A$, $B'$, $C'$, and $A'$ connected as shown in the figure. The simulation is similar to world 1. Here, when $A$ is sending messages to $B$, it is framing $C$ to have sent 1. Similarly, $A'$ is framing $B$. Again, since the validity property holds, $B$ and $C$ commit to 0. 
 
 **World 3:**
 <p align="center">
   <img src="/uploads/FLM-world3.jpg" width="256" title="FLM world 3">
 </p>
 
+In World 3, $A$ starts with 1 and $C$ starts with 0. Corrupt party $B$ simulates the worlds of four players, $B$, $C'$, $A'$, and $B'$ as shown in the figure. $B$ and $C'$ start with input 1 whereas $A'$ and $B'$ start with input 0. 
 
-In World 3 parties in $C$ and $A$ start with the value 0. Corrupt parties $A$ simulates...
+The question is: what do $A$ and $C$ commit to?
+
+We argue that $A$ commits to 1 and $C$ commits to 0. Why?
 
 
 
