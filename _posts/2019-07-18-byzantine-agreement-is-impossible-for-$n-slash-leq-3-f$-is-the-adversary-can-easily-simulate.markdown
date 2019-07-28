@@ -2,7 +2,6 @@
 title: Byzantine Agreement is impossible for $n \leq 3 f$ is the Adversary can easily
   Simulate
 date: 2019-07-18 03:55:00 -07:00
-published: true
 ---
 
 <p align="center">
