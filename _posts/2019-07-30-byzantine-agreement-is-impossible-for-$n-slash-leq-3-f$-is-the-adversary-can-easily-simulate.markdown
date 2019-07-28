@@ -23,11 +23,11 @@ Informally this lower bound captures the following:
 
 **[Fisher, Lynch and Merritt 1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf): It is impossible to solve  [Agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) against a computationally unbounded Byzantine adversary if $f \geq n/3$.** IS THIS COMPUTATIONALLY BOUNDED OR JUST IN A WORLD WITHOUT SETUP ASSUMPTIONS?
 
-The high-level approach to the lower bound will be similar to our previous lower bound. We will use two powerful techniques: *indistinguishability* (where some parties can not tell between two potential worlds) and *hybridization* (where we build intermediate worlds between the two contradicting worlds and use a chain of indistinguishability arguments for a contradiction.). 
+The high-level approach to the lower bound will be similar to our previous lower bound. We will use two powerful techniques: *indistinguishability* (where some parties can not tell between two potential worlds) and *hybridization* (where we build intermediate worlds between the two contradicting worlds and use a chain of indistinguishability arguments for a contradiction.). WE DON'T HAVE HYBRID WORLDS HERE.
 
-In the previous lower bound, we used messages delays due to partial synchrony to create the indistinguishability arguments. In this lower bound, we are crucially going to rely on the ability of an adversary to simulate two different worlds and present different views of the worlds to different parties. The simulation is possible only due to the non-existence of a trusted set-up phase.
+In the previous lower bound, we used messages delays due to partial synchrony to create the indistinguishability arguments. In this lower bound, we are crucially going to rely on the ability of an adversary to simulate different worlds and present different views of the worlds to different parties. The simulation is possible only due to the non-existence of a trusted set-up phase.
 
-Suppose there is a protocol that can achieve Byzantine agreement with three parties. Here we go, lets define worlds 1, 2, and 3:
+Suppose there is a protocol that can achieve Byzantine agreement with three parties. We will define worlds 1, 2, and 3:
 
 **World 1:**
 <p align="center">
@@ -60,7 +60,7 @@ We argue that $A$ outputs 1 and $C$ outputs 0. Why?
   <img src="/uploads/FLM-indistinguishability.png" width="512" title="Indistinguishability between World 1 and World 3 for A">
 </p>
 
-Observe that from $A$'s perspective, World 3 is the same as World 1. From the figure, it can be seen that if we start from a double-circled $A$ and go clock-wise, the connections and inputs from parties are exactly the same. Intuitively, observe that in World 1, $C'$ started with input 0 and framed $B$ to have input 0 (the fully connected hexagon is necessary to make the argument more formal. However, $A$ still decided to output 1 in World 1. Thus, since it obtains exactly the same set of messages in World 3, $A$ outputs 1. By a similar argument $C$ outputs 0.
+Observe that from $A$'s perspective, World 3 is the same as World 1. From the figure, it can be seen that if we start from a double-circled $A$ and go clock-wise, the connections and inputs from parties are exactly the same. Intuitively, observe that in World 1, $C'$ started with input 0 and framed $B$ to have input 0 (the fully connected hexagon is necessary to make the argument more formal). However, $A$ decided to output 1 in World 1. Thus, since it obtains exactly the same set of messages in World 3, $A$ outputs 1. By a similar argument $C$ outputs 0.
 
 TODO: This lower bound first appeared in the original Lamport paper... but here we present the FLM proof...
 
