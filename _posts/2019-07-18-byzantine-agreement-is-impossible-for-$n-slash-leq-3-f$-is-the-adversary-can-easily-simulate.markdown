@@ -1,7 +1,7 @@
 ---
 title: Byzantine Agreement is impossible for $n \leq 3 f$ is the Adversary can easily
   Simulate
-date: 2019-07-18 03:55:00 -07:00
+date: 2019-07-30 03:55:00 -07:00
 ---
 
 <p align="center">
@@ -56,7 +56,7 @@ The question is: what do $A$ and $C$ output?
 We argue that $A$ outputs 1 and $C$ outputs 0. Why?
 
 <p align="center">
-  <img src="/uploads/FLM-indistinguishability.png" width="256" title="Indistinguishability between World 1 and World 3 for A">
+  <img src="/uploads/FLM-indistinguishability.png" width="512" title="Indistinguishability between World 1 and World 3 for A">
 </p>
 
 Observe that from $A$'s perspective, World 3 is the same as World 1. From the figure, it can be seen that if we start from a double-circled $A$ and go clock-wise, the connections and inputs from parties are exactly the same. Intuitively, observe that in World 1, $C'$ started with input 0 and framed $B$ to have input 0 (the fully connected hexagon is necessary to make the argument more formal. However, $A$ still decided to output 1 in World 1. Thus, since it obtains exactly the same set of messages in World 3, $A$ outputs 1. By a similar argument $C$ outputs 0.
