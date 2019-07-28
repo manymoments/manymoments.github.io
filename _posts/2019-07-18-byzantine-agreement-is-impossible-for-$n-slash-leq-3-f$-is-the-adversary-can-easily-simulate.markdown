@@ -31,7 +31,7 @@ Suppose there is a protocol that can achieve Byzantine agreement with three part
 
 **World 1:**
 <p align="center">
-  <img src="/uploads/FLM-world1.jpg" width="256" title="FLM world 1">
+  <img src="/uploads/FLM-world1.png" width="256" title="FLM world 1">
 </p>
 
 In World 1, parties $A$ and $B$ start with input 1. Corrupt party $C$ simulates the worlds of four players, $C, A', B', C'$ connected in a peculiar fashion as shown in the figure. $C$ starts with input 1 whereas, $A', B'$ and $C'$ start with input 0. Thus, $A$ interacts with an instance of $C$ that starts with input 1 and $B$ interacts with an instance of $C$, i.e., $C'$ with input 0. Intuitively, by sending messages to $B$ based on what it receives from $A'$, $C$ is framing $A$ as if $A$ started with input 0. Similarly, $C'$ is framing $B$ by sending messages received from $B'$. The connections in the peculiar order ensures that the simulated parties can send appropriate messages.
@@ -40,23 +40,27 @@ Now, since validity property holds despite what the corrupt party $C$ does, $A$ 
 
 **World 2:**
 <p align="center">
-  <img src="/uploads/FLM-world2.jpg" width="256" title="FLM world 2">
+  <img src="/uploads/FLM-world2.png" width="256" title="FLM world 2">
 </p>
 
 In World 2, parties $B$ and $C$ start with input 0. Corrupt party $A$ simulates the worlds of four players, $A$, $B'$, $C'$, and $A'$ connected as shown in the figure. The simulation is similar to world 1. Here, when $A$ is sending messages to $B$, it is framing $C$ to have sent 1. Similarly, $A'$ is framing $B$. Again, since the validity property holds, $B$ and $C$ commit to 0. 
 
 **World 3:**
 <p align="center">
-  <img src="/uploads/FLM-world3.jpg" width="256" title="FLM world 3">
+  <img src="/uploads/FLM-world3.png" width="256" title="FLM world 3">
 </p>
 
 In World 3, $A$ starts with 1 and $C$ starts with 0. Corrupt party $B$ simulates the worlds of four players, $B$, $C'$, $A'$, and $B'$ as shown in the figure. $B$ and $C'$ start with input 1 whereas $A'$ and $B'$ start with input 0. 
 
-The question is: what do $A$ and $C$ commit to?
+The question is: what do $A$ and $C$ output?
 
-We argue that $A$ commits to 1 and $C$ commits to 0. Why?
+We argue that $A$ outputs 1 and $C$ outputs 0. Why?
 
+<p align="center">
+  <img src="/uploads/FLM-indistinguishability.png" width="256" title="Indistinguishability between World 1 and World 3 for A">
+</p>
 
+Observe that from $A$'s perspective, World 3 is the same as World 1. From the figure, it can be seen that if we start from a double-circled $A$ and go clock-wise, the connections and inputs from parties are exactly the same. Intuitively, observe that in World 1, $C'$ started with input 0 and framed $B$ to have input 0 (the fully connected hexagon is necessary to make the argument more formal. However, $A$ still decided to output 1 in World 1. Thus, since it obtains exactly the same set of messages in World 3, $A$ outputs 1. By a similar argument $C$ outputs 0.
 
 TODO: This lower bound first appeared in the original Lamport paper... but here we present the FLM proof...
 
