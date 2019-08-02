@@ -16,18 +16,18 @@ In this series of posts we are revisiting classic lower bounds from the 1980's. 
 
 In our [first post](https://ittaiab.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) we reviewed the classic lower for [Partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound turned out to be very robust, it holds even against a static adversary and even if there is [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/).
 
-In this post we discuss another classic impossibility result. This time in the [synchronous model](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound shows with $n=3f$ parties one cannot solve Byzantine agreement in the face of an adversary controlling $f$ parties.
+In this post we discuss another classic impossibility result. This time in the [synchronous model](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound shows that with $n=3f$ parties one cannot solve Byzantine agreement in the face of an adversary controlling $f$ parties.
 
 Informally this lower bound captures the following:
 *if there are only three parties $A,B,C$ and say $B$ and $C$ blame each other for lying and provide no proof-of-malice to $A$, then $A$ has no way to decide between $B$ and $C$. $A$ has no way to know who to trust and agree with.* 
 
 **[Fisher, Lynch and Merritt 1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf): It is impossible to solve  [Agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) against a computationally unbounded Byzantine adversary if $f \geq n/3$.** 
 
-ITT: in this version, just computational unbounded. IS THIS COMPUTATIONALLY BOUNDED OR JUST IN A WORLD WITHOUT SETUP ASSUMPTIONS?
+
 
 The high-level approach to the lower bound will be similar to our previous lower bound. We will use two powerful techniques: *indistinguishability* (where some parties can not tell between two potential worlds) and *hybridization* (where we build intermediate worlds between the two contradicting worlds and use a chain of indistinguishability arguments for a contradiction.). 
 
-ITT: the world with 1 and 0 is a hybrid. WE DON'T HAVE HYBRID WORLDS HERE.
+
 
 In the previous lower bound, we used messages delays due to partial synchrony to create the indistinguishability arguments. In this lower bound, we are crucially going to rely on the ability of an adversary to *simulate* different worlds and present different views of the worlds to different parties. 
 
@@ -66,25 +66,14 @@ We argue that $A$ outputs 1 and $C$ outputs 0. Why?
 
 Observe that from $A$'s perspective, World 3 is the same as World 1. From the figure, it can be seen that if we start from a double-circled $A$ and go clock-wise, the connections and inputs from parties are exactly the same. Intuitively, observe that in World 1, $C'$ started with input 0 and framed $B$ to have input 0 (the fully connected hexagon is necessary to make the argument more formal). However, $A$ decided to output 1 in World 1. Thus, since it obtains exactly the same set of messages in World 3, $A$ outputs 1. By a similar argument $C$ outputs 0.
 
-TODO: This lower bound first appeared in the original Lamport paper... but here we present the FLM proof...
 
 The extension of this lower bound to [computationally bounded adversaries](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) is non-trivial:
-1. Under the *classic* computational assumptions that assume the adversary is *polynomially bounded*, this lower bound still holds. The only know way to circumvent it is to assume both a [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/) and a [computationally bounded](http://www.ccs.neu.edu/home/alina/classes/Spring2018/Lecture3.pdf) adversary.
-2. Under more fine grained assumptions where the adversaries power to solve certain computational puzzles is restricted, it is in fact possible to circumvent this lower bound! See [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf).
+1. Under the *classic* computational assumptions that assume the adversary is *polynomially bounded*, this lower bound still holds assuming there is not setup. In this model, the only know way to circumvent it is to assume both a [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/) and a [computationally bounded](http://www.ccs.neu.edu/home/alina/classes/Spring2018/Lecture3.pdf) adversary.
+2. Under more fine grained assumptions where the adversaries power to solve certain computational puzzles is restricted, it is in fact possible to circumvent this lower bound - without any trusted setup. See [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf).
 
 
+The main thing to observe is that the lower bound requires the adversary to simulate more than $n$ parties. So this lower bound does not hold if the computational assumptions dis-allow this (for example if you assume the adversary has bounded computational power to solve a mildly hard cryptographic puzzle. 
 
-TODO: talk about the fact that the main point in the proof is the ability of the adversary to **simulate** 4 nodes (2 bad and 4 good)...
-
-### discussion
-
-Cases were you can simulate:
-1. everything is deterministic
-2. there is no setup and you have a polynomial advantage over the good guys
-
-Cases where you cannot simulate
-1. there is a PKI (even if you have a polynomial advantage)...
-2. use computational puzzles and assume tight computational bounds...
 
 Please leave comments on [Twitter](...)
 
