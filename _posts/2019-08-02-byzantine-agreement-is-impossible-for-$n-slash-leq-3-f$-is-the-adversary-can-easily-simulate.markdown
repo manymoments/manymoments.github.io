@@ -14,7 +14,7 @@ In this series of posts we are revisiting classic lower bounds from the 1980's. 
 
 In our [first post](https://ittaiab.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) we reviewed the classic lower for [Partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound turned out to be very robust, it holds even against a static adversary and even if there is [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/).
 
-In this post we discuss another classic impossibility result. This time in the [synchronous model](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound shows that with $n=3f$ parties one cannot solve Byzantine agreement in the face of an adversary controlling $f$ parties.
+In this post we discuss another classic impossibility result. This time in the [synchronous model](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound shows that with $n=3f$ parties one cannot solve Byzantine agreement in the face of an adversary controlling $f$ parties. We show the version where $n=3$ parties.
 
 Informally this lower bound captures the following:
 *if there are only three parties $A,B,C$ and say $B$ and $C$ blame each other for lying and provide no proof-of-malice to $A$, then $A$ has no way to decide between $B$ and $C$. $A$ has no way to know who to trust and agree with.* 
@@ -29,14 +29,14 @@ The high-level approach to the lower bound will be similar to our previous lower
 
 In the previous lower bound, we used messages delays due to partial synchrony to create the indistinguishability arguments. In this lower bound, we are crucially going to rely on the ability of an adversary to *simulate* different worlds and present different views of the worlds to different parties. 
 
-Suppose there is a protocol that can achieve Byzantine agreement with three parties. We will define worlds 1, 2, and 3:
+We prove this result by contradiction. Suppose there is a protocol that can achieve Byzantine agreement with three parties. We will define worlds 1, 2, and 3:
 
 **World 1:**
 <p align="center">
   <img src="/uploads/FLM-world1.png" width="256" title="FLM world 1">
 </p>
 
-In World 1, parties $A$ and $B$ start with input 1. Corrupt party $C$ simulates the worlds of four players, $C, A', B', C'$ connected in a peculiar fashion as shown in the figure. $C$ starts with input 1 whereas, $A', B'$ and $C'$ start with input 0. Thus, $A$ interacts with an instance of $C$ that starts with input 1 and $B$ interacts with an instance of $C$, i.e., $C'$ with input 0. Intuitively, by sending messages to $B$ based on what it receives from $A'$, $C$ is framing $A$ as if $A$ started with input 0. Similarly, $C'$ is framing $B$ by sending messages received from $B'$. The connections in the peculiar order ensures that the simulated parties can send appropriate messages.
+In World 1, parties $A$ and $B$ start with input 1. Corrupt party $C$ simulates the worlds of four players, $C, A', B', C'$ connected in a peculiar fashion as shown in the figure. $C$ starts with input 1 whereas, $A', B'$ and $C'$ start with input 0. Thus, $A$ interacts with an instance of $C$ that starts with input 1 and $B$ interacts with an instance of $C$ (i.e., $C'$) that starts with input 0. Intuitively, by sending messages to $B$ based on what it receives from $A'$, $C$ is framing $A$ as if $A$ started with input 0. Similarly, $C'$ is framing $B$ by sending messages received from $B'$. The connections in the peculiar order ensures that the simulated parties can send appropriate messages to $A$ and $B$.
 
 Now, since validity property holds despite what the corrupt party $C$ does, $A$ and $B$ commit to 1.
 
@@ -52,7 +52,7 @@ In World 2, parties $B$ and $C$ start with input 0. Corrupt party $A$ simulates 
   <img src="/uploads/FLM-world3.png" width="256" title="FLM world 3">
 </p>
 
-In World 3, $A$ starts with 1 and $C$ starts with 0. Corrupt party $B$ simulates the worlds of four players, $B$, $C'$, $A'$, and $B'$ as shown in the figure. $B$ and $C'$ start with input 1 whereas $A'$ and $B'$ start with input 0. 
+In World 3, party $A$ starts with 1 and $C$ starts with 0. Corrupt party $B$ simulates the worlds of four players, $B$, $C'$, $A'$, and $B'$ as shown in the figure. Parties $B$ and $C'$ start with input 1 whereas $A'$ and $B'$ start with input 0. 
 
 The question is: what do $A$ and $C$ output?
 
@@ -62,7 +62,7 @@ We argue that $A$ outputs 1 and $C$ outputs 0. Why?
   <img src="/uploads/FLM-indistinguishability.png" width="512" title="Indistinguishability between World 1 and World 3 for A">
 </p>
 
-Observe that from $A$'s perspective, World 3 is the same as World 1. From the figure, it can be seen that if we start from a double-circled $A$ and go clock-wise, the connections and inputs from parties are exactly the same. Intuitively, observe that in World 1, $C'$ started with input 0 and framed $B$ to have input 0 (the fully connected hexagon is necessary to make the argument more formal). However, $A$ decided to output 1 in World 1. Thus, since it obtains exactly the same set of messages in World 3, $A$ outputs 1. By a similar argument $C$ outputs 0.
+Observe that from party $A$'s perspective, World 3 is the same as World 1. From the figure, it can be seen that if we start from a double-circled $A$ and go clock-wise, the connections and inputs from parties are exactly the same. Intuitively, observe that in World 1, $C'$ started with input 0 and framed $B$ to have input 0 (the fully connected hexagon is necessary to make the argument more formal). However, $A$ decided to output 1 in World 1. Thus, since it obtains exactly the same set of messages in World 3, party $A$ outputs 1. By a similar argument party $C$ outputs 0.
 
 
 The extension of this lower bound to [computationally bounded adversaries](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) turns out to depend on the model:
