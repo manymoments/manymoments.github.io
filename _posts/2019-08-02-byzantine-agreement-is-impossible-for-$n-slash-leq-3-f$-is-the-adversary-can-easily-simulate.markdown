@@ -19,7 +19,7 @@ In this post we discuss another classic impossibility result. This time in the [
 Informally this lower bound captures the following:
 *if there are only three parties $A,B,C$ and say $B$ and $C$ blame each other for lying and provide no proof-of-malice to $A$, then $A$ has no way to decide between $B$ and $C$. $A$ has no way to know who to trust and agree with.* 
 
-**[Fisher, Lynch and Merritt 1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf): It is impossible to solve Synchronous [Agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) against a computationally unbounded Byzantine adversary if $f \geq n/3$.** 
+**[Fisher, Lynch and Merritt 1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf): It is impossible to solve synchronous [agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) in a plain authenticated channels model if $f \geq n/3$.** 
 
 
 
@@ -66,12 +66,11 @@ Observe that from party $A$'s perspective, World 3 is the same as World 1. From 
 
 Thus, if the validity property holds in Worlds 1 and 2, the agreement property cannot hold in World 3 (we cannot show absence of validity in World 3 since the honest parties started with different values).
 
-The extension of this lower bound to [computationally bounded adversaries](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) turns out to depend on the model:
-1. Under the *classic* computational assumptions that assume the adversary is *polynomially bounded*, this lower bound still holds assuming there is not setup. In this model, the only know way to circumvent it is to assume both a [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/) and a [computationally bounded](http://www.ccs.neu.edu/home/alina/classes/Spring2018/Lecture3.pdf) adversary.
-2. Under more fine grained assumptions where the adversaries power to solve certain computational puzzles is restricted, it is in fact possible to circumvent this lower bound - without any trusted setup. See [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf).
+**Simulation of parties by the adversary**
 
-
-The main thing to observe is that the lower bound requires the adversary to simulate $n+f$ parties. So this lower bound does not hold if the computational assumptions dis-allow this (for example if you assume the adversary has bounded computational power to solve a mildly hard cryptographic puzzle. 
+The main thing to observe is that the lower bound requires the adversary to simulate $4$ parties (in general, $n+f$ parties). So this lower bound does not hold if the adversary cannot simulate.
+- Trusted setup: Under the *classic* computational assumptions that assume the adversary is *polynomially bounded*, this lower bound still holds assuming there is not setup. If there is a [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/), then the adversary will not be able to simulate all of the other parties with different inputs.
+- Computationally bounded adversaries: Under more fine grained assumptions where the adversaries power to solve certain computational puzzles is restricted, it is in fact possible to circumvent this lower bound - without any trusted setup. See [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf).
 
 The other thing to observe is that when the FLM bound holds, it holds in a strong way for randomized protocols, dis-allowing even protocols that reach agreement with a small constant probability of error.
 
