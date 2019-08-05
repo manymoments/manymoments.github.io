@@ -41,7 +41,7 @@ We prove this result by contradiction. Suppose there is a protocol that can achi
   <img src="/uploads/FLM-world1.png" width="256" title="FLM world 1">
 </p>
 
-In World 1, parties $A$ and $B$ start with input 1. Corrupt party $C$ simulates the worlds of four players, $C, A', B', C'$ connected in a peculiar fashion as shown in the figure. $C$ starts with input 1 whereas, $A', B'$ and $C'$ start with input 0. Thus, $A$ interacts with an instance of $C$ that starts with input 1 and $B$ interacts with an instance of $C$ (i.e., $C'$) that starts with input 0. Intuitively, by sending messages to $B$ based on what it receives from $A'$, $C$ is framing $A$ as if $A$ started with input 0. Similarly, $C'$ is framing $B$ by sending messages received from $B'$. The connections in the peculiar order ensures that the simulated parties can send appropriate messages to $A$ and $B$.
+In World 1, parties $A$ and $B$ start with input 1. Corrupt party $C$ simulates the worlds of four players, $C, A', B', C'$ connected in a peculiar fashion as shown in the figure. $C$ starts with input 1 whereas, $A', B'$ and $C'$ start with input 0. Thus, $B$ interacts with an instance of $C$ that starts with input 1 and $A$ interacts with an instance of $C$ (i.e., $C'$) that starts with input 0. Intuitively, by sending messages to $B$ based on what it receives from $A'$, $C$ is framing $A$ as if $A$ started with input 0. Similarly, $C'$ is framing $B$ by sending messages received from $B'$. The connections in the peculiar order ensures that the simulated parties can send appropriate messages to $A$ and $B$.
 
 Now, since validity property holds despite what the corrupt party $C$ does, $A$ and $B$ commit to 1.
 
