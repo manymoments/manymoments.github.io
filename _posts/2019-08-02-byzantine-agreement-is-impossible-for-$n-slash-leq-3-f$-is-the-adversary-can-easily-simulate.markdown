@@ -1,6 +1,9 @@
 ---
 title: Byzantine Agreement is impossible for $n \leq 3 f$ if the Adversary can Simulate
 date: 2019-08-02 03:55:00 -07:00
+tags:
+- dist101
+- lowerbound
 ---
 
 <p align="center">
@@ -79,5 +82,5 @@ The other thing to observe is that when the FLM bound holds, it holds in a stron
 
 
 
-Please leave comments on [Twitter](...)
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1158276207860838400?s=20)
 
