@@ -64,6 +64,7 @@ We argue that $A$ outputs 1 and $C$ outputs 0. Why?
 
 Observe that from party $A$'s perspective, World 3 is the same as World 1. From the figure, it can be seen that if we start from a double-circled $A$ and go clock-wise, the connections and inputs from parties are exactly the same. Intuitively, observe that in World 1, $C'$ started with input 0 and framed $B$ to have input 0 (the fully connected hexagon is necessary to make the argument more formal). However, $A$ decided to output 1 in World 1. Thus, since it obtains exactly the same set of messages in World 3, party $A$ outputs 1. By a similar argument party $C$ outputs 0.
 
+Thus, if the validity property holds in Worlds 1 and 2, the agreement property cannot hold in World 3 (we cannot show absence of validity in World 3 since the honest parties started with different values).
 
 The extension of this lower bound to [computationally bounded adversaries](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) turns out to depend on the model:
 1. Under the *classic* computational assumptions that assume the adversary is *polynomially bounded*, this lower bound still holds assuming there is not setup. In this model, the only know way to circumvent it is to assume both a [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/) and a [computationally bounded](http://www.ccs.neu.edu/home/alina/classes/Spring2018/Lecture3.pdf) adversary.
