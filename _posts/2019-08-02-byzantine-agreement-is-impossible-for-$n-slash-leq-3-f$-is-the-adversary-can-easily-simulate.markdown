@@ -68,11 +68,11 @@ Thus, if the validity property holds in Worlds 1 and 2, the agreement property c
 
 **Simulation of parties by the adversary**
 
-The main thing to observe is that the lower bound requires the adversary to simulate $4$ parties (in general, $n+f$ parties). So this lower bound does not hold if the adversary cannot simulate.
+The main thing to observe is that the lower bound requires the adversary to simulate $4$ parties (in general, $n+f$ parties). So this lower bound does not hold if the adversary cannot simulate. Here are a couple of interesting cases:
 - Trusted setup: Under the *classic* computational assumptions that assume the adversary is *polynomially bounded*, this lower bound still holds assuming there is not setup. If there is a [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/), then the adversary will not be able to simulate all of the other parties with different inputs.
-- Computationally bounded adversaries: Under more fine grained assumptions where the adversaries power to solve certain computational puzzles is restricted, it is in fact possible to circumvent this lower bound - without any trusted setup. See [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf).
+- Computationally bounded adversaries: Under more fine grained assumptions where the adversaries' power to solve certain computational puzzles is restricted, it is in fact possible to circumvent this lower bound - without any trusted setup. See [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf).
 
-The other thing to observe is that when the FLM bound holds, it holds in a strong way for randomized protocols, dis-allowing even protocols that reach agreement with a small constant probability of error.
+The other thing to observe is that when the FLM bound holds, it holds in a strong way for randomized protocols, disallowing even protocols that reach agreement with a small constant probability of error.
 
 
 **[FLM 85 modern version] It is impossible to solve Synchronous Agreement with probability more than $2/3$ against an a Byzantine adversary that can Simulate $n+f$ parties if $f \geq n/3$.** 
