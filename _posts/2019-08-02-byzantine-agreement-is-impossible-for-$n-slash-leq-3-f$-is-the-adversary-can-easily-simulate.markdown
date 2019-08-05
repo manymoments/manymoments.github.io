@@ -75,7 +75,7 @@ The main thing to observe is that the lower bound requires the adversary to simu
 The other thing to observe is that when the FLM bound holds, it holds in a strong way for randomized protocols, disallowing even protocols that reach agreement with a small constant probability of error.
 
 
-**[FLM 85 modern version] It is impossible to solve synchronous agreement with probability more than $2/3$ against a Byzantine adversary that can simulate $n+f$ parties if $f \geq n/3$.** 
+**[FLM 85 modern version] It is impossible to solve synchronous agreement with probability $> 2/3$ against a Byzantine adversary that can simulate $n+f$ parties if $f \geq n/3$.** 
 
 
 
