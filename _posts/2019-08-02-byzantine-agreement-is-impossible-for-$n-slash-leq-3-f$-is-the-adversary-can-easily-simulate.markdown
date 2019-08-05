@@ -86,3 +86,4 @@ The other thing to observe is that when the FLM bound holds, it holds in a stron
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1158276207860838400?s=20)
 
+**Acknowledgment.** We thank Georgios Konstantopoulos and Avishay Yanai for identifying typographical errors and helping improve the post. 
