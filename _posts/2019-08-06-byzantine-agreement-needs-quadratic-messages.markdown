@@ -25,7 +25,7 @@ Now let us formalize this intuition to ensure that the remaining honest nodes do
   <img src="/uploads/dr-world1.png" width="256" title="DR world 1">
 </p>
 
-The adversary corrupts a set $V$ of $f/2$ nodes that does not include the designated sender. Suppose $U$ denotes the remaining nodes. All parties in $V$ behave like honest nodes except (i) they ignore the first $f/2$ messages sent to them, and (ii) they do not send messages to each other. Suppose the honest designated sender has input 0. Then, for validity to hold, all honest nodes must output 0.
+In World 1, the adversary corrupts a set $V$ of $f/2$ nodes that does not include the designated sender. Suppose $U$ denotes the remaining nodes. All parties in $V$ behave like honest nodes except (i) they ignore the first $f/2$ messages sent to them, and (ii) they do not send messages to each other. Suppose the honest designated sender has input 0. Then, for validity to hold, all honest nodes must output 0.
 
 **World 2:**
 
@@ -34,20 +34,19 @@ The adversary corrupts a set $V$ of $f/2$ nodes that does not include the design
 </p>
 
 If the protocol has communication complexity $\leq (f/2)^2$, then there must exist a node $p \in V$ that receives $\leq f/2$ 
-messages. In this world, the adversary does everything as in World 1, except (i) it does not corrupt $p$, and (ii) it corrupts all nodes in $U$ that sent messages to $p$ (this may also include the designated sender). These corrupt nodes do not send messages to $p$ but behave honestly with other nodes in $U$. Since $p$ receives $\leq f/2$ messages in World 1, at most $f$ nodes are corrupted in World 2 ($f/2$ senders and $|V| = f/2$).
+messages. In World 2, the adversary does everything as in World 1, except (i) it does not corrupt $p$, and (ii) it corrupts all nodes in $U$ that sent messages to $p$ (this may also include the designated sender). These corrupt nodes do not send messages to $p$ but behave honestly with other nodes in $U$. Since $p$ receives $\leq f/2$ messages in World 1, at most $f$ nodes are corrupted in World 2 ($f/2$ senders and $|V| = f/2$).
 
-What do honest nodes in $U$ output in World 2? We argue that they will output 0. Observe that the two worlds are indistinguishable. Since the protocol is deterministic, they receive exactly the same messages in both worlds.
-
-However, since node $p$ does not receive any messages, if it outputs 1, then consistency is violated.
+What do honest nodes in $U$ output in World 2? We argue that they will output 0. Observe that the two worlds are indistinguishable. Since the protocol is deterministic, they receive exactly the same messages in both worlds. However, since node $p$ does not receive any messages, if it outputs 1, then consistency is violated.
 
 
 The lower bound is quite strong; it holds even in the presence of static adversaries. Since the lower bound, there have been a few attempts at circumventing the lower bound. Here are a few notable ones:
-King-Saia []: Through a sequence of interesting works, King and Saia presented a beautiful protocol that broke the quadratic communication complexity. They circumvented the bound by showing a protocol that does succeed only with very high probability and not always (they are randomization?).
-HotStuff? Expected linear if we use randomized view change and for f < n/3?
+- [King-Saia](https://arxiv.org/pdf/1002.4561.pdf): Through a sequence of interesting works, King and Saia presented a beautiful protocol that broke the quadratic communication complexity. They circumvented the bound by showing a protocol that does succeed only with very high probability and not always (they are randomization?).
+- HotStuff? Expected linear if we use randomized view change and for f < n/3?
+- Algorand? using committees?
+- algorand/king-saia introduce error probability. What else has been circumvented in the bound?
+- Recently, in PODC’19, we generalized this lower bound for a randomized protocol.
 
-Recently, in PODC’19, we generalized this lower bound for a randomized protocol.
-
-[Randomized version of Dolev-Reischuk.] Any (possibly randomized) BA protocol must in expectation incur at least $\Omeag(f^2)$ communication in the presence of a strongly adaptive adversary capable of performing after-the-fact removal, where $f$ denotes the number of corrupt nodes.
+[Randomized version of Dolev-Reischuk.](https://users.cs.duke.edu/~kartik/papers/podc2019.pdf) Any (possibly randomized) BA protocol must in expectation incur at least $\Omega(f^2)$ communication in the presence of a strongly adaptive adversary capable of performing after-the-fact removal, where $f$ denotes the number of corrupt nodes.
 
 
 Observe that we show a bound for Byzantine Broadcast (and not Byzantine Agreement). In terms of feasibility, both problems are equivalent and each of them can be reduced from the other. However, communication complexity remains the same only when Byzantine Broadcast is realized using Byzantine Agreement; the sender can send the value to all nodes and the nodes can run a Byzantine Agreement protocol. Thus, for communication complexity, showing a bound on Byzantine Broadcast is strictly better.
