@@ -46,7 +46,7 @@ In World 1, the adversary corrupts a set $V$ of $f/2$ nodes that does not includ
 </p>
 
 If the protocol has communication complexity $\leq (f/2)^2$, then there must exist a node $p \in V$ that receives $\leq f/2$ 
-messages. In World 2, the adversary does everything as in World 1, except (i) it does not corrupt $p$, and (ii) it corrupts all nodes in $U$ that sent messages to $p$ (this may also include the designated sender). These corrupt nodes do not send messages to $p$ but behave honestly with other nodes in $U$. Since $p$ receives $\leq f/2$ messages in World 1, at most $f$ nodes are corrupted in World 2 ($f/2$ senders and $|V| = f/2$).
+messages. In World 2, the adversary does everything as in World 1, except (i) it does not corrupt $p$, and (ii) it corrupts all nodes in $U$ that sent messages to $p$ (this may also include the designated sender). These corrupt nodes do not send messages to $p$ but behave honestly with other nodes in $U$. Since $p$ receives $\leq f/2$ messages in World 1, at most $f$ nodes are corrupted in World 2 ($\leq f/2$ senders and $|V| = f/2$).
 
 What do honest nodes in $U$ output in World 2? We argue that they will output 0. Observe that the two worlds are indistinguishable. Since the protocol is deterministic, they receive exactly the same messages in both worlds. However, since node $p$ does not receive any messages, if it outputs 1, then consistency is violated.
 
