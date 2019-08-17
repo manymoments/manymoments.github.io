@@ -7,7 +7,7 @@ tags:
 - dist101
 ---
 
-The quest for building scalable Byzantine agreement has many challenges. In this post we highlight the [Dolev and Reischuk](http://hebuntu.cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf) lower bound from 1982 that shows that Quadratic messages is needed for deterministic protocols.
+The quest for building scalable Byzantine agreement has many challenges. In this post we highlight the 1982 [Dolev and Reischuk](http://hebuntu.cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf) lower bound.
 
 
 <p align="center">
@@ -20,6 +20,8 @@ In this series of posts we are revisiting classic lower bounds from the 1980's. 
 In our earlier lower bound posts, we discussed the limits on adversarial threshold (i) [DLS](https://ittaiab.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) under partial synchrony, and (ii) [FLM](https://ittaiab.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) in the absence of a [trusted setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/). In this post, we discuss yet another classic impossibility result on the limits on communication complexity in Byzantine Broadcast. This result is by [Dolev and Reischuk](http://hebuntu.cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf) from 1982. It states that if there are $f$ corruptions, any deterministic Byzantine Broadcast protocol needs to send $> (f/2)^2$ messages.
 
 In 1980, [PSL](https://lamport.azurewebsites.net/pubs/reaching.pdf) showed the first feasibility result for consensus in the presence of Byzantine adversaries. However, their solution had an exponential (in n) communication complexity. An obvious question then is to figure out the lowest communication complexity that could be obtained. Dolev and Resichuk showed that the barrier to quadratic communication complexity cannot be broken by deterministic protocols for a fault threshold f.
+
+At a very high level, the Dolev and Resichu lower bound says that if you send few messages, then some party will receive no message! The party that receives no message has no way of reaching agreement with the rest.
 
 In order to prove the lower bound, we will leverage a trivial version of indistinguishability. We are going to show that if $\leq (f/2)^2$ messages are sent, we can create a world where a node $p$ receives no message at all. Thus, node $p$ cannot distinguish between a world where the designated sender sends 0 vs a world where it sends 1.
 
