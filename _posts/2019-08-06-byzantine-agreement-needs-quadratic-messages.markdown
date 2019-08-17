@@ -7,6 +7,11 @@ tags:
 - dist101
 ---
 
+<p align="center">
+  co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
+</p>
+
+
 In this series of posts we are revisiting classic lower bounds from the 1980's. Most of them focused on *deterministic* protocols and computationally *unbounded* adversaries. Part of our goal is to provide a more modern view that also considers *randomized* protocols instead.
 
 In our earlier lower bound posts, we discussed the limits on adversarial threshold (i) [DLS](https://ittaiab.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) under partial synchrony, and (ii) [FLM](https://ittaiab.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) in the absence of a [trusted setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/). In this post, we discuss yet another classic impossibility result on the limits on communication complexity in Byzantine Broadcast. This result is by [Dolev and Reischuk](http://hebuntu.cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf) from 1982. It states that if there are $f$ corruptions, any deterministic Byzantine Broadcast protocol needs to send $> (f/2)^2$ messages.
@@ -41,7 +46,7 @@ What do honest nodes in $U$ output in World 2? We argue that they will output 0.
 
 The lower bound is quite strong; it holds even in the presence of static adversaries. There have been several attempts at circumventing the lower bound. Here are a few notable ones:
 - [King-Saia](https://arxiv.org/pdf/1002.4561.pdf): Through a sequence of fascinating new ideas, King and Saia presented a beautiful protocol that broke the quadratic communication complexity. Their protocol uses randomness and assumes that honest parties can erase data - so if they later get corrupt the adversary cannot extract the erased data. 
-- Algorand uses randomness to cryptographically compute small committees. Algorand assumes the adaptive adversary cannot cause the corrupt parties to remove the in-flight messages that were sent before they party was corrupted.
+- [Algorand](https://www.sciencedirect.com/science/article/pii/S030439751930091X?via%3Dihub) uses randomness to cryptographic techniques to compute small committees. Algorand assumes the adaptive adversary cannot cause the corrupt parties to remove the in-flight messages that were sent before they party was corrupted.
 - Recently, in PODC’19, we generalized this lower bound for a randomized protocol.
 
 [Randomized version of Dolev-Reischuk.](https://users.cs.duke.edu/~kartik/papers/podc2019.pdf) Any (possibly randomized) BA protocol must in expectation incur at least $\Omega(f^2)$ communication in the presence of a strongly adaptive adversary capable of performing after-the-fact removal, where $f$ denotes the number of corrupt nodes.
