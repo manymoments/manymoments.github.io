@@ -6,7 +6,7 @@ tags:
 - blockchain101
 ---
 
-Imagine that that Aliens lands on earth with a new SHA256 machine. Suppose they build a chain from the genesis that is longer than any other chain on earth and contains only empty blocks. Could they erase all bitcoin transactions?
+Imagine that that Aliens land on earth with a new SHA256 machine. Suppose they build a chain from the genesis that is longer than any other chain on earth and contains only empty blocks. Could they erase all bitcoin transactions?
 
 
 https://satoshi.nakamotoinstitute.org/posts/bitcointalk/232/
