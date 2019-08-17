@@ -40,7 +40,7 @@ In World 1, the adversary corrupts a set $V$ of $f/2$ nodes that does not includ
 **World 2:**
 
 <p align="center">
-  <img src="/uploads/dr-world2.png" width="256" title="DR world 2">
+  <img src="/uploads/dr-world2.png" width="320" title="DR world 2">
 </p>
 
 If the protocol has communication complexity $\leq (f/2)^2$, then there must exist a node $p \in V$ that receives $\leq f/2$ 
