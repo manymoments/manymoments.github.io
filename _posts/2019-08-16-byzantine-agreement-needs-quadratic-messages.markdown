@@ -19,7 +19,7 @@ In this series of posts we are revisiting classic lower bounds from the 1980's. 
 
 In our earlier lower bound posts, we discussed the limits on adversarial threshold (i) [DLS](https://ittaiab.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) under partial synchrony, and (ii) [FLM](https://ittaiab.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) in the absence of a [trusted setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/). In this post, we discuss yet another classic impossibility result on the limits on communication complexity in Byzantine Broadcast. 
 
-**[Dolev and Reischuk 1982](http://hebuntu.cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf): if there are $f$ corruptions, any deterministic Byzantine Broadcast protocol needs to send $> \Omega(f/2)^2$ messages.** 
+**[Dolev and Reischuk 1982](http://hebuntu.cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf): if there are $f$ corruptions, any deterministic Byzantine Broadcast protocol needs to send $> (f/2)^2$ messages.** 
 
 
 In 1980, [PSL](https://lamport.azurewebsites.net/pubs/reaching.pdf) showed the *first* feasibility result for consensus in the presence of Byzantine adversaries. However, their solution had an *exponential* (in $n$ the number of parties) communication complexity. An obvious question then is to figure out the lowest communication complexity that could be obtained. Dolev and Resichuk showed that the barrier to quadratic communication complexity cannot be broken by deterministic protocols.
