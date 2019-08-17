@@ -1,5 +1,5 @@
 ---
-title: Byzantine Agreement needs Quadratic Messages
+title: Does Byzantine Agreement need Quadratic Messages?
 date: 2019-08-16 15:30:00 -07:00
 tags:
 - lowerbound
