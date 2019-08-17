@@ -7,6 +7,9 @@ tags:
 - dist101
 ---
 
+The quest for building scalable Byzantine agreement has many challenges. In this post we highlight the [Dolev and Reischuk](http://hebuntu.cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf) lower bound from 1982 that shows that Quadratic messages is needed for deterministic protocols.
+
+
 <p align="center">
   co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
 </p>
@@ -44,7 +47,7 @@ messages. In World 2, the adversary does everything as in World 1, except (i) it
 What do honest nodes in $U$ output in World 2? We argue that they will output 0. Observe that the two worlds are indistinguishable. Since the protocol is deterministic, they receive exactly the same messages in both worlds. However, since node $p$ does not receive any messages, if it outputs 1, then consistency is violated.
 
 
-The lower bound is quite strong; it holds even in the presence of static adversaries. There have been several attempts at circumventing the lower bound. Here are a few notable ones:
+The lower bound uses the the fact that the protocol is deterministic. There have been several attempts at circumventing the lower bound using **randomness** and even against an adaptive adversary. Here are a few notable ones:
 - [King-Saia](https://arxiv.org/pdf/1002.4561.pdf): Through a sequence of fascinating new ideas, King and Saia presented a beautiful protocol that broke the quadratic communication complexity. Their protocol uses randomness and assumes that honest parties can erase data - so if they later get corrupt the adversary cannot extract the erased data. 
 - [Algorand](https://www.sciencedirect.com/science/article/pii/S030439751930091X?via%3Dihub) uses randomness to cryptographic techniques to compute small committees. Algorand assumes the adaptive adversary cannot cause the corrupt parties to remove the in-flight messages that were sent before they party was corrupted.
 - Recently, in PODC’19, we generalized this lower bound for a randomized protocol.
