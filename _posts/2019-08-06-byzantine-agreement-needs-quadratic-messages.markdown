@@ -39,11 +39,9 @@ messages. In World 2, the adversary does everything as in World 1, except (i) it
 What do honest nodes in $U$ output in World 2? We argue that they will output 0. Observe that the two worlds are indistinguishable. Since the protocol is deterministic, they receive exactly the same messages in both worlds. However, since node $p$ does not receive any messages, if it outputs 1, then consistency is violated.
 
 
-The lower bound is quite strong; it holds even in the presence of static adversaries. Since the lower bound, there have been a few attempts at circumventing the lower bound. Here are a few notable ones:
-- [King-Saia](https://arxiv.org/pdf/1002.4561.pdf): Through a sequence of interesting works, King and Saia presented a beautiful protocol that broke the quadratic communication complexity. They circumvented the bound by showing a protocol that does succeed only with very high probability and not always (they are randomization?).
-- HotStuff? Expected linear if we use randomized view change and for f < n/3?
-- Algorand? using committees?
-- algorand/king-saia introduce error probability. What else has been circumvented in the bound?
+The lower bound is quite strong; it holds even in the presence of static adversaries. There have been several attempts at circumventing the lower bound. Here are a few notable ones:
+- [King-Saia](https://arxiv.org/pdf/1002.4561.pdf): Through a sequence of fascinating new ideas, King and Saia presented a beautiful protocol that broke the quadratic communication complexity. Their protocol uses randomness and assumes that honest parties can erase data - so if they later get corrupt the adversary cannot extract the erased data. 
+- Algorand uses randomness to cryptographically compute small committees. Algorand assumes the adaptive adversary cannot cause the corrupt parties to remove the in-flight messages that were sent before they party was corrupted.
 - Recently, in PODC’19, we generalized this lower bound for a randomized protocol.
 
 [Randomized version of Dolev-Reischuk.](https://users.cs.duke.edu/~kartik/papers/podc2019.pdf) Any (possibly randomized) BA protocol must in expectation incur at least $\Omega(f^2)$ communication in the presence of a strongly adaptive adversary capable of performing after-the-fact removal, where $f$ denotes the number of corrupt nodes.
