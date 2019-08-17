@@ -29,7 +29,7 @@ In order to prove the lower bound, we will leverage a trivial version of indisti
 
 Here’s the proof intuition: In any set of $f/2$ nodes, if all of these nodes receive $> f/2$ messages from honest nodes, then we have a protocol with $> (f/2)^2$ messages. So, if there exists a protocol sending fewer messages, there must exist one node, say node $p$, that receives $\leq f/2$ messages. Now imagine that all of the nodes sending messages to node $p$ (there can be at most $f/2$ of them) are corrupt. If these corrupt nodes do not send anything to node $p$, then it may output a value that is not the same as what other honest nodes output, thereby causing a consistency violation.
 
-Now let us formalize this intuition to ensure that the remaining honest nodes do not send a message to node $p$ to help p output the correct value. This may be possible, for instance, if node $p$ contacts all other nodes. We will prove the theorem by describing two worlds and using indistinguishability for all honest nodes. Here we go.
+Now let us formalize this intuition to ensure that the remaining honest nodes do not send a message to node $p$ to help $p$ output the correct value. This may be possible, for instance, if node $p$ contacts all other nodes. We will prove the theorem by describing two worlds and using indistinguishability for all honest nodes. Here we go.
 
 **World 1:** 
 
