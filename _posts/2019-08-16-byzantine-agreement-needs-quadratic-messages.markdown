@@ -1,6 +1,6 @@
 ---
 title: Byzantine Agreement needs Quadratic Messages
-date: 2019-08-06 15:30:00 -07:00
+date: 2019-08-16 15:30:00 -07:00
 published: false
 tags:
 - lowerbound
