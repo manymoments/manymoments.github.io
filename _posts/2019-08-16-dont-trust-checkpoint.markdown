@@ -24,3 +24,5 @@ https://github.com/bitcoin/bitcoin/blob/master/src/chainparams.cpp
 
 https://bitcoin.stackexchange.com/questions/39097/do-all-bitcoin-client-enforce-checkpoints 
 
+https://github.com/jamesob/assumeutxo-docs/tree/2019-04-proposal/proposal
+
