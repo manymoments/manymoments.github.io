@@ -8,6 +8,12 @@ share-img: "/uploads/FLM-world3.png"
 Field name: 
 ---
 
+The modern interpretation of the [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bound is that if the adversary can simulate $n+f$ parties then Byzantine agreement is impossible if the adversary controls $f>n/3$ parties.
+
+This lower bound holds because the ability to simulate honest parties is trivial when you have a traditional poly-time adversary (and no PKI setup). A key observation here is that in the proof of work type setting the adversary controlling $f$ parties typically cannot simulate $n+f$ parties. So this lower bound does not hold in those models and hence Byzantine Agreement may be possible even of there is no PKI setup!
+
+   
+
 <p align="center">
   co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
 </p>
@@ -75,7 +81,10 @@ Thus, if the validity property holds in Worlds 1 and 2, the agreement property c
 
 The main thing to observe is that the lower bound requires the adversary to simulate $4$ parties (in general, $n+f$ parties). So this lower bound does not hold if the adversary cannot simulate. Here are a couple of interesting cases:
 - Trusted setup: Under the *classic* computational assumptions that assume the adversary is *polynomially bounded*, this lower bound still holds assuming there is not setup. If there is a [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/), then the adversary will not be able to simulate all of the other parties with different inputs.
-- Computationally bounded adversaries: Under more fine grained assumptions where the adversaries' power to solve certain computational puzzles is restricted, it is in fact possible to circumvent this lower bound - without any trusted setup. See [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf).
+- Computationally bounded adversaries: Under more fine grained assumptions where the adversaries' power to solve certain computational puzzles is restricted, it is in fact possible to circumvent this lower bound - without any trusted setup. See [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf). 
+
+- In particular, Nakamoto Consensus is an example of a Byzantine Agreement protocol that only requires a fresh random genesis as a setup and can withstand $(n/2)(1+\epsilon)>f>n/3$ corruptions (see [GKL](https://eprint.iacr.org/2014/765.pdf)).
+
 
 The other thing to observe is that when the FLM bound holds, it holds in a strong way for randomized protocols, disallowing even protocols that reach agreement with a small constant probability of error.
 
