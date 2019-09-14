@@ -12,7 +12,7 @@ More formally, consider a model where messages arrive after at most $\delta$ tim
 
 Clearly any protocol that is live in an [asynchronous model] is responsive. In fact  one of the main advantages of protocols that work in the asynchronous model is that they do not depend on any timeout and can run as fast as the network allows them.
 
-It turns out that reasoning about responsiveness is important even for protocols that are designed in the [partial synchrony] or synchronous model. Pass and Shi introduced the notion of *conditional responsiveness*. In this framework, there are some conditions and these conditions the protocol "runs as fast as the network allows".
+It turns out that reasoning about responsiveness is important even for protocols that are designed in the [partial synchrony] model or the synchrony model. Pass and Shi introduced the notion of *conditional responsiveness*. In this framework, there are some conditions and these conditions the protocol "runs as fast as the network allows".
 
 ### Responsiveness in Synchrony
 
