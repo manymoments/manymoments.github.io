@@ -1,5 +1,5 @@
 ---
-title: Dont Trust. Verify (and Checkpoint).
+title: Dont Trust. Verify. and Checkpoint.
 date: 2019-09-13 13:32:00 -07:00
 published: false
 tags:
