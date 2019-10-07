@@ -56,3 +56,6 @@ Assume we have a protocol that obtains safety and liveness in the Unknown Latenc
 That's quite easy: let $x$ be the maximum of $\Delta$ and the time until $GST$ starts and observe that if a protocol has safety and liveness assuming that the unknown latency is $x$ then clearly it must have safety and liveness in the GST flavour. Since we assume our protocol works for any finite latency we are done.
 
 Again note that this reduction is extremely wasteful: the value of $x$ may be huge.
+
+
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1181013611491184640?s=20)
