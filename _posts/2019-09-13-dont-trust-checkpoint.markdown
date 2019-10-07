@@ -24,10 +24,10 @@ A checkpoint provides **finality**. All the transactions till block 295000 are f
 
 While some believe this is [not a security feature](https://bitcoin.stackexchange.com/questions/39097/do-all-bitcoin-client-enforce-checkpoints), it does effectively enforce a consensus decision (by default) that forces all users using the same codebase to accept this checkpoint and everything before it as final.
 
-The idea of adding checkpoints by publishing hardcoded values into a [github](https://github.com/bitcoin) repository is somewhat controversial. It's essentially a way for a code base to create a new genesis and effectively disallows any alternative chain from the previous genesis. On the one hand this is a strong security measure but on the other hand this gives non-trivial power to the maintainers of the github repository. The real question then becomes: who decides what will be a checkpoint? who decide how often? what will be its value?  
+The idea of adding checkpoints by publishing hardcoded values into a [github](https://github.com/bitcoin) repository is somewhat controversial. It's essentially a way for a code base to create a new genesis and effectively disallows any alternative chain from the previous genesis. On the one hand this is a strong security measure but on the other hand this gives non-trivial power to the maintainers of the github repository. The real question then becomes: who decides what will be a checkpoint? who decides how often? what will be its value?  
 
 The Bitcoin core client uses checkpoints in a sporadic manner.  Seems to be used till 2014 and later abandoned. Their motivation seems to be that it [protects against header flooding attacks](https://github.com/bitcoin/bitcoin/issues/15095 
-). However there seems to be no systematic reasoning as to when to use checkpoints.
+). However there seems to be no documented systematic reasoning as to when to use checkpoints.
 
 The [Casper finality gadget](https://arxiv.org/abs/1710.09437) can be viewed as a way to use a BFT based sub-system to decide on checkpoints that is governed by a set of validators (instead of a set of Github maintainers). More on finality gadgets in a later post.
 
