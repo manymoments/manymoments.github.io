@@ -29,6 +29,6 @@ The idea of adding checkpoints by publishing hardcoded values into a [github](ht
 The Bitcoin core client uses checkpoints in a sporadic manner.  Seems to be used till 2014 and later abandoned. Their motivation seems to be that it [protects against header flooding attacks](https://github.com/bitcoin/bitcoin/issues/15095 
 ). However there seems to be no documented systematic reasoning as to when to use checkpoints.
 
-The [Casper finality gadget](https://arxiv.org/abs/1710.09437) can be viewed as a way to use a BFT based sub-system to decide on checkpoints that is governed by a set of validators (instead of a set of Github maintainers). More on finality gadgets in a later post.
+The [Casper finality gadget](https://arxiv.org/abs/1710.09437) can be viewed as a way to use a [BFT based](https://ittaiab.github.io/2019-06-23-what-is-the-difference-between/) sub-system to decide on checkpoints that is governed by a set of validators (instead of a set of Github maintainers). More on finality gadgets in a later post.
 
 Please leave comments on [Twitter]()
