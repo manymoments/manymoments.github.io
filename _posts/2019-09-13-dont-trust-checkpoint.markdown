@@ -1,7 +1,6 @@
 ---
 title: Dont Trust. Verify. and Checkpoint?
 date: 2019-09-13 13:32:00 -07:00
-published: false
 tags:
 - blockchain101
 ---
@@ -30,6 +29,6 @@ The idea of adding checkpoints by publishing hardcoded values into a [github](ht
 The Bitcoin core client uses checkpoints in a sporadic manner.  Seems to be used till 2014 and later abandoned. Their motivation seems to be that it [protects against header flooding attacks](https://github.com/bitcoin/bitcoin/issues/15095 
 ). However there seems to be no systematic reasoning as to when to use checkpoints.
 
-The [Casper finality gadget](https://arxiv.org/abs/1710.09437) can be viewed as a way to use a BFT based sub-system to decide on checkpoints that is governed by a set of validators (instead of a set of Github maintainers). More on that in a later post.
+The [Casper finality gadget](https://arxiv.org/abs/1710.09437) can be viewed as a way to use a BFT based sub-system to decide on checkpoints that is governed by a set of validators (instead of a set of Github maintainers). More on finality gadgets in a later post.
 
 Please leave comments on [Twitter]()
