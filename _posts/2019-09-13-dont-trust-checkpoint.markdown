@@ -31,4 +31,4 @@ The Bitcoin core client uses checkpoints in a sporadic manner.  Seems to be used
 
 The [Casper finality gadget](https://arxiv.org/abs/1710.09437) can be viewed as a way to use a [BFT based](https://ittaiab.github.io/2019-06-23-what-is-the-difference-between/) sub-system to decide on checkpoints that is governed by a set of validators (instead of a set of Github maintainers). More on finality gadgets in a later post.
 
-Please leave comments on [Twitter]()
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1181022613511888896?s=20)
