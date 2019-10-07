@@ -1,15 +1,16 @@
 ---
 title: Flavours of Partial Synchrony
 date: 2019-09-13 23:57:00 -07:00
-published: false
 tags:
 - dist101
 ---
 
-This is a follow up post to the post on [Synchrony, Asynchrony and Partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). Here we discuss in more details the two flavours of partial synchrony from [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf) which one is a better model of the real world and how they are both (in theory) equivalent.
+This is a follow up post to the post on [Synchrony, Asynchrony and Partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). Here we discuss in more details the two flavours of partial synchrony from [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf): **GST** and **unknown latency**.
+
+We discuss why *in practice* the GST flavour seems to be a better model of the real world and why *in theory*, the two flavours are equivalent.
 
 
-### the GST flavour
+### The GST flavour of Partial Synchrony
 
 The **Global Stabilization Time** (GST) model for Partial Synchrony assumes that:
 1. there is an event called *GST* that occurs after some finite time.
@@ -22,7 +23,7 @@ The real world definitely does not behave like this, so why is this model so pop
 
 The *GST* model allows to build systems that perform well in the best case but maintain safety even if the conservative assumptions on latency fail in rare cases. This allows protocol designers to fix the parameter $\Delta$ based on reasonably conservative values.
 
-### the unknown latency flavour
+### The unknown latency flavour of Partial Synchrony
 In the unknown latency model, the system is always synchronous, but the bound of the maximum delay is unknown to the protocol designer.
 
 There are several advantages of this model in terms of simplicity. First, it requires less parameters (no GST, just $
@@ -34,7 +35,7 @@ Unlike the GST model where $\Delta$ can be set conservatively, in the unknown la
 
 In fact many early academic BFT systems had mechanisms that **double** the protocol's estimation of $\Delta$ each time there was a timeout. [Prime](http://www.dsn.jhu.edu/pub/papers/Prime_tdsc_accepted.pdf) showed that this causes a serious denial of service attack.
 
-### The theoretical equivalence 
+### The theoretical equivalence of both flavours of Partial Synchrony
 
 We will now show that the two flavours are in theory equivalent: any protocol that solves consensus in one model can be transformed into a protocol that solves it in the other model.
 
