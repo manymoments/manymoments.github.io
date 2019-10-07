@@ -6,7 +6,7 @@ tags:
 - blockchain101
 ---
 
-Imagine that that Aliens land on earth with a new superfast SHA256 machine. Imagine this machine gives them more than 51% of the hash power of the world (but not enough hash power to completely break SHA256). Suppose they decide to build a chain from the [Bitcoin Genesis block](https://ittaiab.github.io/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/) that is longer than any other chain on earth and put only empty blocks on it. *Could they erase all bitcoin transactions?*
+Imagine that that Aliens land on earth with a new superfast SHA256 machine. Imagine this machine always gives them more than 51% of the current world Bitcoin hash power (but not enough hash power to completely break SHA256). Suppose they decide to build a chain from the [Bitcoin Genesis block](https://ittaiab.github.io/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/) that is longer than any other chain on earth and put only empty blocks on it. *Could they erase all bitcoin transactions?*
 
 Anticipating this type of attack, Satoshi suggested the following [security safeguard](https://satoshi.nakamotoinstitute.org/posts/bitcointalk/232/): 
 
