@@ -14,7 +14,7 @@ Anticipating this type of attack, Satoshi suggested the following [security safe
 >
 > I'll probably put a checkpoint in each version from now on.  Once the software has settled what the widely accepted block chain is, there's no point in leaving open the unwanted non-zero possibility of revision months later.  -- [Satoshi 2010](https://bitcointalk.org/index.php?topic=437)
 
-So the answer is that the Aliens with a superfast SHA256 will fail. By [default](https://github.com/bitcoin/bitcoin/blob/master/src/validation.cpp#L120) the bitcoin core client enforces a set of [checkpoints](https://github.com/bitcoin/bitcoin/blob/master/src/chainparams.cpp#L138). In fact it seems that the person behind the Satoshi email in 2010 suggested to add a checkpoint **in each version from now on***.
+So the answer is that the Aliens with a superfast SHA256 will fail. By [default](https://github.com/bitcoin/bitcoin/blob/master/src/validation.cpp#L120) the bitcoin core client enforces a set of [checkpoints](https://github.com/bitcoin/bitcoin/blob/master/src/chainparams.cpp#L138). In fact it seems that the person behind the Satoshi email in 2010 suggested to add a checkpoint **in each version from now on**.
 
 
 A **checkpoint** on a blockchain is pair (block number, hash). For example the checkpoint (295000, 0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983) indicates that the hash of the 295000th block must be 0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983.
