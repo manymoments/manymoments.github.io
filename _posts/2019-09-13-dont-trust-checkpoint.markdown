@@ -19,7 +19,7 @@ So the answer is that the Aliens with a superfast SHA256 will fail. By [default]
 
 
 A **checkpoint** on a blockchain is pair (block number, hash). For example the checkpoint (295000, 0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983) indicates that the hash of the 295000th block must be 0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983.
-A checkpoint provides **finality**. All the transactions till block 295000 are final, there is no way to revert them, even if you are an alien with a superfast SHA256 machine[^1].
+A checkpoint provides **finality**. All the transactions till block 295000 are final, there is no way to revert them, even if you are an alien with a superfast SHA256 machine [^1].
 
 [^1]: This is assuming the superfast machine is just faster than all the current world hashpower - not a machine that can completely break SHA256.  
 
