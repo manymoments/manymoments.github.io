@@ -22,7 +22,7 @@ A checkpoint provides **finality**. All the transactions till block 295000 are f
 
 [^1]: This is assuming the superfast machine is just faster than all the current world hashpower - not a machine that can completely break SHA256.  
 
-While some believe this is [not a security feature](https://bitcoin.stackexchange.com/questions/39097/do-all-bitcoin-client-enforce-checkpoints), it does effectively enforce a consensus decision that forces all users using the same codebase to accept this checkpoint and everything before it as final.
+While some believe this is [not a security feature](https://bitcoin.stackexchange.com/questions/39097/do-all-bitcoin-client-enforce-checkpoints), it does effectively enforce a consensus decision (by default) that forces all users using the same codebase to accept this checkpoint and everything before it as final.
 
 The idea of adding checkpoints by publishing hardcoded values into a [github](https://github.com/bitcoin) repository is somewhat controversial. It's essentially a way for a code base to create a new genesis and effectively disallows any alternative chain from the previous genesis. On the one hand this is a strong security measure but on the other hand this gives non-trivial power to the maintainers of the github repository. The real question then becomes: who decides what will be a checkpoint? who decide how often? what will be its value?  
 
