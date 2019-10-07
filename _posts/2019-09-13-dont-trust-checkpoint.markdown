@@ -6,7 +6,7 @@ tags:
 - blockchain101
 ---
 
-Imagine that that Aliens land on earth with a new superfast SHA256 machine. The machine gives them more than 51% of the hash power of the world. Suppose they decide to build a chain from the [Bitcoin Genesis block](https://ittaiab.github.io/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/) that is longer than any other chain on earth and put only empty blocks on it. *Could they erase all bitcoin transactions?*
+Imagine that that Aliens land on earth with a new superfast SHA256 machine. Imagine this machine gives them more than 51% of the hash power of the world (but not enough hash power to completely break SHA256). Suppose they decide to build a chain from the [Bitcoin Genesis block](https://ittaiab.github.io/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/) that is longer than any other chain on earth and put only empty blocks on it. *Could they erase all bitcoin transactions?*
 
 Anticipating this type of attack, Satoshi suggested the following [security safeguard](https://satoshi.nakamotoinstitute.org/posts/bitcointalk/232/): 
 
@@ -19,7 +19,9 @@ So the answer is that the Aliens with a superfast SHA256 will fail. By [default]
 
 
 A **checkpoint** on a blockchain is pair (block number, hash). For example the checkpoint (295000, 0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983) indicates that the hash of the 295000th block must be 0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983.
-A checkpoint provides **finality**. All the transactions till block 295000 are final, there is no way to revert them, even if you are an alien with a superfast SHA256 machine.  
+A checkpoint provides **finality**. All the transactions till block 295000 are final, there is no way to revert them, even if you are an alien with a superfast SHA256 machine[^1].
+
+[^1] This is assuming the superfast machine is just faster than all the current world hashpower - not a machine that can completely break SHA256.  
 
 While some believe this is [not a security feature](https://bitcoin.stackexchange.com/questions/39097/do-all-bitcoin-client-enforce-checkpoints), it does effectively enforce a consensus decision that forces all users using the same codebase to accept this checkpoint and everything before it as final.
 
