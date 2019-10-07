@@ -18,7 +18,7 @@ So the answer is that the Aliens with a superfast SHA256 will fail. By [default]
 
 
 A **checkpoint** on a blockchain is pair (block number, hash). For example the checkpoint (295000, 0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983) indicates that the hash of the 295000th block must be 0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983.
-A checkpoint provides **finality**. All the transactions till block 295000 are final, there is no way to revert them, even if you are an alien with a superfast SHA256 machine. 
+A checkpoint provides **finality**. All the transactions till block 295000 are final, there is no way to revert them, even if you are an alien with a superfast SHA256 machine.  
 
 While some believe this is [not a security feature](https://bitcoin.stackexchange.com/questions/39097/do-all-bitcoin-client-enforce-checkpoints), it does effectively enforce a consensus decision that forces all users using the same codebase to accept this checkpoint and everything before it as final.
 
