@@ -1,6 +1,9 @@
 ---
-title: 2019 10 08 Techniques For Consensus
+title: 2019 10 08 Techniques For Consensus - Equivocation check and quorum intersection
 date: 2019-10-08 17:34:52.668000000 -07:00
+published: false
+tags:
+- dist101
 ---
 
 <p align="center">
