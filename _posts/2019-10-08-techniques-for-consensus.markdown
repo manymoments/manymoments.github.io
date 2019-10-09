@@ -1,9 +1,4 @@
 ---
-title: Techniques for consensus: Equivocation checks and quorum intersections
-date: 2019-10-08 19:58:00 -07:00
-published: false
-tags:
-- dist101
 ---
 
 <p align="center">
