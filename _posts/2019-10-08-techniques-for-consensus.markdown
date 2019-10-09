@@ -10,7 +10,7 @@ tags:
   co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
 </p>
 
-In this post, we discuss two key techniques, equivocation check, and quorum intersection, that are at the heart of most consensus protocols. Synchronous protocols typically rely on both of these techniques, whereas partially synchronous and asynchronous protocols depended only on the latter. In this post, we will only elaborate on the approaches. We will show how different protocols use them in subsequent posts. For concreteness, we discuss these in the context of State Machine Replication (SMR) with a steady-state leader. 
+In this post, we discuss two key techniques, equivocation check, and quorum intersection, that are at the heart of most consensus protocols. Synchronous protocols typically rely on both of these techniques, whereas partially synchronous and asynchronous protocols depend only on the latter. In this post, we will only elaborate on the approaches. We will show how different protocols use them in subsequent posts. For concreteness, we discuss these in the context of State Machine Replication (SMR) with a steady-state leader. 
 
 ### Equivocation check
 An equivocation check is used to detect if the leader has been sending conflicting messages to different replicas. If so, they may commit to conflicting values, and there can be a consistency violation. A leader equivocation check can be performed by replicas forwarding the leader-message to all other replicas. If the replicas observe conflicting values $v$ and $v’$ sent by the leader, they detect that the leader is Byzantine and can engage in a view-change protocol to replace it. 
