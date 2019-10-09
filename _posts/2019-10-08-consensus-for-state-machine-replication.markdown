@@ -10,7 +10,6 @@ tags:
   co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
 </p>
 
-co-authored with Kartik Nayak
 We introduced definitions for consensus, Byzantine Broadcast (BB) and Byzantine Agreement (BA), in an [earlier post](https://ittaiab.github.io/2019-06-27-defining-consensus/). In this post, we will discuss a setting called State Machine Replication (SMR), where consensus protocols are used. We will compare and contrast this setting to that of traditional BB and BA.
 
 In an SMR setting, a server maintains a state machine and applies a sequence of commands sent by clients to this state machine. Maintaining a single server is prone to crashes or Byzantine faults. Thus, instead of maintaining a single server, an SMR system uses multiple server replicas, some of which can be faulty. The group of servers still present to the client with the same interface like that of a single server. 
@@ -32,6 +31,6 @@ At first glance, the requirements for SMR are similar to those for BB and BA. Sa
 
 4. **External validity.** Finally, the definition does not explicitly state a validity property as in BB and BA. SMR protocols generally satisfy *external validity*, i.e., a command is said to be valid so far as the client signs the value.
 
-### Optimizing for a sequence of values.
+### Optimizing for a sequence of values
 
 Since SMR protocols agree on a sequence of values, practical approaches for SMR (such as [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf), [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf), etc.) use a steady-state-and-view-change approach to architect the agreement protocol. In the steady-state, there is a designated leader that drives consensus. Typically, the leader does not change until it fails (e.g., due to network delays) or if Byzantine behavior is detected. If the leader fails, the replicas vote to de-throne the leader and elect a new one. The process of choosing a new leader is called view-change. The presence of a single leader for more extended periods yields simplicity and efficiency when the leader is honest. However, it also reduces the amount of *decentralization* and can cause delays if Byzantine replicas are elected as leaders.
