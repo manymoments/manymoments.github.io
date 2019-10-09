@@ -18,8 +18,8 @@ In an SMR setting, a server maintains a state machine and applies a sequence of 
 The server replicas all start with the same state. They agree on the sequence of client commands received by them. Then they apply the commands in the agreed-upon sequence to the state machine. If the state transitions are deterministic, they will maintain an identical state.
 
 The crux of an SMR system is to agree on the sequence of commands. To do so, an SMR system needs to guarantee the following:
-***(Safety)*** Any two clients learn the same sequence of commands.
-***(Liveness)*** Honest servers will eventually execute a command proposed by a client.
+**(Safety)** Any two clients learn the same sequence of commands.
+**(Liveness)** Honest servers will eventually execute a command proposed by a client.
 
 At first glance, the requirements for SMR are similar to those for BB and BA. Safety is similar to the agreement property, whereas liveness is similar to the termination property. However, there are a few differences between them:
 1. **Consensus on a sequence of values.** The definition of SMR considers consensus on a sequence of values. On the other hand, BB and BA considered a single-shot consensus setting. Conceptually, one can sequentially compose single-shot consensus protocols. In practice, SMR protocols may optimize without necessarily relying on a sequential composition (more discussed below).
