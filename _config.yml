@@ -29,6 +29,7 @@ baseurl:
 description: Decentralized thoughts about decentralization
 navbar-links:
   About Me: aboutme
+  Videos : videos
 avatar: "/img/ittai.jpg"
 navbar-col: "#F5F5F5"
 navbar-text-col: "#404040"
