@@ -5,7 +5,7 @@ layout: page
 
 ## The decentralization will not be televised
 
-# Talks at the [THE SECOND SUMMER SCHOOL ON PRACTICE AND THEORY OF DISTRIBUTED COMPUTING, July 8-12, 2019](https://www.cs.huji.ac.il/item/event/3112)
+# Talks at the [THE SECOND SUMMER SCHOOL ON PRACTICE AND THEORY OF DISTRIBUTED COMPUTING, July 8-12, 2019](https://sptdc.ru/) 
 
 Byzantine fault-tolerance, state machine replication and blockchains: Part 1 (from Paxos to Byzantine Paxos)
 
