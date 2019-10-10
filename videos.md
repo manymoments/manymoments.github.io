@@ -5,7 +5,7 @@ layout: page
 
 ## The decentralization will not be televised
 
-# Talks at the [THE SECOND SUMMER SCHOOL ON PRACTICE AND THEORY OF DISTRIBUTED COMPUTING, July 8-12, 2019](https://sptdc.ru/) 
+### Talks at the [THE SECOND SUMMER SCHOOL ON PRACTICE AND THEORY OF DISTRIBUTED COMPUTING, July 8-12, 2019](https://sptdc.ru/) 
 
 Byzantine fault-tolerance, state machine replication and blockchains: Part 1 (from Paxos to Byzantine Paxos)
 
@@ -15,7 +15,7 @@ Byzantine fault-tolerance, state machine replication and blockchains: Part 2 (fr
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/weqRVt5OwNY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-#Talks at [the 3rd Winter School in Computer Science and Engineering on Blockchains and Cryptocurrencies. 16-20/12/2018](https://www.cs.huji.ac.il/item/event/3112)
+### Talks at [the 3rd Winter School in Computer Science and Engineering on Blockchains and Cryptocurrencies. 16-20/12/2018](https://www.cs.huji.ac.il/item/event/3112)
 
 Blockchain, BFT and beyond: part 1 (intro, Nakmoto Consensus, BFT)
 
