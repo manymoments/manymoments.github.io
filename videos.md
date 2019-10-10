@@ -5,7 +5,7 @@ layout: page
 
 ## The Decentralization will not be Televised
 
-**It's All About Decentralized Trust, [CES Summit '19](https://cryptoresearch.pubpub.org/), Oct 5-6, 2019, MIT Media Lab **
+**It's All About Decentralized Trust, [CES Summit '19](https://cryptoresearch.pubpub.org/), Oct 5-6, 2019, MIT Media Lab**
 
 Part of the "From Distributed Consensus To Blockchains" session. https://www.cryptoeconomic.systems
 
