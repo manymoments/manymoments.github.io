@@ -3,7 +3,7 @@ title: Videos
 layout: page
 ---
 
-# The decentralization will not be televised
+# The Decentralization will not be televised!!
 
 ### Talks at the [THE SECOND SUMMER SCHOOL ON PRACTICE AND THEORY OF DISTRIBUTED COMPUTING, July 8-12, 2019](https://sptdc.ru/) 
 
