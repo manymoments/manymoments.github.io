@@ -5,6 +5,12 @@ layout: page
 
 ## The Decentralization will not be Televised
 
+**It's All About Decentralized Trust, [CES Summit '19](https://cryptoresearch.pubpub.org/), Oct 5-6, 2019, MIT Media Lab **
+
+Part of the "From Distributed Consensus To Blockchains" session. https://www.cryptoeconomic.systems
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/iPRrGqDsMxg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 **Talks at the [THE SECOND SUMMER SCHOOL ON PRACTICE AND THEORY OF DISTRIBUTED COMPUTING, July 8-12, 2019](https://sptdc.ru/)** 
 
 Byzantine fault-tolerance, state machine replication and blockchains: Part 1 (from Paxos to Byzantine Paxos)
