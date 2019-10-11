@@ -28,7 +28,9 @@ url: https://ittaiab.github.io
 baseurl: 
 description: Decentralized thoughts about decentralization
 navbar-links:
-  About Me: aboutme
+  About Me: 
+      - Ittai Abraham "aboutme"
+      - Kartik Nayak "aboutkartik"
   Videos: videos
 avatar: "/img/ittai.jpg"
 navbar-col: "#F5F5F5"
