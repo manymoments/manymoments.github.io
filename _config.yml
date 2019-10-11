@@ -28,7 +28,7 @@ url: https://decentralizedthoughts.github.io
 baseurl: 
 description: Decentralized thoughts about decentralization
 navbar-links:
-  About Me: 
+  Authors: 
       - Ittai Abraham: "aboutme"
       - Kartik Nayak: "aboutkartik"
   Videos: videos
