@@ -2,10 +2,10 @@
 title: Progress in synchronous protocols
 date: 2019-10-13 19:58:00 -07:00
 published: false
-author: Kartik Nayak
 tags:
 - dist101
 - synchronus protocols
+author: Kartik Nayak
 ---
 
 In this post, we overview synchronous consensus protocols and their progress in the last few decades. Due to the different modeling assumptions and constraints under which we construct BFT protocols, it is often hard to compare two of them and understand their relative contributions. In this post, we explain the assumptions made in synchronous protocols and present a timeline of contributions of synchronous consensus protocols that use digital signatures.

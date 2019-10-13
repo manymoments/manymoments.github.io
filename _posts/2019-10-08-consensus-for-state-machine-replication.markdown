@@ -2,9 +2,9 @@
 title: Consensus for State Machine Replication
 date: 2019-10-08 19:58:00 -07:00
 published: false
-author: Kartik Nayak, Ittai Abraham
 tags:
 - dist101
+author: Kartik Nayak, Ittai Abraham
 ---
 
 We introduced definitions for consensus, Byzantine Broadcast (BB) and Byzantine Agreement (BA), in an [earlier post](https://ittaiab.github.io/2019-06-27-defining-consensus/). In this post, we will discuss how consensus protocols are used in State Machine Replication (SMR). We will compare and contrast this setting to that of traditional BB and BA.
