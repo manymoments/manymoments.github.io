@@ -2,13 +2,10 @@
 title: 2019 10 08 Techniques For Consensus - Equivocation check and quorum intersection
 date: 2019-10-08 17:34:52.668000000 -07:00
 published: false
+author: Kartik Nayak
 tags:
 - dist101
 ---
-
-<p align="center">
-  co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
-</p>
 
 In this post, we discuss two key techniques, equivocation check, and quorum intersection, that are at the heart of most consensus protocols. Synchronous protocols typically rely on both of these techniques, whereas partially synchronous and asynchronous protocols depend only on the latter. In this post, we will only elaborate on the approaches. We will show how different protocols use them in subsequent posts. For concreteness, we discuss these in the context of State Machine Replication (SMR) with a steady-state leader. 
 
