@@ -2,28 +2,39 @@
 title: Consensus for State Machine Replication
 date: 2019-10-08 19:58:00 -07:00
 published: false
+author: Kartik Nayak
 tags:
 - dist101
 ---
 
-<p align="center">
-  co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
-</p>
-
 We introduced definitions for consensus, Byzantine Broadcast (BB) and Byzantine Agreement (BA), in an [earlier post](https://ittaiab.github.io/2019-06-27-defining-consensus/). In this post, we will discuss a setting called State Machine Replication (SMR), where consensus protocols are used. We will compare and contrast this setting to that of traditional BB and BA.
 
-In an SMR setting, a server maintains a state machine and applies a sequence of commands sent by clients to this state machine. Maintaining a single server is prone to crashes or Byzantine faults. Thus, instead of maintaining a single server, an SMR system uses multiple server replicas, some of which can be faulty. The group of servers still present to the client with the same interface like that of a single server. 
+**State machine.** A state machine at any point stores a state of the system. It receives a set of inputs (also referred to as commands). The state machine applies these inputs in a sequential order using a transition function to generate an output and an updated state of the state machine. The functionality of a state machine can be succinctly described as follows:
 
-The server replicas all start with the same state. They agree on the sequence of client commands received by them. Then they apply the commands in the agreed-upon sequence to the state machine. If the state transitions are deterministic, they will maintain an identical state.
+```
+state = init
+log = []
+while true:
+  on receiving cmd from client:
+    log.append(cmd)
+    state, output = apply(cmd, state)
+    send output to client
+```
 
-The crux of an SMR system is to agree on the sequence of commands. To do so, an SMR system needs to guarantee the following:
+Here, the state machine is initialized to an initial state `init`. When it receives an input `cmd` from a client, it first adds the input to a `log`. It then *executes* the `cmd` by applying the transition function `apply` to the state. As a result it obtains an updated state and a result `output`. The result is then sent back to the client.
 
-**(Safety)** Any two clients learn the same sequence of commands.
+**State machine replication (SMR).** In a client-server setting, the server acts as a state machine and the client sends commands to it. Maintaining a single server is prone to crashes or Byzantine faults. Thus, instead of maintaining a single server, an SMR system uses multiple server replicas, some of which can be faulty. The goal is for the group of servers still present to the client with the same interface like that of a single server. 
+
+The server replicas all initially start with the same state. However, when they receive concurrent requests from a client, honest replicas first need to agree on a on the sequence of client commands received by them. This problem is called **log replication** and it is a multi-shot version of consensus. Then they apply the commands in the log, one by one, using the `apply` transition. Assuming the transition is deterministic, the honest server replicas maintain an identical state at all times.
+
+Thus, an SMR system needs to perform log replication efficiently and then execute the commands on the log. An SMR system needs to guarantee the following:
+
+**(Safety)** Any two replicas store the same sequence of commands in their logs.
 
 **(Liveness)** Honest servers will eventually execute a command proposed by a client.
 
-At first glance, the requirements for SMR are similar to those for BB and BA. Safety is similar to the agreement property, whereas liveness is similar to the termination property. However, there are a few differences between them:
-1. **Consensus on a sequence of values.** The definition of SMR considers consensus on a sequence of values. On the other hand, BB and BA considered a single-shot consensus setting. Conceptually, one can sequentially compose single-shot consensus protocols. In practice, SMR protocols may optimize without necessarily relying on a sequential composition (more discussed below).
+The requirements for SMR seem similar to those for BB and BA. Safety is similar to the agreement property, whereas liveness is similar to the termination property. However, there are a few differences between them:
+1. **Consensus on a sequence of values.** The definition of SMR considers needs multi-shot consensus. Conceptually, one can sequentially compose single-shot consensus protocols. In practice, SMR protocols may optimize without necessarily relying on a sequential composition (more discussed below).
 
 2. **Who are the learners?** In BB and BA, the parties executing the protocol are the ones learning the result. In SMR, the replicas engage in the consensus protocol but eventually need to convince clients of the result. In the presence of Byzantine faults, the clients in an SMR protocol may communicate with multiple replicas before learning about the commit. If there are $f$ Byzantine faults, the client needs to communicate with at least $f+1$ replicas to know that it has communicated with at least one honest replica.
 
