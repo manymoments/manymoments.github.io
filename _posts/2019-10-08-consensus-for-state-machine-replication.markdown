@@ -7,9 +7,9 @@ tags:
 author: Kartik Nayak, Ittai Abraham
 ---
 
-We introduced definitions for consensus, Byzantine Broadcast (BB) and Byzantine Agreement (BA), in an [earlier post](https://ittaiab.github.io/2019-06-27-defining-consensus/). In this post, we will discuss how consensus protocols are used in State Machine Replication (SMR). We will compare and contrast this setting to that of traditional BB and BA.
+We introduced definitions for consensus, Byzantine Broadcast (BB) and Byzantine Agreement (BA), in an [earlier post](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/). In this post, we will discuss how consensus protocols are used in State Machine Replication ([SMR](https://en.wikipedia.org/wiki/State_machine_replication)). We will compare and contrast this setting to that of traditional BB and BA. 
 
-**State machine.** A state machine, at any point, stores a state of the system. It receives a set of inputs (also referred to as commands). The state machine applies these inputs in a sequential order using a transition function to generate an output and an updated state. A succinct description of the state machine is as follows:
+**State machine.** A state machine, at any point, stores a *state* of the system. It receives a set of *inputs* (also referred to as *commands*). The state machine applies these inputs in a sequential order using a *transition function* to generate an *output* and an *updated* state. A succinct description of the state machine is as follows:
 
 ```
 state = init
@@ -23,9 +23,10 @@ while true:
 
 Here, the state machine is initialized to an initial state `init`. When it receives an input `cmd` from a client, it first adds the input to a `log`. It then *executes* the `cmd` by applying the transition function `apply` to the state. As a result, it obtains an updated state and a result `output`. The result is then sent back to the client.
 
-**State machine replication (SMR).** In a client-server setting, the server acts as a state machine, and clients send commands to it. Maintaining a single server is prone to crashes or Byzantine faults. Thus, instead of maintaining a single server, an SMR system uses multiple server replicas, some of which can be faulty. The group of servers presents the same interface as that of a single server to the client.
 
-The server replicas all initially start with the same state. However, when they receive concurrent requests from a client, honest replicas first need to agree on a sequence of client commands received by them. This problem is called **log replication**, and it is a multi-shot version of consensus. Then they apply the commands in the log, one by one, using the `apply` transition. Assuming the transition is deterministic, the honest server replicas maintain an identical state at all times.
+**State machine replication (SMR).** In a client-server setting, the servers simulate a state machine in a fault tolerant manner. Clients send commands as if there is a single state machine. Maintaining a single server is prone to crashes or Byzantine faults. Thus, instead of maintaining a single server, an SMR system uses multiple server replicas, some of which can be faulty. The group of servers presents the same interface as that of a single server to the client.
+
+The server replicas all initially start with the same state. However, when they receive concurrent requests from a client, honest replicas first need to agree on the sequence of client commands received by them. This problem is called **log replication**, and it is a multi-shot version of consensus. After the sequence is agreed upon, the replicas apply the commands in the log, one by one, using the `apply` transition. Assuming the transition is deterministic, all honest server replicas maintain an identical state at all times.
 
 Thus, an SMR system needs to perform log replication efficiently and then execute the commands on the log. Specifically, it needs to guarantee the following:
 
@@ -38,7 +39,7 @@ The requirements for SMR seem similar to those for BB and BA. Safety is akin to 
 
 2. **Who are the learners?** In BB and BA, the parties executing the protocol are the ones learning the result. In SMR, the replicas engage in the consensus protocol but eventually need to convince clients of the result. In the presence of Byzantine faults, the clients in an SMR protocol may communicate with multiple replicas before learning about the commit. If there are $f$ Byzantine faults, the client needs to communicate with at least $f+1$ replicas to know that it has communicated with at least one honest replica.
 
-3. **Fault tolerance.** An essential consequence of clients not participating in the protocol is the fault tolerance one can obtain. With BB, we know of protocols such as Dolev-Strong that can tolerate $f < n-1$ faults among $n$ replicas. SMR protocols cannot tolerate more than a minority corruption even if the consensus protocol used is BB.
+3. **Fault tolerance.** An essential consequence of clients not participating in the protocol is the fault tolerance one can obtain. With BB, we know of protocols such as Dolev-Strong that can tolerate $f < n-1$ faults among $n$ replicas. SMR protocols that obtain Safety and Liveness cannot tolerate more than a minority corruption.
 
 4. **External validity.** Finally, the definition does not explicitly state a validity property as in BB and BA. SMR protocols generally satisfy *external validity*, i.e., a command is said to be valid so far as the client signs the value.
 
