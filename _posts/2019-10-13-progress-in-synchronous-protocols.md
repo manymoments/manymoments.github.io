@@ -26,4 +26,4 @@ For practitioners, the above assumptions may seem strong. First, if the bounded 
 [1982] Separately, it was also shown by Lamport and Fischer that that an $O(f)$ round latency is necessary for any deterministic synchronous protocol. Thus, Dolev-Strong was optimal in terms of commit latency for deterministic protocols. 
 [2006] Katz and Koo showed the first expected $O(1)$ round protocol with $O(n^2)$ communication. More specifically, their protocol required 29 rounds in expectation against an adaptive adversary. 
 [2017] Abraham et al. showed a conceptually simpler version of the Katz-Koo protocol that terminates in 10 rounds against a static adversary (and 16 rounds against an adaptive adversary). Their work also introduced the clock synchronization protocol for translating rounds to $\Delta$’s while still maintaining $O(n^2)$ message complexity.
-[2018] Dfinity
+[2018] Dfinity 
