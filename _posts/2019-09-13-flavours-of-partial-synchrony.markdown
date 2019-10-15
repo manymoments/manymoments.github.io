@@ -3,6 +3,7 @@ title: Flavours of Partial Synchrony
 date: 2019-09-13 23:57:00 -07:00
 tags:
 - dist101
+author: Ittai Abraham
 ---
 
 This is a follow up post to the post on [Synchrony, Asynchrony and Partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). Here we discuss in more details the two flavours of partial synchrony from [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf): **GST** and **Unknown Latency**.
