@@ -4,15 +4,8 @@ date: 2019-06-25 07:06:00 -07:00
 tags:
 - dist101
 - lowerbound
-authors:
-- Kartik Nayak
-- Ittai Abraham
+author: Kartik Nayak, Ittai Abraham
 ---
-
-<p align="center">
-  co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
-</p>
-
 
 Lower bounds in distributed computing are very helpful. Obviously, they prevent you from wasting time trying to do impossible things :-). Even more importantly, understanding them well often helps in finding ways to focus on what is optimally possible or ways to circumvent them by altering the assumptions or problem formulation.
 
