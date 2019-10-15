@@ -23,7 +23,7 @@ defaults:
     path: ''
   values:
     layout: page
-    show-avatar: true
+    show-avatar: false
 url: https://decentralizedthoughts.github.io
 baseurl: 
 description: Decentralized thoughts about decentralization
@@ -31,7 +31,7 @@ navbar-links:
   Authors:
   - Ittai Abraham: aboutme
   - Kartik Nayak: about-kartik
-  - Avishay Yanai: aboutavishay
+  - Avishay Yanai: about-avishay
   Videos: videos
 avatar: "/img/ittai.jpg"
 navbar-col: "#F5F5F5"
