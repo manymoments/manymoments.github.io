@@ -13,12 +13,6 @@ The modern interpretation of the [FLM](https://groups.csail.mit.edu/tds/papers/L
 
 This lower bound holds because the ability to simulate honest parties is trivial when you have a traditional poly-time adversary (and no PKI setup). A key observation here is that in the proof of work type setting the adversary controlling $f$ parties typically cannot simulate $n+f$ parties. So this lower bound does not hold in those models and hence Byzantine Agreement may be possible even of there is no PKI setup!
 
-   
-
-<p align="center">
-  co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik</a> <a href="https://twitter.com/kartik1507">Nayak</a>
-</p>
-
 > When nothing is known, anything is possible
 > <cite> [Margaret Drabble](http://jacobjwalker.effectiveeducation.org/blog/2013/11/29/quote-of-the-day-when-nothing-is-known-anything-is-possible/)</cite>
 
