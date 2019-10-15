@@ -1,6 +1,6 @@
 ---
 title: Consensus for State Machine Replication
-date: 2019-10-08 19:58:00 -07:00
+date: 2019-10-15 19:58:00 -07:00
 published: false
 tags:
 - dist101
