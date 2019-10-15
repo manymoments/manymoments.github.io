@@ -3,14 +3,8 @@ title: What is Consensus?
 date: 2019-06-27 00:00:00 -07:00
 tags:
 - dist101
-authors:
-- Kartik Nayak
-- Ittai Abraham
+author: Kartik Nayak, Ittai Abraham
 ---
-
-<p align="center">
-  co-authored with <a href="https://users.cs.duke.edu/~kartik">Kartik Nayak</a>
-</p>
 
 We all broadly understand "consensus" as the notion of different parties agreeing with each other. In distributed computing, Consensus is one of the core functionalities. In this post, we define the consensus problem and discuss some variants and their differences.
 
