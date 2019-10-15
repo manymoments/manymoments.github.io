@@ -4,6 +4,7 @@ date: 2019-06-17 06:11:00 -07:00
 tags:
 - dist101
 - models
+author: Ittai Abraham
 ---
 
 Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), we then need some way to limit the power of the adversary. 
