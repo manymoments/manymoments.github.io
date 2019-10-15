@@ -4,6 +4,7 @@ date: 2019-06-23 00:00:00 -07:00
 tags:
 - research
 layout: post
+author: Ittai Abraham
 ---
 
 In this post I will try to compare four of my favorite protocols for Byzantine Fault Tolerant ([BFT](https://en.wikipedia.org/wiki/Byzantine_fault)) State Machine Replication ([SMR](https://en.wikipedia.org/wiki/State_machine_replication)):
