@@ -3,7 +3,8 @@ title: Kartik Nayak
 layout: page
 ---
 
-<img align="left" width="175" height="175" src="../profile-kartik.jpg"> ```
+<img align="left" width="175" height="175" src="../profile-kartik.jpg"> 
+```
 Kartik is an assistant professor in the 
 department of computer science at Duke University. 
 
