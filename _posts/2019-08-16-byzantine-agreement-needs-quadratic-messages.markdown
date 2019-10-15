@@ -4,6 +4,7 @@ date: 2019-08-16 15:30:00 -07:00
 tags:
 - lowerbound
 - dist101
+author: Kartik Nayak, Ittai Abraham
 ---
 
 The quest for building scalable Byzantine agreement has many challenges. In this post we highlight the 1982 [Dolev and Reischuk](http://hebuntu.cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf) lower bound.
