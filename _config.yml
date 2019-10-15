@@ -29,7 +29,7 @@ baseurl:
 description: Decentralized thoughts about decentralization
 navbar-links:
   Authors:
-  - Ittai Abraham: aboutme
+  - Ittai Abraham: about-ittai
   - Kartik Nayak: about-kartik
   - Avishay Yanai: about-avishay
   Videos: videos
