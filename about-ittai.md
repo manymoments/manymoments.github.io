@@ -5,7 +5,7 @@ layout: page
 
 <img align="left" width="200" height="200" src="../img/ittai.jpg" hspace="20"> 
 
-Ittai is an Resesarcher at VMware Research.
+Ittai is a Resesarcher at VMware Research.
 
 He does reseearch in Algorithms and Distributed Computing.
 
