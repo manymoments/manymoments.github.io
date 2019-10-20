@@ -9,4 +9,4 @@ Ittai is an Resesarcher at VMware Research.
 
 He does reseearch in Algorithms and Distributed Computing.
 
-[Webpage](https://research.vmware.com/researchers/ittai-abraham) \| [Twitter](https://twitter.com/ittaia) \| [Google Scholar]((https://scholar.google.com/citations?user=VRR8fGoAAAAJ&hl=en) \| [DBLP](https://dblp.uni-trier.de/pers/hd/a/Abraham:Ittai)
+[Webpage](https://research.vmware.com/researchers/ittai-abraham) \| [Twitter](https://twitter.com/ittaia) \| [Google Scholar](https://scholar.google.com/citations?user=VRR8fGoAAAAJ&hl=en) \| [DBLP](https://dblp.uni-trier.de/pers/hd/a/Abraham:Ittai)
