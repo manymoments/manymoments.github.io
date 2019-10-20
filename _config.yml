@@ -23,7 +23,7 @@ defaults:
     path: ''
   values:
     layout: page
-    show-avatar: false
+    show-avatar: true
 url: https://decentralizedthoughts.github.io
 baseurl: 
 description: Decentralized thoughts about decentralization
@@ -33,7 +33,7 @@ navbar-links:
   - Kartik Nayak: about-kartik
   - Avishay Yanai: about-avishay
   Videos: videos
-avatar: "/img/ittai.jpg"
+avatar: "/img/DTblog.jpg"
 navbar-col: "#F5F5F5"
 navbar-text-col: "#404040"
 navbar-children-col: "#F5F5F5"
