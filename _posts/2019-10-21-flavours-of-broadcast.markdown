@@ -7,11 +7,9 @@ tags:
 Field name: 
 ---
 
-What is the difference between broadcast, crusader broadcast, gradecast, weak broadcast and broadcast with abort?
+What is the difference between broadcast, crusader broadcast, gradecast, weak broadcast and broadcast with abort? This post is a follow up to our basic post on: [What is Broadcast?](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/)
 
-This post is a follow up to our basic post on: [What is Broadcast?](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/)
-
-Lets start by defining the basic *Broadcast problem* again. We assume a set of $n$ parties. One party is designated as being called the **sender**. We assume the sender has some initial *value*.
+Let's start by defining the basic *Broadcast problem* again. We assume a set of $n$ parties. One party is designated as being called the *sender*. We assume the sender has some initial *value*.
 
 A protocol solves the (classic) **broadcast** problem:
 1. **Agreement**: If an honest party outputs $x$, then all honest parties output $x$.
