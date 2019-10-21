@@ -17,7 +17,7 @@ A protocol solves the (classic) **broadcast** problem:
 
 ### Weak Broadcast
 
-If we keep the agreement property and relax the validity property and arrive to the classic weak Byzantine Broadcast problem [Lamport 84](https://zoo.cs.yale.edu/classes/cs426/2014/bib/lamport83theweak.pdf).A protocol solves the **weak broadcast** problem:
+If we keep the agreement property and relax the validity property we arrive to the classic weak Byzantine Broadcast problem of [Lamport 84](https://zoo.cs.yale.edu/classes/cs426/2014/bib/lamport83theweak.pdf). A protocol solves the **weak broadcast** problem:
 1. **Agreement**: If an honest party outputs x, then all honest parties output x.
 2a. **Weak Validity**: If sender is honest, then all honest parties output either sender's value or ⊥.
 2b. **Non-triviality**: If all parties are honest, then all parties output the sender's value.
