@@ -9,6 +9,24 @@ Field name:
 
 What is the difference between broadcast, crusader broadcast, gradecast, weak broadcast and broadcast with abort?
 
+This post is a follow up to our basic post on: [What is Broadcast?](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/)
+
+Lets start by defining the basic *Broadcast problem* again. We assume a set of $n$ parties. One party is designated as being called the **sender**. We assume the sender has some initial *value*.
+
+A protocol solves the (classic) **broadcast** problem:
+1. **Agreement**: If an honest party outputs $x$, then all honest parties output $x$.
+2. **Validity*: If sender is honest, then all honest parties output the sender's value.
+
+### Weak Broadcast
+
+If we relax the validity property and arrive to the classic weak Byzantine Broadcast problem [Lamport 84](https://zoo.cs.yale.edu/classes/cs426/2014/bib/lamport83theweak.pdf).A protocol solves the **weak broadcast** problem:
+1. **Agreement**: If an honest party outputs x, then all honest parties output x.
+2a. **Weak Validity*: If sender is honest, then all honest parties output either sender's value or ⊥.
+2b. **Non-triviality**: If all parties are honest, then all parties output the sender's value.
+ 
+Note on lower bounds: https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf FLM lower bound
+
+
 
 Secure Multi-Party Computation Without Agreement
 Shafi Goldwasser
@@ -24,11 +42,6 @@ Majorities
 https://groups.csail.mit.edu/tds/papers/Smith-Adam/fghhs-PODC2002-new-final.pdf
 
 
-The Weak Byzantine Generals Problem
-Lamport 84
-https://zoo.cs.yale.edu/classes/cs426/2014/bib/lamport83theweak.pdf
-
-https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf FLM lower bound
 
 
 Crusader Agreement
@@ -54,7 +67,3 @@ A protocol solves the **crusader broadcast** problem:
 (Gradecast is even stronger, so call this gradecast)
 
 
-A protocol solves the **weak broadcast** problem:
-1. **Agreement**: If an honest party outputs x, then all honest parties output x.
-2a. **Weak Validity*: If sender is honest, then all honest parties output either sender's value or ⊥.
-2b. **Non-triviality**: If all parties are honest, then all parties output the sender's value.
