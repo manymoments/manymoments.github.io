@@ -1,14 +1,12 @@
 ---
 title: Flavours of Broadcast
 date: 2019-10-22 07:44:00 -07:00
-tags:
-- dist101
 author: Ittai Abraham
 ---
 
 What is the difference between broadcast, crusader broadcast, gradecast, weak broadcast, detectable broadcast, and broadcast with abort? This post is a follow up to our basic post on: [What is Broadcast?](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/)
 
-The focus of this post is on [computationally unbounded adversaries](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) in the [synchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/), but we begin with considering both bounded and unbounded adversaries for the class Broadcast problem. 
+The focus of this post is on [computationally unbounded adversaries](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) in the [synchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/), but we begin with considering both bounded and unbounded adversaries for the (classic) Broadcast problem. 
 
 ### Broadcast
 
