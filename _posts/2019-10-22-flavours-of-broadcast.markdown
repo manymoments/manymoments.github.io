@@ -45,7 +45,7 @@ This lower bound for randomized protocols does not hold for weak Broadcast. Usin
 
 ### Crusader Broadcast and Gradecast
 
-An alternate way to relax broadcast, is to keep the validity property and relax the agreement property. This gives us the **Crusader boradcats** of [Dolev 1981](http://infolab.stanford.edu/pub/cstr/reports/cs/tr/81/846/CS-TR-81-846.pdf).
+An alternate way to relax broadcast, is to keep the validity property and relax the agreement property. This gives us the **Crusader broadcast** of [Dolev 1981](http://infolab.stanford.edu/pub/cstr/reports/cs/tr/81/846/CS-TR-81-846.pdf).
 
 A protocol solves the **crusader broadcast** problem:
 1. **Weak Agreement**: If an honest party outputs x , then all honest parties output either x or ⊥.
