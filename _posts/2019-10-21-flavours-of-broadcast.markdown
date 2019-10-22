@@ -81,7 +81,7 @@ Goldwasser and Lindell show that this relaxation can be solved even if the adver
 
 1. The sender sends $x$ to all parties.
 2. Denote by $x_i$ the value received by party $i$ from the sender in the previous round. If $i$ did not receive a value from the sender in the first round, then it sets $x_i = ⊥$. Then, every party $i$ (for $i > 1$) sends its value $x_i$ to all other parties.
-3. Denote the value received by $i$ from $j$ in the previous round by $x_{i,j} Then, $i$ outputs $x_i$ if this is the only
+3. Denote the value received by $i$ from $j$ in the previous round by $x_{i,j}$ Then, $i$ outputs $x_i$ if this is the only
 value that it saw ($\forall i>1: x_i=_{x_i,j}$). Otherwise, it
 outputs $⊥$.
 
