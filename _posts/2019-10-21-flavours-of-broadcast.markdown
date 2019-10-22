@@ -52,27 +52,34 @@ A protocol solves the **crusader broadcast** problem:
 [Feldman and Micali 1988, 1997](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Distributed%20Computation/An%20Optimal%20Probabilistic%20Algorithm%20for%20Byzantine%20Agreement.pdf) strengthened the definition of crusader agreement so the output of the protocol is both a decision value and a $grade \in \{0,1,2\}$.
 
 A protocol solves the **Gradecast** problem:
-1. **Grade**: each honest party outputs a $grade \in \{0,1,2\}$ in addition to a value.
 1a. **Knowledge of Agreement**: If an honest party outputs x with grade 2 then all honest parties output $x$ with $grade \in \{1,2\}$.
 1b.  **Weak Agreement**: If an honest party outputs x, then all honest parties output either x or ⊥.
 2. **Validity**: If sender is honest, then all honest parties output the sender's value with grade $2$.
 
+Gradecast [and its variants](https://eprint.iacr.org/2006/065.pdf) are very important building blocks in many MPC and Byzantine Agreement protocols.
+
+Note on lower bounds: impossibility for $n\leq 3f$ for deterministic protocol was show by [Dolev 1982](https://www.cse.huji.ac.il/~dolev/pubs/byz-strike-again.pdf). For randomized protocols, even a small constant error is impossible. This extension of the FLM lower bound to crusader agreement is folklore and was first mention by [Goldwasser and Lindell, 2002](https://eprint.iacr.org/2002/040.pdf).
+
 
 ### Broadcast with Abort
 
-Unconditional Byzantine Agreement and
-Multi-Party Computation Secure Against
-Dishonest Minorities from Scratch
-https://iacr.org/archive/eurocrypt2002/23320478/qbc.pdf
+If we relax both Agreement and Validity we obtain the notion of *Broadcast with abort* of [Goldwasser and Lindell](https://eprint.iacr.org/2002/040.pdf), [2002](http://groups.csail.mit.edu/cis/pubs/shafi/2002-disc.pdf).
 
 
 
-Secure Multi-Party Computation Without Agreement
-Shafi Goldwasser
-Yehuda Lindell
+A protocol solves the **Broadcast with abort** problem:
+1. **Weak Agreement**: If an honest party outputs x, then all honest parties output either x or ⊥.
+2a. **Weak Validity*: If sender is honest, then all honest parties output either sender's value or ⊥.
+2b. **Non-triviality**: If all parties are honest, then all parties output the sender's value.
 
-http://groups.csail.mit.edu/cis/pubs/shafi/2002-disc.pdf
-https://eprint.iacr.org/2002/040.pdf
+Goldwasser and Lindell show that this relaxation can be solved even if the adversary controls $n-1$ parties out of $n$.
+
+
+### Notes
+
+Many of the results of this post have been extended to Secure Multi Party Computation. More on that in later posts.
+
+
 
 
 Detectable Byzantine Agreement Secure Against Faulty
@@ -88,10 +95,7 @@ https://groups.csail.mit.edu/tds/papers/Smith-Adam/fghhs-PODC2002-new-final.pdf
 
 
 
-A protocol solves the **broadcast with abort** problem:
-1. **Weak Agreement**: If an honest party outputs x, then all honest parties output either x or ⊥.
-2a. **Weak Validity*: If sender is honest, then all honest parties output either sender's value or ⊥.
-2b. **Non-triviality**: If all parties are honest, then all parties output the sender's value.
+
 
 
 
