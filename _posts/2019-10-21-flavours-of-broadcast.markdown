@@ -77,7 +77,13 @@ A protocol solves the **Broadcast with abort** problem:
 2. **Weak Validity**: If sender is honest, then all honest parties output either sender's value or ⊥.
 3. **Non-triviality**: If all parties are honest, then all parties output the sender's value.
 
-Goldwasser and Lindell show that this relaxation can be solved even if the adversary controls $n-1$ parties out of $n$. The solution takes just two rounds and obtains [perfect security](post on security definitions).
+Goldwasser and Lindell show that this relaxation can be solved even if the adversary controls $n-1$ parties out of $n$. The solution is a natural two round protocol and obtains [perfect security](post on security definitions). Here is the protocol for Broadcast with abort:
+
+1. The sender sends $x$ to all parties.
+2. Denote by $x_i$ the value received by party $i$ from the sender in the previous round. If $i$ did not receive a value from the sender in the first round, then it sets $x_i = ⊥$. Then, every party $i$ (for $i > 1$) sends its value $x_i$ to all other parties.
+3. Denote the value received by $i$ from $j$ in the previous round by $x_{i,j} Then, $i$ outputs $x_i$ if this is the only
+value that it saw ($\forall i>1: x_i=_{x_i,j}$). Otherwise, it
+outputs $⊥$.
 
 
 ### Notes
