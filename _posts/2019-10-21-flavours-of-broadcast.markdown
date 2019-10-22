@@ -32,8 +32,8 @@ If we keep the agreement property and relax the validity property we arrive at t
 
 A protocol solves the **weak broadcast** problem:
 1. **Agreement**: If an honest party outputs $x$, then all honest parties output $x$.
-2a. **Weak Validity**: If sender is honest, then all honest parties output either sender's value or *⊥*.
-2b. **Non-triviality**: If all parties are honest, then all parties output the sender's value.
+2. (a) **Weak Validity**: If sender is honest, then all honest parties output either sender's value or *⊥*.
+2. (b) **Non-triviality**: If all parties are honest, then all parties output the sender's value.
  
 Note on lower bounds: [Fischer, Lynch, and Merritt](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) show that weak broadcast is impossible for deterministic protocols for $n
 \leq 3f$. For randomized protocols [Karlin and Yao 1984, unpublished](http://www.math.ucsd.edu/~ronspubs/89_08_byzantine.pdf) show that Broadcast must have a constant (more than $1/3$) error probability for $n\leq 3f$. 
@@ -52,8 +52,8 @@ A protocol solves the **crusader broadcast** problem:
 [Feldman and Micali 1988, 1997](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Distributed%20Computation/An%20Optimal%20Probabilistic%20Algorithm%20for%20Byzantine%20Agreement.pdf) strengthened the definition of crusader agreement so the output of the protocol is both a decision value and a $grade \in \{0,1,2\}$.
 
 A protocol solves the **Gradecast** problem:
-1a. **Knowledge of Agreement**: If an honest party outputs x with grade 2 then all honest parties output $x$ with $grade \in \{1,2\}$.
-1b.  **Weak Agreement**: If an honest party outputs x, then all honest parties output either x or ⊥.
+1. (a) **Knowledge of Agreement**: If an honest party outputs x with grade 2 then all honest parties output $x$ with $grade \in \{1,2\}$.
+1. (b)  **Weak Agreement**: If an honest party outputs x, then all honest parties output either x or ⊥.
 2. **Validity**: If sender is honest, then all honest parties output the sender's value with grade $2$.
 
 Gradecast [and its variants](https://eprint.iacr.org/2006/065.pdf) are very important building blocks in many MPC and Byzantine Agreement protocols.
