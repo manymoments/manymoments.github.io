@@ -6,7 +6,7 @@ tags:
 authors: Ittai Abraham
 ---
 
-What is the difference between broadcast, crusader broadcast, gradecast, weak broadcast and broadcast with abort? This post is a follow up to our basic post on: [What is Broadcast?](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/)
+What is the difference between broadcast, crusader broadcast, gradecast, weak broadcast, detectable broadcast, and broadcast with abort? This post is a follow up to our basic post on: [What is Broadcast?](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/)
 
 The focus of this post is on [computationally unbounded adversaries](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) in the [synchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/), but we begin with considering both bounded and unbounded adversaries for the class Broadcast problem. 
 
@@ -62,7 +62,7 @@ A protocol solves the **Gradecast** problem:
 
 Gradecast [and its variants](https://eprint.iacr.org/2006/065.pdf) are very important building blocks in many MPC and Byzantine Agreement protocols.
 
-Note on lower bounds: impossibility for $n\leq 3f$ for deterministic protocol was show by [Dolev 1982](https://www.cse.huji.ac.il/~dolev/pubs/byz-strike-again.pdf). For randomized protocols, even a small constant error is impossible. This extension of the FLM lower bound to crusader agreement is folklore and was first mention by [Goldwasser and Lindell, 2002](https://eprint.iacr.org/2002/040.pdf).
+Note on lower bounds: impossibility for $n\leq 3f$ for deterministic protocol was shown by [Dolev 1982](https://www.cse.huji.ac.il/~dolev/pubs/byz-strike-again.pdf). For randomized protocols, even a small constant error is impossible. This extension of the FLM lower bound to crusader agreement is folklore and was first mention by [Goldwasser and Lindell, 2002](https://eprint.iacr.org/2002/040.pdf).
 
 
 ### Broadcast with Abort
@@ -90,7 +90,7 @@ outputs $⊥$.
 Many of the results of this post have been extended to Secure Multi Party Computation. More on that in later posts.
 
 
-Please leave comments on [Twitter](...)
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1186630509931184134?s=20)
 
 
 
