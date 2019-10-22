@@ -1,6 +1,6 @@
 ---
 title: Flavours of Broadcast
-date: 2019-10-21 07:44:00 -07:00
+date: 2019-10-22 07:44:00 -07:00
 published: false
 tags:
 - dist101
