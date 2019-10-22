@@ -26,22 +26,25 @@ For computationally unbounded adversaries the [FLM lower bound](https://decentra
 So for computationally unbounded adversaries it is natural to ask *are there relaxations of broadcast that circumvent the $n\leq 3f$ lower bound?* 
 
 
-### Weak Broadcast
+### Weak Broadcast and Detectable Broadcast
 
 If we keep the agreement property and relax the validity property we arrive at the classic weak Byzantine Broadcast problem of [Lamport from 1984](https://zoo.cs.yale.edu/classes/cs426/2014/bib/lamport83theweak.pdf). 
 
 A protocol solves the **weak broadcast** problem:
 1. **Agreement**: If an honest party outputs $x$, then all honest parties output $x$.
-2. (a) **Weak Validity**: If sender is honest, then all honest parties output either sender's value or *⊥*.
-2. (b) **Non-triviality**: If all parties are honest, then all parties output the sender's value.
+2. **Weak Validity**: If sender is honest, then all honest parties output either sender's value or *⊥*.
+3. **Non-triviality**: If all parties are honest, then all parties output the sender's value.
  
-Note on lower bounds: [Fischer, Lynch, and Merritt](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) show that weak broadcast is impossible for deterministic protocols for $n
-\leq 3f$. 
+Note on lower bounds: [Fischer, Lynch, and Merritt](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) show that weak broadcast is impossible for deterministic protocols for $n \leq 3f$. 
 
 For randomized protocols [Karlin and Yao 1984, unpublished](http://www.math.ucsd.edu/~ronspubs/89_08_byzantine.pdf) show that Broadcast must have a constant (more than $1/3$) error probability for $n\leq 3f$.  
 
-This lower bound for randomized protocols does not hold for weak Broadcast. Using randomization, [Fitzi, Gisin, Maurer, and von Rotz 2002](https://iacr.org/archive/eurocrypt2002/23320478/qbc.pdf
-) show that it is possible to solve weak broadcast for $n>2f$ with just a [negligible error probability](post on security definitions). 
+This lower bound for randomized protocols does not hold for weak Broadcast. Using randomization and private channels, [Fitzi, Gisin, Maurer, and von Rotz 2002](https://iacr.org/archive/eurocrypt2002/23320478/qbc.pdf
+) strengthen Weak Broadcast to a notion of *Detectable Broadcast* that also provides a stronger notion of fairness that is important for SMPC. They show that it is possible to solve weak broadcast for $n>2f$ with just a [negligible error probability](post on security definitions).
+
+[Fitzi, Gottesman, Hirt, Holenstein, Smith 2002](https://groups.csail.mit.edu/tds/papers/Smith-Adam/fghhs-PODC2002-new-final.pdf) improve this bound to $n>f$ again with just a [negligible error probability](post on security definitions).
+
+
 
 ### Crusader Broadcast and Gradecast
 
@@ -51,12 +54,12 @@ A protocol solves the **crusader broadcast** problem:
 1. **Weak Agreement**: If an honest party outputs x , then all honest parties output either x or ⊥.
 2. **Validity**: If sender is honest, then all honest parties output the sender's value.
 
-[Feldman and Micali 1988, 1997](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Distributed%20Computation/An%20Optimal%20Probabilistic%20Algorithm%20for%20Byzantine%20Agreement.pdf) strengthened the definition of crusader agreement so the output of the protocol is both a decision value and a $grade \in \{0,1,2\}$.
+[Feldman and Micali 1988, 1997](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Distributed%20Computation/An%20Optimal%20Probabilistic%20Algorithm%20for%20Byzantine%20Agreement.pdf) strengthened the definition of crusader agreement so the output of the protocol is *both* a decision value and a $grade \in \{0,1,2\}$.
 
 A protocol solves the **Gradecast** problem:
-1. (a) **Knowledge of Agreement**: If an honest party outputs x with grade 2 then all honest parties output $x$ with $grade \in \{1,2\}$.
-1. (b)  **Weak Agreement**: If an honest party outputs x, then all honest parties output either x or ⊥.
-2. **Validity**: If sender is honest, then all honest parties output the sender's value with grade $2$.
+1. **Knowledge of Agreement**: If an honest party outputs x with grade 2 then all honest parties output $x$ with $grade \in \{1,2\}$.
+2. **Weak Agreement**: If an honest party outputs x, then all honest parties output either x or ⊥.
+3. **Validity with knowledge**: If sender is honest, then all honest parties output the sender's value with grade $2$.
 
 Gradecast [and its variants](https://eprint.iacr.org/2006/065.pdf) are very important building blocks in many MPC and Byzantine Agreement protocols.
 
@@ -71,10 +74,10 @@ If we relax both Agreement and Validity we obtain the notion of *Broadcast with 
 
 A protocol solves the **Broadcast with abort** problem:
 1. **Weak Agreement**: If an honest party outputs x, then all honest parties output either x or ⊥.
-2. (a) **Weak Validity*: If sender is honest, then all honest parties output either sender's value or ⊥.
-2. (b) **Non-triviality**: If all parties are honest, then all parties output the sender's value.
+2. **Weak Validity**: If sender is honest, then all honest parties output either sender's value or ⊥.
+3. **Non-triviality**: If all parties are honest, then all parties output the sender's value.
 
-Goldwasser and Lindell show that this relaxation can be solved even if the adversary controls $n-1$ parties out of $n$.
+Goldwasser and Lindell show that this relaxation can be solved even if the adversary controls $n-1$ parties out of $n$. The solution takes just two rounds and obtains [perfect security](post on security definitions).
 
 
 ### Notes
@@ -84,10 +87,7 @@ Many of the results of this post have been extended to Secure Multi Party Comput
 
 
 
-Detectable Byzantine Agreement Secure Against Faulty
-Majorities
 
-https://groups.csail.mit.edu/tds/papers/Smith-Adam/fghhs-PODC2002-new-final.pdf
 
 
 
