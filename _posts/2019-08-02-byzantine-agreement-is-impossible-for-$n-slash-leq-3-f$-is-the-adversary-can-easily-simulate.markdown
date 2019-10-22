@@ -87,6 +87,8 @@ The other thing to observe is that when the FLM bound holds, it holds in a stron
 **[FLM 85 modern version] It is impossible to solve synchronous agreement with probability $> 2/3$ against a Byzantine adversary that can simulate $n+f$ parties if $f \geq n/3$.** 
 
 
+Finally we note that this lower bound holds even for [Broadcast](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/), not just for Agreement.
+
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1158276207860838400?s=20)
 
