@@ -3,7 +3,7 @@ title: Flavours of Broadcast
 date: 2019-10-22 07:44:00 -07:00
 tags:
 - dist101
-authors: Ittai Abraham
+author: Ittai Abraham
 ---
 
 What is the difference between broadcast, crusader broadcast, gradecast, weak broadcast, detectable broadcast, and broadcast with abort? This post is a follow up to our basic post on: [What is Broadcast?](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/)
