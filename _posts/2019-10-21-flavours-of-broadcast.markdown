@@ -69,8 +69,8 @@ If we relax both Agreement and Validity we obtain the notion of *Broadcast with 
 
 A protocol solves the **Broadcast with abort** problem:
 1. **Weak Agreement**: If an honest party outputs x, then all honest parties output either x or ⊥.
-2a. **Weak Validity*: If sender is honest, then all honest parties output either sender's value or ⊥.
-2b. **Non-triviality**: If all parties are honest, then all parties output the sender's value.
+2. (a) **Weak Validity*: If sender is honest, then all honest parties output either sender's value or ⊥.
+2. (b) **Non-triviality**: If all parties are honest, then all parties output the sender's value.
 
 Goldwasser and Lindell show that this relaxation can be solved even if the adversary controls $n-1$ parties out of $n$.
 
