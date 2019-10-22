@@ -66,5 +66,7 @@ On the other hand, under synchrony even a single honest party can inform all oth
     
 5. A similar lower bound holds for crash (or omission) failures if $n \leq 2f$ in the partial synchrony model. This is a good exercise to test your understanding of the arguments above!
 
+6. This lower bound holds for [Broadcast](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/), not just for Agreement.
+
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1144014000113328129?s=20)
