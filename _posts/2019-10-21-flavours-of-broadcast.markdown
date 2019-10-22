@@ -36,7 +36,9 @@ A protocol solves the **weak broadcast** problem:
 2. (b) **Non-triviality**: If all parties are honest, then all parties output the sender's value.
  
 Note on lower bounds: [Fischer, Lynch, and Merritt](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) show that weak broadcast is impossible for deterministic protocols for $n
-\leq 3f$. For randomized protocols [Karlin and Yao 1984, unpublished](http://www.math.ucsd.edu/~ronspubs/89_08_byzantine.pdf) show that Broadcast must have a constant (more than $1/3$) error probability for $n\leq 3f$. 
+\leq 3f$. 
+
+For randomized protocols [Karlin and Yao 1984, unpublished](http://www.math.ucsd.edu/~ronspubs/89_08_byzantine.pdf) show that Broadcast must have a constant (more than $1/3$) error probability for $n\leq 3f$.  
 
 This lower bound for randomized protocols does not hold for weak Broadcast. Using randomization, [Fitzi, Gisin, Maurer, and von Rotz 2002](https://iacr.org/archive/eurocrypt2002/23320478/qbc.pdf
 ) show that it is possible to solve weak broadcast for $n>2f$ with just a [negligible error probability](post on security definitions). 
