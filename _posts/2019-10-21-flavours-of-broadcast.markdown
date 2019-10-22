@@ -42,7 +42,7 @@ For randomized protocols [Karlin and Yao 1984, unpublished](http://www.math.ucsd
 This lower bound for randomized protocols does not hold for weak Broadcast. Using randomization and private channels, [Fitzi, Gisin, Maurer, and von Rotz 2002](https://iacr.org/archive/eurocrypt2002/23320478/qbc.pdf
 ) strengthen Weak Broadcast to a notion of *Detectable Broadcast* that also provides a stronger notion of fairness that is important for SMPC. They show that it is possible to solve weak broadcast for $n>2f$ with just a [negligible error probability](post on security definitions).
 
-[Fitzi, Gottesman, Hirt, Holenstein, Smith 2002](https://groups.csail.mit.edu/tds/papers/Smith-Adam/fghhs-PODC2002-new-final.pdf) improve this bound to $n>f$ again with just a [negligible error probability](post on security definitions).
+[Fitzi, Gottesman, Hirt, Holenstein, and Smith 2002](https://groups.csail.mit.edu/tds/papers/Smith-Adam/fghhs-PODC2002-new-final.pdf) improve this bound to $n>f$ again with just a [negligible error probability](post on security definitions).
 
 
 
@@ -82,7 +82,7 @@ Goldwasser and Lindell show that this relaxation can be solved even if the adver
 1. The sender sends $x$ to all parties.
 2. Denote by $x_i$ the value received by party $i$ from the sender in the previous round. If $i$ did not receive a value from the sender in the first round, then it sets $x_i = ⊥$. Then, every party $i$ (for $i > 1$) sends its value $x_i$ to all other parties.
 3. Denote the value received by $i$ from $j$ in the previous round by $x_{i,j}$ Then, $i$ outputs $x_i$ if this is the only
-value that it saw ($\forall i>1: x_i=_{x_i,j}$). Otherwise, it
+value that it saw ($\forall i>1: x_i=x_{i,j}$). Otherwise, it
 outputs $⊥$.
 
 
