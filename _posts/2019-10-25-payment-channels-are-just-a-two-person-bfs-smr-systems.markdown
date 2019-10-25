@@ -25,6 +25,12 @@ Important details of implementing a basic payment channel:
 
    3.2. If say Alice send an old state to Layer 1 then Bob need to report that there is a new state to Layer 1 in a timely manner. This requires Bob to be able to synchronously communicate with the Layer 1 system. A typical solution is to allow a very large window (say 2 weeks) for Bob to respond.
 
-So at its core a payment channel is a way for any two participants to *open* a private two person BFS-SMR system, *execute* transactions on this private BFS-SMR system and then *close* the channel under assumptions of synchrony. 
+4. If a violation is detected then it is possible to apply a *punishment mechanism*. In particular, if Alice reports an old state and Bob proves this then we can use the locked funds to punish Alice. A two pay channel would require both Alice and Bob to lock funds and allow both to be punished if needed. 
 
-The main challenge in these systems is how to safely terminate (close) a channel and currently report the latest state of the channel. The standard solution typically assumes synchrony and requires the honest participant of the channel to report the violation to the Layer 1 system in a timely manner.  
+
+### conclusion
+
+A payment channel is a way for any two participants to *open* a private two person BFS-SMR system, *execute* transactions on this private BFS-SMR system and then *close* the channel under assumptions of synchrony. 
+
+The main challenge in these systems is how to safely terminate (close) a channel and correctly report the latest state of the channel. The standard solution typically assumes synchrony and requires the honest participant of the channel to report the correct state to the Layer 1 system in a timely manner.  
+
