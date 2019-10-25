@@ -62,7 +62,7 @@ The main idea is to use a chain of $2f+1$ replicas instead of $f+1$. So even if 
 
 Note that with $2f+1$ replicas, obtaining a safe termination requires an explicit wedging operation.
 
-In a synchronous setting it is possible to use just $f+1$ replicas and as we mentioned before there is no need to use a chain. This is the approach taken by [XFT 2016](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf). XFT have a BFT SMR system that only decides what is the group of $f+1$ that should make progress. The $f+1$ group implement a Byzantine Fault Safe SMR using signatures.
+In a [synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) model it is possible to use just $f+1$ replicas and as we mentioned before there is no need to use a chain. This is the approach taken by [XFT 2016](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf). XFT have a BFT SMR system that only decides what is the group of $f+1$ that should make progress. The $f+1$ group implement a Byzantine Fault Safe SMR using signatures.
 
 When there is an assumption of synchrony obtaining safe termination is immediate. A specific group of $f+1$ replicas is needed for progress and if just one honest group member stops responding then the group cannot make more progress. Care must be taken so that malicious members do not report old values of the state machine after it is terminated.
 
