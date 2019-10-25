@@ -21,11 +21,13 @@ Important details of implementing a basic payment channel:
 2. When Alice or Bob try to close the channel they cannot report a channel state (balance) that never occured. This can be guaranteed by having both Alice and Bob sign each transaction *execution* and its resulting state. So the Layer 1 system will only accept a state from the layer 2 channel that is singed by both Alice and Bob.
 3. When Alice or Bob try to close the channel they cannot report a state that is not the most *recent state*. This requires two things:
 
-   3.1. Alice and Bob sign each transactions in a log of operations. by doing this, ALice and Bob are essentially implementing a [two person Byzantine Fault Safe State Machine Replication](decentralizedthoughts.github.io/2019-10-25-flavours-of-state-machine-replication/) system run by Alice and Bob.
+   3.1. Alice and Bob sign each transactions in a log of operations. by doing this, ALice and Bob are essentially implementing a [two person Byzantine Fault Safe State Machine Replication](decentralizedthoughts.github.io/2019-10-25-flavours-of-state-machine-replication/) system run by Alice and Bob. So formally this BFS-SMR has $n=2, f=1$ and maintains its safety, optimistic liveness and safe termination as long as either Alice or Bob are honest.
 
    3.2. If say Alice sends an old state to Layer 1 then Bob needs to report that there is a newer state to Layer 1 in a timely manner. This requires Bob to be able to synchronously communicate with the Layer 1 system. A typical solution is to allow a very large window (say 2 weeks) for Bob to respond.
 
 4. If a violation is detected then it is possible to apply a *punishment mechanism*. In particular, if Alice reports an old state and Bob proves this then we can use the locked funds to punish Alice. A two pay channel would require both Alice and Bob to lock funds and allow both to be punished if needed. 
+
+5. If both Alice and Bob are malicious then the only thing they can do is re-distribute the dedicated channel value between them. The Layer 1 system prevents them from doing anything else. 
 
 
 ### conclusion
@@ -33,4 +35,5 @@ Important details of implementing a basic payment channel:
 A payment channel is a way for any two participants to *open* a private two person BFS-SMR system, *execute* transactions on this private BFS-SMR system and then *close* the channel under assumptions of synchrony. 
 
 The main challenge in these systems is how to safely terminate (close) a channel and correctly report the latest state of the channel to the layer 1 system. The standard solution typically assumes synchrony and requires the honest participant of the channel to report the correct state to the Layer 1 system in a timely manner.  
+
 
