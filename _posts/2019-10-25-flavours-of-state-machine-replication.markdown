@@ -15,15 +15,15 @@ After defining what a state machine is and the transition function `apply` we th
 
 **(Liveness)** Honest server replicas will eventually (when the system is synchronous) execute a command proposed by a client.
 
-In this post we elaborate on several common types of FT-SMR as a function of the adversary power and the [type of corruption](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).
+In this post we elaborate on several common types of State Machine Replication Systems  as a function of the adversary power and the [type of corruption](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). We first make a distinction between Omission failures and Byzantine failures. Then we make a distinction between *fault tolerance* (masking failures) and *fault safety* (losing liveness but safely terminating when a failure is detected).   
 
 ### Omission Fault Tolerant State Machine Replication (OFT-SMR)
 
-This is the classic setting of [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) where we assume there are $n>2f$ servers and at most $f$ of them can fail by [omission](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).  Two examples of OFT-SMR systems that implement some Paxos protocol variants are [Raft](https://raft.github.io/) and [ZooKeeper](https://www.confluent.io/blog/distributed-consensus-reloaded-apache-zookeeper-and-replication-in-kafka/).
+This is the classic setting of [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) where we assume there are $n>2f$ replicas and at most $f$ of them can fail by [omission](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).  Two highly used examples of OFT-SMR systems that implement some Paxos protocol variants are [Raft](https://raft.github.io/) and [ZooKeeper](https://www.confluent.io/blog/distributed-consensus-reloaded-apache-zookeeper-and-replication-in-kafka/).
 
 ### Byzantine Fault Tolerant State Machine Replication (BFT-SMR)
 
-This is the setting of many *Blockchain* based systems. The canonical example is perhaps [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) and [BASE](http://cygnus-x1.cs.duke.edu/courses/cps210/spring06/papers/base.pdf). We assume there are $n>3f$ servers and at most $f$ of them can fail by being [Byzantine](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and acting maliciously.
+This is the setting of many *Blockchain* based systems. The canonical example is perhaps [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) and [BASE](http://cygnus-x1.cs.duke.edu/courses/cps210/spring06/papers/base.pdf). We assume there are $n>3f$ servers and at most $f$ of them can fail by being [Byzantine](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and acting maliciously. There are many other systems that implement Byzantine Fault Tolerant State Machine Replication. Here is a [post](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/) that discusses some of them.
 
 ## Fault Safety vs Fault Tolerance
 
