@@ -7,6 +7,8 @@ tags:
 - blockchain101
 ---
 
+This posts attempt to view payment channels as essentially a [two person BFS-SMR](decentralizedthoughts.github.io/2019-10-25-flavours-of-state-machine-replication/) along with a carefully implemented mechanism for safe termination. 
+
 Suppose Alice wants to Pay Bob 10,000 times. The obvious solution is to do 10,000 transactions on a main State Machine Replication System. Let's call this system the Layer 1 system. This type of solution may cause the Layer 1 system to have considerable traffic. Payment channels (and more generally Layer 2 solutions) offer a way to relive this traffic and scale the system. 
 
 The basic idea of a payment channel:
@@ -14,7 +16,7 @@ The basic idea of a payment channel:
 2. Alice and Bob exchange 10,000 payment commands privately in a *payment channel* (in a 2 person *SMR*, see below). They maintain the current balance after each payment.
 3. Bob (or Alice) *close* the channel by submitting the latest state of the channel to the Layer 1 system.  
 
-Important details:
+Important details of implementing a basic payment channel:
 1. When Alice locks value on Layer 1 for this payment channel she should not be able to double-spend and use the locked funds for other uses. This can be guaranteed for example by having Alice essentially *pay* the channel.
 2. When Alice or Bob try to close the channel they cannot report a channel state (balance) that never occured. This can be guaranteed by having both Alice and Bob sign each transaction and its resulting state. So the Layer 1 system will only accept a state from the layer 2 channel that is singed by both Alice and Bob.
 3. When Alice or Bob try to close the channel they cannot report a state that is not the most *recent state*. This requires two things:
