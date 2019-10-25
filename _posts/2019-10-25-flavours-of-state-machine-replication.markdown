@@ -58,13 +58,13 @@ This design has been extended to handle transient or omission failures in [CORFU
 ### Byzantine Fault Safe State Machine Replication (BFS-SMR)
 
 Chain replication was extended to the Byzantine setting by [van Renesse, Ho, and Schiper 2012](http://www.cs.cornell.edu/~ns672/publications/2012OPODIS.pdf). 
-The main idea is to use a chain of $2f+1$ replicas instead of $f+1$. So even if $f$ replicas are malicious there will be at least one honest replica that can provide the latest committed state.
+The main idea is to use a chain of $2f+1$ replicas instead of $f+1$. So in [partial synchrony](https://decentralizedthoughts.github.io/2019-09-13-flavours-of-partial-synchrony/), even if $f$ replicas are malicious there will be at least one honest replica that can provide the latest committed state.
 
-Note that with $2f+1$ replicas, obtaining a safe termination requires an explicit wedging operation.
+With $2f+1$ replicas, obtaining a safe termination requires an explicit wedging operation.
 
-In a [synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) model it is possible to use just $f+1$ replicas and as we mentioned before there is no need to use a chain. This is the approach taken by [XFT 2016](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf). XFT have a BFT SMR system that only decides what is the group of $f+1$ that should make progress. The $f+1$ group implement a Byzantine Fault Safe SMR using signatures.
+In a [synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) model it is possible to use just $f+1$ replicas and as we mentioned before there is no need to use a chain. This is the approach taken by [XFT 2016](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf). XFT use a BFT-SMR system that only decides what is the group of $f+1$ that should make progress. The $f+1$ group implement a Byzantine Fault Safe SMR system using signatures.
 
-When there is an assumption of synchrony obtaining safe termination is immediate. A specific group of $f+1$ replicas is needed for progress and if just one honest group member stops responding then the group cannot make more progress. Care must be taken so that malicious members do not report old values of the state machine after it is terminated.
+When there is an assumption of synchrony, obtaining safe termination is immediate. A specific group of $f+1$ replicas is needed for progress and if just one honest group member stops responding then the group cannot make more progress. Care must be taken so that malicious members do not report old values of the state machine after it is terminated.
 
 
  
