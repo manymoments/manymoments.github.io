@@ -7,7 +7,7 @@ tags:
 author: Ittai Abraham
 ---
 
-This posts attempt to view payment channels as essentially a [two person BFS-SMR](decentralizedthoughts.github.io/2019-10-25-flavours-of-state-machine-replication/) along with a carefully implemented mechanism for safe termination (channel closing). 
+This posts attempt views payment channels as essentially a [two person BFS-SMR](decentralizedthoughts.github.io/2019-10-25-flavours-of-state-machine-replication/) along with a carefully implemented mechanism for safe termination (channel closing). 
 
 Suppose Alice wants to Pay Bob 10,000 times. The obvious solution is to do 10,000 transactions on a main State Machine Replication System. Let's call this system the *Layer 1 system* and assume Layer 1 is a large Byzantine Fault Tolerant State Machine Replication system. This type of solution may cause the Layer 1 system to have considerable traffic. Payment channels (and more generally Layer 2 solutions) offer a way to relive this traffic and scale the system. 
 
