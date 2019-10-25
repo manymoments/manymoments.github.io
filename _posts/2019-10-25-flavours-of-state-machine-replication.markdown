@@ -19,17 +19,17 @@ In this post we elaborate on several common types of State Machine Replication S
 
 ### Omission Fault Tolerant State Machine Replication (OFT-SMR)
 
-This is the classic setting of [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) where we assume there are $n>2f$ replicas and at most $f$ of them can fail by [omission](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).  Two highly used examples of OFT-SMR systems that implement some Paxos protocol variants are [Raft](https://raft.github.io/) and [ZooKeeper](https://www.confluent.io/blog/distributed-consensus-reloaded-apache-zookeeper-and-replication-in-kafka/).
+This is the classic setting of [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) where we assume there are $n>2f$ replicas and at most $f$ of them can fail by [omission](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).  Two well-known examples of OFT-SMR systems that implement some Paxos protocol variants are [Raft](https://raft.github.io/) and [ZooKeeper](https://www.confluent.io/blog/distributed-consensus-reloaded-apache-zookeeper-and-replication-in-kafka/).
 
 ### Byzantine Fault Tolerant State Machine Replication (BFT-SMR)
 
-This is the setting of many *Blockchain* based systems. The canonical example is perhaps [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) and [BASE](http://cygnus-x1.cs.duke.edu/courses/cps210/spring06/papers/base.pdf). We assume there are $n>3f$ servers and at most $f$ of them can fail by being [Byzantine](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and acting maliciously. There are many other systems that implement Byzantine Fault Tolerant State Machine Replication. Here is a [post](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/) that discusses some of them.
+This is the setting of many *Blockchain* based systems. The canonical example is perhaps [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) and [BASE](http://cygnus-x1.cs.duke.edu/courses/cps210/spring06/papers/base.pdf). We assume there are $n>3f$ replicas and at most $f$ of them can fail by being [Byzantine](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and act maliciously. There are many other systems that implement Byzantine Fault Tolerant State Machine Replication. Here is a [post](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/) that discusses some of them.
 
 ## Fault Safety vs Fault Tolerance
 
 The traditional approach to State Machine Replication is to mask failures. We use the term *fault tolerance* to indicate a system's ability to maintain both safety and liveness.
 
-But what if we could design a system that is *safe* but instead of masking failures and maintaining liveness, it would *detect* failures and then allow other systems to handle the failure?
+But what if we could design a system that is *safe* but instead of masking failures and maintaining liveness, it would *detect* failure and then allow other systems to handle the failure?
 
 For this to work we must also add the ability for any honest replica to *safely terminate* if it *detects* that there is a liveness problem.
 In this approach we maintain the safety property but weaken the liveness to be optimistic: 
@@ -40,12 +40,11 @@ In this approach we maintain the safety property but weaken the liveness to be o
 
 **(Safe Termination)** If an honest replicas does not make progress it can terminate and guarantee that no honest replica will make further progress.
 
-
 ### Omission Fault Safe State Machine Replication (OFS-SMR)
 
 The idea of building a Fault Safe State Machine Replication system that is resilient to Fail-Stop failures can be traced to the chain replication work of [van Renesse and Schneider 2004](http://www.cs.cornell.edu/home/rvr/papers/OSDI04.pdf). 
 
-The basic idea is simple: a chain contains $f+1$ replicas ordered from *head* to *tail*. When the head receives a command from the client it sends it along the chain. When the tail receives the command, the command is *committed*. The tail can then cause the replicas and the client to *learn* about the command by traveling the chain in the reverse direction.
+The basic idea is simple: a chain contains $f+1$ replicas ordered in a sequence from *head* to *tail*. When the head receives a command from the client it sends it along the chain. When the tail (the last replica in the chain) receives the command, the command is *committed*. The tail can then cause the replicas and the client to *learn* about the command being committed by traveling the chain in the reverse direction.
 
 More generally, there is no need to use a chain: a primary can send the command and wait for all the $f+1$ replicas to acknowledge the command before committing. 
 
