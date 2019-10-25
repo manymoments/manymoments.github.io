@@ -2,6 +2,8 @@
 title: Flavours of State Machine Replication
 date: 2019-10-25 12:54:00 -07:00
 published: false
+tags:
+- dist101
 author: Ittai Abraham
 ---
 
@@ -30,18 +32,26 @@ The traditional approach to State Machine Replication is to mask failures. We us
 
 But what if we could design a system that is *safe* but instead of masking failures and maintaining liveness, it would *detect* failures and then allow other systems to handle them?
 
-In this approach we maintain the safety property but modify liveness to be optimistic and add an ability of any honest replica to safely *terminate* if it *detects* that there is a liveness problem.
+For this to work we must also add the ability for any honest replica to *safely terminate* if it *detects* that there is a liveness problem.
+In this approach we maintain the safety property but weaken the liveness to be optimistic. 
 
 **(Safety)** Any two honest replicas store the same sequence of commands in their logs.
 
 **(Optimistic Liveness)** If all replicas are honest and the system is synchronous then all honest replicas will execute a command proposed by a client in a timely manner.
 
-**(Safe Termination)** If an honest replicas does not make progress it can guarantee that no honest replica will make further progress.
+**(Safe Termination)** If an honest replicas does not make progress it can terminate and guarantee that no honest replica will make further progress.
 
 
 ### Omission Fault Safe State Machine Replication (OFS-SMR)
 
-The idea of building Fault Safe State Machine Replication that are resilient to Fail-Stop failures can be traced to the chain replication work of [van Renesse and Schneider 2004](http://www.cs.cornell.edu/home/rvr/papers/OSDI04.pdf).
+The idea of building Fault Safe State Machine Replication that are resilient to Fail-Stop failures can be traced to the chain replication work of [van Renesse and Schneider 2004](http://www.cs.cornell.edu/home/rvr/papers/OSDI04.pdf). 
+
+The basic idea is simple: a chain contains $f+1$ replicas ordered from *head* to *tail*. When the head receives a command from the client it sends it along the chain. When the tail receives the command the command is committed. The tail can then cause the the replicas and the client to learn about the command.
+
+More generally, there is no need to use a chain: a primary can send the command and wait for all the $f+1$ replicas to acknowledge the command before committing. 
+
+Optimistic liveness is obvious. For Safe Termination note that if an honest replica decides to terminate then no further progress can be made. Safety follows but requires careful handling of failures.
+
 This design has been extended to handle transient or Omission failures in [CORFU](http://www.cs.yale.edu/homes/mahesh/papers/corfumain-final.pdf) and was suggested for using to replicate [Flash storage units](https://www.microsoft.com/en-us/research/wp-content/uploads/2012/01/malki-acmstyle.pdf).
 [Christopher Meiklejohn](https://paperswelove.org/2015/topic/christopher-meiklejohns-a-brief-history-of-chain-replication/) provides a good overview of chain replication follow up papers.
 
@@ -49,6 +59,14 @@ This design has been extended to handle transient or Omission failures in [CORFU
 ### Byzantine Fault Safe State Machine Replication (BFS-SMR)
 
 Chain replication was extended to the Byzantine setting by [van Renesse, Ho, and Schiper 2012](http://www.cs.cornell.edu/~ns672/publications/2012OPODIS.pdf). 
+The main idea is to use a chain of $2f+1$ replicas instead of $f+1$. So even if $f$ replicas are malicious there will be at least one honest replica that can provide the latest committed state.
+
+Note that with $2f+1$ replicas, obtaining a safe termination requires an explicit wedging operation.
+
+In a synchronous setting it is possible to use just $f+1$ replicas and as we mentioned before there is no need to use a chain. This is the approach taken by [XFT 2016](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf).
+
+In this case obtaining safe termination is immediate since a specific set of $f+1$ replicas are needed and if just one honest group member stops responding then the group cannot make more progress. Case must be taken so that malicious members do not report old values of the state machine after it is terminated.
+
 
  
 
