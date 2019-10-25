@@ -18,7 +18,7 @@ In this post we elaborate on several common types of FT-SMR as a function of the
 
 ### Omission Fault Tolerant State Machine Replication (OFT-SMR)
 
-This is the classic setting of [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) where we assume there are $n>2f$ servers and at most $f$ of them can fail by [omission](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).  Two examples of OFT-SMR systems that implement the Paxos protocol are [Raft](https://raft.github.io/) and [ZooKeeper](https://www.confluent.io/blog/distributed-consensus-reloaded-apache-zookeeper-and-replication-in-kafka/).
+This is the classic setting of [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) where we assume there are $n>2f$ servers and at most $f$ of them can fail by [omission](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).  Two examples of OFT-SMR systems that implement some Paxos protocol variants are [Raft](https://raft.github.io/) and [ZooKeeper](https://www.confluent.io/blog/distributed-consensus-reloaded-apache-zookeeper-and-replication-in-kafka/).
 
 ### Byzantine Fault Tolerant State Machine Replication (BFT-SMR)
 
