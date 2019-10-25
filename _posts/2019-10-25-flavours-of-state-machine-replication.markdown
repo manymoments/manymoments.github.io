@@ -9,13 +9,13 @@ author: Ittai Abraham
 [State Machine Replication](https://www.cs.cornell.edu/fbs/publications/ibmFault.sm.pdf) is a fundamental approach in distributed computing for building fault tolerant systems. This post is a followup to our basic post on [Fault Tolerant State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/).
 
 
-After defining what a state machine is and the transition function `apply` we then defined a FT-SMR as having two properties: 
+After defining what a state machine is and the transition function `apply` we then defined a Fault Tolerant State Machine Replication system as having two properties: 
 
 **(Safety)** Any two honest replicas store the same sequence of commands in their logs.
 
 **(Liveness)** Honest server replicas will eventually (when the system is synchronous) execute a command proposed by a client.
 
-In this post we elaborate on several common types of State Machine Replication Systems  as a function of the adversary power and the [type of corruption](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). We first make a distinction between Omission failures and Byzantine failures. Then we make a distinction between *fault tolerance* (masking failures) and *fault safety* (losing liveness but safely terminating when a failure is detected).   
+In this post we elaborate on several common types of State Machine Replication Systems  as a function of the [type of corruption](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and the system guarantees. We first make a distinction between Omission failures and Byzantine failures. Then we make a distinction between *fault tolerance* (masking failures) and *fault safety* (losing liveness but safely terminating when a failure is detected).   
 
 ### Omission Fault Tolerant State Machine Replication (OFT-SMR)
 
