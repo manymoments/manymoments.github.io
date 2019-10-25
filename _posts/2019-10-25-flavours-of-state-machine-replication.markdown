@@ -23,16 +23,16 @@ This is the classic setting of [Paxos](https://lamport.azurewebsites.net/pubs/pa
 
 ### Byzantine Fault Tolerant State Machine Replication (BFT-SMR)
 
-This is the setting of many *Blockchain* based systems. The canonical example is perhaps [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) and [BASE](http://cygnus-x1.cs.duke.edu/courses/cps210/spring06/papers/base.pdf). We assume there are $n>3f$ servers and at most $f$ of them can fail by being [Byzantine](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).
+This is the setting of many *Blockchain* based systems. The canonical example is perhaps [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) and [BASE](http://cygnus-x1.cs.duke.edu/courses/cps210/spring06/papers/base.pdf). We assume there are $n>3f$ servers and at most $f$ of them can fail by being [Byzantine](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and acting maliciously.
 
 ## Fault Safety vs Fault Tolerance
 
 The traditional approach to State Machine Replication is to mask failures. We use the term *fault tolerance* to indicate a system's ability to maintain both safety and liveness.
 
-But what if we could design a system that is *safe* but instead of masking failures and maintaining liveness, it would *detect* failures and then allow other systems to handle them?
+But what if we could design a system that is *safe* but instead of masking failures and maintaining liveness, it would *detect* failures and then allow other systems to handle the failure?
 
 For this to work we must also add the ability for any honest replica to *safely terminate* if it *detects* that there is a liveness problem.
-In this approach we maintain the safety property but weaken the liveness to be optimistic. 
+In this approach we maintain the safety property but weaken the liveness to be optimistic: 
 
 **(Safety)** Any two honest replicas store the same sequence of commands in their logs.
 
