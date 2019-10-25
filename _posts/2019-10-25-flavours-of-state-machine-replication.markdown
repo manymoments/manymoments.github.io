@@ -51,7 +51,7 @@ More generally, there is no need to use a chain: a primary can send the command 
 
 Optimistic liveness is obvious. For Safe Termination note that if an honest replica decides to terminate then no further progress can be made. Safety follows but requires careful handling of failures.
 
-This design has been extended to handle transient or Omission failures in [CORFU](http://www.cs.yale.edu/homes/mahesh/papers/corfumain-final.pdf) and was suggested for using to replicate [Flash storage units](https://www.microsoft.com/en-us/research/wp-content/uploads/2012/01/malki-acmstyle.pdf).
+This design has been extended to handle transient or omission failures in [CORFU](http://www.cs.yale.edu/homes/mahesh/papers/corfumain-final.pdf) and was suggested for using to replicate [Flash storage units](https://www.microsoft.com/en-us/research/wp-content/uploads/2012/01/malki-acmstyle.pdf). The survey of 
 [Christopher Meiklejohn](https://paperswelove.org/2015/topic/christopher-meiklejohns-a-brief-history-of-chain-replication/) provides a good overview of chain replication follow up papers.
 
 
