@@ -43,9 +43,9 @@ In this approach we maintain the safety property but weaken the liveness to be o
 
 ### Omission Fault Safe State Machine Replication (OFS-SMR)
 
-The idea of building Fault Safe State Machine Replication that are resilient to Fail-Stop failures can be traced to the chain replication work of [van Renesse and Schneider 2004](http://www.cs.cornell.edu/home/rvr/papers/OSDI04.pdf). 
+The idea of building a Fault Safe State Machine Replication system that is resilient to Fail-Stop failures can be traced to the chain replication work of [van Renesse and Schneider 2004](http://www.cs.cornell.edu/home/rvr/papers/OSDI04.pdf). 
 
-The basic idea is simple: a chain contains $f+1$ replicas ordered from *head* to *tail*. When the head receives a command from the client it sends it along the chain. When the tail receives the command the command is committed. The tail can then cause the the replicas and the client to learn about the command.
+The basic idea is simple: a chain contains $f+1$ replicas ordered from *head* to *tail*. When the head receives a command from the client it sends it along the chain. When the tail receives the command, the command is *committed*. The tail can then cause the replicas and the client to *learn* about the command by traveling the chain in the reverse direction.
 
 More generally, there is no need to use a chain: a primary can send the command and wait for all the $f+1$ replicas to acknowledge the command before committing. 
 
