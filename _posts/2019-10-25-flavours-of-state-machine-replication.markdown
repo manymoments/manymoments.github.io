@@ -65,6 +65,11 @@ In a [synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-
 
 When there is an assumption of synchrony, obtaining safe termination is immediate. A specific group of $f+1$ replicas is needed for progress and if just one honest group member stops responding then the group cannot make more progress. Care must be taken so that malicious members do not report old values of the state machine after it is terminated.
 
+If this sounds similar to what happens in a payment channel this is not a coincidence. This follow up post explains how [Layer 2 is a smaller BFS-SMR that is opened and closed by the larger Layer 1 BFT-SMR](https://decentralizedthoughts.github.io/2019-10-25-payment-channels-are-just-a-two-person-bfs-smr-systems/).
+
+
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1187864506074046464?s=20)
+
 
  
 
