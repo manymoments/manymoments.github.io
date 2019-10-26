@@ -30,10 +30,11 @@ Important details of implementing a basic payment channel:
 5. If both Alice and Bob are malicious then the only thing they can do is re-distribute the dedicated channel value between them. The Layer 1 system prevents them from doing anything else. 
 
 
-### conclusion
+### Conclusion
 
 A payment channel is a way for any two participants to *open* a private two person BFS-SMR system, *execute* transactions on this private BFS-SMR system and then *close* the channel under assumptions of synchrony. 
 
 The main challenge in these systems is how to safely terminate (close) a channel and correctly report the latest state of the channel to the layer 1 system. The standard solution typically assumes synchrony and requires the honest participant of the channel to report the correct state to the Layer 1 system in a timely manner.  
 
 
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1187864507571421186?s=20)
