@@ -21,8 +21,8 @@ The clients communicate only with the replicas and are unreliable. We assume the
 
 ### The Goal
 
-The goal is to give the clients exactly the same experience as if they are interacting with an ideal state machine (a trusted third party that never fails). Here is a simplified *ideal state machine*:
-```ideal state machine```
+The goal is to give the clients exactly the same experience as if they are interacting with an ideal state machine (a trusted third party that never fails). Here is a simplified ```ideal state machine```:
+
 ```
 state = init
 log = []
@@ -42,8 +42,8 @@ We assume both the client and the ideal state machine know how to handle and ign
 ### Primary-Backup protocol
 
 As detailed above we assume the client already handles re-tries and duplicate outputs. WE augment the client with a *client library*. 
-The client library has a simply mechanism to switch from the primary to the backup:
-```client library```
+The ```client library``` has a simply mechanism to switch from the primary to the backup:
+
 ```
 view = 0
 replica = [primary, backup]
@@ -56,9 +56,9 @@ in step r:
       send <output> to client
 ```
 
-The primary needs to maintain the invariant: **sends the command to the backup before responding back to the client**. In addition it sends a heartbeat to the backup at the end of each step.
+The ```primary``` needs to maintain the invariant: **sends the command to the backup before responding back to the client**. In addition it sends a heartbeat to the backup at the end of each step.
 
-```primary```
+
 ```
 state = init
 log = []
@@ -72,15 +72,15 @@ in step r:
      send <heartbeat> to backup
 ```
 
-The backup passively replicates as long as it hears the heartbeat. If it detects that the primary failed it invokes a view change. In a view change the backup may need to resend the responses to the clients.
+The ```backup``` passively replicates as long as it hears the heartbeat. If it detects that the primary failed it invokes a view change. In a view change the backup may need to resend the responses to the clients.
 
-```backup```
+
 ```
 state = init
 log = []
 view = 0
 in step r:
-   on receiving <cmd> from the primary (and view ==0):
+   on receiving <cmd> from the primary (and view == 0):
       log.append(cmd)
       state, output = apply(cmd, state)   
    on receiving <cmd> from a client (and view == 1):
@@ -98,10 +98,10 @@ in step r:
 
 When there are $n>2$ replicas the new primary must continue to maintain the invariant: **send the command to all the backups before responding back to the client**.
 
-To do this each replica maintains a *resend* set and resends the last round commands when it does a view change. Assume $n$ replicas with identifiers $\{0,1,2,\dots,n-1\}$.
+To do this each ```replica j``` maintains a *resend* set and resends the last round commands when it does a view change. Assume $n$ replicas with identifiers $\{0,1,2,\dots,n-1\}$.
 
 
-```replica j```
+
 ```
 state = init
 log = []
