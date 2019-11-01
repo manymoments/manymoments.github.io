@@ -21,6 +21,7 @@ There is also a set of clients and the adversary can cause any clients to have [
 
 The goal is to give the clients exactly the same experience as if they are interacting with an ideal state machine (a trusted third party that never fails). Here is a simplified *ideal state machine*:
 
+**ideal state machine**
 ```
 state = init
 log = []
@@ -32,19 +33,17 @@ in step r:
 ```
 
 
-We assume that each client command has a unique identifier and that the output returned by the state machine contains this identifier.
+A client may have omission failures even in the ideal world. To overcome this, each client command has a unique identifier and that the output returned by the state machine contains this identifier. 
 
-Assume that a client may have omission failures even in the ideal world. To overcome this, each client command has a unique identifier and that the output returned by the state machine contains this identifier. 
-
-We assume both the client and the ideal state machine know how to handle and ignore duplicate commands and outputs. A client that does not receive a response has a retry mechanism that resends the request until a output is received.
+We assume both the client and the ideal state machine know how to handle and ignore duplicate commands and outputs. A client that does not receive a response has a retry mechanism that re-sends the request until an output is received.
 
 
 ### Primary-Backup protocol
 
 As detailed above we assume the client already handles re-tries and duplicate outputs. WE augment the client with a *client library*. 
 The client library has a simply mechanism to switch from the primary to the backup:
-```
 **client library**
+```
 view = 0
 replica = [primary, backup]
 in step r:
@@ -58,8 +57,8 @@ in step r:
 
 The primary needs to maintain the invariant: **sends the command to the backup before responding back to the client**. In addition it sends a heartbeat to the backup at the end of each step.
 
-```
 **primary**
+```
 state = init
 log = []
 in step r:
@@ -74,8 +73,8 @@ in step r:
 
 The backup passively replicates as long as it hears the heartbeat. If it detects that the primary failed it invokes a view change. In a view change the backup may need to resend the responses to the clients.
 
-```
 **backup**
+```
 state = init
 log = []
 view = 0
@@ -102,6 +101,7 @@ To do this each replica maintains a *resend* set and resends the last round comm
 
 
 **replica $j$**
+```
 state = init
 log = []
 resend = []
