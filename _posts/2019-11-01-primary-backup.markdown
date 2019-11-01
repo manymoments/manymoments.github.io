@@ -1,7 +1,6 @@
 ---
 title: Primary-Backup State Machine Replication
 date: 2019-11-01 03:10:00 -07:00
-published: false
 tags:
 - dist101
 - SMR
@@ -24,6 +23,8 @@ The clients communicate only with the replicas and are unreliable. We assume the
 The goal is to give the clients exactly the same experience as if they are interacting with an ideal state machine (a trusted third party that never fails). Here is a simplified ```ideal state machine```:
 
 ```
+ideal state machine
+
 state = init
 log = []
 in step r:
@@ -34,7 +35,7 @@ in step r:
 ```
 
 
-A client may have omission failures even in the ideal world. To overcome this, each client command has a unique identifier and that the output returned by the state machine contains this identifier. 
+A client may have omission failures even in the ideal world. To overcome this, each client command has a unique identifier and the output returned by the state machine contains this identifier. 
 
 We assume both the client and the ideal state machine know how to handle and ignore duplicate commands and outputs. A client that does not receive a response has a retry mechanism that re-sends the request until an output is received.
 
@@ -42,7 +43,7 @@ We assume both the client and the ideal state machine know how to handle and ign
 ### Primary-Backup protocol
 
 As detailed above we assume the client already handles re-tries and duplicate outputs. WE augment the client with a *client library*. 
-The ```client library``` has a simply mechanism to switch from the primary to the backup:
+The ```client library``` has a mechanism to switch from the primary to the backup:
 
 ```
 client library 
@@ -97,6 +98,8 @@ in step r:
       view = 1
       send <view change 1> to all clients
 ```
+
+By maintaining the invariant, a client knows that the response from the primary must have been sent to the backup. If the backup is faulty then the primary will continue to serve the clients. If the primary is faulty and crashes then the backup is guaranteed to have seen all the commands that whose output was returned to the clients. The backup may also see commands that were not sent to the client (in the last round of the primary). The client retry mechanism will eventually learn that this these commands were executed.
 
 
 
