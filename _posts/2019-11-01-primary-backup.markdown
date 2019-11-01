@@ -102,7 +102,7 @@ To do this each ```replica j``` maintains a *resend* set and resends the last ro
 
 
 
-```java 
+```
 state = init
 log = []
 resend = []
