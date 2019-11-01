@@ -32,30 +32,31 @@ in step r:
 ```
 
 
-To simply the presentation we will assume that each client command has a unique identifier and that the output returned by the state machine contains this identifier.
+We assume that each client command has a unique identifier and that the output returned by the state machine contains this identifier.
+
+Assume that a client may have omission failures even in the ideal world. To overcome this, each client command has a unique identifier and that the output returned by the state machine contains this identifier. 
+
+We assume both the client and the ideal state machine know how to handle and ignore duplicate commands and outputs. A client that does not receive a response has a retry mechanism that resends the request until a output is received.
+
 
 ### Primary-Backup protocol
 
-
-The client library does two things: a simply mechanism to switch from the primary to the backup and a simple mechanism to avoid sending an output twice:
+As detailed above we assume the client already handles re-tries and duplicate outputs. WE augment the client with a *client library*. 
+The client library has a simply mechanism to switch from the primary to the backup:
 ```
 **client library**
 view = 0
 replica = [primary, backup]
-seen = []
 in step r:
    on receiving <view change 1> from backup
-      view =1
+      view = 1
    on receiving <cmd> from client
       send <cmd> to replica[view]
    on receiving <output> from a replica
-      if seen does not contain output
-         send <output> to client
-      seen.add(output)
-
+      send <output> to client
 ```
 
-The primary simply sends the command to the backup **before** executing the command and responding back to the client. In addition it sends a heartbeat to the backup at the end of each step.
+The primary needs to maintain the invariant: **sends the command to the backup before responding back to the client**. In addition it sends a heartbeat to the backup at the end of each step.
 
 ```
 **primary**
@@ -63,7 +64,7 @@ state = init
 log = []
 in step r:
    on receiving <cmd> from a client:
-     send <cmd, client> to the backup
+     send <cmd> to the backup
      log.append(cmd)
      state, output = apply(cmd, state)
      send <output> to the client
@@ -71,29 +72,63 @@ in step r:
      send <heartbeat> to backup
 ```
 
-The backup remains passive as long as it hears the heartbeat. If it detects that the primary failed it invokes a view change. In a view change the backup may need to resend the responses to the clients.
+The backup passively replicates as long as it hears the heartbeat. If it detects that the primary failed it invokes a view change. In a view change the backup may need to resend the responses to the clients.
 
 ```
 **backup**
 state = init
 log = []
-resend = []
 view = 0
 in step r:
-   on receiving <cmd, client> from the primary (and view ==0):
+   on receiving <cmd> from the primary (and view ==0):
       log.append(cmd)
-      state, output = apply(cmd, state)
-      resend[cmd] = (output, client)        
-   on receiving <cmd, client> from a client (and view == 1):
+      state, output = apply(cmd, state)   
+   on receiving <cmd> from a client (and view == 1):
       log.append(cmd)
       state, output = apply(cmd, state)
       send <output> to the client
    on missing <heartbeat> from primary
       view = 1
       send <view change 1> to all clients
-      for every <cmd> from the primary received in step r-1
-         send <resend[cmd].output> to resend[cmd].client 
+```
 
+
+
+### Generalized Primary-Backup
+
+When there are $n>2$ replicas the new primary must continue to maintain the invariant: **send the command to all the backups before responding back to the client**.
+
+To do this each replica maintains a *resend* set and resends the last round commands when it does a view change. Assume $n$ replicas with identifiers $\{0,1,2,\dots,n-1\}$.
+
+
+**replica $j$**
+state = init
+log = []
+resend = []
+view = 0
+in step r:
+   // as a Backup
+   on receiving <cmd> from replica[view]:
+      log.append(cmd)
+      state, output = apply(cmd, state)
+      resend[r].add(cmd)        
+   // as a Primary
+   on receiving <cmd> from a client (and view == j):
+      send <cmd> to all replicas
+      log.append(cmd)
+      state, output = apply(cmd, state)
+      send <output> to the client
+   // View change
+   on missing <heartbeat> from replica[view]
+      view = view +1
+      if view == j
+         send <view change j> to all clients
+         let t be a highest non empty entry in resend
+         for each cmd in resend[t]
+            send <cmd> to all replicas (in order)
+  on end of step 
+     if view == j
+         send <heartbeat> to all replicas (in order)
 
 ```
 
