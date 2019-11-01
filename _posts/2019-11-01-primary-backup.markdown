@@ -45,6 +45,8 @@ As detailed above we assume the client already handles re-tries and duplicate ou
 The ```client library``` has a simply mechanism to switch from the primary to the backup:
 
 ```
+client library 
+
 view = 0
 replica = [primary, backup]
 in step r:
@@ -60,6 +62,8 @@ The ```primary``` needs to maintain the invariant: **sends the command to the ba
 
 
 ```
+primary
+
 state = init
 log = []
 in step r:
@@ -76,6 +80,8 @@ The ```backup``` passively replicates as long as it hears the heartbeat. If it d
 
 
 ```
+backup
+
 state = init
 log = []
 view = 0
@@ -103,6 +109,8 @@ To do this each ```replica j``` maintains a *resend* set and resends the last ro
 
 
 ```
+replica j
+
 state = init
 log = []
 resend = []
@@ -130,7 +138,6 @@ in step r:
   on end of step 
      if view == j
          send <heartbeat> to all replicas (in order)
-
 ```
 
 
