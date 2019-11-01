@@ -24,14 +24,77 @@ The goal is to give the clients exactly the same experience as if they are inter
 ```
 state = init
 log = []
-while true:
-  on receiving cmd from a client:
-    log.append(cmd)
-    state, output = apply(cmd, state)
-    send output to the client
+in step r:
+   on receiving <cmd> from a client:
+      log.append(cmd)
+      state, output = apply(cmd, state)
+      send <output> to the client
 ```
+
+
+To simply the presentation we will assume that each client command has a unique identifier and that the output returned by the state machine contains this identifier.
 
 ### Primary-Backup protocol
 
+
+The client library does two things: a simply mechanism to switch from the primary to the backup and a simple mechanism to avoid sending an output twice:
+```
+**client library**
+view = 0
+replica = [primary, backup]
+seen = []
+in step r:
+   on receiving <view change 1> from backup
+      view =1
+   on receiving <cmd> from client
+      send <cmd> to replica[view]
+   on receiving <output> from a replica
+      if seen does not contain output
+         send <output> to client
+      seen.add(output)
+
+```
+
+The primary simply sends the command to the backup **before** executing the command and responding back to the client. In addition it sends a heartbeat to the backup at the end of each step.
+
+```
+**primary**
+state = init
+log = []
+in step r:
+   on receiving <cmd> from a client:
+     send <cmd, client> to the backup
+     log.append(cmd)
+     state, output = apply(cmd, state)
+     send <output> to the client
+  on end of step 
+     send <heartbeat> to backup
+```
+
+The backup remains passive as long as it hears the heartbeat. If it detects that the primary failed it invokes a view change. In a view change the backup may need to resend the responses to the clients.
+
+```
+**backup**
+state = init
+log = []
+resend = []
+view = 0
+in step r:
+   on receiving <cmd, client> from the primary (and view ==0):
+      log.append(cmd)
+      state, output = apply(cmd, state)
+      resend[cmd] = (output, client)        
+   on receiving <cmd, client> from a client (and view == 1):
+      log.append(cmd)
+      state, output = apply(cmd, state)
+      send <output> to the client
+   on missing <heartbeat> from primary
+      view = 1
+      send <view change 1> to all clients
+      for every <cmd> from the primary received in step r-1
+         send <resend[cmd].output> to resend[cmd].client 
+
+
+```
 
 
