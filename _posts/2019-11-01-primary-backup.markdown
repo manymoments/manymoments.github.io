@@ -8,20 +8,21 @@ tags:
 author: Ittai Abraham
 ---
 
-We continue our series of posts on [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) (SMR). In this post we discuss what is perhaps the most simple form of SMR: Primary-Backup.
+We continue our series of posts on [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) (SMR). In this post we discuss what is perhaps the most simple form of SMR: Primary-Backup for crash failures. 
 
 ### The Setting
+We are in the client-server setting. The servers are called *replicas*.
+
 There are two replicas: one called *Primary* and the other called *Backup*. We assume the adversary has the power to [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) at most one replica. In this sense we are in the special case of $n=2,f=1$ of the [dishonest majority](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/) setting ($n>f$) threshold adversary.
 
 We assume [synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) and for simplicity in this post we assume [lock-step synchrony](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf).
 
-There is also a set of clients and the adversary can cause any clients to have [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).
+The clients communicate only with the replicas and are unreliable. We assume the adversary can cause any clients to have [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).
 
 ### The Goal
 
 The goal is to give the clients exactly the same experience as if they are interacting with an ideal state machine (a trusted third party that never fails). Here is a simplified *ideal state machine*:
-
-**ideal state machine**
+```ideal state machine```
 ```
 state = init
 log = []
@@ -42,7 +43,7 @@ We assume both the client and the ideal state machine know how to handle and ign
 
 As detailed above we assume the client already handles re-tries and duplicate outputs. WE augment the client with a *client library*. 
 The client library has a simply mechanism to switch from the primary to the backup:
-**client library**
+```client library```
 ```
 view = 0
 replica = [primary, backup]
@@ -57,7 +58,7 @@ in step r:
 
 The primary needs to maintain the invariant: **sends the command to the backup before responding back to the client**. In addition it sends a heartbeat to the backup at the end of each step.
 
-**primary**
+```primary```
 ```
 state = init
 log = []
@@ -73,7 +74,7 @@ in step r:
 
 The backup passively replicates as long as it hears the heartbeat. If it detects that the primary failed it invokes a view change. In a view change the backup may need to resend the responses to the clients.
 
-**backup**
+```backup```
 ```
 state = init
 log = []
@@ -100,7 +101,7 @@ When there are $n>2$ replicas the new primary must continue to maintain the inva
 To do this each replica maintains a *resend* set and resends the last round commands when it does a view change. Assume $n$ replicas with identifiers $\{0,1,2,\dots,n-1\}$.
 
 
-**replica $j$**
+```replica j```
 ```
 state = init
 log = []
