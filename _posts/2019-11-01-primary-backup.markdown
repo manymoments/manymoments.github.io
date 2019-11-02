@@ -4,7 +4,7 @@ date: 2019-11-01 03:10:00 -07:00
 tags:
 - dist101
 - SMR
-author: Ittai Abraham
+author: Ittai Abraham, Kartik Nayak
 ---
 
 We continue our series of posts on [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) (SMR). In this post we discuss the most simple form of SMR: Primary-Backup for crash failures. We will assume [synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) communication. For simplicity, we will consider the case with two replicas, out of which one can crash. Recall that when a party *crashes*, it irrevocably terminates.  
@@ -60,7 +60,7 @@ while true:
       state, output = apply(cmd, state)
    if view == 1:
       send output to the client library
-   on missing "heartbeat" from primary in the last t time units:
+   on missing "heartbeat" from primary in the last t + $\Delta$ time units:
       view = 1
       send ("view change", 1) to all client libraries
 ```
@@ -73,11 +73,11 @@ while true:
 view = 0
 replica = [primary, backup]
 while true:
-   on receiving <cmd> from client
-      send <cmd> to replica[view]
-   on receiving <output> from a replica
-      send <output> to client
-   on receiving <"view change" 1> from backup
+   on receiving cmd from client
+      send cmd to replica[view]
+   on receiving output from a replica
+      send output to client
+   on receiving ("view change", 1) from backup
       view = 1
 ```
 
@@ -86,7 +86,7 @@ Due to the invariant maintained by the primary, a client knows that the response
 **A couple of remarks on the setting.**
 1. We assumed that the adversary can crash any client and that all non-fualty client messages arrive at the primary/backup and vice-versa. This Primary-Backup protocol works even if we assume that the adversary can fail any client by [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). To handle this model, even with an ideal state machine we need to maintain a unique identifier for every command sent to the state machine and use retry mechanism.
 
-2. In practice there is often an out-of-band procedure to reset the system to allow the primary to be the primary again after it recovers from its failure. For example, one can first stop the backup and then restart the whole system. 
+2. In practice, there is often an out-of-band procedure to reset the system to allow the primary to be the primary again after it recovers from its failure. For example, one can first stop the backup and then restart the whole system. 
 
 3. In the above description, we assume that there will be at most 1 crash. We now discuss a mechanism for $n > 2$ capable of tolerating $n<f$ crash faults.
 
@@ -118,10 +118,10 @@ while true:
       state, output = apply(cmd, state)
       send output to the client library
    // View change
-   on missing "heartbeat" from primary in the last t time units:
+   on missing "heartbeat" from primary in the last t + $\Delta$ time units:
       view = view + 1
       if view == j
-         send <"view change" j> to all client libraries
+         send ("view change", j) to all client libraries
          send resend to all replicas (in order)
    // Heartbeat from primary
    if no client message for some predetermined time t: 
