@@ -87,7 +87,7 @@ Due to the invariant maintained by the primary, a client knows that the response
 **A couple of remarks on the setting.**
 1. We have assumed that all client messages arrive at the primary/backup and vice-versa. In practice, if these messages do not arrive, i.e., if we have [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/), then not all client messages may be executed. On the other hand, sending duplicate messages can cause the same command to be executed twice. This can be fixed by maintaining a unique identifier for every command sent to the state machine and using retries.
 
-2. In the above description, we assume that there will be at most 1 crash in the lifetime of the execution. In practice, one may need to either introduce a recovery mechanism, or use more backups, to tolerate more faults.
+2. In the above description, we assume that there will be at most 1 crash in the lifetime of the execution. We now discuss a mechanism for $n > 2$ capable of tolerating more faults.
 
 ### Generalized Primary-Backup
 
@@ -98,33 +98,33 @@ Each ```replica j``` maintains a *resend* variable that stores the last command 
 
 
 ```
-replica j
+Replica j
 
 state = init
 log = []
 resend = []
 view = 0
-in step r:
+while true:
    // as a Backup
-   on receiving <cmd> from replica[view]:
+   on receiving cmd from replica[view]:
       log.append(cmd)
       state, output = apply(cmd, state)
       resend = cmd        
    // as a Primary
-   on receiving <cmd> from a client library (and view == j):
-      send <cmd> to all replicas
+   on receiving cmd from a client library (and view == j):
+      send cmd to all replicas
       log.append(cmd)
       state, output = apply(cmd, state)
-      send <output> to the client library
+      send output to the client library
    // View change
-   on missing <"heartbeat"> from replica[view]
+   on missing "heartbeat" from primary in the last t time units:
       view = view + 1
       if view == j
          send <"view change" j> to all client libraries
-         send <resend> to all replicas (in order)
+         send resend to all replicas (in order)
    // Heartbeat from primary
-   no more client messages and view == j
-      send <"heartbeat"> to all replicas (in order)
+   if no client message for some predetermined time t: 
+      send "heartbeat" to all replicas (in order)
 ```
 
 Note that clients need a mechanism to discover who is the current primary. For example, they can send a query to all replicas to learn what is the current view number.
