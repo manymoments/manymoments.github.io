@@ -66,7 +66,7 @@ while true:
       send ("view change", 1) to all client libraries
 ```
 
-In the ideal world, the client needs to interact with only a single state machine. With the primary-backup paradigm, it needs to be aware of their existence and send messages accordingly. Thus, we augment the client with a *client library*. The ```client library``` acts as the required relay between the client in the ideal world and the real world protocol. It implements a mechanism to switch from primary to backup:
+**Client.** In the ideal world, the client needs to interact with only a single state machine. With the primary-backup paradigm, it needs to be aware of their existence and send messages accordingly. Thus, we augment the client with a *client library*. The ```client library``` acts as the required relay between the client in the ideal world and the real world protocol. It implements a mechanism to switch from primary to backup:
 
 ```
 client library 
