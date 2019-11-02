@@ -27,7 +27,7 @@ while true:
 
 The above state machine can be implemented in practice with a simple primary-backup paradigm. 
 
-**Primary.** The ```primary``` behaves like exactly like an ideal state machine until it crashes. However, if it does crash, it needs the backup to takeover the execution and continue serving the client. 
+**Primary.** The ```primary``` behaves exactly like an ideal state machine until it crashes. However, if it does crash, it needs the backup to takeover the execution and continue serving the client. 
 
 ```
 // Primary
@@ -44,7 +44,7 @@ while true:
      send "heartbeat" to backup
 ```
 
-The code for the primary is exactly the same as that of an ideal state machine except for two changes. First, it needs to maintain an invariant: *update the backup before responding back to the client*. Since we make a synchrony assumption, the message is bound to reach the backup within a known bounded delay $\Delta$. Second, the backup may not be able to differentiate between a crashed primary and absence of client commands. In either case, the backup receives no information. Hence, the primary sends an occasional *heartbeat* to indicate that it has not crashed.
+The code for the primary is the same as that of an ideal state machine except for two changes. First, it needs to maintain an invariant: *update the backup before responding back to the client*. Due to synchrony, the message is bound to reach the backup within a known bounded delay $\Delta$. Second, the backup may not be able to differentiate between a crashed primary and absence of client commands. In either case, the backup receives no information. Hence, the primary sends an occasional *heartbeat* to indicate that it has not crashed.
 
 **Backup.** The ```backup``` passively replicates as long as it either hears client commands or heartbeats. If it receives neither, then it invokes a *view change* by sending ("view change", 1) to the clients. Once a view-change has occurred, it is also responsible for responding back to the client. 
 
@@ -118,7 +118,7 @@ while true:
       state, output = apply(cmd, state)
       send output to the client library
    // View change
-   on missing "heartbeat" from primary in the last t + $\Delta$ time units:
+   on missing "heartbeat" from replica[view] in the last t + $\Delta$ time units:
       view = view + 1
       if view == j
          send ("view change", j) to all client libraries
