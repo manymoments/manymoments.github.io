@@ -1,11 +1,11 @@
 ---
 title: Primary-Backup Backup State Machine Replication
 date: 2019-11-01 03:10:00 -07:00
+published: false
 tags:
 - dist101
 - SMR
 author: Ittai Abraham
-published: false
 ---
 
 We continue our series of posts on [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) (SMR). In this post we discuss the most simple form of SMR: Primary-Backup for crash failures. We will assume [synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) communication; in particular, we assume [lock-step synchrony](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf). For simplicity, we will consider the case with two replicas, out of which one can crash.
