@@ -10,7 +10,7 @@ tags:
 
 In the previous post we show that State Machine Replication for $n<f$ failures is possible in the synchronous model when the adversary can only fail parties by crash. In this post we show that omission failures are more challenging.
 
-*Theorem: It is impossible to implement State Machine Replication with two replicas and an adversary that can cause omission failures to one replica even in a lock-step model.*
+*Theorem: It is impossible to implement State Machine Replication with two replicas and an adversary that can cause omission failures to one replica even in a lock-step model.* 
 
 As in our previous lower bounds we define multiple worlds and use indistinguishability arguments to derive a lower bound. In each world there are two Clients called client $1$ and client $2$ and two servers called server $1$ and server $2$
 
