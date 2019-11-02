@@ -61,7 +61,7 @@ while true:
       state, output = apply(cmd, state)
    if view == 1:
       send output to the client library
-   on missing "heartbeat" from primary in the last t time units:
+   on missing "heartbeat" from primary in the last t + $\Delta$ time units:
       view = 1
       send ("view change", 1) to all client libraries
 ```
