@@ -1,5 +1,5 @@
 ---
-title: Primary-Backup Backup State Machine Replication
+title: Primary-Backup State Machine Replication
 date: 2019-11-01 03:10:00 -07:00
 published: false
 tags:
@@ -15,7 +15,7 @@ We continue our series of posts on [State Machine Replication](https://decentral
 The goal is to give the clients exactly the same experience as if they are interacting with an ideal state machine as described below. 
 
 ```
-Ideal State Machine
+// Ideal State Machine
 
 state = init
 log = []
@@ -31,7 +31,7 @@ The above state machine can be implemented in practice with a simple primary-bac
 **Primary.** The ```primary``` behaves like exactly like an ideal state machine until it crashes. However, if it does crash, it needs the backup to takeover the execution and continue serving the client. 
 
 ```
-Primary
+// Primary
 
 state = init
 log = []
@@ -50,7 +50,7 @@ The code for the primary is exactly the same as that of an ideal state machine e
 **Backup.** The ```backup``` passively replicates as long as it either hears client commands or heartbeats. If it receives neither, then  it invokes a *view change* by sending ("view change", 1) to the client. Once a view-change has occured, it is also responsible for responding back to the client. 
 
 ```
-Backup
+// Backup
 
 state = init
 log = []
@@ -69,7 +69,7 @@ while true:
 **Client.** In the ideal world, the client needs to interact with only a single state machine. With the primary-backup paradigm, it needs to be aware of their existence and send messages accordingly. Thus, we augment the client with a *client library*. The ```client library``` acts as the required relay between the client in the ideal world and the real world protocol. It implements a mechanism to switch from primary to backup:
 
 ```
-client library 
+// Client library 
 
 view = 0
 replica = [primary, backup]
@@ -98,7 +98,7 @@ Each ```replica j``` maintains a *resend* variable that stores the last command 
 
 
 ```
-Replica j
+// Replica j
 
 state = init
 log = []
