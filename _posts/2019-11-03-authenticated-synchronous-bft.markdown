@@ -4,7 +4,7 @@ date: 2019-11-03 11:12:00 -08:00
 published: false
 ---
 
-In this post we discuss *[synchronous]* protocols in the *[authenticated](https://decentralizedthoughts.github.io/2019-07-18-setup-assumptions/)* model (assuming a PKI). Before we continue here are two subject this post in *not* about:
+In this post we discuss *[synchronous]()* protocols in the *[authenticated](https://decentralizedthoughts.github.io/2019-07-18-setup-assumptions/)* model (assuming a PKI). Before we continue here are two subject this post in *not* about:
 1. This post is not about BFT protocol in the partial synchrony model, like the ones discussed [here](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/).
 2. This post is not about permissionless BFT protocols, like [Nakamoto](https://bitcoin.org/bitcoin.pdf) [Consensus](https://eprint.iacr.org/2014/765.pdf) in the synchronous model that use proof-of-work and do not assume a PKI.
 
@@ -29,15 +29,15 @@ Some papers refer to their protocol latency in terms of \#rounds, whereas some o
 The [DLS](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) lower bound implies that we cannot tolerate a minority corruption by making weaker assumptions such as partial synchrony/asynchrony. The [FLM](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) lower bound implies that  digital signatures/PoW is also necessary to disallow an adversary from simulating multiple parties and tolerate a minority corruption.
 
 
-|   |  Type | Sync / Lock  | Adpap/Part  | Round Com  | Message Com  |
+|   |  Type | Sync/Lock-Step  | Adaptive/Partial  | Round Complex  | Message Complex  |
 |---|---|---|---|---|---|
-| [Lamport, Shostak, and Pease](https://people.eecs.berkeley.edu/~luca/cs174/byzantine.pdf)  | A  |  L |   |   | $O(2^n)$  |
-| [Dolev and Strong](https://www.researchgate.net/publication/220616485_Authenticated_Algorithms_for_Byzantine_Agreement)  |  B |  L |   |  O(n) | O(n^3) |
-| [Katz and Koo](https://eprint.iacr.org/2006/065.pdf)  | A  | L  | A  | $O(1)$  | $O(n^3)$  |
-| [XFT protocol](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf)  | SMR  | S  | P  | $O(2^n)$  |   |
-| [Abraham et al.](https://eprint.iacr.org/2018/1028.pdf)  |  A | L  | A  | $O(1)$  |  $O(n^2)$ |
-| [Dfinity Consensus](https://eprint.iacr.org/2018/1153.pdf)  |  SMR | S  | P  | $O(1)$  | $O(n^2)$  |
-|  [Sync HotStuff](https://eprint.iacr.org/2019/270.pdf)  | SMR  | S  | P  | $O(1)$  |  $O(n^2)$ |
+| [Lamport, Shostak, and Pease, 82](https://people.eecs.berkeley.edu/~luca/cs174/byzantine.pdf)  | A  |  L |   |   | $O(2^n)$  |
+| [Dolev and Strong, 82](https://www.researchgate.net/publication/220616485_Authenticated_Algorithms_for_Byzantine_Agreement)  |  Broadcast | step | Adaptive  |  $O(n)$ | $O(n^3)$ |
+| [Katz and Koo, 06](https://eprint.iacr.org/2006/065.pdf)  | A  | L  | A  | $O(1)$  | $O(n^3)$  |
+| [XFT protocol, 16](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf)  | SMR  | S  | P  | $O(2^n)$  |   |
+| [Abraham et al., 17](https://eprint.iacr.org/2018/1028.pdf)  |  A | L  | A  | $O(1)$  |  $O(n^2)$ |
+| [Dfinity Consensus, 18](https://eprint.iacr.org/2018/1153.pdf)  |  SMR | S  | P  | $O(1)$  | $O(n^2)$  |
+|  [Sync HotStuff, 19](https://eprint.iacr.org/2019/270.pdf)  | SMR  | S  | P  | $O(1)$  |  $O(n^2)$ |
 
 
 
