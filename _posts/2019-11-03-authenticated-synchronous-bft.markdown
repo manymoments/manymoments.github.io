@@ -4,7 +4,7 @@ date: 2019-11-03 11:12:00 -08:00
 published: false
 ---
 
-In this post we discuss *[synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/)* protocols in the *[authenticated] (https://decentralizedthoughts.github.io/2019-07-18-setup-assumptions/)* model (assuming a PKI). Before we continue here are two subject this post in *not* about:
+In this post we discuss *[synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/)* protocols in the *[authenticated](https://decentralizedthoughts.github.io/2019-07-18-setup-assumptions/)* model (assuming a PKI). Before we continue here are two subject this post in *not* about:
 1. This post is not about BFT protocol in the partial synchrony model, like the ones discussed [here](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/).
 2. This post is not about permissionless BFT protocols, like [Nakamoto](https://bitcoin.org/bitcoin.pdf) [Consensus](https://eprint.iacr.org/2014/765.pdf) in the synchronous model that use proof-of-work and do not assume a PKI.
 
