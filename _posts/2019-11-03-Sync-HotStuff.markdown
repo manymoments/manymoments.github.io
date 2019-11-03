@@ -16,8 +16,16 @@ The goal is to commit client commands within $2\Delta$ time, where $\Delta$ is t
 2. **Vote.** Broadcast a vote for the first valid value received from the leader. When a replica votes, it also forwards the leader proposal.
 3. **Commit.** If a replica does not observe a proposal for a conflicting command cmd’ $\neq$ cmd within $2\Delta$ time after voting, commit cmd.
 
+<p align="center">
+  <img src="/uploads/steady-state.png" width="256" title="Steady state of the protocol">
+</p>
+
 A pictorial illustration for a three replica execution is presented in the figure. The key question is *why does a $2\Delta$ time after vote suffice to commit?* It turns out that this time suffices for two invariants to be satisfied if the committing replica receives no conflicting command: (i) cmd will be certified, i.e., it will be voted for by all honest replicas, and (ii) no conflicting command will be certified. 
 
 Suppose replica 1 is committing cmd at time t. Let us understand the sequence of events from its point-of-view. 
+
+<p align="center">
+  <img src="/uploads/sync-hotstuff-proof.png" width="256" title="Sequence of events from the PoV of replica 1">
+</p>
 
 Since replica 1 committed at time t, it must have voted at time $t - 2\Delta$. This vote also acts as a *re-proposal*, and hence all honest replicas receive the proposal by time $t- \Delta$. If no honest replica has received a conflicting command at $t-\Delta$, then it will vote for cmd and cmd will be certified. If an honest replica receives a conflicting command cmd’ after $t-\Delta$, then it will not be voted for (a replica votes for the first valid value). If it received cmd’ before $t-\Delta$, it will indeed vote for cmd’. But this vote will arrive at replica 1 before time $t$, causing replica 1 to not commit. 
