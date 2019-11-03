@@ -34,3 +34,5 @@ So in world 3 the two clients will see conflicting states and this is a failure 
 Notes:
 1. This lower bound can be generalized to $n\leq 2f$.
 2. This lower bound holds even if there is a setup and a PKI.
+
+Please leave comments on [Twitter]()
