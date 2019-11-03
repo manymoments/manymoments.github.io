@@ -1,11 +1,4 @@
 ---
-title: Sync HotStuff: Simple and Practical Synchronous State Machine Replication
-date: 2019-11-05 03:10:00 -07:00
-published: false
-tags:
-- dist101
-- SMR
-author: Kartik Nayak
 ---
 
 In this post, we will discuss Sync HotStuff, a simple and elegant synchronous protocol for tolerating $f < n/2$ faults that we worked on in the past year. We will first present one of the key ideas of the protocol. Later, we will discuss some of the other results.
