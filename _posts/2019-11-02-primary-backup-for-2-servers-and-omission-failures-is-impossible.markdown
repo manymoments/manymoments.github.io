@@ -1,5 +1,5 @@
 ---
-title: Primary-Backup for 2 servers and Omission failures is Impossible
+title: Primary-Backup for Two Servers and One Omission Failure is Impossible
 date: 2019-11-02 11:12:00 -07:00
 published: false
 tags:
