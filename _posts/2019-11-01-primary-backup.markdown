@@ -84,7 +84,7 @@ while true:
 Due to the invariant maintained by the primary, a client knows that the response it got from a primary must have been sent to the backup. If the backup crashes then the primary will continue to serve the clients. If the primary is faulty and crashes then the backup is guaranteed to have seen any command whose output was returned to the client.
 
 **A couple of remarks on the setting.**
-1. We assumed that the adversary can crash any client and that all non-fualty client messages arrive at the primary/backup and vice-versa. This Primary-Backup protocol works even if we assume that the adversary can fail any client by [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). To handle this model, even with an ideal state machine we need to maintain a unique identifier for every command sent to the state machine and use retry mechanism.
+1. We assumed that the adversary can crash any client and that all non-fualty client messages arrive at the primary/backup and vice-versa. This Primary-Backup protocol works even if we assume that the adversary can fail any client by [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). To handle this model, even with an ideal state machine we need to maintain a unique identifier for every command sent to the state machine and use a retry mechanism.
 
 2. In practice, there is often an out-of-band procedure to reset the system to allow the primary to be the primary again after it recovers from its failure. For example, one can first stop the backup and then restart the whole system. 
 
@@ -128,4 +128,10 @@ while true:
       send "heartbeat" to all replicas (in order)
 ```
 
-Note that clients need a mechanism to discover who is the current primary. For example, they can send a query to all replicas to learn what is the current view number.
+Notes:
+
+1. Clients need a mechanism to discover who is the current primary. For example, they can send a query to all replicas to learn what is the current view number.
+2. The crash model is actually quite useful to model replicas with secure hardware.  
+
+
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1191141070685507586?s=20)
