@@ -1,7 +1,6 @@
 ---
 title: Primary-Backup for Two Servers and One Omission Failure is Impossible
 date: 2019-11-02 11:12:00 -07:00
-published: false
 tags:
 - lowerbound
 - SMR
@@ -32,7 +31,7 @@ So in world C, the two clients will see conflicting states and this is a violati
 
 
 Notes:
-1. This lower bound can be generalized to $n\leq 2f$.
+1. This lower bound can be generalized to $n$ replicas and $f$ omission failures for any $n\leq 2f$.
 2. This lower bound holds even if there is a setup and a PKI.
 
 Please leave comments on [Twitter]()
