@@ -88,7 +88,7 @@ Due to the invariant maintained by the primary, a client knows that the response
 
 2. In practice, there is often an out-of-band procedure to reset the system to allow the primary to be the primary again after it recovers from its failure. For example, one can first stop the backup and then restart the whole system. 
 
-3. In the above description, we assume that there will be at most 1 crash. We now discuss a mechanism for $n > 2$ capable of tolerating $n<f$ crash faults.
+3. In the above description, we assume that there will be at most 1 crash. We now discuss a mechanism for $n > 2$ capable of tolerating any $f<n$ crash faults.
 
 ### Generalized Primary-Backup
 
