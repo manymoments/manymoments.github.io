@@ -37,7 +37,7 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 | [PiLi \[2018\]](https://eprint.iacr.org/2018/980.pdf)                                                                            | SMR   | Y          | $24$ rounds                                         | $O(n^2)$                  | Y   | N         |
 | [Sync HotStuff \[2019\]](https://eprint.iacr.org/2019/270.pdf)                                                                   | SMR   | N          | $(2\Delta, 1\Delta)$                                | $(O(n^2), O(n^2))$        | Y   | N         |
 
-**Some remarks.**
+**Notes.**
 1. LSP and Dolev-Strong can tolerate a dishonest minority for Byzantine Broadcast.
 2. The message complexity of protocols is described assuming the presence of threshold signatures.
 3. PiLi and Sync HotStuff also consider weaker synchrony settings with *mobile sluggish faults*. The results in the table are described for assuming the standard synchrony definition. 
