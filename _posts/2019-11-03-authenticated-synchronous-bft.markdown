@@ -7,11 +7,7 @@ author: Kartik Nayak, Ittai Abraham
 
 Different modeling assumptions under which we construct BFT protocols often make it hard to compare two protocols and understand their relative contributions. In this post we discuss *[synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/)* protocols in the *[authenticated](https://decentralizedthoughts.github.io/2019-07-18-setup-assumptions/)* model (assuming a PKI). 
 
-A protocol is assumed to be running in the [synchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) assumes that:
-- **Bounded message delay.** All messages will arrive within a bounded delay of $\Delta$.
-
-A common strengthening of synchronous model is called that *lock-step* model:
-- **Lock-step execution.** Replicas execute the protocol in rounds in a synchronized manner. A message sent at the start of a round arrives by the end of the round.
+A protocol is assumed to be running in the [synchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) assumes a **bounded message delay**, i.e., all messages will arrive within a bounded delay of $\Delta$. A common strengthening of synchronous model is called that *lock-step* model, i.e., replicas execute the protocol in rounds in a synchronized manner. A message sent at the start of a round arrives by the end of the round.
 
 **Lock-step execution vs. bounded message delay.** Some papers refer to their protocol latency in terms of \#rounds, whereas some others in terms of $\Delta$. It turns out that one can obtain lock-step execution from a bounded message delay assumption, by merely using a *clock synchronization* protocol. Due to works by [Dolev et al.](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.499.2250&rep=rep1&type=pdf) and [Abraham et al.](https://eprint.iacr.org/2018/1028.pdf), we have solutions with $O(n^2)$ message complexity to achieve such synchronization. Specifically, they show that a $2\Delta$ time suffices to implement a lock-step round. Thus, conceptually, the two assumptions boil down to just assuming a bounded message delay.
 
@@ -21,6 +17,7 @@ For practitioners, the synchrony assumption may seem strong. First, if the bound
 ### The advantage of authenticated synchrony: tolerating a minority corruption
 The [DLS](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) lower bound implies that we cannot tolerate a minority corruption by making weaker assumptions such as partial synchrony/asynchrony. The [FLM](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) lower bound implies that  digital signatures/PoW is also necessary to disallow an adversary from simulating multiple parties and tolerate a minority corruption.
 
+### Comparing authenticated synchronous BFT protocols
 To evaluate and compare authenticated synchronous protocols we analyze them in the following dimensions:
 1. *Consensus definition/application.* Whether the protocol was intended to solve Byzantine Broadcast ([BB]((https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/))), Byzantine Agreement ([BA]((https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/))), or State Machine Replication ([SMR]((https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/))).
 2. *Lock-step vs bounded-message delay.* Whether the protocol requires a lock-step execution of parties/replicas, or can they  rely only on bounded-message delay.
