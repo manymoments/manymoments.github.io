@@ -7,7 +7,7 @@ tags:
 - dist101
 ---
 
-In the [previous post](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/), we show that State Machine Replication for $n<f$ failures is possible in the synchronous model when the adversary can only cause parties to *crash*. In this post, we show that *omission* failures are more challenging.
+In the [previous post](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/), we show that State Machine Replication for any *f<n* failures is possible in the synchronous model when the adversary can only cause parties to *crash*. In this post, we show that *omission* failures are more challenging. It requires $f<n/2$.
 
 **Theorem:** *It is impossible to implement State Machine Replication with two replicas and an adversary that can cause omission failures to one replica even in a lock-step model.* 
 
