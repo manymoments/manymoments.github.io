@@ -9,9 +9,9 @@ tags:
 
 In the [previous post](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/), we show that State Machine Replication for any *f<n* failures is possible in the synchronous model when the adversary can only cause parties to *crash*. In this post, we show that *omission* failures are more challenging. It requires *f<n/2*.
 
-**Theorem:** *It is impossible to implement State Machine Replication with two replicas and an adversary that can cause omission failures to one replica even in a lock-step model.* 
+**Theorem:** *It is impossible to implement State Machine Replication with two replicas and an adversary that can cause omission failures to one replica (and any number of clients) even in a lock-step model.* 
 
-As in our previous [lower bounds](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/), we assume a solution that is safe and live exists and reach a contradiction. For the contradiction, we define multiple worlds and use an indistinguishability argument. In each world, there are two clients called client $1$ and client $2$ and two servers called server $1$ and server $2$.
+As in our previous [lower bounds](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/), we assume a solution that is [safe and live](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) exists and reach a contradiction. For the contradiction, we define multiple worlds and use an indistinguishability argument. In each world, there are two clients called client $1$ and client $2$ and two servers called server $1$ and server $2$.
 
 ### World A:
 In this world, client $1$ wants to send command $C1$, and the adversary blocks all communication to and from server $2$. Since the protocol is safe and live, any correct solution must notify client $1$ that command $C1$ is the only committed command.
@@ -31,7 +31,8 @@ So in world C, the two clients will see conflicting states and this is a violati
 
 
 Notes:
-1. This lower bound can be generalized to $n$ replicas and $f$ omission failures for any $n\leq 2f$.
-2. This lower bound holds even if there is a setup and a PKI.
+1. The proof heavily uses the fact that the clients are prone to omission failures. If clients can just crash (or are non-faulty) then the clients can implement SMR using the replicas as relays.
+2. This lower bound can be generalized to $n$ replicas and $f$ omission failures for any $n\leq 2f$.
+3. This lower bound holds even if there is a setup and a PKI.
 
 Please leave comments on [Twitter]()
