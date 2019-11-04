@@ -26,13 +26,23 @@ Before we continue here are two subject this post in **not** about:
 2. This post is not about permissionless BFT protocols, like [Nakamoto](https://bitcoin.org/bitcoin.pdf) [Consensus](https://eprint.iacr.org/2014/765.pdf) in the synchronous model that use proof-of-work and do not assume a PKI.
 
 To evaluate and compare authenticated synchronous protocols we analyze them in the following dimensions:
-1. *Consensus definition/application.* Whether the protocol was intended to solve Byzantine Broadcast ([BB]((https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/))), Byzantine Agreement ([BA]((https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/))), or State Machine Replication ([SMR]((https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/)))
-2. *Lock-step vs bounded-message delay.* Whether the protocol requires a lock-step execution of parties/replicas, or can they only rely on bounded-message delay.
-3. *Latency to commit.* For protocols with lock-step execution, we mention the (expected) \#rounds to commit. For protocols which only assume bounded-message delay, we mention the latency in terms of $O(\Delta)$. For protocols in SMR that use the [steady-state-and-view-change paradigm](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/), we mention the latency as a tuple of time to commit in steady state and time for view change.
+1. *Consensus definition/application.* Whether the protocol was intended to solve Byzantine Broadcast ([BB]((https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/))), Byzantine Agreement ([BA]((https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/))), or State Machine Replication ([SMR]((https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/))).
+2. *Lock-step vs bounded-message delay.* Whether the protocol requires a lock-step execution of parties/replicas, or can they  rely only on bounded-message delay.
+3. *Latency to commit.* For protocols with lock-step execution, we mention the (expected) \#rounds to commit. For protocols which only assume bounded-message delay, we mention the latency in terms of $O(\Delta)$. Using the clock synchronization protocol described earlier, each round can be implemented in $2\Delta$ time. For protocols in SMR that use the [steady-state-and-view-change paradigm](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/), we mention the latency as a tuple of (steady state time to commit, time for view change).
 4. *Message complexity.* The (expected) number of signatures sent by honest parties.
-5. *Optimistic responsiveness.* Some protocols can commit in time independent of $\Delta$ when certain *optimistic* conditions hold. e.g., the number of Byzantine adversaries are much lesser than minority. We will discuss this further in a separate post.
+5. *Optimistic responsiveness (OR).* Some protocols can commit in time independent of $\Delta$ when certain *optimistic* conditions hold. e.g., the number of Byzantine adversaries are much lesser than minority. We will discuss this further in a separate post.
 6. *Adaptive adversary.* Is the protocol resilient to an [adaptive adversary](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/)?
 
+|                                                                                                                               | Defn  | Lock-step? | Latency                                             | Message complexity        | OR? | Adaptive? |
+|-------------------------------------------------------------------------------------------------------------------------------|-------|------------|-----------------------------------------------------|---------------------------|-----|-----------|
+| [LSP \[1982\]](https://people.eecs.berkeley.edu/~luca/cs174/byzantine.pdf)                               | BB/BA | Y          | $O(n)$ rounds                                       | $O(2^n)$                  | N   | Y         |
+| [Dolev-Strong \[1982\]](https://www.researchgate.net/publication/220616485_Authenticated_Algorithms_for_Byzantine_Agreement) | BB    | Y          | $O(n)$ rounds                                       | $O(n^2f)$                 | N   | Y         |
+| [Katz-Koo \[2006\]](https://eprint.iacr.org/2006/065.pdf)                                                                    | BA    | Y          | $29$ rounds                                         | $O(n^2)$                  | N   | Y         |
+| [XFT \[2016\]](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf)                                    | SMR   |            | $(O(\delta) rounds, O((n choose f) \Delta) rounds)$ | $(O(n), O((n choose f)))$ |     | N         |
+| [Abraham et al. \[2017\]](https://eprint.iacr.org/2018/1028.pdf)                                                                 | BB/BA | Y          | $17$ rounds                                         | $O(n^2)$                  | N   | Y         |
+| [Dfinity \[2018\]](https://eprint.iacr.org/2018/1153.pdf)                                                              | SMR   | N          | $9\Delta$                                           | Unbounded                 | N   | N         |
+| [PiLi \[2018\]](https://eprint.iacr.org/2018/980.pdf)                                                                            | SMR   | Y          | $24$ rounds                                         | $O(n^2)$                  | Y   | N         |
+| [Sync HotStuff \[2019\]](https://eprint.iacr.org/2019/270.pdf)                                                                   | SMR   | N          | $(2\Delta, 1\Delta)$                                | $(O(n^2), O(n^2))$        | Y   | N         |
 
 
 |   |  Type | Sync/ Lock-Step  | Adaptive/ Partial  | Round Complex  | Message Complex  | Responsive|
@@ -47,7 +57,9 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 |  [Sync HotStuff, 19](https://eprint.iacr.org/2019/270.pdf)  | SMR  | Sync  | Partial  | $O(1)$  |  $O(n^2)$ | N |
 
 
-
+tolerance
+threshold signatures
+mobile sluggish model
 
 ## old
 
