@@ -28,7 +28,7 @@ Observe that the view of server 1 in world A and world C is indistinguishable. S
 
 Similarly, the view of server 2 in world B and world C is indistinguishable. Since in worlds B and C, client $2$ only communicates with server $2$, it also has indistinguishable views.
 
-So in world C, the two clients will see conflicting states, and this is a violation of safety.
+So in world C, the two clients will see conflicting states and this is a violation of safety.
 
 
 Notes:
