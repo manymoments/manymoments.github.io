@@ -25,13 +25,15 @@ Before we continue here are two subject this post in **not** about:
 1. This post is not about BFT protocol in the partial synchrony model, like the ones discussed [here](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/).
 2. This post is not about permissionless BFT protocols, like [Nakamoto](https://bitcoin.org/bitcoin.pdf) [Consensus](https://eprint.iacr.org/2014/765.pdf) in the synchronous model that use proof-of-work and do not assume a PKI.
 
-To evaluate and compare authenticated synchronous protocols we analyze them in the following dimensions
-1. Is the solution solving [Broadcast? Agreement?](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) or [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/)? For Broadcast we now that $n>f$ is doable, for Agreement and SMR $n>2f$. Solutions for SMR typically require more than just repeating invocations of a single shot agreement. 
-2. Is the solution presented in the synchronous model (where each message can be delayed by at most $\Delta$) or in the easier and more simple model of lock-step synchrony (where essentially all messages are delayed by exactly one time unit).
-3. Is the solution resilient to an [adaptive adversary](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/)? or to some weaker form of adversary that requires several rounds before it can adaptively corrupt a party?
-4. The expected number of rounds to terminate (or make a step in the SMR). For $n>2f$ we would like to minimize the constant expected number of rounds.
-5. The expected message complexity. The expected size of all the words sent by the non-faulty parties before terminating. Here we assume that a word can contain a signature.
-6. Bounded message delay $\Delta$ refers to a pessimistic bound for the time it takes a message to arrive. In practice, the actual message delay in the network denoted $\delta$, can be much smaller. Some synchronous protocols explore *responsiveness*. This will be a subject of a later post.
+To evaluate and compare authenticated synchronous protocols we analyze them in the following dimensions:
+1. *Consensus definition/application.* Whether the protocol was intended to solve Byzantine Broadcast ([BB]((https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/))), Byzantine Agreement ([BA]((https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/))), or State Machine Replication ([SMR]((https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/)))
+2. *Lock-step vs bounded-message delay.* Whether the protocol requires a lock-step execution of parties/replicas, or can they only rely on bounded-message delay.
+3. *Latency to commit.* For protocols with lock-step execution, we mention the (expected) \#rounds to commit. For protocols which only assume bounded-message delay, we mention the latency in terms of $O(\Delta)$. For protocols in SMR that use the [steady-state-and-view-change paradigm](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/), we mention the latency as a tuple of time to commit in steady state and time for view change.
+4. *Message complexity.* The (expected) number of signatures sent by honest parties.
+5. *Optimistic responsiveness.* Some protocols can commit in time independent of $\Delta$ when certain *optimistic* conditions hold. e.g., the number of Byzantine adversaries are much lesser than minority. We will discuss this further in a separate post.
+6. *Adaptive adversary.* Is the protocol resilient to an [adaptive adversary](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/)?
+
+
 
 |   |  Type | Sync/ Lock-Step  | Adaptive/ Partial  | Round Complex  | Message Complex  | Responsive|
 |---|---|---|---|---|---|---|
