@@ -22,7 +22,7 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 1. *Consensus definition.* Whether the protocol was intended to solve Byzantine Broadcast ([BB]((https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/))), Byzantine Agreement ([BA]((https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/))), or State Machine Replication ([SMR]((https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/))).
 2. *Lock-step vs bounded-message delay.* Whether the protocol requires a lock-step execution of replicas, or can they  rely only on bounded-message delay.
 3. *Latency to commit.* For protocols with lock-step execution, we mention the (expected) \#rounds to commit. For protocols which only assume bounded-message delay, we mention the latency in terms of $O(\Delta)$. For protocols in SMR that use the [steady-state-and-view-change paradigm](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/), we mention the latency as a tuple of (steady state time to commit, time for view change).
-4. *Message complexity.* The (expected) number of signatures sent by honest parties.
+4. *Message complexity.* The (expected) number of signatures sent by honest parties. Wherever applicable, the message complexity is described assuming the presence of threshold signatures.
 5. *Optimistic responsiveness (OR).* Some protocols can commit in time independent of $\Delta$ when certain *optimistic* conditions hold. e.g., the number of Byzantine adversaries are much fewer than minority. We will discuss this further in a separate post.
 6. *Adaptive adversary.* Is the protocol resilient to an [adaptive adversary](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/)?
 
@@ -34,13 +34,10 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 | [XFT \[2016\]](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf)                                    | SMR   |            | $(O(\delta) rounds, O((n choose f) \Delta) rounds)$ | $(O(n), O((n choose f)))$ |     | N         |
 | [Abraham et al. \[2017\]](https://eprint.iacr.org/2018/1028.pdf)                                                                 | BB/BA | Y          | $17$ rounds                                         | $O(n^2)$                  | N   | Y         |
 | [Dfinity \[2018\]](https://eprint.iacr.org/2018/1153.pdf)                                                              | SMR   | N          | $9\Delta$                                           | Unbounded                 | N   | N         |
-| [PiLi \[2018\]](https://eprint.iacr.org/2018/980.pdf)                                                                            | SMR   | Y          | $24$ rounds                                         | $O(n^2)$                  | Y   | N         |
-| [Sync HotStuff \[2019\]](https://eprint.iacr.org/2019/270.pdf)                                                                   | SMR   | N          | $(2\Delta, 1\Delta)$                                | $(O(n^2), O(n^2))$        | Y   | N         |
+| [PiLi \[2018\]](https://eprint.iacr.org/2018/980.pdf)\*                                                                            | SMR   | Y          | $24$ rounds                                         | $O(n^2)$                  | Y   | N         |
+| [Sync HotStuff \[2019\]](https://eprint.iacr.org/2019/270.pdf)\*                                                                   | SMR   | N          | $(2\Delta, 1\Delta)$                                | $(O(n^2), O(n^2))$        | Y   | N         |
 
-**Notes.**
-1. LSP and Dolev-Strong can tolerate a dishonest minority for Byzantine Broadcast.
-2. The message complexity of protocols is described assuming the presence of threshold signatures.
-3. PiLi and Sync HotStuff also consider weaker synchrony settings with *mobile sluggish faults*. The results in the table are described for assuming the standard synchrony definition. 
+\* PiLi and Sync HotStuff also consider weaker synchrony settings with *mobile sluggish faults*. The results in the table are described for assuming the standard synchrony definition. 
 
 
 **Remark.** All protocols derived from Nakamoto consensus rely on synchrony. We will discuss them separately in a later post.
