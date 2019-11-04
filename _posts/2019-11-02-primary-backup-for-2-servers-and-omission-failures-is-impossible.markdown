@@ -35,4 +35,4 @@ Notes:
 2. This lower bound can be generalized to $n$ replicas and $f$ omission failures for any $n\leq 2f$.
 3. This lower bound holds even if there is a setup and a PKI.
 
-Please leave comments on [Twitter]()
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1191305159638503426?s=20) 
