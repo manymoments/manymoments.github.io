@@ -1,5 +1,5 @@
 ---
-title: A Mindmap to Decentralized Thoughts
+title: Decentralized Thoughts
 layout: page
 ---
 
