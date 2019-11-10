@@ -32,7 +32,7 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 | [Katz-Koo \[2006\]](https://eprint.iacr.org/2006/065.pdf)                                                                    | BA    | Y          | $29$ rounds                                         | $O(n^2)$                  | N   | Y         |
 | [Micali-Vaikuntanathan \[2017\]](https://dspace.mit.edu/bitstream/handle/1721.1/107927/MIT-CSAIL-TR-2017-004.pdf?sequence=1&isAllowed=y)\* | BB  | Y | $\kappa$ rounds | $O(\kappa n^3)$ | N | Y |
 | [Abraham et al. \[2017\]](https://eprint.iacr.org/2018/1028.pdf)                                                                 | BB/BA | Y          | $16$ rounds                                         | $O(n^2)$                  | N   | Y         |
-| [XFT \[2016\]](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf)                                    | SMR   | Y           | ($O(\delta)$, $O({n \choose f} \Delta)$ ) | ($O(n)$, $O{n \choose f}$) | Y    | N         |
+| [XFT \[2016\]](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf)               | SMR   | N           | ($O(\delta)$, $O({n \choose f} \Delta)$ ) | ($O(n)$, $O{n \choose f}$) | Y    | N         |
 | [Dfinity \[2018\]](https://dfinity.org/static/dfinity-consensus-0325c35128c72b42df7dd30c22c41208.pdf)                                                              | SMR   | N          | $9\Delta$                                           | [$O(n^2)$](https://eprint.iacr.org/2018/1153.pdf)                 | N   | N         |
 | [PiLi \[2018\]](https://eprint.iacr.org/2018/980.pdf)\*\*                                                                            | SMR   | Y          | $65\Delta$                                         | $O(n^2)$                  | Y   | N         |
 | [Sync HotStuff \[2019\]](https://eprint.iacr.org/2019/270.pdf)\*\*                                                                   | SMR   | N          | $(2\Delta, 5\Delta)$                                | $(O(n^2), O(n^2))$        | Y   | N         |
@@ -45,6 +45,6 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 This distinction is minor in theory (or asymptotically) because one can obtain lock-step execution from a bounded message delay assumption, by merely using a *clock synchronization* protocol such as [Dolev et al.](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.499.2250&rep=rep1&type=pdf) and [Abraham et al.](https://eprint.iacr.org/2018/1028.pdf).
 Specifically, these protocols have $O(n^2)$ message complexity and can synchronize honest parties' clocks within $\Delta$ time.
 Thus, using rounds of duration $2\Delta$ suffices to implement lock-step execution. 
-However, state-of-art non-lock-step protocols can achieve lower latency by avoidin such transformations. 
+However, state-of-art non-lock-step protocols can achieve lower latency by avoiding such transformations. 
 
 **Remark.** All protocols derived from Nakamoto consensus rely on synchrony. We will discuss them separately in a later post.
