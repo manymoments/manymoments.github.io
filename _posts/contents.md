@@ -1,7 +1,6 @@
 ---
 title: test
-date: 2019-11-03
-published: true
+date: 2019-11-03 00:00:00 -07:00
 author: Kartik Nayak
 ---
 
