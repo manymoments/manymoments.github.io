@@ -1,4 +1,5 @@
 ---
+title: Decentralized Thoughts
 layout: page
 ---
 
