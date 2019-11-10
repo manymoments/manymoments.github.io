@@ -39,6 +39,7 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 \* The protocol by Micali and Vaikuntanathan requires $\kappa$ rounds where $\kappa$ is a statistical security parameter.
 
 \*\* For PiLi and Sync HotStuff, we describe the result for a weaker synchrony setting with *mobile sluggish faults*.
+
 **Lock-step execution vs. bounded-message delay.** As can be seen in the latency column, some papers refer to their protocol latency in terms of \#rounds, whereas some others in terms of $\Delta$. It turns out that one can obtain lock-step execution from a bounded message delay assumption, by merely using a *clock synchronization* protocol. Due to works by [Dolev et al.](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.499.2250&rep=rep1&type=pdf) and [Abraham et al.](https://eprint.iacr.org/2018/1028.pdf), we have solutions with $O(n^2)$ message complexity to achieve such synchronization. Specifically, they show that a $2\Delta$ time suffices to implement a lock-step round. Thus, conceptually, the two assumptions boil down to just assuming a bounded message delay.
 
 **Remark.** All protocols derived from Nakamoto consensus rely on synchrony. We will discuss them separately in a later post.
