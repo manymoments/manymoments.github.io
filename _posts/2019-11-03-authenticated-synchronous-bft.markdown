@@ -10,9 +10,9 @@ Different modeling assumptions under which we construct BFT protocols often make
 A protocol is assumed to be running in the [synchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) assumes a **bounded message delay**, i.e., all messages will arrive within a bounded delay of $\Delta$. A common strengthening of synchronous model is *lock-step* synchrony, i.e., replicas execute the protocol in rounds in a synchronized manner. A message sent at the start of a round arrives by the end of the round.
 
 ### Is the synchronous model practical?
-For practitioners, the synchrony assumption may seem strong. First, if the bounded-message delay assumption does not hold *even* for a single message, then we may have a safety violation. Second, lock-step execution may be hard to implement in practice. Finally, waiting for multiple rounds/$\Delta$’s implies a high latency to commit. Research in the synchronous setting has been improving all of these aspects to bring synchrony closer to practice.
+The short answer is, it's unclear. For practitioners, the synchrony assumption may seem strong. First, if the bounded-message delay assumption does not hold *even* for a single message, then we may have a safety violation. Second, lock-step execution may be hard to implement in practice. Finally, waiting for multiple rounds/$\Delta$’s implies a high latency to commit. Research in the synchronous setting has been improving all of these aspects to bring synchrony closer to practice.
 
-### The advantage of authenticated synchrony: tolerating a minority corruption
+### The advantage of synchrony: tolerating a minority corruption
 The [DLS](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) lower bound implies that we cannot tolerate a minority corruption by making weaker assumptions such as partial synchrony/asynchrony. The [FLM](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) lower bound implies that  digital signatures/PoW is also necessary to disallow an adversary from simulating multiple parties and to tolerate a minority corruption.
 
 ### Comparing authenticated synchronous BFT protocols
@@ -30,12 +30,15 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 | [Dolev-Strong \[1982\]](https://www.researchgate.net/publication/220616485_Authenticated_Algorithms_for_Byzantine_Agreement) | BB    | Y          | $O(n)$ rounds                                       | $O(n^2f)$                 | N   | Y         |
 | [Katz-Koo \[2006\]](https://eprint.iacr.org/2006/065.pdf)                                                                    | BA    | Y          | $29$ rounds                                         | $O(n^2)$                  | N   | Y         |
 | [XFT \[2016\]](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf)                                    | SMR   | Y           | ($O(\delta)$, $O({n \choose f} \Delta)$ ) | ($O(n)$, $O{n \choose f}$) | Y    | N         |
-| [Abraham et al. \[2017\]](https://eprint.iacr.org/2018/1028.pdf)                                                                 | BB/BA | Y          | $17$ rounds                                         | $O(n^2)$                  | N   | Y         |
+| [Abraham et al. \[2017\]](https://eprint.iacr.org/2018/1028.pdf)                                                                 | BB/BA | Y          | $16$ rounds                                         | $O(n^2)$                  | N   | Y         |
+| [Micali-Vaikuntanathan \[2017\](https://dspace.mit.edu/bitstream/handle/1721.1/107927/MIT-CSAIL-TR-2017-004.pdf?sequence=1&isAllowed=y)\~
+| BB  | Y | $\kappa$ rounds | $O(n^2)$ | N | Y |
 | [Dfinity \[2018\]](https://dfinity.org/static/dfinity-consensus-0325c35128c72b42df7dd30c22c41208.pdf)                                                              | SMR   | N          | $9\Delta$                                           | [$O(n^2)$](https://eprint.iacr.org/2018/1153.pdf)                 | N   | N         |
 | [PiLi \[2018\]](https://eprint.iacr.org/2018/980.pdf)\*                                                                            | SMR   | Y          | $65\Delta$                                         | $O(n^2)$                  | Y   | N         |
 | [Sync HotStuff \[2019\]](https://eprint.iacr.org/2019/270.pdf)\*                                                                   | SMR   | N          | $(2\Delta, 2\Delta)$                                | $(O(n^2), O(n^2))$        | Y   | N         |
 
 \* For PiLi and Sync HotStuff, we describe the result for a weaker synchrony setting with *mobile sluggish faults*.
+\~ The protocol by Micali and Vaikuntanathan requires $\kappa$ rounds where $\kappa$ is a statistical security parameter.
 
 **Lock-step execution vs. bounded-message delay.** As can be seen in the latency column, some papers refer to their protocol latency in terms of \#rounds, whereas some others in terms of $\Delta$. It turns out that one can obtain lock-step execution from a bounded message delay assumption, by merely using a *clock synchronization* protocol. Due to works by [Dolev et al.](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.499.2250&rep=rep1&type=pdf) and [Abraham et al.](https://eprint.iacr.org/2018/1028.pdf), we have solutions with $O(n^2)$ message complexity to achieve such synchronization. Specifically, they show that a $2\Delta$ time suffices to implement a lock-step round. Thus, conceptually, the two assumptions boil down to just assuming a bounded message delay.
 
