@@ -2,7 +2,7 @@
 title: Authenticated Synchronous BFT
 date: 2019-11-03 11:12:00 -08:00
 published: false
-author: Kartik Nayak, Ittai Abraham
+author: Kartik Nayak, Ittai Abraham, Ling Ren
 ---
 
 Different modeling assumptions under which we construct BFT protocols often make it hard to compare two protocols and understand their relative contributions. In this post we discuss *[synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/)* protocols in the *[authenticated](https://decentralizedthoughts.github.io/2019-07-18-setup-assumptions/)* model (assuming a PKI). 
@@ -32,8 +32,8 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 | [XFT \[2016\]](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf)                                    | SMR   | Y           | ($O(\delta)$, $O({n \choose f} \Delta)$ ) | ($O(n)$, $O{n \choose f}$) | Y    | N         |
 | [Abraham et al. \[2017\]](https://eprint.iacr.org/2018/1028.pdf)                                                                 | BB/BA | Y          | $17$ rounds                                         | $O(n^2)$                  | N   | Y         |
 | [Dfinity \[2018\]](https://dfinity.org/static/dfinity-consensus-0325c35128c72b42df7dd30c22c41208.pdf)                                                              | SMR   | N          | $9\Delta$                                           | [$O(n^2)$](https://eprint.iacr.org/2018/1153.pdf)                 | N   | N         |
-| [PiLi \[2018\]](https://eprint.iacr.org/2018/980.pdf)\*                                                                            | SMR   | Y          | $24$ rounds                                         | $O(n^2)$                  | Y   | N         |
-| [Sync HotStuff \[2019\]](https://eprint.iacr.org/2019/270.pdf)\*                                                                   | SMR   | N          | $(2\Delta, 1\Delta)$                                | $(O(n^2), O(n^2))$        | Y   | N         |
+| [PiLi \[2018\]](https://eprint.iacr.org/2018/980.pdf)\*                                                                            | SMR   | Y          | $65\Delta$                                         | $O(n^2)$                  | Y   | N         |
+| [Sync HotStuff \[2019\]](https://eprint.iacr.org/2019/270.pdf)\*                                                                   | SMR   | N          | $(2\Delta, 2\Delta)$                                | $(O(n^2), O(n^2))$        | Y   | N         |
 
 \* PiLi and Sync HotStuff also consider weaker synchrony settings with *mobile sluggish faults*. The results in the table are described for assuming the standard synchrony definition. 
 
