@@ -42,6 +42,6 @@ The above description only explains the scenario where the leader is honest, and
 The paper also presents a few other results. One of the disadvantages of synchrony is, a single failed message can result in safety loss. Sync HotStuff can tolerate a weaker synchrony model proposed by [Guo et al.](https://eprint.iacr.org/2019/179). This allows the protocol to work even if the synchrony assumption is violated at a small fraction of honest nodes at any time.
 Moreover, Sync HotStuff is [optimistically responsive](https://eprint.iacr.org/2017/913), i.e., it can commit in less than $\\Delta$ time when $>3n/4$ nodes are honest. Finally, the empirical evaluation shows that its throughput is comparable to the best known partially synchronous protocols.
 
-This protocol is a joint work with [Ittai](https://research.vmware.com/researchers/ittai-abraham), [Dahlia](https://dahliamalkhi.wordpress.com/) and [Ted](https://www.cs.cornell.edu/~tedyin/). It will be presented in [S\&P 2020](https://www.ieee-security.org/TC/SP2020/). Read more about it [here](https://eprint.iacr.org/2019/270.pdf).
+This protocol is a joint work with [Ittai](https://research.vmware.com/researchers/ittai-abraham), [Dahlia](https://dahliamalkhi.wordpress.com/) and [Ted](https://www.cs.cornell.edu/~tedyin/). It will be presented in [S&P 2020](https://www.ieee-security.org/TC/SP2020/). Read more about it [here](https://eprint.iacr.org/2019/270.pdf).
 
 **Acknowledgment.** We would like to thank Ittai for helpful feedback on this post.
