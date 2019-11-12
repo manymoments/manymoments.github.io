@@ -1,7 +1,6 @@
 ---
 title: Sync HotStuff, A Simple and Practical State Machine Replication
 date: 2019-11-12 02:10:00 -08:00
-published: true
 tags:
 - dist101
 - SMR
