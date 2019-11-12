@@ -22,7 +22,7 @@ For simplicity, we describe the key idea for agreement on a single value in the 
 3. **Commit.** If a replica does not receive a proposal for a conflicting command *cmd’* $\neq$ *cmd* within $2\Delta$ time after voting, commit *cmd*.
 
 <p align="center">
-<img src="/uploads/steady-state.png" width="256" title="Steady state of the protocol">
+<img src="/uploads/steady-state.png" width="512" title="Steady state of the protocol">
 </p>
 
 A pictorial illustration for a three replica execution is presented in the figure. The key question is *why does a $2\Delta$ time after vote suffice to commit? How does it ensure safety?* 
@@ -32,7 +32,7 @@ The $2\Delta$ waiting time suffices for two invariants to be satisfied if the co
 Suppose replica 1 is committing *cmd* at time $t$. Let us understand the sequence of events from its point-of-view, pictorially represented in the picture below.
 
 <p align="center">
-<img src="/uploads/sync-hotstuff-proof.png" width="256" title="Sequence of events from the PoV of replica 1">
+<img src="/uploads/sync-hotstuff-proof.png" width="512" title="Sequence of events from the PoV of replica 1">
 </p>
 
 Since replica 1 committed at time $t$, it must have voted at time $t - 2\Delta$. This vote also acts as a *re-proposal*, and hence all honest replicas receive the proposal by time $t-\Delta$. If no honest replica has received a conflicting command at $t-\Delta$, then the honest replica will vote for *cmd*, and *cmd* will be certified. If an honest replica receives a conflicting command *cmd’* after $t-\Delta$, then *cmd'* will not be voted for (a replica only votes for the first valid proposal). If it received *cmd’* before $t-\Delta$, it would indeed vote for *cmd’*. But this vote will arrive at replica 1 before time $t$, causing replica 1 not to commit. Thus, a $2\Delta$ wait after a vote suffices to commit.
