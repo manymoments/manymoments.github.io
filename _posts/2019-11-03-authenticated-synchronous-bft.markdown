@@ -1,7 +1,7 @@
 ---
 title: Authenticated Synchronous BFT
 date: 2019-11-03 11:12:00 -08:00
-published: false
+published: true
 author: Kartik Nayak, Ittai Abraham, Ling Ren
 ---
 
@@ -35,7 +35,7 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 | [XFT \[2016\]](https://www.usenix.org/system/files/conference/osdi16/osdi16-liu.pdf)               | SMR   | N           | ($O(\delta)$, $O({n \choose f} \Delta)$ ) | ($O(n)$, $O{n \choose f}$) | Y    | N         |
 | [Dfinity \[2018\]](https://dfinity.org/static/dfinity-consensus-0325c35128c72b42df7dd30c22c41208.pdf)                                                              | SMR   | N          | $9\Delta$                                           | [$O(n^2)$](https://eprint.iacr.org/2018/1153.pdf)                 | N   | N         |
 | [PiLi \[2018\]](https://eprint.iacr.org/2018/980.pdf)\*\*                                                                            | SMR   | Y          | $65\Delta$                                         | $O(n^2)$                  | Y   | N         |
-| [Sync HotStuff \[2019\]](https://eprint.iacr.org/2019/270.pdf)\*\*                                                                   | SMR   | N          | $(2\Delta, 5\Delta)$                                | $(O(n^2), O(n^2))$        | Y   | N         |
+| [Sync HotStuff \[2019\]](https://eprint.iacr.org/2019/270.pdf)\*\*                                                                   | SMR   | N          | $(2\Delta, O(\Delta))$                                | $(O(n^2), O(n^2))$        | Y   | N         |
 
 \* The protocol by Micali and Vaikuntanathan requires $\kappa$ rounds where $\kappa$ is a statistical security parameter and obtains a "player replaceability" notion of adaptive security.
 
