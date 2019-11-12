@@ -1,7 +1,7 @@
 ---
 title: Sync HotStuff, A Simple and Practical State Machine Replication
 date: 2019-11-12 02:10:00 -08:00
-published: false
+published: true
 tags:
 - dist101
 - SMR
@@ -44,3 +44,5 @@ The paper also presents a few other results. One of the disadvantages of synchro
 Moreover, Sync HotStuff is [optimistically responsive](https://eprint.iacr.org/2017/913), i.e., it can commit in less than $\\Delta$ time when $>3n/4$ nodes are honest. Finally, the empirical evaluation shows that its throughput is comparable to the best known partially synchronous protocols.
 
 This protocol is a joint work with [Ittai](https://research.vmware.com/researchers/ittai-abraham), [Dahlia](https://dahliamalkhi.wordpress.com/) and [Ted](https://www.cs.cornell.edu/~tedyin/). It will be presented in [S\&P 2020](https://www.ieee-security.org/TC/SP2020/). Read more about it [here](https://eprint.iacr.org/2019/270.pdf).
+
+**Acknowledgment.** We would like to thank Ittai for helpful feedback on this post.
