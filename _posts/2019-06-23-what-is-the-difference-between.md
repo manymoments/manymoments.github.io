@@ -31,7 +31,7 @@ This post provides a comparison at the protocol level from the lens of the theor
 Before saying how these protocols are different it is important to say how similar they are:
 
 1. They are all protocols for state machine replication (SMR) against a Byzantine adversary.
-2. All work in the Partial synchrony model (see [here](https://ittaiab.github.io/2019-06-01-2019-5-31-models/)) and obtain safety (always) and liveness (after GST) in the face of an adversary that controls $f$ replicas out of a total of $n=3f+1$ replicas (see [here](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) for threshold adversary). 
+2. All work in the Partial synchrony model (see [here](/2019-06-01-2019-5-31-models/)) and obtain safety (always) and liveness (after GST) in the face of an adversary that controls $f$ replicas out of a total of $n=3f+1$ replicas (see [here](/2019-06-07-modeling-the-adversary/) for threshold adversary).
 3. All these protocols are based on the classic leader-based [Primary-Backup](http://pmg.csail.mit.edu/papers/vr.pdf) approach where leaders are replaced in a _view-change_ protocol.
 
 ## The conceptual difference: rotating leaders vs stable leaders
