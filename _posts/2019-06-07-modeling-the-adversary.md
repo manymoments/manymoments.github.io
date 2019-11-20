@@ -8,7 +8,7 @@ layout: post
 author: Ittai Abraham
 ---
 
-Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), and we fix a [threshold adversary](https://ittaiab.github.io/2019-06-17-the-threshold-adversary/) we still need to make important modeling decisions about the adversary power.
+Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](/2019-05-31-2019-5-31-models/)), and we fix a [threshold adversary](/2019-06-17-the-threshold-adversary/) we still need to make important modeling decisions about the adversary power.
 
 Here we will use the simplest model of a _threshold adversary_ that can control up to _f_ nodes given a static group of **_n_** nodes. We will later consider dynamic, permissionless and bounded resource models.
 
