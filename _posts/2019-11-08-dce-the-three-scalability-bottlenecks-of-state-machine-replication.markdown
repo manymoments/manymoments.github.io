@@ -18,9 +18,17 @@ Note that these three bottlenecks are *not* a tradeoff (or a [trilemma](https://
 ## Scaling Data
 In Bitcoin and other cryptocurrencies the ability to scale depends crucially on the ability reduce the latency it takes a winning block to propagate. Systems like [FIBRE](https://bitcoinfibre.org/), [Falcon](https://www.falcon-net.org/), and [bloXroute](https://bloxroute.com/wp-content/uploads/2018/03/bloXroute-whitepaper.pdf) aim to reduce this latency by using pipelining and forward error correction codes. 
 
-Other ways to improve data scalability center around creating a content addressable network. For example see [Kademlia]() which inspired Ethereum's [RLPx](https://github.com/ethereum/devp2p/blob/master/rlpx.md) and generalized in [libp2p](https://libp2p.io/).
+Another important  way to improve data scalability centers around creating a content addressable network. See [Kademlia]() which inspired Ethereum's [RLPx](https://github.com/ethereum/devp2p/blob/master/rlpx.md) and generalized in [libp2p](https://libp2p.io/).
 
 ## Scaling Consensus
+
+Throughput vs Latency trade-off
+
+Scale vs security trade-off
+
+Sharding
+
+## Scaling Execution
 
 
 
