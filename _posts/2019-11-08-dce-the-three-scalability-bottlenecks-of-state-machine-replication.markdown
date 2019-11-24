@@ -6,7 +6,7 @@ published: false
 
 If anyone asks you: *how can I scale this State Machine Replication (Blockchain) system?* you should answer back with a question: *what is the bottleneck? Is it Data, Consensus or Execution (DCE)?*
 
-1. **Data**: Shipping the commands to all the replicas. For example, if a command contains 1GB of data then the fundamental bottleneck is that you need all these bits to arrive to all the validating replicas.
+1. **Data**: Shipping the commands to all the replicas. For example, if a command contains 1GB of data then the fundamental bottleneck is that you need all these bits to arrive to all the validating replicas.mmmmm
 
 2. **Consensus**: Once the data arrives, replicas engage in a consensus protocol (like the ones discussed [here](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/) and [here](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/)). For example, if the consensus protocol needs 2 round-trips and the validating replicas are spread across the globe then there is a fundamental latency bottleneck due to the speed of light and the size of Earth.
 
@@ -16,7 +16,7 @@ Note that these three bottlenecks are *not* a tradeoff (or a [trilemma](https://
 
 
 ## Scaling Data
-In Bitcoin and other cryptocurrencies the ability to scale depends crucially on the ability reduce the latency it takes a winning block to propagate. Systems like [FIBRE](https://bitcoinfibre.org/), [Falcon](https://www.falcon-net.org/), and [bloXroute](https://bloxroute.com/wp-content/uploads/2018/03/bloXroute-whitepaper.pdf) aim to reduce this latency by using pipelining and forward error correction codes. 
+In Bitcoin and other cryptocurrencies the ability to scale depends crucially on the ability reduce the latency it takes a winning block to propagate. Systems like [FIBRE](https://bitcoinfibre.org/), [Falcon](https://www.falcon-net.org/), and [bloXroute](https://bloxroute.com/wp-content/uploads/2018/03/bloXroute-whitepaper.pdf) aim to reduce this latency by using pipelining and forward error correction codes.
 
 Another important  way to improve data scalability centers around creating a content addressable network. See [Kademlia]() which inspired Ethereum's [RLPx](https://github.com/ethereum/devp2p/blob/master/rlpx.md) and generalized in [libp2p](https://libp2p.io/).
 
@@ -29,7 +29,3 @@ Scale vs security trade-off
 Sharding
 
 ## Scaling Execution
-
-
-
-
