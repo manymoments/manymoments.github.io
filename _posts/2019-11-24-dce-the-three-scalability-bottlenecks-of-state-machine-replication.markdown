@@ -1,5 +1,6 @@
 ---
-title: 'Data, Consensus, Execution: Three Scalability Bottlenecks for State Machine Replication'
+title: 'Data, Consensus, Execution: Three Scalability Bottlenecks for State Machine
+  Replication'
 date: 2019-11-24 09:05:00 -08:00
 published: false
 ---
