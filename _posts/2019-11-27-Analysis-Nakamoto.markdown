@@ -3,6 +3,7 @@ title: Security proof for Nakamoto Consensus
 date: 2019-11-27 20:50:00 -08:00
 tags:
 - blockchain101
+published: false
 author: Ling Ren
 ---
 
@@ -25,15 +26,24 @@ Readers who need a more detailed explanations and descriptions can find plenty o
 
 We will make two assumptions.
 Firstly, PoW mining is modeled by Poisson processes. 
-A Poisson process models arrivals of a stream of ``memoryless'' events.
+A Poisson process models arrivals of a stream of "memoryless" events.
 It is parameterized by a rate parameter $\lambda$.
 During a time window of duration $t$, the probability of having $k$ events is $e^{-\lambda t} \frac{(\lambda t)^k}{k!}$.
 In our context, each event refers to the creation of a new block.
-Here, the term ``memoryless' refers to the property that the time till the next block does not depend on how much time has already elapsed since the previous block.
-We will use $\alpha$ and $\beta$ to denote the arrival rates of blocks mined by honest nodes and malicious nodes, respectively.
+Here, the term "memoryless" refers to the property that the time till the next block does not depend on how much time has already elapsed since the previous block.
+We will use $\alpha$ and $\beta$ to denote the mining rates of honest nodes and malicious nodes, respectively.
 
-Secondly, the network is synchronous but not [lock-step](https://github.com/decentralizedthoughts/decentralizedthoughts.github.io/blob/master/_posts/2019-11-11-authenticated-synchronous-bft.markdown), 
+Secondly, the network is synchronous but not [lock-step](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/), 
 i.e., there is a network delay upper bound $\Delta$ but nodes do not take actions in a synchronized fashion.
-It is important to note that some papers mistakenly refer to the non-lock-step synchrony assump[tion as ``asynchrony'' or ``partial synchrony''.
-A reader can read the [previous post](https://github.com/decentralizedthoughts/decentralizedthoughts.github.io/blob/master/_posts/2019-06-01-2019-5-31-models.md) to understand why they are different.
-we may further clarify on this important discinction in a future post.
+It is important to note that some papers mistakenly refer to the non-lock-step synchrony assump[tion as "asynchrony" or "partial synchrony".
+A reader can read the [previous post](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) to understand why they are different.
+we will elaborate on this important discinction further in a future post.
+
+Our goal in this post is to prove that Nakamoto consensus, under some condition and with good probability,
+solves [state machine replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/),
+i.e., achieves the safety and liveness conditions below.
+-- **safety**: Honest nodes do not commit different blocks at the same height.
+-- **liveness**: Every transaction is eventually committed by all honest nodes. 
+
+
+
