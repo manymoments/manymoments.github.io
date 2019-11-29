@@ -1,6 +1,6 @@
 ---
 title: Security proof for Nakamoto Consensus
-date: 2019-11-29 13:10:00 -08:00
+date: 2019-11-29 13:05:00 -08:00
 tags:
 - blockchain101
 author: Ling Ren
@@ -34,7 +34,7 @@ How do we rigorously define whether or not a block contributes to safety? This b
 
 
 <p align="center">
-<img src="/uploads/tailgater.pdf" width="512" title="Tailgaters (red), non-tailgaters (green), and loners (purple).">
+<img src="/uploads/tailgater.pdf" width="512" title="Tailgaters (red), non-tailgaters (green), and loners (purple, which are also non-tailgaters, defined later).">
 </p>
 
 
