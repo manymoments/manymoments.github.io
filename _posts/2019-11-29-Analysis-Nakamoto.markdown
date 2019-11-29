@@ -8,7 +8,7 @@ author: Ling Ren
 
 Bitcoin's underlying consensus protocol, now known as *Nakamoto consensus*, is an extremely simple and elegant solution to the Byzantine consensus problem. One may expect this simple protocol to come with a simple security proof. But that turns out not to be the case. The Bitcoin white paper did not provide a proof. Several academic papers (e.g. [Garay, Kiayias, Leonardos](https://eprint.iacr.org/2014/765), and [Pass, Seeman, shelat](https://eprint.iacr.org/2016/454) and [Kiffer, Rajaraman, shelat](https://dl.acm.org/citation.cfm?id=3243814)) later presented rigorous proofs. These proofs are fairly complicated even for experts and quite hard for practitioners, beginners, and students to follow.
 
-This post gives a walkthrough of a simple proof I wrote recently. Anyone with knowledge in basic probability should be able to follow the proof. You are encouraged to watch the [talk](https://www.youtube.com/watch?v=Nac8uXISc80) or read the [full proof](https://eprint.iacr.org/2019/943). 
+This post gives a walkthrough of a simple proof I wrote recently. Anyone with knowledge in basic probability should be able to follow the proof. You are encouraged to watch the [talk](https://www.youtube.com/watch?v=Nac8uXISc80) or read the [full proof](https://eprint.iacr.org/2019/943.pdf). 
 
 #### Model and assumptions
 I assume you are familiar with how Nakamoto consensus works. Below is a concise description that contains all the important details this post needs. (If you need a more detailed explanations and descriptions, there are plenty of good resources online.)
@@ -39,7 +39,7 @@ The illustration below shows tailgaters in red and non-tailgaters in green and p
 </p>
 
 #### Formal proof sketch
-Let us put all honest blocks on a time axis based on when they are mined. (The definitions/lemmas/theorems are numbered to match the [paper](https://eprint.iacr.org/2019/943)).
+Let us put all honest blocks on a time axis based on when they are mined. (The definitions/lemmas/theorems are numbered to match the [paper](https://eprint.iacr.org/2019/943.pdf)).
 
 **Definition 4(i).** *Suppose an honest block $B$ is mined at time $t$. If no other honest block is mined between time $t-\Delta$ and $t$, then $B$ is a non-tailgater (otherwise, $B$ is a tailgater).*
 
