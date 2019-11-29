@@ -55,7 +55,7 @@ Non-tailgaters helped us prove liveness. To prove safety, we need to introduce a
 
 **Lemma 5(ii).** *A loner is the only honest block at its height.*
 
-In other words, a *loner* is an honest block that *does not tailgate* and *is not tailgated*. A loner has the nicer property of Lemma 5(ii). The proof is identical to Lemma 5(i); simply note that a loner and any other honest block do not tailgate one another by definition.
+In other words, a *loner* is an honest block that *does not tailgate* and *is not tailgated*. Loners are shown in purple in the previous figure. A loner has the nicer property of Lemma 5(ii). The proof is identical to Lemma 5(i); simply note that a loner and any other honest block do not tailgate one another by definition.
 
 In order to violate safety, there needs to be two chains that diverge by more than $k$ blocks, both adopted by honest nodes. Let us consider the time window in which these two diverging chains are mined. In this window, there has to be more malicious blocks than loners. This is because we can pair each loner with a malicious block: a loner does not share height with other honest blocks, so one of the two blocks at that height must be a malicious block. To summarize, in order to violate safety, there must be a period of time during which *the adversary mines more blocks than honest nodes mine loners*. Said it the opposite way, if honest nodes can miner loners faster than the adversary can mine blocks, then safety violation is unlikely to occur. The larger $k$ is, the less likely a safety violation can occur.
 
