@@ -1,7 +1,8 @@
 ---
 title: 'Data, Consensus, Execution: Three Scalability Bottlenecks for State Machine
   Replication'
-date: 2019-11-24 09:05:00 -08:00
+date: 2019-11-29 09:05:00 -08:00
+published: true
 tags:
 - blockchain101
 author: Ittai Abraham
@@ -39,7 +40,9 @@ Another line of works aims to minimize the required size of the history that is 
 #### Scaling Consensus: the throughput vs latency trade-off
 Some people talk about Transactions-Per-Second (TPS) as the measure of how scalable a consensus protocol it. TPS is a measure of throughput and optimizing it alone is a misunderstanding of the challenge. A solution for scaling consensus must address both throughput *and* latency. Just improving throughput is easy in systems with instant finality: increase latency and commit blocks just once a day instead of every few seconds and clearly the cost of the consensus will be easily amortized.  *Batching* is an important technique to increase latency and increase throughput, but batching not a magic solution to scale performance.
 
-The [PBFT journal version](http://www.pmg.csail.mit.edu/papers/bft-tocs.pdf) has a good discussion of latency and throughput.
+The [PBFT journal version](http://www.pmg.csail.mit.edu/papers/bft-tocs.pdf) has a good discussion of latency and throughput for BFT State Machine Replication.
+
+For [Nakamoto](https://bitcoin.org/bitcoin.pdf) [Consensus](https://eprint.iacr.org/2014/765.pdf) based protocols there has been a series of works: [Bitcoin-NG](https://www.usenix.org/system/files/conference/nsdi16/nsdi16-paper-eyal.pdfthat), [Fruitchains](https://eprint.iacr.org/2016/916.pdf),  [Prism](https://arxiv.org/pdf/1909.11261.pdf) that aim to improve throughout and latency.
 
 
 #### Scaling Consensus: scale vs security trade-off
@@ -50,6 +53,8 @@ Decreasing the set of validating replicas increases the performance but reduces 
 One way to improve consensus performance it to actually improve the protocol. For example, reducing the number of rounds or changing the message complexity from quadratic to linear. This post discusses protocol improvements  in [partial synchrony](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/) and this post discusses protocol improvements in [synchrony](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/).
 
 Note that security is not just about the size of the adversary (which is controlled by the total number of validating replicas) but also about the [adaptive power](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) of the adversary.
+
+[Algorand](https://arxiv.org/pdf/1607.01341.pdf) suggests using round based sampling to scale Byzantine consensus. This approach has  promising [simulation results](https://people.csail.mit.edu/nickolai/papers/gilad-algorand-eprint.pdf).
 
 
 
@@ -79,7 +84,7 @@ One promising way to speedup execution is to leverage parallelization. This appr
 In this solution the commands are committed as *data* but the execution is not done by the validating replicas. The validating replicas just acts as a data availability layer.
 
 
-Instead of having replicas execute the commands, there is economically incentivized game where players can become executers by posting bonds. A bonded executer can then commit to the execution outcome. Any bonded reporting agent can provide a proof that the fraud has happened. If the fraud proof is correct then the executer is slashed and the reporting agent is partially rewarded. If the reporting agent lies about the fraud proof, then its bond can be slashed. Protocols for efficiently challenging the prover has origins in the work of [Feige Kilian 2000](https://courses.cs.washington.edu/courses/cse533/05au/feige-kilian-journal.pdf), then [Canetti Riva Rothblum 2011](https://www.cs.tau.ac.il/~canetti/CRR11.pdf) and was later adopted to using on chain incentives in *TrueBit* [Teutsch Reitwießner 2017](https://people.cs.uchicago.edu/~teutsch/papers/truebit.pdf) and in Buterin's
+Instead of having replicas execute the commands, there is economically incentivized game where players can become executers by posting bonds. A bonded executer can then commit to the execution outcome. Any bonded reporting agent can provide a proof that the fraud has happened. If the fraud proof is correct then the executer is slashed and the reporting agent is partially rewarded. If the reporting agent lies about the fraud proof, then its bond can be slashed. Protocols for efficiently challenging the prover has origins in the work of [Feige Kilian 2000](https://courses.cs.washington.edu/courses/cse533/05au/feige-kilian-journal.pdf) followed by [Canetti Riva Rothblum 2011](https://www.cs.tau.ac.il/~canetti/CRR11.pdf) and was later adopted to using on-chain incentives in *TrueBit* [Teutsch Reitwießner 2017](https://people.cs.uchicago.edu/~teutsch/papers/truebit.pdf) and in Buterin's
 [Off-Chain Oracles](https://blog.ethereum.org/2014/09/17/scalability-part-1-building-top/). This approach is now being developed under the name [optimistic rollups](https://thebitcoinpodcast.com/hashing-it-out-67/) (also see Adler's [merged consensus](https://ethresear.ch/t/minimal-viable-merged-consensus/5617)).
 
 
