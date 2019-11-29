@@ -32,9 +32,10 @@ How do we rigorously define whether or not a block contributes to safety? This b
 
 **Definition 4(i).** *Suppose an honest block $B$ is mined at time $t$. If no other honest block is mined between time $t-\Delta$ and $t$, then $B$ is a non-tailgater (otherwise, $B$ is a tailgater).*
 
+The following illustration shows tailgaters in red and non-tailgaters in green or purple. (Purple blocks will be explained further later.)
 
 <p align="center">
-<img src="/uploads/tailgater.png" width="512" title="Tailgaters (red), non-tailgaters (green), and loners (purple, which are also non-tailgaters, defined later).">
+<img src="/uploads/tailgater.png" width="512" title="tailgater">
 </p>
 
 
