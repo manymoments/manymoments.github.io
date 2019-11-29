@@ -2,6 +2,7 @@
 title: 'Data, Consensus, Execution: Three Scalability Bottlenecks for State Machine
   Replication'
 date: 2019-11-29 09:05:00 -08:00
+published: false
 tags:
 - blockchain101
 author: Ittai Abraham
@@ -88,9 +89,10 @@ Instead of having replicas execute the commands, there is economically incentivi
 
 
 #### Scaling Execution:  don't execute, verify using succinct proofs (PCPs)
-In this solution again the commands are committed as *data* but the execution is not done by the validating replicas. The validating replicas just acts as a data availability layer for the commands/inputs.
+In this solution again the commands are committed as *data* but the execution is not done by the validating replicas. The validating replicas just act as a data availability layer for the commands/inputs.
 
-Instead of using games to verify computation it is possible to leverage succinct proofs ([PCP](https://en.wikipedia.org/wiki/PCP_theorem)). These cryptographic techniques allow a prover to generate very short proofs that can be efficiently verified with high soundness and completeness. Execution (and proof generation) need to happen only at one node. Once a short proof exist then validating replicas of the execution engine just need to validate a short proof instead of re-executing the long commands/transactions.
+Instead of using games and fraud proofs to verify execution it is possible to leverage succinct proofs ([PCP](https://en.wikipedia.org/wiki/PCP_theorem)). These cryptographic techniques allow a prover to generate very short proofs that can be efficiently verified with high soundness and completeness. Execution (and proof generation) need to happen only at one node. Once a short proof exist then the validating replicas of the execution engine just need to validate a short proof instead of re-executing the long commands/transactions.
+
 
 
 This is the approach taken in  Buterin's [zk-roll-up](https://ethresear.ch/t/on-chain-scaling-to-potentially-500-tx-sec-through-mass-tx-validation/3477). See [this video](https://www.youtube.com/watch?v=mOm47gBMfg8) for a way to add privacy to the succinct proofs.
