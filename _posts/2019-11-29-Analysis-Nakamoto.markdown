@@ -34,7 +34,7 @@ How do we rigorously define whether or not a block contributes to safety? This b
 
 
 <p align="center">
-<img src="/uploads/tailgater.pdf" width="512" title="Tailgaters (red), non-tailgaters (green), and loners (purple, which are also non-tailgaters, defined later).">
+<img src="/uploads/tailgater.png" width="512" title="Tailgaters (red), non-tailgaters (green), and loners (purple, which are also non-tailgaters, defined later).">
 </p>
 
 
