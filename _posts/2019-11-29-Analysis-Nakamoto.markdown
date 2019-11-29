@@ -1,7 +1,7 @@
 ---
 title: Security proof for Nakamoto Consensus
-date: 2019-11-27 20:50:00 -08:00
-published: false
+date: 2019-11-29 15:10:00 -06:00
+published: true
 tags:
 - blockchain101
 author: Ling Ren
@@ -32,6 +32,12 @@ Unfortunately, the above simple argument does not hold due to *network delays*. 
 How do we rigorously define whether or not a block contributes to safety? This brings us to a central notion in the proof: *tailgating*. For now, let us pretend there is no adversary for simplicity. When would two honest blocks *not* extend one another? The only case is that they are mined too closely to each other. How close is too close? You guessed it, within $\Delta$ time! To elaborate, if two blocks are mined less than $\Delta$ time apart, then the latter one may not be aware of the former one, and this creates a fork. More formally, Let us put all honest blocks on a time axis based on when they are mined. (The definitions/lemmas/theorems are numbered to match the [paper](https://eprint.iacr.org/2019/943)).
 
 **Definition 4(i).** *Suppose an honest block $B$ is mined at time $t$. If no other honest block is mined between time $t-\Delta$ and $t$, then $B$ is a non-tailgater (otherwise, $B$ is a tailgater).*
+
+
+<p align="center">
+<img src="/uploads/tailgater.pdf" width="512" title="Tailgaters (red), non-tailgaters (green), and loners (purple).">
+</p>
+
 
 Non-tailgaters have a nice property:
 
