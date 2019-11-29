@@ -2,25 +2,26 @@
 title: 'Data, Consensus, Execution: Three Scalability Bottlenecks for State Machine
   Replication'
 date: 2019-11-24 09:05:00 -08:00
-published: false
+published: true
 tags:
 - blockchain101
 author: Ittai Abraham
 ---
 
-If anyone asks you: *how can I scale  my State Machine Replication (Blockchain) system?*
+If anyone asks you: *how can I **scale**  my State Machine Replication (Blockchain) system?*
 
-You should answer back with a question: *what is its  **bottleneck**? Is it Data, Consensus or Execution?*
+You should answer back with a question: *what is your  **bottleneck**? Is it Data, Consensus or Execution?*
 
-1. **Data**: Shipping the commands to all the replicas. For example, if a command contains 1MB of data then the fundamental bottleneck is that you need all these bits to arrive to all the validating replicas.
+1. **Data**: Shipping the commands to all the replicas. For example, if a [block contains 1MB](https://en.bitcoin.it/wiki/Block_size_limit_controversy) of commands then the fundamental bottleneck is that you need all these bits to arrive to all the validating replicas.
 
 2. **Consensus**: Once the data arrives, replicas engage in a consensus protocol (like the ones discussed here for [partial synchrony](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/) or [synchrony](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/)). For example, if the consensus protocol needs 2 round-trips and the validating replicas are spread across the globe then there is a fundamental latency bottleneck due to the speed of light and the size of Earth.
 
-3. **Execution**: After the data has arrived and consensus is reached on the total ordering of the commands, the replicas need to *execute* the commands. The *execution engine* is a function that takes the old state and applies the ordered commands to compute the new state (and compute the output). For example, if an execution requires doing many cryptographic operations, then all replicas need to re-execute these cryotographic operations.
+3. **Execution**: After the data has arrived and consensus is reached on the total ordering of the commands, the replicas need to *execute* the commands. The [execution engine
+](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) is a function that takes the old state and applies the ordered commands to compute the new state (and compute the output). For example, if an execution requires doing many cryptographic operations, then all replicas need to re-execute these cryptographic operations.
 
 
 
-These three bottlenecks are *not* a tradeoff (or a [trilemma](https://en.wikipedia.org/wiki/Trilemma)) they are independent challenges. The performance of a system is bottlenecked by the *minimum* of all three. Here are some directions for addressing these challenges.
+These three bottlenecks are *not* a tradeoff or a dilemma or even a [trilemma](https://en.wikipedia.org/wiki/Trilemma) they are independent challenges. The ability of a State Machine Replication system to scale is bottlenecked by the *minimum* of all three. Here are some directions for addressing these challenges.
 
 
 
@@ -83,8 +84,8 @@ Instead of having replicas execute the commands, there is economically incentivi
 [Off-Chain Oracles](https://blog.ethereum.org/2014/09/17/scalability-part-1-building-top/). This approach is now being developed under the name [optimistic rollups](https://thebitcoinpodcast.com/hashing-it-out-67/) (also see Adler's [merged consensus](https://ethresear.ch/t/minimal-viable-merged-consensus/5617)).
 
 
-#### Scaling Execution:  don't execute, verify using succinct verification (PCPs)
-In this solution again the commands are committed as *data* but the execution is not done by the validating replicas. The validating replicas just acts as a data availability layer.
+#### Scaling Execution:  don't execute, verify using succinct proofs (PCPs)
+In this solution again the commands are committed as *data* but the execution is not done by the validating replicas. The validating replicas just acts as a data availability layer for the commands/inputs.
 
 Instead of using games to verify computation it is possible to leverage succinct proofs ([PCP](https://en.wikipedia.org/wiki/PCP_theorem)). These cryptographic techniques allow a prover to generate very short proofs that can be efficiently verified with high soundness and completeness. Execution (and proof generation) need to happen only at one node. Once a short proof exist then validating replicas of the execution engine just need to validate a short proof instead of re-executing the long commands/transactions.
 
