@@ -5,19 +5,50 @@ layout: page
 
 ## The Decentralization will not be Televised
 
+**Proofs, Consensus, and Decentralizing Society: [Large-Scale Consensus and Blockchains](https://simons.berkeley.edu/workshops/proofs2019-2), Oct. 22 – Oct. 25, 2019, Simons Institute, Berkley**
+
+Ling Ren: Analysis of Nakamoto Consensus
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Nac8uXISc80" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+Kartik Nayak: Flexible Byzantine Fault Tolerance
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PYrH8cPTnmQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+
+
+**ZK-TLV 0x09: [all you can eat BFT](https://www.meetup.com/Zero-Knowledge-Tel-Aviv/events/265813567/), November 11, 2019, Tel Aviv**
+
+Part 1: The Bitcoin breakthrough in the lens of Distributed Computing
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/IUwsxssViqc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+Part 2: State Machine Replication: from Traditional to Modern
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-RcYagFNyLU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+Part 3: The HotStuff approach to BFT
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ONobI3X70Rc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+
+
+
 **It's All About Decentralized Trust, [CES Summit '19](https://cryptoresearch.pubpub.org/), Oct 5-6, 2019, MIT Media Lab**
 
 Part of the "From Distributed Consensus To Blockchains" session. [https://www.cryptoeconomic.systems](https://www.cryptoeconomic.systems)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/iPRrGqDsMxg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-**Talks at the [THE SECOND SUMMER SCHOOL ON PRACTICE AND THEORY OF DISTRIBUTED COMPUTING, July 8-12, 2019](https://sptdc.ru/)** 
+**Talks at the [THE SECOND SUMMER SCHOOL ON PRACTICE AND THEORY OF DISTRIBUTED COMPUTING, July 8-12, 2019](https://sptdc.ru/)**
 
 Byzantine fault-tolerance, state machine replication and blockchains: Part 1 (from Paxos to Byzantine Paxos)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/weqRVt5OwNY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-Byzantine fault-tolerance, state machine replication and blockchains: Part 2 (from Partial Synchrony to Synchrony and SMR) 
+Byzantine fault-tolerance, state machine replication and blockchains: Part 2 (from Partial Synchrony to Synchrony and SMR)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Uoo2cOvQVN0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
