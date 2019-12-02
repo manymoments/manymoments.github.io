@@ -5,7 +5,7 @@ layout: page
 
 ## The Decentralization will not be Televised
 
-**Proofs, Consensus, and Decentralizing Society: [Large-Scale Consensus and Blockchains](https://simons.berkeley.edu/workshops/proofs2019-2), Oct. 22 – Oct. 25, 2019, Simons Institute, Berkley**
+**Proofs, Consensus, and Decentralizing Society: [Large-Scale Consensus and Blockchains](https://simons.berkeley.edu/workshops/proofs2019-2), Oct. 22 – Oct. 25, 2019, Simons Institute, Berkeley**
 
 Ling Ren: Analysis of Nakamoto Consensus
 
