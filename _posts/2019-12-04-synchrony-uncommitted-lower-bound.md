@@ -1,6 +1,6 @@
 ---
 title: Synchronous Consensus Lower Bound via Uncommitted Configurations
-date: 2019-12-04 09:05:00 -08:00
+date: 2019-12-07 09:05:00 -08:00
 published: false
 tags:
 - dist101
@@ -8,7 +8,7 @@ tags:
 author: Ittai Abraham
 ---
 
-In this second post we will show the fundamental lower bound on the number rounds for consensus protocols in the synchrony model.
+In this second post we show the fundamental lower bound on the number rounds for consensus protocols in the synchronous model.
 
 **Theorem 1**: any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds.
 
