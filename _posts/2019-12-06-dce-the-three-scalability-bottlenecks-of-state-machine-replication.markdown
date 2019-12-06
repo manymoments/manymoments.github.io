@@ -97,13 +97,14 @@ Instead of having replicas execute the commands, there is an economically-incent
 In this solution, again the commands are committed as *data* but the execution is not done by the validating replicas. The validating replicas just act as a data availability layer for the commands.
 
 Instead of using games and fraud proofs to verify execution it is possible to leverage *succinct non-interactive proofs* ([PCP](https://en.wikipedia.org/wiki/PCP_theorem), [Groth 10](https://www.iacr.org/archive/asiacrypt2010/6477343/6477343.pdf), [Groth 16](https://eprint.iacr.org/2016/260.pdf), [Ben-Sasson, Chiesa, Tromer, Virza 2013-2019](https://eprint.iacr.org/2013/879.pdf), [survey](https://scalingbitcoin.org/transcript/telaviv2019/survey-of-progress-in-zero-knowledge-proofs-towards-trustless-snarks)). These cryptographic techniques allow a prover to generate very short proofs that can be efficiently verified with high cryptographic soundness and completeness. Execution (and proof generation) need to happen only at one entity. Once a short proof exists, then the validating replicas of the execution engine just need to validate the short proof instead of re-executing the long transactions.
+[Zexe](https://eprint.iacr.org/2018/962.pdf) uses this approach to build a nano-kernel based proof system that allows private transactions in the UTXO setting.
 
-This is the approach for scaling transactions is highlighted in Buterin's [zk-roll-up](https://ethresear.ch/t/on-chain-scaling-to-potentially-500-tx-sec-through-mass-tx-validation/3477) post and in Ben-Sasson's [podcast](https://www.youtube.com/watch?v=JI3-z4PbmXA). See Buterin's
+This approach for scaling transactions is highlighted in Buterin's [zk-roll-up](https://ethresear.ch/t/on-chain-scaling-to-potentially-500-tx-sec-through-mass-tx-validation/3477) post and in Ben-Sasson's [podcast](https://www.youtube.com/watch?v=JI3-z4PbmXA). See Buterin's
 [video](https://www.youtube.com/watch?v=mOm47gBMfg8) for a way to add privacy (zero knowledge) to the succinct proofs (zk zk rollups).
 
-Using a succinct proof has a huge advantage: once the proof is created, the cost of verification is very low. The disadvantage is that creating the proof of execution of the commands is often significantly more expensive than just executing the commands. Another disadvantage is that these protocols add non-trivial complexity and some require non-trivial [trusted setup](https://medium.com/qed-it/diving-into-the-snarks-setup-phase-b7660242a0d7) ceremonies.
+Using a succinct proof has a huge advantage: once the proof is created, the cost of verification is very low. The disadvantage is that creating the proof of execution of the commands is often significantly more expensive than just executing the commands. Another disadvantage is that these protocols add non-trivial complexity. Moreover, some of these protocols require non-trivial [trusted setup](https://medium.com/qed-it/diving-into-the-snarks-setup-phase-b7660242a0d7) ceremonies.
 
 See this recent [survey/comparison](https://medium.com/matter-labs/optimistic-vs-zk-rollup-deep-dive-ea141e71e075) on optimistic and zk rollups. Note that *rollups*  aim to remove the execution bottleneck, but they do not change the [data bottleneck](#data).
 
 
-Please leave comments on [Twitter](...a)
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1202870065751896065)
