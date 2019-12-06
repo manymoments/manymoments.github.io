@@ -45,25 +45,24 @@ The proof of **Lemma 1** follows this pattern exactly:
     2. $C \rightsquigarrow Y' \xrightarrow{e=(p,m)} Z'$ and Z' is 0-committed.
 3. Let $Y,Y'$ be these two adjacent configurations. There are two cases to consider:
 
-    3.1. If $p \neq p'$: this is the trivial case. It implies that processing $e$ and then $e'$ will lead to a different outcome than processing $e'$ and only then $e$. But since $e,e'$ reach different parties there is no way to distinguish these two wordls.
+    3.1. If $p \neq p'$: this is the trivial case. It implies that processing $e$ and then $e'$ will lead to a different outcome than processing $e'$ and only then $e$. But since $e,e'$ reach different parties there is no way to distinguish these two worlds.
 
-    Formally $Y \xrightarrow{e=(p,m)} Z$ is 1-committed and so  $Y \xrightarrow{e=(p,m)} Z \xrightarrow{e'=(p',m')} Z''$ is also 1-committed. But $Y \xrightarrow{e=(p,m)} Y' \xrightarrow{e=(p,m)} Z'$ is 0-committed. This is a contradiction because $Z''$ and $Z'$ have exectly the same configuration and pending messages.
+    Formally $Y \xrightarrow{e=(p,m)} Z$ is 1-committed and so  $Y \xrightarrow{e=(p,m)} Z \xrightarrow{e'=(p',m')} Z''$ is also 1-committed. But $Y \xrightarrow{e=(p,m)} Y' \xrightarrow{e=(p,m)} Z'$ is 0-committed. This is a contradiction because $Z''$ and $Z'$ have exactly the same configuration and pending messages.
 
 
-    3.2. If $p=p'$ it means that the committed value must change if $p$ gets $e$ before $e'$ relative to if $p$ gets $e'$ before $e$! But what if $p$ crashes? This will be indistinguishable! Moreover $p$ does not need to crash, it can just be slow!
+    3.2. If $p=p'$ then committed value must change if $p$ gets $e$ before $e'$ relative to if $p$ gets $e'$ before $e$! But what if $p$ crashes? These two cases will be indistinguishable to the rest! Moreover $p$ does not need to crash, it can just be slow!
 
     Formally, consider some execution where $p$ crashes at $Y$ so there is some $Y \stackrel{\sigma}{\rightsquigarrow} D$ where $D$ is a deciding configuration and $\sigma$ does not contain $p$. So if $p$ was just slow then $Y \stackrel{\sigma}{\rightsquigarrow} D \xrightarrow{e} D'$ is deciding.
 
-    Since $Y \xrightarrow{e} Z$ is 1-committed then $Y \xrightarrow{e} Z
-    \stackrel{\sigma}{\rightsquigarrow} D'$ must be 1-decided.
+    Since $Y \xrightarrow{e} Z$ is 1-committed then $Y \xrightarrow{e} Z \stackrel{\sigma}{\rightsquigarrow} D'$ must be 1-decided.
 
 
     Since $Y \xrightarrow{e'} Y' \xrightarrow{e} Z'$ is 0-committed then so is $Y \xrightarrow{e'} Y' \xrightarrow{e} Z' \stackrel{\sigma}{\rightsquigarrow} D''$ must be 0-decided.
 
     For parties other than $p$, $D'$ and $D''$ are indistinguishable. This is contradiction.
 
-This completes the proof of the Technical Lemma and completes the proof of the main Theorem.
+This completes the proof of the Technical Lemma and completes the proof of the FLP Theorem.
 
 ####discussion
 
-Note that this proof is non-constructive, it just shows that an infinite execution must exist. But using randomization, we could have protocol that are almost surly terminating. In fact protocols that terminate in an expected constant number of rounds. More on that in later posts.
+Note that this proof is non-constructive, it just shows that an infinite execution must exist. But using randomization, we could have protocol that are almost surly terminating. In fact there exists protocols that terminate in an expected constant number of rounds. More on that in later posts.
