@@ -1,6 +1,6 @@
 ---
 title: The FLP Impossibility, Asynchronous Consensus Lower Bound via Uncommitted Configurations
-date: 2019-12-04 09:05:00 -08:00
+date: 2019-12-05 09:05:00 -08:00
 published: false
 tags:
 - dist101
