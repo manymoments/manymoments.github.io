@@ -2,7 +2,6 @@
 title: 'Data, Consensus, Execution: Three Scalability Bottlenecks for State Machine
   Replication'
 date: 2019-11-29 09:05:00 -08:00
-published: false
 tags:
 - blockchain101
 author: Ittai Abraham
@@ -12,94 +11,97 @@ If anyone asks you: *how can I **scale**  my State Machine Replication (Blockcha
 
 You should answer back with a question: *what is your  **bottleneck**? Is it Data, Consensus or Execution?*
 
-1. **Data**: Shipping the commands to all the replicas. For example, if a [block contains 1MB](https://en.bitcoin.it/wiki/Block_size_limit_controversy) of commands, then you need all these bits to arrive to all the validating replicas. The obvious barrier is your system's [channel capacity](https://en.wikipedia.org/wiki/Channel_capacity).
+1. **Data**: Shipping the commands to all the replicas. For example, if a [block contains 1MB](https://en.bitcoin.it/wiki/Block_size_limit_controversy) of commands, then you need all these bits to arrive to all the validating replicas. The obvious bottleneck is your system's [channel capacity](https://en.wikipedia.org/wiki/Channel_capacity).
 
 
-2. **Consensus**: Once the data arrives, replicas engage in a *consensus protocol* (like the ones discussed here for [partial synchrony](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/) or [synchrony](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/)). For example, if a consensus protocol needs 2 round-trips and the validating replicas are spread across the globe, then the obvious latency barrier is due to the speed of light and the size of Earth.
+2. **Consensus**: Once the commands arrive, replicas engage in a *consensus protocol* (like the ones discussed here for [partial synchrony](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/) or [synchrony](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/)). For example, if a consensus protocol needs 2 round-trips and the validating replicas are spread across the globe, then the obvious [latency](https://wondernetwork.com/pings) bottleneck is due to the speed of light and the size of Earth.
 
-3. **Execution**: After the data has arrived and consensus is reached on the total ordering of the commands, the replicas need to *execute* the commands. The [execution engine
-](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) is a function that takes the old state and applies the ordered commands to compute the new state (and compute the output). For example, if an execution requires doing many cryptographic operations, then all replicas need to re-execute these cryptographic operations.
+3. **Execution**: After the commands have arrived and consensus is reached on the total ordering of the commands, the replicas need to *execute* the commands. The [execution engine
+](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) is a function that takes the old state and applies the ordered commands to compute the new state (and compute the output). For example, if an execution requires doing many cryptographic operations, then the obvious bottleneck is that replicas need to re-execute these cryptographic operations.
 
 
 
-These three bottlenecks are *not* a tradeoff or a dilemma or even a [trilemma](https://en.wikipedia.org/wiki/Trilemma). They are independent challenges. The ability of a State Machine Replication system to scale is bottlenecked by the *minimum* of all three. Here are some directions for addressing these challenges.
+These three bottlenecks are *not* a tradeoff or a dilemma or even a [trilemma](https://en.wikipedia.org/wiki/Trilemma). They are independent challenges. The ability of a State Machine Replication system to scale is bottlenecked by the *minimum* of all three. Below we provide a partial list of directions for addressing these challenges.
 
 
 ### Scaling Data
 #### Better network solutions
-In Bitcoin and other cryptocurrencies, the ability to scale depends crucially on the ability reduce the latency it takes a winning block to propagate and reach all other miners. Systems like [FIBRE](https://bitcoinfibre.org/), [Falcon](https://www.falcon-net.org/), and [bloXroute](https://bloxroute.com/wp-content/uploads/2018/03/bloXroute-whitepaper.pdf) aim to reduce this latency by using *pipelining* and *forward error correction codes* to propagate blocks with lower latency.
+In Bitcoin and other cryptocurrencies, the ability to scale depends crucially on the ability reduce the latency it takes a winning block of commands to propagate and reach all other miners. Systems like [FIBRE](https://bitcoinfibre.org/), [Falcon](https://www.falcon-net.org/), and [bloXroute](https://bloxroute.com/wp-content/uploads/2018/03/bloXroute-whitepaper.pdf) aim to reduce this latency by using *pipelining* and *forward error correction codes* to propagate blocks with lower latency.
 
-Another  way to improve data scalability centers around being able to access content via a *content addressable network*. See [Kademlia](https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf), which inspired Ethereum's [RLPx](https://github.com/ethereum/devp2p/blob/master/rlpx.md) and was generalized in [libp2p](https://libp2p.io/).
+Another  way to improve data scalability centers around being able to discover peers and access content via a *content addressable network*. See [Kademlia](https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf), which inspired Ethereum's [RLPx](https://github.com/ethereum/devp2p/blob/master/rlpx.md) and was generalized in [libp2p](https://libp2p.io/).
 
 #### Pushing data to layer two
-One solution to scaling the problem of data replication is not to replicate it at all! Systems like [Lightning](https://lightning.network/lightning-network-paper.pdf), [Plasma](https://www.plasma.io/plasma.pdf), and other *layer two* solutions aim to reduce data replication by pushing some of the intermediate transactions to a smaller private group and only report periodic summaries to the main system (see our post on [payment channels](https://decentralizedthoughts.github.io/2019-10-25-payment-channels-are-just-a-two-person-bfs-smr-systems/)). This approach has a natural drawback: not replicating all the data creates a data availability problem. The safety depends on having at least one honest party in each private group that can react in a timely manner.
+One solution to the bottleneck generated by replicating all the commands is not to replicate them! Systems like [Lightning](https://lightning.network/lightning-network-paper.pdf), [Plasma](https://www.plasma.io/plasma.pdf), and other [layer two](https://eprint.iacr.org/2019/360.pdf) solutions aim to reduce data replication by pushing some of the intermediate commands to a smaller private group and only report periodic summaries to the main system (see our post on [payment channels](https://decentralizedthoughts.github.io/2019-10-25-payment-channels-are-just-a-two-person-bfs-smr-systems/)). This approach has a natural drawback: not replicating all the data creates a data availability problem. The safety depends on having at least one honest party in each private group that can react in a timely manner.
 
 
 ### Scaling Consensus
 #### Throughput vs latency trade-off
-Some people talk about *Transactions-Per-Second* ([TPS](https://en.wikipedia.org/wiki/Transactions_per_second)) as the measure of how scalable a consensus protocol is. TPS is a measure of *throughput* and optimizing it alone is a misunderstanding of the consensus scalability challenge. A solution for scaling consensus must address both *throughput* and *latency*. Just improving throughput (and hurting latency) is easy in systems with instant finality: reach consensus on the hash of the block just once a day instead of every few seconds. Clearly the cost of doing consensus just once-a-day will be amortized and consensus will not be the bottleneck in terms of throughput.  *Batching* is an important technique that increases latency and increases throughput for consensus protocols, but batching is not a magic solution to scale consensus performance.
+Some people talk about *Transactions-Per-Second* ([TPS](https://en.wikipedia.org/wiki/Transactions_per_second)) as the measure of how scalable a consensus protocol is. TPS is a measure of *throughput* and optimizing it alone is a misunderstanding of the consensus scalability challenge. A solution for scaling consensus must address both *throughput* and *latency*. Just improving consensus throughput (and hurting latency) via *batching* is easy in systems with instant finality: reach consensus on the hash of the batch of all the data just once-a-day instead of every few seconds. Clearly the cost of doing consensus just once-a-day will be amortized and consensus will not be the bottleneck in terms of throughput.  *Batching* is an important technique that increases latency and increases throughput for consensus protocols, but batching is not a magic solution to scale consensus performance.
 
 The [PBFT journal version](http://www.pmg.csail.mit.edu/papers/bft-tocs.pdf) has a good discussion of latency and throughput for BFT State Machine Replication.
 
 For [Nakamoto](https://bitcoin.org/bitcoin.pdf) [Consensus](https://eprint.iacr.org/2014/765.pdf) based protocols there has been a series of works: [Bitcoin-NG](https://www.usenix.org/system/files/conference/nsdi16/nsdi16-paper-eyal.pdfthat), [Fruitchains](https://eprint.iacr.org/2016/916.pdf),  [Prism](https://arxiv.org/pdf/1909.11261.pdf) that aim to improve throughput and latency.
 
 #### Performance vs security trade-off
-Some people improve performance of consensus simply by running it on a smaller group of validating replicas. Decreasing the set of validating replicas indeed increases the performance but it also reduces security.
+Some people suggest to improve the performance of consensus by running it on a smaller group of validating replicas. Decreasing the set of validating replicas indeed increases the performance but it also reduces security. The real challenge is to improve consensus performance without reducing the number of validating replicas.
 
 One way to improve consensus performance without reducing security is to improve the *consensus protocol complexity*, for example, by reducing the number of rounds or changing the *message complexity* from quadratic to linear. This post discusses some protocol improvements  in [partial synchrony](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/) and this post discusses some protocol improvements in [synchrony](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/).
 
 #### Scale vs adaptivity trade-off
-
 Consensus protocols based on the PBFT view-based paradigm are susceptible to the adversary adaptively attacking the Primary.
 Security of a consensus protocol is not just about the size of the adversary (which is controlled by the total number of validating replicas) but also about the [adaptive power](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) of the adversary.
 
 
-Protocols that handle an adaptive adversary often incur a higher cost and are more challenging to scale. [Algorand](https://arxiv.org/pdf/1607.01341.pdf) suggests using round based sampling to scale Byzantine consensus and protect it from adaptive attackers. This approach has promising [simulation results](https://people.csail.mit.edu/nickolai/papers/gilad-algorand-eprint.pdf). An adaptive adversary can use *Denial-of-Service* attacks to block the system from making progress. [HoenyBadger](https://eprint.iacr.org/2016/199.pdf) suggest the first practical *asynchronous* BFT protocol, which guarantees liveness without making any timing assumptions.
+Protocols that handle an adaptive adversary often incur a higher cost and are more challenging to scale. [Algorand](https://arxiv.org/pdf/1607.01341.pdf) suggests using round based cryptographic sampling to scale Byzantine consensus and protect it from adaptive attackers. This approach has promising [simulation results](https://people.csail.mit.edu/nickolai/papers/gilad-algorand-eprint.pdf). An adaptive adversary can use *Denial-of-Service* attacks to block the system from making progress. [HoenyBadger](https://eprint.iacr.org/2016/199.pdf) suggest the first practical *asynchronous* BFT protocol, which guarantees liveness without making any timing assumptions.
+
+
+#### Avoiding a complete total ordering of all commands
+When commands all depend on each other, there is no choice for consensus but to create a complete [total order](https://en.wikipedia.org/wiki/Total_order) of all commands. In many workloads, commands do not depend on each other and do not interfere with each other. For example, in some case a command where A pays B and a command where C pays D do not interfere and there is no reason to bottleneck the system and spend precious consensus efforts to *internally* order these two commands. This approach has been taken in the non-Byzantine model in [epaxos](https://www.cs.cmu.edu/~dga/papers/epaxos-sosp2013.pdf). Protocols like [Avalanche](https://avalanchelabs.org/QmT1ry38PAmnhparPUmsUNHDEGHQusBLD6T5XJh4mUUn3v.pdf) and other [DAG based protocols](http://www.cs.tau.ac.il/~msagiv/courses/blockchain/PHANTOM_Sompolinsky.pdf) improve consensus throughput by allowing non-interfering commands to be committed concurrently.
 
 
 
 #### Sharding
 At a high level, [Sharding](http://delivery.acm.org/10.1145/2500000/2491245/a8-corbett.pdf?ip=77.124.127.128&id=2491245&acc=OA&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E3ABADC0B30E26CFA&__acm__=1575188662_b429bd30b754abad7a1d2f8a4ed798e5) is the idea of *partitioning* the state and the set of validating replicas. Each *shard* controls some part of the state and consensus is run by some part of the total validating replica population. Some cross shard mechanism must also be in place. The comprehensive ["Sharding FAQ"](https://github.com/ethereum/wiki/wiki/Sharding-FAQ) of Ethereum is a great resource.
 
-Sharding is a way to parallelize the *data*, *consensus* and *execution* bottlenecks. Parallelizing the data and execution depends on having a workload with low contention.
-From a consensus perspective, its essentially a performance vs security trade-off: instead of using all validating replicas to secure one state machine, sharding creates multiple shards and each validating replica is used to secure one of the them.
+Sharding is a way to parallelize the *data*, *consensus* and *execution* bottlenecks. Parallelizing the data and execution depends on having a workload with low *contention*.
+From a consensus perspective, sharding is essentially a performance vs security trade-off: instead of using all validating replicas to secure one state machine, sharding creates multiple shards and each validating replica is used to secure one of the them.
 
- Having many shards (when contention is low) can obviously improve performance, but since each shard is secured by less validating replicas, it may also reduce security. See [Omniledger](https://eprint.iacr.org/2017/406.pdf) and
+Having many shards (when contention is low) can obviously improve performance, but since each shard is secured by less validating replicas, it may also reduce security. See [Omniledger](https://eprint.iacr.org/2017/406.pdf) and
 [Ethereum 2.0](https://medium.com/chainsafe-systems/ethereum-2-0-a-complete-guide-scaling-ethereum-part-two-sharding-902370ac3be) for examples of systems that use sharding techniques.
 
-The Ethereum 2.0 plans to combine the lower security of each shard with a high security global chain. Much like layer 2 solutions, the idea is that each lower security shard can periodically finalize itself on the higher security global chain. This creates a security-latency tradeoff: waiting for high security requires waiting for the periodic global chain finalization.
+Ethereum 2.0 plans to combine the lower security of each shard with a high security global chain. Much like layer 2 solutions, the idea is that each lower security shard can periodically finalize itself on the higher security global chain. This creates a security-latency tradeoff: waiting for high security requires waiting for the periodic global chain finalization.
+
 
 
 ### Scaling Execution
-#### Limiting execution complexity
-The separation of consensus and execution is one of the fundamental architecture designs of State Machine replication. The advantages of this separation is highlighted in [Yin et al 2003](https://www.cs.cornell.edu/lorenzo/papers/sosp03.pdf).
+The separation of consensus and execution is one of the fundamental architecture designs of State Machine replication (see [Base 20013](https://www.cs.unm.edu/~cris/591/castro2003base.pdf)). The advantages of this separation is highlighted in [Yin et al 2003](https://www.cs.cornell.edu/lorenzo/papers/sosp03.pdf).
 In the traditional SMR design, after a command is replicated and committed, it needs to be executed on all validating replicas.
 
 In many systems, the cost of *executing* the commands is the bottleneck. A major denial-of-service attack for a SMR system is to issue legal commands that will cause the system to waste time during execution (for example, see [here](https://blog.ethereum.org/2016/09/22/ethereum-network-currently-undergoing-dos-attack/) and [here](https://en.cryptonomist.ch/2018/09/26/bitcoin-bug-2/)). Many systems design *Domain Specific Languages* to prevent these attack. Bitcoin uses [bitcoin script](https://en.bitcoin.it/wiki/Script)  which carefully limits the computational complexity of each transaction. Ethereum uses a [gas mechanism](https://www.ethos.io/what-is-ethereum-gas/) to limit the execution complexity and incentivize its usage in an efficient manner.
 
 #### Parallelizing execution
-One proposed way to speedup execution is to leverage *parallelization*. This approach works when commands in the block are mostly *contention free* (commutative or independent). The main idea is to find ways to simulate a sequential execution via a protocol that exploits parallelism in the optimistic contention-free case but maintains safety even if there is contention. See [Dickerson Gazzillo Herlihy Koskinen 2017](https://arxiv.org/abs/1702.04467)  and [Saraph Herlihy 2019](https://arxiv.org/abs/1901.01376).
+One proposed way to speedup the execution computation bottleneck is to leverage machine *parallelization*. This approach works when commands in the block are mostly *contention free* (commutative or independent). The main idea is to find ways to simulate a sequential execution via a protocol that exploits parallelism in the optimistic contention-free case but maintains safety even if there is contention. See [Eve 2012](https://www.cs.cornell.edu/lorenzo/papers/Kapritsos12All.pdf), [Dickerson, Gazzillo, Herlihy, Koskinen 2017](https://arxiv.org/abs/1702.04467)  and [Saraph, Herlihy 2019](https://arxiv.org/abs/1901.01376).
 
 
 #### Don't execute, verify using economic incentives and fraud proofs
-In this solution, the commands are committed as *data* but the execution is not done by the validating replicas. The validating replicas just act as a *data availability layer*.
+In this solution, the commands are committed as *data* but the execution is not done by the validating replicas.  The validating replicas just act as a *data availability layer*.
 
 
-Instead of having replicas execute the commands, there is an economically-incentivized game where players can become executers by *posting bonds*. A *bonded executer* can then commit the execution outcome. Any *bonded reporting agent* can provide a *fraud proof* claiming that the executer committed an incorrect execution outcome. If the fraud proof is correct then the executer is *slashed* and the reporting agent is partially rewarded. If the reporting agent lies about the fraud proof, then its bond can be slashed. Protocols for efficiently challenging the executer have origins in the work of [Feige Kilian 2000](https://courses.cs.washington.edu/courses/cse533/05au/feige-kilian-journal.pdf) followed by [Canetti Riva Rothblum 2011](https://www.cs.tau.ac.il/~canetti/CRR11.pdf) and were later adopted to using on-chain incentives in *TrueBit* [Teutsch Reitwießner 2017](https://people.cs.uchicago.edu/~teutsch/papers/truebit.pdf) and in Buterin's
-[Off-Chain Oracles](https://blog.ethereum.org/2014/09/17/scalability-part-1-building-top/). This approach is now being developed under the name [optimistic rollups](https://thebitcoinpodcast.com/hashing-it-out-67/) (also see [merged consensus](https://ethresear.ch/t/minimal-viable-merged-consensus/5617), [Adler Mikerah Quintyne-Collins](https://arxiv.org/pdf/1904.06441.pdf), [Al-Bassam,  Sonnino,  Buterin](https://arxiv.org/pdf/1809.09044.pdf) and [LazyLedger](https://arxiv.org/pdf/1905.09274.pdf)).
+Instead of having replicas execute the commands, there is an economically-incentivized game where players can become executers by *posting bonds*. A *bonded executer* can then commit the execution outcome. Any *bonded reporting agent* can provide a *fraud proof* claiming that the executer committed an incorrect execution outcome. If the fraud proof is correct then the executer is *slashed* and the reporting agent is partially rewarded. If the reporting agent lies about the fraud proof, then its bond can be slashed. Protocols for efficiently challenging the executer have origins in the work of [Feige Kilian 2000](https://courses.cs.washington.edu/courses/cse533/05au/feige-kilian-journal.pdf) followed by [Canetti, Riva, Rothblum 2011](https://www.cs.tau.ac.il/~canetti/CRR11.pdf) and were later adopted to using on-chain incentives in *TrueBit* [Teutsch, Reitwießner 2017](https://people.cs.uchicago.edu/~teutsch/papers/truebit.pdf) and in Buterin's
+[Off-Chain Oracles](https://blog.ethereum.org/2014/09/17/scalability-part-1-building-top/). This approach is now being developed under the name [optimistic rollups](https://thebitcoinpodcast.com/hashing-it-out-67/) (also see [merged consensus](https://ethresear.ch/t/minimal-viable-merged-consensus/5617), [Adler, Mikerah, Quintyne-Collins](https://arxiv.org/pdf/1904.06441.pdf), [Al-Bassam,  Sonnino,  Buterin](https://arxiv.org/pdf/1809.09044.pdf) and [LazyLedger](https://arxiv.org/pdf/1905.09274.pdf)).
 
 
 
 
 #### Don't execute, verify using succinct proofs (PCPs)
-In this solution, again the commands are committed as *data* but the execution is not done by the validating replicas. The validating replicas just act as a data availability layer for the commands/inputs.
+In this solution, again the commands are committed as *data* but the execution is not done by the validating replicas. The validating replicas just act as a data availability layer for the commands.
 
-Instead of using games and fraud proofs to verify execution it is possible to leverage succinct proofs ([PCP](https://en.wikipedia.org/wiki/PCP_theorem)). These cryptographic techniques allow a prover to generate very short proofs that can be efficiently verified with high soundness and completeness. Execution (and proof generation) need to happen only at one replica. Once a short proof exists, then the validating replicas of the execution engine just need to validate a short proof instead of re-executing the long commands/transactions.
+Instead of using games and fraud proofs to verify execution it is possible to leverage succinct proofs ([PCP](https://en.wikipedia.org/wiki/PCP_theorem), [Groth 10](https://www.iacr.org/archive/asiacrypt2010/6477343/6477343.pdf), [Groth 16](https://eprint.iacr.org/2016/260.pdf), [Ben-Sasson, Chiesa, Tromer, Virza 2013-2019](https://eprint.iacr.org/2013/879.pdf), [survey](https://scalingbitcoin.org/transcript/telaviv2019/survey-of-progress-in-zero-knowledge-proofs-towards-trustless-snarks)). These cryptographic techniques allow a prover to generate very short proofs that can be efficiently verified with high soundness and completeness. Execution (and proof generation) need to happen only at one entity. Once a short proof exists, then the validating replicas of the execution engine just need to validate the short proof instead of re-executing the long transactions.
 
-This is the approach taken in  Buterin's [zk-roll-up](https://ethresear.ch/t/on-chain-scaling-to-potentially-500-tx-sec-through-mass-tx-validation/3477). See Eli's [podcast](https://www.youtube.com/watch?v=JI3-z4PbmXA) and Buterin's
+This is the approach taken in Buterin's [zk-roll-up](https://ethresear.ch/t/on-chain-scaling-to-potentially-500-tx-sec-through-mass-tx-validation/3477). See Ben-Sasson's [podcast](https://www.youtube.com/watch?v=JI3-z4PbmXA) and Buterin's
 [video](https://www.youtube.com/watch?v=mOm47gBMfg8) for a way to add privacy to the succinct proofs.
 
-Using a succinct proof has the advantage that once the proof is created, the cost of verification is cheap. But the disadvantage is that creating the proof is often significantly more expensive than just executing.
+Using a succinct proof has a huge advantage: once the proof is created, the cost of verification is very low. The disadvantage is that creating the proof of execution of the commands is often significantly more expensive than just executing the commands. Another disadvantage is that these protocols add non-trivial complexity and some require non-trivial trusted setup ceremonies.
 
 
 Please leave comments on [Twitter](...a)
