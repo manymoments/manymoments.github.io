@@ -24,7 +24,7 @@ You should answer back with a question: *what is your  **bottleneck**? Is it Dat
 These three bottlenecks are *not* a tradeoff or a dilemma or even a [trilemma](https://en.wikipedia.org/wiki/Trilemma). They are independent bottlenecks. The ability of a State Machine Replication system to scale is bottlenecked by the *minimum* of all three. Below we provide a partial list of directions for addressing these challenges.
 
 
-### 1. Scaling Data
+### 1. Scaling Data {#data}
 #### Better network solutions
 In Bitcoin and other cryptocurrencies, the ability to scale depends crucially on the ability reduce the latency it takes a winning block of commands to propagate and reach all other miners. Systems like [FIBRE](https://bitcoinfibre.org/), [Falcon](https://www.falcon-net.org/), and [bloXroute](https://bloxroute.com/wp-content/uploads/2018/03/bloXroute-whitepaper.pdf) aim to reduce this latency by using *pipelining* and *forward error correction codes* to propagate blocks with lower latency.
 
@@ -103,7 +103,7 @@ This is the approach for scaling transactions is highlighted in Buterin's [zk-ro
 
 Using a succinct proof has a huge advantage: once the proof is created, the cost of verification is very low. The disadvantage is that creating the proof of execution of the commands is often significantly more expensive than just executing the commands. Another disadvantage is that these protocols add non-trivial complexity and some require non-trivial [trusted setup](https://medium.com/qed-it/diving-into-the-snarks-setup-phase-b7660242a0d7) ceremonies.
 
-See this recent [survey/comparison](https://medium.com/matter-labs/optimistic-vs-zk-rollup-deep-dive-ea141e71e075) on optimistic and zk rollups. Note that *rollups*  aim to remove the execution bottleneck, but they do not change the [data bottleneck](#1. Scaling Data).
+See this recent [survey/comparison](https://medium.com/matter-labs/optimistic-vs-zk-rollup-deep-dive-ea141e71e075) on optimistic and zk rollups. Note that *rollups*  aim to remove the execution bottleneck, but they do not change the [data bottleneck](#data).
 
 
 Please leave comments on [Twitter](...a)
