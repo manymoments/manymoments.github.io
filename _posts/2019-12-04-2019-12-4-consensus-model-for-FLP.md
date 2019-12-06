@@ -1,13 +1,12 @@
 ---
-title: 'Consensus Lower Bounds via Uncommitted Configurations'
-date: 2019-12-4 09:05:00 -08:00
+title: Consensus Lower Bounds via Uncommitted Configurations
+date: 2019-12-04 09:05:00 -08:00
 published: false
 tags:
 - dist101
 - lowerbound
 author: Ittai Abraham
 ---
-
 
 In this series of posts we discusses two of the most important lower bounds for consensus:
 1. [Lamport, Fischer 1982](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf): any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds.

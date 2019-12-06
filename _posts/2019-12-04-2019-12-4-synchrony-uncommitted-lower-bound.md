@@ -1,13 +1,12 @@
 ---
-title: 'Synchronous Consensus Lower Bound via Uncommitted Configurations'
-date: 2019-12-4 09:05:00 -08:00
+title: Synchronous Consensus Lower Bound via Uncommitted Configurations
+date: 2019-12-04 09:05:00 -08:00
 published: false
 tags:
 - dist101
 - lowerbound
 author: Ittai Abraham
 ---
-
 
 In this second post we will show the fundamental lower bound on the number rounds for consensus protocols in the synchrony model.
 
