@@ -55,8 +55,8 @@ The **proof** is a trivial variation of the the **proof pattern** that looks at 
 This concludes the proof of Lemma 3. Which concludes the proof of Theorem 1.
 
 
-####discussion
+####Discussion
 
-The proof started with an uncommitted initial configuration (Lemma 1) and then showed that we can continue for $t-1$ rounds to reach an uncommitted configuration (Lemma 2). Finally we used one more crash to show that we cannot always decide in $t$ rounds (Lemma 3). Note that the theorem is non-constructive and all it shows is that a $t+1$ round execution must exist (but does not say it must occur with high probability).
+The proof started with an  initial uncommitted configuration (Lemma 1) and then showed that we can continue for $t-1$ rounds to reach an uncommitted configuration (Lemma 2). Finally we used one more crash to show that we cannot always decide in $t$ rounds (Lemma 3). Note that the theorem is non-constructive and all it shows is that a $t+1$ round execution must exist (but does not say it must occur with high probability).
 
-In the next post we will show that the same proof approach can be used to show that in the *asynchronous* model there must exists an *infinite* execution even for protocol that are resilient to just one crash failure.
+In the next post we will show that the same proof approach can be used to show that in the *asynchronous* model there must exists an *infinite* execution even for protocols that are resilient to just one crash failure.
