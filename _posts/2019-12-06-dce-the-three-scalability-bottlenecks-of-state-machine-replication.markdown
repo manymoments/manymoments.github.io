@@ -103,7 +103,7 @@ This is the approach for scaling transactions is highlighted in Buterin's [zk-ro
 
 Using a succinct proof has a huge advantage: once the proof is created, the cost of verification is very low. The disadvantage is that creating the proof of execution of the commands is often significantly more expensive than just executing the commands. Another disadvantage is that these protocols add non-trivial complexity and some require non-trivial [trusted setup](https://medium.com/qed-it/diving-into-the-snarks-setup-phase-b7660242a0d7) ceremonies.
 
-See this recent [survey/comparison](https://medium.com/matter-labs/optimistic-vs-zk-rollup-deep-dive-ea141e71e075) on optimistic and zk rollups.
+See this recent [survey/comparison](https://medium.com/matter-labs/optimistic-vs-zk-rollup-deep-dive-ea141e71e075) on optimistic and zk rollups. Note that *rollups*  aim to remove the execution bottleneck, but they do not change the [data bottleneck](#1. Scaling Data).
 
 
 Please leave comments on [Twitter](...a)
