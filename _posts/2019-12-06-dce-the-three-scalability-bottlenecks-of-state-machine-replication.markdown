@@ -52,7 +52,7 @@ Consensus protocols based on the PBFT view-based paradigm are susceptible to the
 Security of a consensus protocol is not just about the size of the adversary (which is controlled by the total number of validating replicas) but also about the [adaptive power](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) of the adversary.
 
 
-Protocols that handle an adaptive adversary often incur a higher cost and are more challenging to scale. [Algorand](https://arxiv.org/pdf/1607.01341.pdf) suggests using round based cryptographic sampling to scale Byzantine consensus and protect it from adaptive attackers. This approach has promising [simulation results](https://people.csail.mit.edu/nickolai/papers/gilad-algorand-eprint.pdf). An adaptive adversary can use *Denial-of-Service* attacks to block the system from making progress. [HoenyBadger](https://eprint.iacr.org/2016/199.pdf) suggest the first practical *asynchronous* BFT protocol, which guarantees liveness without making any timing assumptions.
+Protocols that handle an adaptive adversary often incur a higher cost and are more challenging to scale. [Algorand](https://arxiv.org/pdf/1607.01341.pdf) suggests using round based cryptographic sampling to scale Byzantine consensus and protect it from adaptive attackers. This approach has promising [simulation results](https://people.csail.mit.edu/nickolai/papers/gilad-algorand-eprint.pdf). An adaptive adversary can use *Denial-of-Service* attacks to block the system from making progress. [HoneyBadger](https://eprint.iacr.org/2016/199.pdf) suggest the first practical *asynchronous* BFT protocol, which guarantees liveness without making any timing assumptions.
 
 
 #### Avoiding a complete total ordering of all commands
@@ -105,6 +105,10 @@ This approach for scaling transactions is highlighted in Buterin's [zk-roll-up](
 Using a succinct proof has a huge advantage: once the proof is created, the cost of verification is very low. The disadvantage is that creating the proof of execution of the commands is often significantly more expensive than just executing the commands. Another disadvantage is that these protocols add non-trivial complexity. Moreover, some of these protocols require non-trivial [trusted setup](https://medium.com/qed-it/diving-into-the-snarks-setup-phase-b7660242a0d7) ceremonies.
 
 See this recent [survey/comparison](https://medium.com/matter-labs/optimistic-vs-zk-rollup-deep-dive-ea141e71e075) on optimistic and zk rollups. Note that *rollups*  aim to remove the execution bottleneck, but they do not change the [data bottleneck](#data).
+
+
+**Acknowledgment.** We would like to thank Ling Ren, Kartik Nayak, Alin Tomescu, Pratyush Mishra, Louis Guthmann, and John Adler for helpful feedback on this post.
+
 
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1202870065751896065)
