@@ -1,6 +1,6 @@
 ---
 title: The FLP Impossibility, Asynchronous Consensus Lower Bound via Uncommitted Configurations
-date: 2019-12-05 09:05:00 -08:00
+date: 2019-12-07 09:05:00 -08:00
 published: false
 tags:
 - dist101
@@ -19,8 +19,8 @@ This post assumes you are familiar with the [definitions of the first post](...)
 
 **Lemma 1: Initial Uncommitted (Lemma 2 of FLP85)**: $\mathcal{P}$ has an initial uncommitted configuration.
 
-Recall that given a configuration $C$ there is a set $M$ of pending messages. These are messages that have been sent. For $e \in M$ we write $e=(p,m)$ to denote that party $p$ has been sent a message $m$. Given an initial uncommitted configuration our goal will be to build an infinite execution such that:
-1. The sequence is uncommitted: configuration of the infinite execution is uncommitted.
+Recall that given a configuration $C$ there is a set $M$ of pending messages. These are messages that have been sent but not delivered yet. For $e \in M$ we write $e=(p,m)$ to denote that party $p$ has been sent a message $m$. Given an initial uncommitted configuration our goal will be to build an infinite execution such that:
+1. The sequence is uncommitted: every configuration of the infinite execution is uncommitted.
 2. The sequence is fair: every message sent is eventually delivered.
 
 To prove the theorem we will prove the following Technical Lemma:
@@ -31,20 +31,18 @@ To prove the theorem we will prove the following Technical Lemma:
 
 
 
-
-
 Recall the **proof pattern** for showing the existence of an uncommitted configuration:
 1. Proof by *contradiction*: assume all configurations are either 1-committed or 0-committed.
 2. Find a *local structure*: two adjacent configurations $C$ and $C'$ such that $C$ is 1-committed and $C_0$ is 0-committed.
-3. Reach a contradiction due to an indistinguishability argument between $C$ and $C'$ using the adversary ability to crash one party.
+3. Reach a contradiction due to an indistinguishability argument between the two adjacent configurations $C$ and $C'$ using the adversary ability to crash one party.
 
 
 
 The proof of **Lemma 1** follows this pattern exactly:
-1. The contradiction of the statement of Lemma 1 is that: for each $C'$ such that  $C \rightsquigarrow C'$ let  $C' \xrightarrow{e=(p,m)} C''$, then either $C''$ is 1-committed or $C''$ is 0-committed.
-2. Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{e'=(p',m')} X'$. So assuming the contradiction above a simple induction of all $C \rightsquigarrow C'$ shoes that there must exist two adjacent configurations $Y,Y'$ such that:
+1. The contradiction of the statement of Lemma 1 is that: for each $C'$ such that  $C \rightsquigarrow C'$ let  $C' \xrightarrow{e=(p,m)} C''$, then either $C''$ is 1-committed or $C''$ is 0-committed ($C''$ is not uncommitted).
+2. Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{e'=(p',m')} X'$ and $e'$ is a mending message in $X$. So assuming the contradiction above, a simple induction of all $C \rightsquigarrow C'$ shows that there must exist two adjacent configurations $Y,Y'$ such that:
     1. $C \rightsquigarrow Y \xrightarrow{e=(p,m)} Z$ and Z is 1-committed.
-    2. $C \rightsquigarrow Y' \xrightarrow{e=(p,m)} Z$ and Z' is 0-committed.
+    2. $C \rightsquigarrow Y' \xrightarrow{e=(p,m)} Z'$ and Z' is 0-committed.
 3. Let $Y,Y'$ be these two adjacent configurations. There are two cases to consider:
 
     3.1. If $p \neq p'$: this is the trivial case. It implies that processing $e$ and then $e'$ will lead to a different outcome than processing $e'$ and only then $e$. But since $e,e'$ reach different parties there is no way to distinguish these two wordls.
