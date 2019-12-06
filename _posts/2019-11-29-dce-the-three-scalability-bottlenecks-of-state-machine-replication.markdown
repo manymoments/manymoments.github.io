@@ -101,7 +101,7 @@ Instead of using games and fraud proofs to verify execution it is possible to le
 This is the approach taken in Buterin's [zk-roll-up](https://ethresear.ch/t/on-chain-scaling-to-potentially-500-tx-sec-through-mass-tx-validation/3477). See Ben-Sasson's [podcast](https://www.youtube.com/watch?v=JI3-z4PbmXA) and Buterin's
 [video](https://www.youtube.com/watch?v=mOm47gBMfg8) for a way to add privacy to the succinct proofs.
 
-Using a succinct proof has a huge advantage: once the proof is created, the cost of verification is very low. The disadvantage is that creating the proof of execution of the commands is often significantly more expensive than just executing the commands. Another disadvantage is that these protocols add non-trivial complexity and some require non-trivial trusted setup ceremonies.
+Using a succinct proof has a huge advantage: once the proof is created, the cost of verification is very low. The disadvantage is that creating the proof of execution of the commands is often significantly more expensive than just executing the commands. Another disadvantage is that these protocols add non-trivial complexity and some require non-trivial [trusted setup](https://medium.com/qed-it/diving-into-the-snarks-setup-phase-b7660242a0d7) ceremonies.
 
 
 Please leave comments on [Twitter](...a)
