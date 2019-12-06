@@ -1,6 +1,6 @@
 ---
 title: Consensus Lower Bounds via Uncommitted Configurations
-date: 2019-12-04 09:05:00 -08:00
+date: 2019-12-07 09:05:00 -08:00
 published: false
 tags:
 - dist101
@@ -24,7 +24,7 @@ This is a three post series:
 
 2. In the *second* post we use the approach of [Aguilera and Toueg 1999](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) to show that any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds. The proof will use the models, definitions and the Initial Uncommitted Lemma of this post.
 
-3. In the third post we show the celebrated [Fischer, Lynch, and Patterson 1985](https://lamport.azurewebsites.net/pubs/trans.pdf) result that any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution. The proof will use the same models, definitions and the Initial Lemma of this post.
+3. In the *third* post we show the celebrated [Fischer, Lynch, and Patterson 1985](https://lamport.azurewebsites.net/pubs/trans.pdf) result that any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution. The proof will use the same models, definitions and the Initial Lemma of this post.
 
 
 
