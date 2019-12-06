@@ -1,13 +1,12 @@
 ---
-title: 'The FLP Impossibility, Asynchronous Consensus Lower Bound via Uncommitted Configurations'
-date: 2019-12-4 09:05:00 -08:00
+title: The FLP Impossibility, Asynchronous Consensus Lower Bound via Uncommitted Configurations
+date: 2019-12-04 09:05:00 -08:00
 published: false
 tags:
 - dist101
 - lowerbound
 author: Ittai Abraham
 ---
-
 
 In this third post we will conclude with the celebrated FLP impossibility result which is considered the fundamental lower bound for consensus in the asynchronous model.
 
