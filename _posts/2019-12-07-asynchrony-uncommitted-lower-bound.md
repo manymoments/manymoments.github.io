@@ -63,7 +63,7 @@ The proof of **Lemma 2** follows this pattern exactly:
 
 This completes the proof of Lemma 2, and that completes the proof of the FLP Theorem.
 
-####discussion
+####Discussion
 
 We started from an uncommitted configuration (Lemma 1) and then showed that we can extend this infinitely many times and do this while eventually delivering every pending message   (Lemma 2).
 
