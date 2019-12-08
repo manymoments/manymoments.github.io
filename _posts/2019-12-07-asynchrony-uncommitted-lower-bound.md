@@ -10,7 +10,7 @@ author: Ittai Abraham
 
 In this third post we conclude with the celebrated FLP impossibility result which is considered the fundamental lower bound for consensus in the asynchronous model.
 
-**[Theorem 1](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf)**: any protocol solving consensus in the *asynchronous* model that is resilient to even just one crash failure must have an infinite execution.
+**[Theorem 1](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf)**: any protocol $\mathcal{P}$ solving consensus in the *asynchronous* model that is resilient to even just one crash failure must have an infinite execution.
 
 
 
@@ -27,7 +27,7 @@ To prove the theorem we will prove the following Technical Lemma:
 
 **Lemma 2: Uncommitted Configurations Can Always be Extended ([Lemma 3 of FLP85](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf))**: If $C$ is an uncommitted configuration and $e=(p,m)$ is any pending message then there exists some $C \rightsquigarrow C' \xrightarrow{e=(p,m)} C''$ such that $C''$ is uncommitted.
 
-**From Lemma 2 to Theorem 1**: by repeating Lemma 2 infinity, clearly the sequence is uncommitted. For fairness, Lemma 2 should be applied to the pending messages in a FIFO order.
+**Proof of Theorem 1 from Lemma 1 and Lemma 2**: Start with Lemma 1 to begin with an uncommitted configuration. Repeat Lemma 2 infinitely often, each time apply it to the pending messages in a FIFO order. Clearly the sequence is uncommitted. For fairness, a message that has $|M|$ pending messages before it will be derived after at most $|M|+1$ applications of Lemma 2.
 
 
 
@@ -39,7 +39,7 @@ Recall the **proof pattern** for showing the existence of an uncommitted configu
 
 
 The proof of **Lemma 2** follows this pattern exactly:
-1. The contradiction of the statement of Lemma 2 is that: for each $C'$ such that  $C \rightsquigarrow C'$ let  $C' \xrightarrow{e=(p,m)} C''$, then either $C''$ is 1-committed or $C''$ is 0-committed ($C''$ is not uncommitted).
+1. The contradiction of the statement of Lemma 2 is that: for all $C'$, such that  $C \rightsquigarrow C'$, let  $C' \xrightarrow{e=(p,m)} C''$, then either $C''$ is 1-committed or $C''$ is 0-committed ($C''$ is not uncommitted).
 2. Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{e'=(p',m')} X'$ and $e'$ is a pending message in $X$. Assuming the contradiction above, a simple induction on all $C \rightsquigarrow C'$ shows that there must exist two adjacent configurations $Y \xrightarrow{e'} Y'$ and a pending message $e'=(p',m')$ in $Y$ such that:
     1. $C \rightsquigarrow Y \xrightarrow{e} Z$ and Z is 1-committed.
     2. $C \rightsquigarrow Y \xrightarrow{e'} Y' \xrightarrow{e} Z'$ and Z' is 0-committed.
