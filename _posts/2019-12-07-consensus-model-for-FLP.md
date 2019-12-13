@@ -96,7 +96,7 @@ This proves that any protocol $\mathcal{P}$ must have some initial uncommitted c
 
 
 **Proof by example for n=3**:
-Consider the 4 initial configurations $(1,1,1), (0,1,1),(0,0,1),(0,0,0)$. By validity, configuration $(1,1,1)$ must be 1-committed and configuration $(0,0,0)$ must be 0-committed. Seeking a contradiction, lets assume none of the 4 iniital configurations is uncommitted. So both $(0,1,1)$ and $(0,0,1)$ are committed. So all 4 initial configurations are committed, assume w.l.o.g. that $(0,1,1)$ is 1-committed and $(0,0,1)$ is 0-committed. But now imagine that party 2 crashes immediately in both configurations. So both configurations look like $(1,CRASH,0)$. So both must decide the same, but this is a contradiction because one is 1-committed and the other is 0-committed.  
+Consider the 4 initial configurations $(1,1,1), (0,1,1),(0,0,1),(0,0,0)$. By validity, configuration $(1,1,1)$ must be 1-committed and configuration $(0,0,0)$ must be 0-committed. Seeking a contradiction, lets assume none of the 4 initial configurations is uncommitted. So both $(0,1,1)$ and $(0,0,1)$ are committed. Since all 4 initial configurations are committed there must be two adjacent configurations that are committed to different values. W.l.o.g. assume that $(0,1,1)$ is 1-committed and $(0,0,1)$ is 0-committed. Now suppose that in both configurations, party 2 crashes right at the start of the protocol. Clearly both configurations look like $(1,CRASH,0)$. So both worlds must decide the same, but this is a contradiction because one is 1-committed and the other is 0-committed.  
 
 **Acknowledgment.** We would like to thank Kartik for helpful feedback on this post.
 
