@@ -9,8 +9,8 @@ author: Ittai Abraham
 ---
 
 In this series of three posts, we discuss two of the most important consensus lower bounds:
-1. [Lamport, Fischer 1982](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf): any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds.
-2. [Fischer, Lynch, and Patterson 1983, 1985](https://lamport.azurewebsites.net/pubs/trans.pdf) any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution.
+1. [Lamport, Fischer \[1982\]](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf): any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds.
+2. [Fischer, Lynch, and Patterson \[1983, 1985\]](https://lamport.azurewebsites.net/pubs/trans.pdf): any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution.
 
 The modern interpretation of these lower bounds:
 * **Bad news**: Without using randomness: asynchronous consensus is *impossible*, and synchronous consensus is *slow*.
