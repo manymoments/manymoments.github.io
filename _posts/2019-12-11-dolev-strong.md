@@ -4,7 +4,7 @@ date: 2019-12-11 09:05:00 -08:00
 published: false
 tags:
 - dist101
-author:
+author: 
 ---
 
 In this post to show a classic result on Authenticated Broadcast against a Byzantine adversary:
