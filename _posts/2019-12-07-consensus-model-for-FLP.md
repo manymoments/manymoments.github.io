@@ -14,7 +14,7 @@ In this series of three posts, we discuss two of the most important consensus lo
 
 The modern interpretation of these lower bounds is the following:
 * **Bad news**: Without using randomness, asynchronous consensus is *impossible*, and synchronous consensus is *slow*.
-* **Good news**: With randomization, consensus (both in synchrony and in asynchrony) is possible in a *constant expected number of rounds*. Randomness does not circumvent the lower bounds; it just reduces the probability of bad events implied by the lower bounds. In synchrony, the probability of slow executions can be made exponentially small. In asynchrony, the infinite execution can be made to [almost surely](https://en.wikipedia.org/wiki/Almost_surely) not happen (will happen with probability $0$).
+* **Good news**: With randomization, consensus (both in synchrony and in asynchrony) is possible in a *constant expected number of rounds*. Randomness does not circumvent the lower bounds; it just reduces the probability of bad events implied by the lower bounds. In synchrony, the probability of slow executions can be made exponentially small. In asynchrony, termination happens  [almost surely](https://en.wikipedia.org/wiki/Almost_surely). Formally, the *probability measure* of the complement of the event of terminating in some finite number of rounds is zero. 
 
 
 ### The plan
