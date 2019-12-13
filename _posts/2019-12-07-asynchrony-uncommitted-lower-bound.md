@@ -14,10 +14,10 @@ In this third post we conclude with the celebrated FLP impossibility result whic
 
 
 
-This post assumes you are familiar with the [definitions of the first post](...) and with the Initial Uncommitted Lemma we proved in the first post:
+This post assumes you are familiar with the [definitions of the first post](...) and with the Initial Lemma we proved in the first post:
 
 
-**Lemma 1: Initial Uncommitted (Lemma 2 of FLP85)**: $\mathcal{P}$ has an initial uncommitted configuration.
+**Lemma 1: Initial Lemma (Lemma 2 of FLP85)**: $\mathcal{P}$ has an initial uncommitted configuration.
 
 Recall that given a configuration $C$ there is a set $M$ of pending messages. These are messages that have been sent but not delivered yet. For $e \in M$ we write $e=(p,m)$ to denote that party $p$ has been sent a message $m$. Given an initial uncommitted configuration our goal will be to build an infinite execution such that:
 1. The sequence is uncommitted: every configuration of the infinite execution is uncommitted.
