@@ -39,7 +39,7 @@ We say that a protocol $\mathcal{P}$ solves *agreement against $t$ crash failure
 
 
 
-Given, $\mathcal{P}$, a *Configuration* of a system is just the state of all the parties and the set of all pending, undelivered messages. The following definitions are crucial:
+Given, $\mathcal{P}$, a *configuration* of a system is just the state of all the parties and the set of all pending, undelivered messages. The following definitions are crucial:
 
 1. We write **$C \rightarrow C'$**: If in configuration $C$ there is an undelivered message $e$ (or all undelivered messages $E$ in the synchronous model) such that configuration $C$ changes to configuration $C'$ by delivering $e$ (or delivering all $E$ in the synchronous model).
 2. We write **$C \rightsquigarrow C'$**: If there exists a sequence $C = C_1 \rightarrow C_2 \rightarrow \dots \rightarrow C_k=C'$ ($\rightsquigarrow$ is the [transitive closure](https://en.wikipedia.org/wiki/Transitive_closure) of $\rightarrow$).
