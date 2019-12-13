@@ -12,9 +12,9 @@ In this series of three posts, we discuss two of the most important consensus lo
 1. [Lamport, Fischer \[1982\]](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf): any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds.
 2. [Fischer, Lynch, and Patterson \[1983, 1985\]](https://lamport.azurewebsites.net/pubs/trans.pdf): any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution.
 
-The modern interpretation of these lower bounds:
+The modern interpretation of these lower bounds is the following:
 * **Bad news**: Without using randomness: asynchronous consensus is *impossible*, and synchronous consensus is *slow*.
-*  **Good news**: with randomization, consensus (both in synchrony and in asynchrony) is possible in a *constant expected number of rounds*. Randomness does not circumvent the lower bounds; it just reduces the probability of bad events implied by the lower bounds. In synchrony, the probability of slow executions can be made exponentially small. In asynchrony, the infinite execution can be made to [almost surely](https://en.wikipedia.org/wiki/Almost_surely) not happen (will happen with probability $0$).
+* **Good news**: with randomization, consensus (both in synchrony and in asynchrony) is possible in a *constant expected number of rounds*. Randomness does not circumvent the lower bounds; it just reduces the probability of bad events implied by the lower bounds. In synchrony, the probability of slow executions can be made exponentially small. In asynchrony, the infinite execution can be made to [almost surely](https://en.wikipedia.org/wiki/Almost_surely) not happen (will happen with probability $0$).
 
 
 ### The plan
