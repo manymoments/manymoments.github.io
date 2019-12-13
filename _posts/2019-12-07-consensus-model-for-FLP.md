@@ -8,23 +8,23 @@ tags:
 author: Ittai Abraham
 ---
 
-In this series of three posts we discusses two of the most important consensus lower bounds:
+In this series of three posts, we discuss two of the most important consensus lower bounds:
 1. [Lamport, Fischer 1982](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf): any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds.
 2. [Fischer, Lynch, and Patterson 1983, 1985](https://lamport.azurewebsites.net/pubs/trans.pdf) any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution.
 
 The modern interpretation of these lower bounds:
-* **Bad news**: Without using randomness: asynchronous consensus is *impossible* and synchronous consensus is *slow*.
-*  **Good news**: with randomization, consensus (both in synchrony and in asynchrony) is possible in a *constant expected number of rounds*. Randomness does not circumvent the lower bounds, it just reduces the probability of bad events implied by the lower bounds. In synchrony, the probability of slow executions can be made exponentially small. In asynchrony, the infinite execution can be made to [almost surely](https://en.wikipedia.org/wiki/Almost_surely) not happen (will happen with probability $0$).
+* **Bad news**: Without using randomness: asynchronous consensus is *impossible*, and synchronous consensus is *slow*.
+*  **Good news**: with randomization, consensus (both in synchrony and in asynchrony) is possible in a *constant expected number of rounds*. Randomness does not circumvent the lower bounds; it just reduces the probability of bad events implied by the lower bounds. In synchrony, the probability of slow executions can be made exponentially small. In asynchrony, the infinite execution can be made to [almost surely](https://en.wikipedia.org/wiki/Almost_surely) not happen (will happen with probability $0$).
 
 
 ### The plan
 
 This is a series of three posts:
-1. In this *first* post we provide important definitions and prove the  *Initial Uncommitted Lemma*. This lemma shows that any consensus protocol has some initial input that gives that adversary control over the decision value. This lemma will be used in both lower bounds.
+1. In this *first* post, we provide important definitions and prove the  *Initial Uncommitted Lemma*. This lemma shows that any consensus protocol has some initial input that gives that adversary control over the decision value. This lemma will be used in both lower bounds.
 
-2. In the *second* post we use the approach of [Aguilera and Toueg 1999](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) to show that any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds. The proof uses the definitions and the lemma in this post.
+2. In the *second* post, we use the approach of [Aguilera and Toueg 1999](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) to show that any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds. The proof uses the definitions and the lemma in this post.
 
-3. In the *third* post we show the celebrated [Fischer, Lynch, and Patterson 1985](https://lamport.azurewebsites.net/pubs/trans.pdf) result that any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution. The proof uses the same definitions and the lemma in this post.
+3. In the *third* post, we show the celebrated [Fischer, Lynch, and Patterson 1985](https://lamport.azurewebsites.net/pubs/trans.pdf) result that any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution. The proof uses the same definitions and the lemma in this post.
 
 
 
@@ -35,7 +35,7 @@ We assume $n$ parties. Each party is a state machine that has some *initial inpu
 We say that a protocol $\mathcal{P}$ solves *agreement against $t$ crash failures* if in any execution with at most $t$ crash failures:
 1. **Termination**: all non-faulty parties eventually decide.
 2. **Agreement**: all non-faulty parties decide on the same value.
-3. **Validity**: if all non-faulty parties have the same input value then this is the decision value.
+3. **Validity**: if all non-faulty parties have the same input value, then this is the decision value.
 
 
 
@@ -51,7 +51,7 @@ Given, $\mathcal{P}$, a *Configuration* of a system is just the state of all the
 The magic moment of any consensus protocol is when a protocol reaches a committed configuration. Note that this event happens much before any party can actually decide!
 
 
-We choose to use new names to these definitions which we feel provide a more intuitive and modern viewpoint. The classical names are *bivalent* for uncommitted and *univalent* for committed.
+We choose to use new names to these definitions, which we feel provide a more intuitive and modern viewpoint. The classical names are *bivalent* for uncommitted and *univalent* for committed.
 
 
 
@@ -60,18 +60,18 @@ We choose to use new names to these definitions which we feel provide a more int
 
 With the new definitions, one way to state the validity property is: if all non-faulty parties have the same input $b$ then that initial configuration must be $b$-committed.
 
-So perhaps all initial configurations are committed? The following lemma shows that this is not the case: every protocol that can tolerate even one crash failure must have some  initial  configuration that is *uncommitted*.
+So perhaps all initial configurations are committed? The following lemma shows that this is not the case: every protocol that can tolerate even one crash failure must have some initial configuration that is *uncommitted*.
 
-**Initial Uncommitted Lemma ([Lemma 2 of FLP85](https://lamport.azurewebsites.net/pubs/trans.pdf))**: If $\mathcal{P}$ solves agreement agains at least one crash failure then $\mathcal{P}$ has an initial *uncommitted* configuration.
+**Initial Uncommitted Lemma ([Lemma 2 of FLP85](https://lamport.azurewebsites.net/pubs/trans.pdf))**: If $\mathcal{P}$ solves agreement against at least one crash failure, then $\mathcal{P}$ has an initial *uncommitted* configuration.
 
 A recurring  **proof pattern** for showing the existence of an uncommitted configuration will appear many times in these three posts. We start by stating it in an abstract manner:
 1. Proof by *contradiction*: assume all configurations are either 1-committed or 0-committed.
 2. Define some notion of adjacency. Find *two adjacent* configurations $C$ and $C'$ such that $C$ is 1-committed and $C'$ is 0-committed.
-3. Reach a contradiction due to an indistinguishability argument between the two adjacent configuration $C$ and $C'$. The adjacency allows  the adversary to cause indistinguishability via *crashing of just one* party.
+3. Reach a contradiction due to an indistinguishability argument between the two adjacent configuration $C$ and $C'$. The adjacency allows the adversary to cause indistinguishability via *crashing of just one* party.
 
 The **proof** of the Initial Uncommitted Lemma fits this pattern perfectly:
 1. Assume all initial configurations are either 1-committed or 0-committed.
-2. Define two initial configuration as *$i$-adjacent* if the initial value of all parties other than party $i$ are the same. Consider the sequence of adjacent initial configurations: $(1,\dots,1),(0,1,\dots,1),(0,0,1\dots,1),\dots,(0,\dots,0)$. Clearly, the leftmost is 1-committed and the rightmost is 0-committed. Obviously, there must be some party $i$ such that the two $i$-adjacent configurations $C,C'$ are 0-committed and 1-committed.
-3. Now consider in both worlds $C$ and $C'$ the case where party $i$ immediately crashes. These two worlds are indistinguishable for all non-faulty parties which therefore must decided the same value. This is a contradiction.
+2. Define two initial configurations as *$i$-adjacent* if the initial value of all parties other than party $i$ are the same. Consider the sequence of adjacent initial configurations: $(1,\dots,1),(0,1,\dots,1),(0,0,1\dots,1),\dots,(0,\dots,0)$. Clearly, the leftmost is 1-committed and the rightmost is 0-committed. Obviously, there must be some party $i$ such that the two $i$-adjacent configurations $C,C'$ are 0-committed and 1-committed.
+3. Now consider in both worlds $C$ and $C'$ the case where party $i$ immediately crashes. These two worlds are indistinguishable for all non-faulty parties, which, therefore, must decide the same value. This is a contradiction.
 
-So we have shown that any protocol $\mathcal{P}$ must have some initial uncommitted  configuration. The next two posts will use the existence of this uncommitted configuration and extend it to more rounds!
+So we have shown that any protocol $\mathcal{P}$ must have some initial uncommitted configuration. The next two posts will use the existence of this uncommitted configuration and extend it to more rounds!
