@@ -50,7 +50,7 @@ So we reached round $t-1$ with an uncommitted configuration. Can we decide in on
 **Lemma 3: Round $t$ Cannot Always Decide ([Lemma 1 of AT99](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf))**: If $\mathcal{P}$ has an execution that crashes at most one party every round and leads to an uncommitted configuration in the end of round $t-1$, then in that execution $\mathcal{P}$ cannot always commit by the end of round $t$.
 
 
-The **proof** is a trivial variation of the the **proof pattern** that looks at deciding configurations instead of committed configurations.
+**Proof of Lemma 3** is a trivial variation of the the **proof pattern** that looks at deciding configurations instead of committed configurations.
 
 1. Assume that $\mathcal{P}$ always decides after $t$ rounds. So all $C_{t-1} \rightarrow C$ are either 0-deciding or 1-deciding.
 
