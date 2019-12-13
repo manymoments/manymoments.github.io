@@ -14,24 +14,23 @@ In this series of three posts we discusses two of the most important consensus l
 
 The modern interpretation of these lower bounds:
 * **Bad news**: Without using randomness: asynchronous consensus is *impossible* and synchronous consensus is *slow*.
-*  **Good news**: with randomization, consensus (both in synchrony and in asynchrony) is possible in a *constant expected number of rounds*. Randomness does not circumvent the lower bounds, it just reduces the probability of bad events implied by the lower bounds. In synchrony, the probability of slow executions can be made exponentially small. In asynchrony, the infinite execution can be made to [almost surly](https://en.wikipedia.org/wiki/Almost_surely) not happen (will happen with probability $0$).
+*  **Good news**: with randomization, consensus (both in synchrony and in asynchrony) is possible in a *constant expected number of rounds*. Randomness does not circumvent the lower bounds, it just reduces the probability of bad events implied by the lower bounds. In synchrony, the probability of slow executions can be made exponentially small. In asynchrony, the infinite execution can be made to [almost surely](https://en.wikipedia.org/wiki/Almost_surely) not happen (will happen with probability $0$).
 
 
 ### The plan
 
 This is a series of three posts:
-1. In this *first* post we provide important definitions and prove the  *Initial Uncommitted Lemma*. This Lemma shows that any consensus protocol has some initial input that gives that adversary control over the decision value. This Lemma will be used in both lower bounds.
+1. In this *first* post we provide important definitions and prove the  *Initial Uncommitted Lemma*. This lemma shows that any consensus protocol has some initial input that gives that adversary control over the decision value. This lemma will be used in both lower bounds.
 
-2. In the *second* post we use the approach of [Aguilera and Toueg 1999](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) to show that any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds. The proof uses the definitions and the Lemma of this post.
+2. In the *second* post we use the approach of [Aguilera and Toueg 1999](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) to show that any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds. The proof uses the definitions and the lemma in this post.
 
-3. In the *third* post we show the celebrated [Fischer, Lynch, and Patterson 1985](https://lamport.azurewebsites.net/pubs/trans.pdf) result that any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution. The proof uses the same definitions and the same Lemma of this post.
+3. In the *third* post we show the celebrated [Fischer, Lynch, and Patterson 1985](https://lamport.azurewebsites.net/pubs/trans.pdf) result that any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution. The proof uses the same definitions and the lemma in this post.
 
 
 
 
 ### Definitions
-We assume $n$ parties. Each party is a  state machine that has some *initial input* $\in \{0,1\}$. The state machine has a special *decide*
- action that irrevocably sets its *decision* $\in \{0,1\}$.
+We assume $n$ parties. Each party is a state machine that has some *initial input* $\in \{0,1\}$. The state machine has a special *decide* action that irrevocably sets its *decision* $\in \{0,1\}$.
 
 We say that a protocol $\mathcal{P}$ solves *agreement against $t$ crash failures* if in any execution with at most $t$ crash failures:
 1. **Termination**: all non-faulty parties eventually decide.
