@@ -11,33 +11,24 @@ In this post, we show a classic result on authenticated broadcast against a Byza
 
 **Theorem ([Dolev Strong \[1983\]](https://www.cse.huji.ac.il/~dolev/pubs/authenticated.pdf)):** *there exists an authenticated protocol for solving [broadcast](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/), against any adversary controlling $t<n$ out of $n$ parties, in $t+1$ rounds, using $O(nt^2)$ words*
 
-Lets assume there are $n$ parties, and party $i$ is allows to sign a message $m$ as $sign(m,1)$. Any party can verify this signature is valid and no party $j \neq i$ can forge such a signature.
+Messages in the protocol are signature chains and have the form $(v, p_1, \sigma_{p_1}, p_2, \sigma_{p_2}, \ldots, p_j, \sigma_{p_j})$. This means that the original message is $v$. It was signed by $p_1$ and the resulting signature is $\sigma_{p_1}$. The message $(v, p_1, \sigma_{p_1})$ was signed by $p_2$ and the resulting signature is $\sigma_{p_2}$. And so on.
 
-We now define the notion of a *k-signature chain* recursively:
-
-A *1-signature chain* on $v$ is a pair $(v, sign(v,1))$. For $k>1$, a *k-signature chain* on $v$ is a pair $(m, sign (m,j))$ where $m$ is a $(k-1)$-signature chain on $v$ that *does not* contain a signature from $j$.
-
+A message received by party $p_i$ in round $j$ is said to be valid if
+- The first signer of the signature chain is the designated dealer
+- All signers are distinct
+- $p_i$ is not in the signature chain
+- All signatures are valid
+- The signature chain has length $j$
 
 
 The protocol:
 ```
-// Leader (Party 1) with input v
 
-Round 1: send <v, sign(v,1)> to all
+Round 1: The dealer $p_1$ signs $v$ and sends (v, $p_1$, \sigma_{p_1}) to all parties
+
+Round $j \in \[2, n-1\]$: When a party $p_i$ receives a round $j-1$ valid message $(v, p_1, \sigma_{p_1}, p_2, \sigma_{p_2}, \ldots, p_{j-1}, \sigma_{p_{j-1}})$ at the end of round $j-1$, it signs this message and sends $(v, p_1, \sigma_{p_1}, p_2, \sigma_{p_2}, \ldots, p_{j-1}, \sigma_{p_{j-1}}, p_{j}, \sigma_{p_{j}})$ it to all parties.
 ```
-
-Party $i$ does the following:
-```
-// Party i
-
-For a message m arriving at round j:
-  if party i has sent less than two messages; and
-    if m is a valid (j-1)-signature chain on $v$ that does not contain a signature from i, then
-      send <m,sign(m,i)> to all
-```
-
-
-
+----------------
 ```
 // Party i decision rule
 
