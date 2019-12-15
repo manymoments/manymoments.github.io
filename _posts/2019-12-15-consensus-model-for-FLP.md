@@ -99,4 +99,4 @@ Consider the 4 initial configurations $(1,1,1), (0,1,1),(0,0,1),(0,0,0)$. By val
 **Acknowledgment.** We would like to thank Kartik for helpful feedback on this post.
 
 
-Please leave comments on [Twitter](...)
+Please leave comments on [Twitter]https://twitter.com/ittaia/status/1206296071154159617?s=20)

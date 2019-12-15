@@ -19,7 +19,7 @@ In this second post, we show the fundamental lower bound on the number of rounds
 We use the proof approach of [Aguilera and Toueg](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) that is based on uncommitted (bivalent) configurations.
 
 
-This post assumes you are familiar with the [definitions in the previous post](...) and with  Lemma 1 that we proved in the previous post:
+This post assumes you are familiar with the [definitions in the previous post](https://decentralizedthoughts.github.io/2019-12-15-consensus-model-for-FLP/) and with  Lemma 1 that we proved in the previous post:
 
 
 **Lemma 1: ([Lemma 2 of FLP85](https://lamport.azurewebsites.net/pubs/trans.pdf))**: $\mathcal{P}$ has an initial uncommitted configuration.
@@ -78,4 +78,4 @@ In the next post, we will show that the same proof approach can be used to show 
 **Acknowledgment.** We would like to thank Kartik for helpful feedback on this post.
 
 
-Please leave comments on [Twitter](...)
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1206297946045767680?s=20)
