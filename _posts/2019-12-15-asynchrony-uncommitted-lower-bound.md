@@ -17,7 +17,7 @@ In this third post, we conclude with the celebrated Fischer, Lynch, and Paterson
 
 
 
-This post assumes you are familiar with the [definitions of the first post](...) and with Lemma 1 that we proved in the first post:
+This post assumes you are familiar with the [definitions of the first post](https://decentralizedthoughts.github.io/2019-12-15-consensus-model-for-FLP/) and with Lemma 1 that we proved in the first post:
 
 
 **Lemma 1: (Lemma 2 of FLP85)**: $\mathcal{P}$ has an initial uncommitted configuration.
@@ -75,4 +75,4 @@ This proof is non-constructive; it shows that an infinite execution must exist. 
 **Acknowledgment.** We would like to thank Kartik for helpful feedback on this post.
 
 
-Please leave comments on [Twitter](...)
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1206298743823355905?s=20)
