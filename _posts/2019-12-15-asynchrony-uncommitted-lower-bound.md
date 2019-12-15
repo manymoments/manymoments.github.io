@@ -32,7 +32,8 @@ To prove the theorem we will prove the following Technical Lemma:
 
 #### Proof of Theorem 1 from Lemma 1 and Lemma 2:
 
-Start with Lemma 1, to begin with, an uncommitted configuration. Repeat Lemma 2 infinitely often; each time apply it to the pending messages in a FIFO order. Clearly, from Lemma 2, the sequence is uncommitted. For fairness, due to FIFO, a message $e$ that has $|M|$ pending messages before it will be derived after at most *|M|+1* applications of Lemma 2.
+Start with Lemma 1, to begin with, an uncommitted configuration. Repeat Lemma 2 infinitely often; each time apply it to the pending messages in a FIFO order. Clearly, from Lemma 2, the sequence is uncommitted. For fairness, due to FIFO, a message *e* that has *|M|* pending messages before it will be derived after at most *|M|+1* applications of Lemma 2.
+
 
 #### Proof of Lemma 2:
 
