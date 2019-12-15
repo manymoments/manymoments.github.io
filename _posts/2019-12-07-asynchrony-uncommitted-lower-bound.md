@@ -34,7 +34,7 @@ To prove the theorem we will prove the following Technical Lemma:
 Recall the **proof pattern** for showing the existence of an uncommitted configuration:
 1. Proof by *contradiction*: assume all configurations are either 1-committed or 0-committed.
 2. Find a *local structure*: two adjacent configurations $C$ and $C'$ such that $C$ is 1-committed and $C_0$ is 0-committed.
-3. Reach a contradiction due to an indistinguishability argument between the two adjacent configurations, $C$ and $C'$ using the adversary ability to crash one party.
+3. Reach a contradiction due to an indistinguishability argument between the two adjacent configurations, $C$ and $C'$ using the adversary's ability to crash one party.
 
 
 
