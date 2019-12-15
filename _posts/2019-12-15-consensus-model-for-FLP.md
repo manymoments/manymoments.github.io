@@ -16,10 +16,9 @@ The modern interpretation of these lower bounds is the following:
 * **Good news**: With randomization, consensus (both in synchrony and in asynchrony) is possible in a *constant expected number of rounds*. Randomness does not circumvent the lower bounds; it just reduces the probability of bad events implied by the lower bounds. In synchrony, the probability of slow executions can be made exponentially small. In asynchrony, termination happens  [almost surely](https://en.wikipedia.org/wiki/Almost_surely). Formally, the *probability measure* of the complement of the event of terminating in some finite number of rounds is zero.
 
 
-### The plan
+### The plan: three posts
 
-This is a series of three posts:
-1. In this *first* post, we provide important definitions and prove the  *Initial Lemma*. This lemma shows that any consensus protocol has some initial input where the the adversary has control over the decision value (it can cause it to be either 0 or 1). This lemma will be used in both lower bounds.
+1. In this *first* post, we provide key *definitions* and prove an important *Lemma* about having some initial uncommitted configuration. This lemma shows that any consensus protocol has some initial input where the the adversary has control over the decision value (it can cause it to be either 0 or 1). This lemma will then be used in both lower bounds.
 
 2. In the *second* post, we use the approach of [Aguilera and Toueg \[1999\]](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) to show that any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds. The proof uses the definitions and the lemma in this post.
 
@@ -40,7 +39,7 @@ We say that a protocol $\mathcal{P}$ solves *agreement against $t$ crash failure
 
 Given, $\mathcal{P}$, a *configuration* of a system is just the state of all the parties and the set of all pending, undelivered messages.
 
-The goal of $\mathcal{P}$ is to reach a configuration where all non-faulty parties decide. The *magic moment* of any consensus protocol is when a protocol reaches a *committed configuration*. This is a configuration where no matter what the adversary does, the eventual decision value is already fixed. Note that the point when a configuration becomes committed is an ˛event that is only externally observable. There is no local indication of this event and this can happen much before any party can actually decide!
+The goal of $\mathcal{P}$ is to reach a configuration where all non-faulty parties decide. The *magic moment* of any consensus protocol is when a protocol reaches a *committed configuration*. This is a configuration where no matter what the adversary does, the eventual decision value is already *fixed*. Note that event of a system when its configuration becomes committed is an event that is only externally observable. There is no local indication of this event and this can happen much before any party can actually decide!
 
 
 We choose to use new names to these definitions, which we feel provide a more intuitive and modern viewpoint. The classical names are *bivalent configuration* for uncommitted configuration and *univalent configuration* for committed configuration.
@@ -79,14 +78,14 @@ With the new definitions, one way to state the validity property is: if all non-
 
 So perhaps all initial configurations are committed? The following lemma shows that this is not the case: every protocol that can tolerate even one crash failure must have some initial configuration that is *uncommitted*.
 
-**Initial Lemma ([Lemma 2 of FLP85](https://lamport.azurewebsites.net/pubs/trans.pdf))**: If $\mathcal{P}$ solves agreement against at least one crash failure, then $\mathcal{P}$ has an initial *uncommitted* configuration.
+**Lemma 1 ([Lemma 2 of FLP85](https://lamport.azurewebsites.net/pubs/trans.pdf))**: If $\mathcal{P}$ solves agreement against at least one crash failure, then $\mathcal{P}$ has an initial *uncommitted* configuration.
 
 A recurring  **proof pattern** for showing the existence of an uncommitted configuration will appear many times in these three posts. We start by stating it in an abstract manner:
 1. Proof by *contradiction*: assume all configurations are either 1-committed or 0-committed.
 2. Define some notion of adjacency. Find *two adjacent* configurations $C$ and $C'$ such that $C$ is 1-committed and $C'$ is 0-committed.
 3. Reach a contradiction due to an indistinguishability argument between the two adjacent configuration $C$ and $C'$. The adjacency allows the adversary to cause indistinguishability via *crashing of just one* party.
 
-**Proof of the Initial Lemma** fits this pattern perfectly:
+**Proof of the Lemma 1** fits this pattern perfectly:
 1. Seeking a contradiction, assume there is no initial configuration that is uncommitted. So all initial configurations are either 1-committed or 0-committed.
 2. Define two initial configurations as *$i$-adjacent* if the initial value of all parties other than party $i$ are the same. Consider the sequence (or path) of $n+1$ adjacent initial configurations: $(1,\dots,1),(0,1,\dots,1),(0,0,1\dots,1),\dots,(0,\dots,0)$. Clearly, the leftmost is 1-committed and the rightmost is 0-committed. Obviously, there must be some party $i$ such that the two $i$-adjacent configurations $C,C'$ are 0-committed and 1-committed, respectively.
 3. Now consider in both worlds $C$ and $C'$ the case where party $i$ crashes right at the start of the protocol. These two worlds are indistinguishable for all non-faulty parties, which, therefore, must decide the same value. This is a contradiction.
