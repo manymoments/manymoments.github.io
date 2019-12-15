@@ -65,8 +65,7 @@ So we reached round $t-1$ with an uncommitted configuration. Can we decide in on
 
 This concludes the proof of Lemma 3, which concludes the proof of Theorem 1.
 
-
-####Discussion
+#### Discussion
 
 The proof started with an initial uncommitted configuration (Lemma 1) and then showed that we could continue for $t-1$ rounds to reach an uncommitted configuration (Lemma 2) at round $t-1$. Finally, we used one more crash to show that we cannot always decide in $t$ rounds (Lemma 3). Note that the theorem is non-constructive, and all it shows is that a $t+1$ round execution must exist (but does not say it probability measure of this event).
 
