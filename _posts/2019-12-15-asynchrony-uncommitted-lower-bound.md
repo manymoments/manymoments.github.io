@@ -30,15 +30,16 @@ To prove the theorem we will prove the following Technical Lemma:
 
 **Lemma 2: Uncommitted Configurations Can Always be Extended ([Lemma 3 of FLP85](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf))**: If $C$ is an uncommitted configuration and $e=(p,m)$ is any pending message then there exists some $C \rightsquigarrow C' \xrightarrow{e=(p,m)} C''$ such that $C''$ is uncommitted.
 
-**Proof of Theorem 1 from Lemma 1 and Lemma 2**: Start with Lemma 1, to begin with, an uncommitted configuration. Repeat Lemma 2 infinitely often; each time apply it to the pending messages in a FIFO order. Clearly, from Lemma 2, the sequence is uncommitted. For fairness, due to FIFO, a message $e$ that has $|M|$ pending messages before it will be derived after at most *|M|+1* applications of Lemma 2.
+#### Proof of Theorem 1 from Lemma 1 and Lemma 2:
 
+Start with Lemma 1, to begin with, an uncommitted configuration. Repeat Lemma 2 infinitely often; each time apply it to the pending messages in a FIFO order. Clearly, from Lemma 2, the sequence is uncommitted. For fairness, due to FIFO, a message $e$ that has $|M|$ pending messages before it will be derived after at most *|M|+1* applications of Lemma 2.
 
+#### Proof of Lemma 2:
 
 Recall the **proof pattern** for showing the existence of an uncommitted configuration:
 1. Proof by *contradiction*: assume all configurations are either 1-committed or 0-committed.
 2. Find a *local structure*: two adjacent configurations $C$ and $C'$ such that $C$ is 1-committed and $C_0$ is 0-committed.
 3. Reach a contradiction due to an indistinguishability argument between the two adjacent configurations, $C$ and $C'$ using the adversary's ability to crash one party.
-
 
 
 **Proof of Lemma 2** follows this pattern exactly:
