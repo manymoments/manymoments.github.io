@@ -8,7 +8,7 @@ tags:
 author: Ittai Abraham
 ---
 
-In this third post we conclude with the celebrated Fischer, Lynch, and Paterson impossibility result which is the fundamental lower bound for consensus in the asynchronous model.
+In this third post, we conclude with the celebrated Fischer, Lynch, and Paterson impossibility result, which is the fundamental lower bound for consensus in the asynchronous model.
 
 **[Theorem 1](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf)**: any protocol $\mathcal{P}$ solving consensus in the *asynchronous* model that is resilient to even just one crash failure must have an infinite execution.
 
@@ -19,7 +19,7 @@ This post assumes you are familiar with the [definitions of the first post](...)
 
 **Lemma 1: Initial Lemma (Lemma 2 of FLP85)**: $\mathcal{P}$ has an initial uncommitted configuration.
 
-Recall that given a configuration $C$ there is a set $M$ of pending messages. These are messages that have been sent but not delivered yet. For $e \in M$ we write $e=(p,m)$ to denote that party $p$ has been sent a message $m$. Given an initial uncommitted configuration our goal will be to build an infinite execution such that:
+Recall that given a configuration $C$ there is a set $M$ of pending messages. These are messages that have been sent but not delivered yet. For $e \in M$ we write $e=(p,m)$ to denote that party $p$ has been sent a message $m$. Given an initial uncommitted configuration, our goal will be to build an infinite execution such that:
 1. The sequence is uncommitted: every configuration of the infinite execution is uncommitted.
 2. The sequence is fair: every message sent is eventually delivered.
 
@@ -27,14 +27,14 @@ To prove the theorem we will prove the following Technical Lemma:
 
 **Lemma 2: Uncommitted Configurations Can Always be Extended ([Lemma 3 of FLP85](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf))**: If $C$ is an uncommitted configuration and $e=(p,m)$ is any pending message then there exists some $C \rightsquigarrow C' \xrightarrow{e=(p,m)} C''$ such that $C''$ is uncommitted.
 
-**Proof of Theorem 1 from Lemma 1 and Lemma 2**: Start with Lemma 1 to begin with an uncommitted configuration. Repeat Lemma 2 infinitely often, each time apply it to the pending messages in a FIFO order. Clearly, from Lemma 2, the sequence is uncommitted. For fairness, due to FIFO, a message $e$ that has $|M|$ pending messages before it will be derived after at most $|M|+1$ applications of Lemma 2.
+**Proof of Theorem 1 from Lemma 1 and Lemma 2**: Start with Lemma 1, to begin with, an uncommitted configuration. Repeat Lemma 2 infinitely often; each time apply it to the pending messages in a FIFO order. Clearly, from Lemma 2, the sequence is uncommitted. For fairness, due to FIFO, a message $e$ that has $|M|$ pending messages before it will be derived after at most $|M|+1$ applications of Lemma 2.
 
 
 
 Recall the **proof pattern** for showing the existence of an uncommitted configuration:
 1. Proof by *contradiction*: assume all configurations are either 1-committed or 0-committed.
 2. Find a *local structure*: two adjacent configurations $C$ and $C'$ such that $C$ is 1-committed and $C_0$ is 0-committed.
-3. Reach a contradiction due to an indistinguishability argument between the two adjacent configurations $C$ and $C'$ using the adversary ability to crash one party.
+3. Reach a contradiction due to an indistinguishability argument between the two adjacent configurations, $C$ and $C'$ using the adversary ability to crash one party.
 
 
 
@@ -50,7 +50,7 @@ Recall the **proof pattern** for showing the existence of an uncommitted configu
     Formally $Y \xrightarrow{e=(p,m)} Z$ is 1-committed and so  $Y \xrightarrow{e=(p,m)} Z \xrightarrow{e'=(p',m')} Z''$ is  1-committed. But $Y \xrightarrow{e=(p,m)} Y' \xrightarrow{e=(p,m)} Z'$ is 0-committed. This is a contradiction because $Z''$ and $Z'$ have exactly the same configuration and pending messages.
 
 
-    3.2. If $p=p'$ then the committed value must change between the world where $p$ receives $m$ before it receives $m'$ relative to the world where $p$ receives $m'$ before it receives $m$! But what if $p$ crashes? These two worlds will be indistinguishable to the rest of the parties! Moreover $p$ does not need to crash, it can just be slow!
+    3.2. If $p=p'$, then the committed value must change between the world where $p$ receives $m$ before it receives $m'$ relative to the world where $p$ receives $m'$ before it receives $m$! But what if $p$ crashes? These two worlds will be indistinguishable to the rest of the parties! Moreover, $p$ does not need to crash; it can just be slow!
 
     Formally, consider some execution where party $p$ crashes at $Y$.  So there must be some $Y \stackrel{\sigma}{\rightsquigarrow} D$ where $D$ is a deciding configuration and $\sigma$ does not contain party $p$. But if party $p$ was just slow then $Y \stackrel{\sigma}{\rightsquigarrow} D \xrightarrow{e} D'$ must be a configuration where all parties other than $p$ have decided.
 
@@ -59,12 +59,12 @@ Recall the **proof pattern** for showing the existence of an uncommitted configu
 
     Since $Y \xrightarrow{e'} Y' \xrightarrow{e} Z'$ is 0-committed then  $Y \xrightarrow{e'} Y' \xrightarrow{e} Z' \stackrel{\sigma}{\rightsquigarrow} D''$ must be 0-committed.
 
-    For parties other than $p$, $D'$ and $D''$ are indistinguishable. This is contradiction.
+    For parties other than $p$, $D'$ and $D''$ are indistinguishable. This is a contradiction.
 
 This completes the proof of Lemma 2, and that completes the proof of the FLP Theorem.
 
 ####Discussion
 
-We started from an uncommitted configuration (Lemma 1) and then showed that we can extend this infinitely many times and do this while eventually delivering every pending message   (Lemma 2).
+We started from an uncommitted configuration (Lemma 1) and then showed that we could extend this infinitely many times and do this while eventually delivering every pending message   (Lemma 2).
 
-This proof is non-constructive, it shows that an infinite execution must exist. Using randomization, there are protocols that are *almost surly terminating* (the probability measure of terminating is one). In fact there exists protocols that terminate in an expected constant number of rounds. More on that in later posts.
+This proof is non-constructive; it shows that an infinite execution must exist. Using randomization, there are protocols that are *almost surely terminating* (the probability measure of terminating is one). In fact, there exist protocols that terminate in an expected constant number of rounds. More on that in later posts.
