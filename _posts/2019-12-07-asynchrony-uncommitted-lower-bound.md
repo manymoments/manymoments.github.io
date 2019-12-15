@@ -13,11 +13,15 @@ In this third post, we conclude with the celebrated Fischer, Lynch, and Paterson
 **[Theorem 1](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf)**: Any protocol $\mathcal{P}$ solving consensus in the *asynchronous* model that is resilient to even just one crash failure must have an infinite execution.
 
 
+* **Bad news**: Deterministic asynchronous  consensus is *impossible*.
+* **Good news**: With randomization, asynchronous consensus is possible in constant expected time. See [this paper](https://research.vmware.com/files/attachments/0/0/0/0/0/7/8/practical_aba_2_.pdf) for a recent result. Note that randomization does not circumvent the  existence of a non-terminating execution, it just reduces the probability measure of this event to have [measure zero](https://en.wikipedia.org/wiki/Almost_surely).
 
-This post assumes you are familiar with the [definitions of the first post](...) and with the Initial Lemma we proved in the first post:
 
 
-**Lemma 1: Initial Lemma (Lemma 2 of FLP85)**: $\mathcal{P}$ has an initial uncommitted configuration.
+This post assumes you are familiar with the [definitions of the first post](...) and with Lemma 1 that we proved in the first post:
+
+
+**Lemma 1: (Lemma 2 of FLP85)**: $\mathcal{P}$ has an initial uncommitted configuration.
 
 Recall that given a configuration $C$ there is a set $M$ of pending messages. These are messages that have been sent but not delivered yet. For $e \in M$ we write $e=(p,m)$ to denote that party $p$ has been sent a message $m$. Given an initial uncommitted configuration, our goal will be to build an infinite execution such that:
 1. The sequence is uncommitted: every configuration of the infinite execution is uncommitted.
@@ -68,3 +72,8 @@ This completes the proof of Lemma 2, and that completes the proof of the FLP The
 We started from an uncommitted configuration (Lemma 1) and then showed that we could extend this infinitely many times and do this while eventually delivering every pending message   (Lemma 2).
 
 This proof is non-constructive; it shows that an infinite execution must exist. Using randomization, there are protocols that are *almost surely terminating* (the probability measure of terminating is one). In fact, there exist protocols that terminate in an expected constant number of rounds. More on that in later posts.
+
+**Acknowledgment.** We would like to thank Kartik for helpful feedback on this post.
+
+
+Please leave comments on [Twitter](...)

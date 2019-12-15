@@ -12,7 +12,13 @@ In this second post, we show the fundamental lower bound on the number of rounds
 
 **Theorem 1**: Any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds.
 
-We use the proof approach of [Aguilera and Toueg](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) that is based on uncommitted configurations.
+
+The modern interpretation of this theorem:
+* **Bad news**: Deterministic synchronous consensus is *slow*. Even for crash failures, it requires $O(n)$ rounds.
+* **Good news**: With randomization, synchronous consensus is possible in constant expected time. See [this post](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/) for a survey. Note that randomization does not circumvent the  existence of an execution that takes $t+1$ rounds, it just (exponentially) reduces the probability of this event.
+
+
+We use the proof approach of [Aguilera and Toueg](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) that is based on uncommitted (bivalent) configurations.
 
 
 This post assumes you are familiar with the [definitions in the previous post](...) and with the Initial Lemma we proved in the previous post:
@@ -30,7 +36,7 @@ Recall the **proof pattern** for showing the existence of an uncommitted configu
 3. Reach a contradiction due to an indistinguishability argument between the two adjacent configuration, $C$ and $C'$. The adjacency allows the adversary to cause indistinguishability via *crashing of just one* party.
 
 
-The **proof** of the round $(t-1)$ Uncommitted Lemma works by induction, each time showing an uncommitted configuration in round $0 \leq k \leq t-1$. The base case of $k=0$ follows from the  *Initial Lemma*. For the induction step,  assume we are at an uncommitted round $k$ configuration $C_k$ and show that there must exist a round $k+1$ uncommitted configuration $C_{k-1}$. Naturally we will use the recurring *proof pattern*:
+**Proof of the round $(t-1)$ Uncommitted Lemma**: By induction, each time showing an uncommitted configuration in round $0 \leq k \leq t-1$. The base case of $k=0$ follows from the  *Initial Lemma*. For the induction step,  assume we are at an uncommitted round $k$ configuration $C_k$ and show that there must exist a round $k+1$ uncommitted configuration $C_{k-1}$. Naturally we will use the recurring *proof pattern*:
 1. Assume all round $k+1$ configurations $C_k \rightarrow C$  are either 1-committed or 0-committed.
 2. Define two round-$k+1$ configuration $C,C'$ as *$j,i$-adjacent* if the only difference is that in $C$ party $j$ crashes right before sending to non-crashed party $i$ and in $C'$ party $j$ crashes right after sending to party $i$ (and $j$ is the only new crash happening in round $k+1$).
 
@@ -66,6 +72,12 @@ This concludes the proof of Lemma 3, which concludes the proof of Theorem 1.
 
 The proof started with an initial uncommitted configuration (Lemma 1) and then showed that we could continue for $t-1$ rounds to reach an uncommitted configuration (Lemma 2) at round $t-1$. Finally, we used one more crash to show that we cannot always decide in $t$ rounds (Lemma 3). Note that the theorem is non-constructive, and all it shows is that a $t+1$ round execution must exist (but does not say it probability measure of this event).
 
-A fascinating observation from this lower bound is that in order to create a long execution the adversary must corrupt just party every round. This fact is critical for some upper bounds and will be discussed in later posts.
+A fascinating observation from this lower bound is that in order to create a long execution the adversary must corrupt just one party every round. This fact is critical for some upper bounds and will be discussed in later posts.
 
 In the next post, we will show that the same proof approach can be used to show that in the *asynchronous* model, there must exist an *infinite* execution even for protocols that are resilient to just one crash failure.
+
+
+**Acknowledgment.** We would like to thank Kartik for helpful feedback on this post.
+
+
+Please leave comments on [Twitter](...)

@@ -1,6 +1,6 @@
 ---
 title: Consensus Lower Bounds via Uncommitted Configurations
-date: 2019-12-07 09:05:00 -08:00
+date: 2019-15-07 09:03:00 -08:00
 published: false
 tags:
 - dist101
