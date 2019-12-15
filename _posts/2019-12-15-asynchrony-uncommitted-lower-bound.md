@@ -68,8 +68,8 @@ Recall the **proof pattern** for showing the existence of an uncommitted configu
 
 This completes the proof of Lemma 2, and that completes the proof of the FLP Theorem.
 
-####Discussion
 
+**Discussion.**
 We started from an uncommitted configuration (Lemma 1) and then showed that we could extend this infinitely many times and do this while eventually delivering every pending message   (Lemma 2).
 
 This proof is non-constructive; it shows that an infinite execution must exist. Using randomization, there are protocols that are *almost surely terminating* (the probability measure of terminating is one). In fact, there exist protocols that terminate in an expected constant number of rounds. More on that in later posts.
