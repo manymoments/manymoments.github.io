@@ -10,7 +10,7 @@ author: Ittai Abraham
 
 In this third post, we conclude with the celebrated Fischer, Lynch, and Paterson impossibility result, which is the fundamental lower bound for consensus in the asynchronous model.
 
-**[Theorem 1](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf)**: any protocol $\mathcal{P}$ solving consensus in the *asynchronous* model that is resilient to even just one crash failure must have an infinite execution.
+**[Theorem 1](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf)**: Any protocol $\mathcal{P}$ solving consensus in the *asynchronous* model that is resilient to even just one crash failure must have an infinite execution.
 
 
 
