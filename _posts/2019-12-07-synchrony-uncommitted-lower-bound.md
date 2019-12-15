@@ -8,14 +8,14 @@ tags:
 author: Ittai Abraham
 ---
 
-In this second post, we show the fundamental lower bound on the number rounds for consensus protocols in the synchronous model.
+In this second post, we show the fundamental lower bound on the number of rounds for consensus protocols in the synchronous model.
 
 **Theorem 1**: Any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds.
 
 We use the proof approach of [Aguilera and Toueg](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) that is based on uncommitted configurations.
 
 
-This post assumes you are familiar with the [definitions of the previous post](...) and with the Initial Lemma we proved in the previous post:
+This post assumes you are familiar with the [definitions in the previous post](...) and with the Initial Lemma we proved in the previous post:
 
 
 **Lemma 1: Initial Lemma ([Lemma 2 of FLP85](https://lamport.azurewebsites.net/pubs/trans.pdf))**: $\mathcal{P}$ has an initial uncommitted configuration.
@@ -30,7 +30,7 @@ Recall the **proof pattern** for showing the existence of an uncommitted configu
 3. Reach a contradiction due to an indistinguishability argument between the two adjacent configuration, $C$ and $C'$. The adjacency allows the adversary to cause indistinguishability via *crashing of just one* party.
 
 
-The **proof** of the Round $(t-1)$ Uncommitted Lemma works by induction, each time showing an uncommitted configuration in round $0 \leq k \leq t-1$. The base case of $k=0$ follows from the  *Initial Lemma*. For the induction step,  assume we are at an uncommitted round $k$ configuration $C_k$ and show that there must exist a round $k+1$ uncommitted configuration $C_{k-1}$. Naturally we will use the recurring *proof pattern*:
+The **proof** of the round $(t-1)$ Uncommitted Lemma works by induction, each time showing an uncommitted configuration in round $0 \leq k \leq t-1$. The base case of $k=0$ follows from the  *Initial Lemma*. For the induction step,  assume we are at an uncommitted round $k$ configuration $C_k$ and show that there must exist a round $k+1$ uncommitted configuration $C_{k-1}$. Naturally we will use the recurring *proof pattern*:
 1. Assume all round $k+1$ configurations $C_k \rightarrow C$  are either 1-committed or 0-committed.
 2. Define two round-$k+1$ configuration $C,C'$ as *$j,i$-adjacent* if the only difference is that in $C$ party $j$ crashes right before sending to non-crashed party $i$ and in $C'$ party $j$ crashes right after sending to party $i$ (and $j$ is the only new crash happening in round $k+1$).
 
