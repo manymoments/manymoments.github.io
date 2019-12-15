@@ -7,7 +7,7 @@ tags:
 author: Ittai Abraham
 ---
 
-In this third post, we conclude with the celebrated Fischer, Lynch, and Paterson impossibility result from 1985. It is the fundamental lower bound for consensus in the asynchronous model.
+In this third post, we conclude with the celebrated Fischer, Lynch, and Paterson impossibility result from 1985. It is the fundamental lower bound for consensus in the [asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/).
 
 **[Theorem 1 (FLP85)](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf)**: Any protocol $\mathcal{P}$ solving consensus in the *asynchronous* model that is resilient to even just one crash failure must have an infinite execution.
 
@@ -22,13 +22,16 @@ This post assumes you are familiar with the [definitions of the first post](http
 
 **Lemma 1: (Lemma 2 of FLP85)**: $\mathcal{P}$ has an initial uncommitted configuration.
 
-Recall that given a configuration $C$ there is a set $M$ of pending messages. These are messages that have been sent but not delivered yet. For $e \in M$ we write $e=(p,m)$ to denote that party $p$ has been sent a message $m$. Given an initial uncommitted configuration, our goal will be to build an infinite execution such that:
+Recall that given a configuration $C$ there is a set $M$ of pending messages. These are messages that have been sent but not delivered yet. For $e \in M$ we write $e=(p,m)$ to denote that party $p$ has been sent a message $m$. Also recall that an [uncommitted configuration](https://decentralizedthoughts.github.io/2019-12-15-consensus-model-for-FLP/) is a configuration where no party can decide because the adversary can still change the decision value.
+
+
+Given an initial uncommitted configuration, our goal will be to build an infinite execution such that:
 1. The sequence is uncommitted: every configuration of the infinite execution is uncommitted.
 2. The sequence is fair: every message sent is eventually delivered.
 
-To prove the theorem we will prove the following Technical Lemma:
+To prove the theorem we will prove the following technical Lemma:
 
-**Lemma 2: Uncommitted Configurations Can Always be Extended ([Lemma 3 of FLP85](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf))**: If $C$ is an uncommitted configuration and $e=(p,m)$ is any pending message then there exists some $C \rightsquigarrow C' \xrightarrow{e=(p,m)} C''$ such that $C''$ is uncommitted.
+**Lemma 2: Uncommitted Configurations Can Always be Extended ([Lemma 3 of FLP85](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf))**: If $C$ is an uncommitted configuration and $e=(p,m)$ is any pending message, then there exists some $C \rightsquigarrow C' \xrightarrow{e=(p,m)} C''$ such that $C''$ is uncommitted.
 
 #### Proof of Theorem 1 from Lemma 1 and Lemma 2:
 
@@ -37,7 +40,7 @@ Start with Lemma 1, to begin with, an uncommitted configuration. Repeat Lemma 2 
 
 #### Proof of Lemma 2:
 
-Recall the **proof pattern** for showing the existence of an uncommitted configuration:
+Recall the **proof pattern** for showing the existence of an *uncommitted configuration*:
 1. Proof by *contradiction*: assume all configurations are either 1-committed or 0-committed.
 2. Find a *local structure*: two adjacent configurations $C$ and $C'$ such that $C$ is 1-committed and $C_0$ is 0-committed.
 3. Reach a contradiction due to an indistinguishability argument between the two adjacent configurations, $C$ and $C'$ using the adversary's ability to crash one party.
@@ -70,7 +73,7 @@ This completes the proof of Lemma 2, and that completes the proof of the FLP The
 
 
 **Discussion.**
-We started from an uncommitted configuration (Lemma 1) and then showed that we could extend this infinitely many times and do this while eventually delivering every pending message   (Lemma 2).
+We started from an uncommitted configuration (Lemma 1) and then showed that we could extend this to another uncommitted configuration infinitely many times and do this while eventually delivering every pending message   (Lemma 2).
 
 This proof is non-constructive; it shows that an infinite execution must exist. Using randomization, there are protocols that are *almost surely terminating* (the probability measure of terminating is one). In fact, there exist protocols that terminate in an expected constant number of rounds. More on that in later posts.
 
