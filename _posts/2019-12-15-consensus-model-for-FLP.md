@@ -68,7 +68,7 @@ The following formal definitions are crucial:
 
 
 <p align="center">
-    <img src="/uploads/FLP post 1 - definitions.png" width="256" title="definitions">
+    <img src="/uploads/FLP post 1 - definitions.png" width="512" title="definitions">
 </p>
 
 
