@@ -31,7 +31,7 @@ Given an initial uncommitted configuration, our goal will be to build an infinit
 
 To prove the theorem we will prove the following technical Lemma:
 
-**Lemma 2: Uncommitted Configurations Can Always be Extended ([Lemma 3 of FLP85](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf))**: If $C$ is an uncommitted configuration and $e=(p,m)$ is any pending message, then there exists some $C \rightsquigarrow C' \xrightarrow{e=(p,m)} C''$ such that $C''$ is uncommitted.
+**Lemma 2: Uncommitted Configurations Can Always be Extended ([Lemma 3 of FLP85](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf))**: If $C$ is an uncommitted configuration and $e=(p,m)$ is any pending message, then there exists some $C \stackrel{\pi}{\rightsquigarrow}  C' \xrightarrow{e=(p,m)} C''$ such that $e \notin \pi$ and $C''$ is uncommitted.
 
 #### Proof of Theorem 1 from Lemma 1 and Lemma 2:
 
@@ -78,6 +78,11 @@ Recall the **proof pattern** for showing the existence of an *uncommitted config
     For parties other than $p$, $D'$ and $D''$ are indistinguishable. This is a contradiction.
 
 This completes the proof of Lemma 2, and that completes the proof of the FLP Theorem.
+
+
+<p align="center">
+    <img src="/uploads/FLP post 2 - lemma 2.png" width="600" title="definitions">
+</p>
 
 
 **Discussion.**
