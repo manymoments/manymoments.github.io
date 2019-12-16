@@ -20,9 +20,9 @@ The modern interpretation of these lower bounds is the following:
 
 1. In this *first* post, we provide key *definitions* and prove an important *Lemma* about having some initial uncommitted configuration. This lemma shows that any consensus protocol has some initial input where the the adversary has control over the decision value (it can cause it to be either 0 or 1). This lemma will then be used in both lower bounds.
 
-2. In the *second* post, we use the approach of [Aguilera and Toueg \[1999\]](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) to show that any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds. The proof uses the definitions and the lemma in this post.
+2. In the [second post](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/), we use the approach of [Aguilera and Toueg \[1999\]](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) to show that any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds. The proof uses the definitions and the lemma in this post.
 
-3. In the *third* post, we show the celebrated [Fischer, Lynch, and Patterson \[1985\]](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf) result that any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution. The proof uses the same definitions and the lemma in this post.
+3. In the [third post](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/), we show the celebrated [Fischer, Lynch, and Patterson \[1985\]](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf) result that any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution. The proof uses the same definitions and the lemma in this post.
 
 
 
