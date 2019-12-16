@@ -81,7 +81,7 @@ This completes the proof of Lemma 2, and that completes the proof of the FLP The
 
 
 <p align="center">
-    <img src="/uploads/FLP post 2 - lemma 2.png" width="600" title="definitions">
+    <img src="/uploads/FLP post 3 - lemma 2.png" width="600" title="lemma 2">
 </p>
 
 
