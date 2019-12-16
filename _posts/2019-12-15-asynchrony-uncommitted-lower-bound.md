@@ -48,9 +48,17 @@ Recall the **proof pattern** for showing the existence of an *uncommitted config
 
 **Proof of Lemma 2** follows this pattern exactly:
 1. The contradiction of the statement of Lemma 2 is that: for all $C'$, such that  $C \rightsquigarrow C'$, let  $C' \xrightarrow{e=(p,m)} C''$, then either $C''$ is 1-committed or $C''$ is 0-committed ($C''$ is not uncommitted).
-2. Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{e'=(p',m')} X'$ and $e'$ is a pending message in $X$. Assuming the contradiction above, a simple induction on all $C \rightsquigarrow C'$ shows that there must exist two adjacent configurations $Y \xrightarrow{e'} Y'$ and a pending message $e'=(p',m')$ in $Y$ such that:
-    1. $C \rightsquigarrow Y \xrightarrow{e} Z$ and Z is 1-committed.
-    2. $C \rightsquigarrow Y \xrightarrow{e'} Y' \xrightarrow{e} Z'$ and Z' is 0-committed.
+2. Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{e'=(p',m')} X'$ and $e'$ is a pending message in $X$.
+
+    *Claim*: there must exist two adjacent configurations $Y \xrightarrow{e'} Y'$ and a pending message $e'=(p',m')$ in $Y$ such that:
+        1. $C \rightsquigarrow Y \xrightarrow{e} Z$ and Z is 1-committed.
+        2. $C \rightsquigarrow Y \xrightarrow{e'} Y' \xrightarrow{e} Z'$ and Z' is 0-committed.
+
+    *Proof*: seeking a contradiction, assume a value $b$ such that for *any* $C \rightsquigarrow Y$ and *any* $e'$ such that $Y \xrightarrow{e'} Y'$ it is the case that  $Y \xrightarrow{e} Z$ and $Y' \xrightarrow{e} Z'$ are committed to the same value $b$. This implies that *all*  $C \rightsquigarrow C'$ have the property that  $C' \xrightarrow{e=(p,m)} C''$ is $b$-committed.
+
+    Since $C$ is uncommitted, there must exist $C \stackrel{\pi}{\rightsquigarrow} D$ such that $D$ is $(1-b)$-committed. This is a contradiction to the above (both if $e \in \pi$ and if $e \notin \pi$).
+
+
 3. Let $Y,Y'$ be these two adjacent configurations. There are two cases to consider about $e=(p,m)$ and $e'=(p',m')$:
 
     3.1. If $p \neq p'$: this is the trivial case. It implies that processing $e$ and then $e'$ will lead to a different outcome than processing $e'$ and only then $e$. But since $e,e'$ reach different parties there is no way to distinguish these two worlds.
@@ -77,7 +85,7 @@ We started from an uncommitted configuration (Lemma 1) and then showed that we c
 
 This proof is non-constructive; it shows that an infinite execution must exist. Using randomization, there are protocols that are *almost surely terminating* (the probability measure of terminating is one). In fact, there exist protocols that terminate in an expected constant number of rounds. More on that in later posts.
 
-**Acknowledgment.** We would like to thank Kartik for helpful feedback on this post.
+**Acknowledgment.** We would like to thank Kartik Nayak and Ling Ren for helpful feedback on this post.
 
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1206298743823355905?s=20)
