@@ -51,10 +51,10 @@ Recall the **proof pattern** for showing the existence of an *uncommitted config
 2. Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{e'=(p',m')} X'$ and $e'$ is a pending message in $X$.
 
     *Claim*: there must exist two adjacent configurations $Y \xrightarrow{e'} Y'$ and a pending message $e'=(p',m')$ in $Y$ such that:
-        1. $C \rightsquigarrow Y \xrightarrow{e} Z$ and Z is 1-committed.
-        2. $C \rightsquigarrow Y \xrightarrow{e'} Y' \xrightarrow{e} Z'$ and Z' is 0-committed.
+    1. $C \rightsquigarrow Y \xrightarrow{e} Z$ and Z is 1-committed.
+    2. $C \rightsquigarrow Y \xrightarrow{e'} Y' \xrightarrow{e} Z'$ and $Z'$ is 0-committed.
 
-    *Proof*: seeking a contradiction, assume a value $b$ such that for *any* $C \rightsquigarrow Y$ and *any* $e'$ such that $Y \xrightarrow{e'} Y'$ it is the case that  $Y \xrightarrow{e} Z$ and $Y' \xrightarrow{e} Z'$ are committed to the same value $b$. This implies that *all*  $C \rightsquigarrow C'$ have the property that  $C' \xrightarrow{e=(p,m)} C''$ is $b$-committed.
+    *Proof*: seeking a contradiction, assume a value $b \in \{0,1\}$ such that for *any* $C \rightsquigarrow Y$ and *any* $e'$ such that $Y \xrightarrow{e'} Y'$ it is the case that  $Y \xrightarrow{e} Z$ and $Y' \xrightarrow{e} Z'$ are committed to the same value $b$. This implies that *all*  $C \rightsquigarrow C'$ have the property that  $C' \xrightarrow{e=(p,m)} C''$ is $b$-committed.
 
     Since $C$ is uncommitted, there must exist $C \stackrel{\pi}{\rightsquigarrow} D$ such that $D$ is $(1-b)$-committed. This is a contradiction to the above (both if $e \in \pi$ and if $e \notin \pi$).
 
