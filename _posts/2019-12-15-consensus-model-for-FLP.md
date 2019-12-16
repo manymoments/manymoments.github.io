@@ -67,9 +67,9 @@ The following formal definitions are crucial:
 
 
 
-
-
-
+<p align="center">
+    <img src="/uploads/FLP post 1 - definitions.png" width="256" title="definitions">
+</p>
 
 
 ### The existence of an initial uncommitted configuration
