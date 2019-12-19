@@ -71,27 +71,19 @@ For a message m arriving at round j:
 ```
 // Party i decision rule
 
-Decision at the end of round f+1:
-  Let V be the set of values that i received some signature chain on.
-  If |V|=0 or |V|>1, then decide null
-  Otherwise decide v, where V={v}.
-```
-----------------
-```
-// Party i decision rule
-
-Decision at the end of round f+1:
+Decision at the end of round t+1:
   Let V be the set of values that i received some signature chain on.
   If |V|=0 or |V|>1, then decide null
   Otherwise decide v, where V={v}.
 ```
 
+Now, let us argue how the protocol satisfies agreement, validity, and termination.
 
-Termination trivial. For Validity, note that all parties will have a 1-signature chain on $v$ and due to unforgeability, no signature chain on $
-\neq v$ will exist.
+**Termination.** The protocol is deterministic and terminates in $t+1$ rounds.
 
+**Validity.** For validity, observe that the (honest) leader will only sign one value and this value will be sent to all honest parties in the next round. Due to unforgeability of digital signatures, no other signature chain can exist.
 
-For agreement...
+**Agreement.** Observe that if an honest party receives a $k$-signature chain in round $k$, then it will send it to all honest parties in round $k+1$. This holds for all rounds except the last round, round $t+1$. But since the honest party can only receive a $t+1$-sized chain in round $t+1$ and a $t+1$-sized chain contains at least one honest party $h$, $h$ must have sent this value to all other honest parties. Thus, every value received by one honest party will be received by all other parties. (This does not hold in the case where the leader has sent more than 2 values. But the protocol ensures that all honest parties receive at least $2$ values and hence they will agree on a default value)
 
 complexity measures
 
