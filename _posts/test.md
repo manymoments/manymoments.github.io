@@ -39,22 +39,42 @@ Observe that the above "fix" does not really fix the problem. The same attack fr
 - A chain consists of signatures from distinct parties. So, if we have a chain of length $t+1$, it will certainly contain an honest signature. This honest party can send the value to everyone.
 - A round $i$ chain will be of length $i$. This is to disallow a Byzantine party to create a Byzantine-only chain of length $< t$ and send it to honest parties at round $t+1$. 
 
-In more detail, messages in the protocol are signature chains and have the form $(v, p_1, \sigma_{p_1}, p_2, \sigma_{p_2}, \ldots, p_j, \sigma_{p_j})$. This means that the original message is $v$. It was signed by $p_1$ and the resulting signature is $\sigma_{p_1}$. The message $(v, p_1, \sigma_{p_1})$ was signed by $p_2$ and the resulting signature is $\sigma_{p_2}$. And so on.
+In more detail, messages in the protocol are signature chains where a *k-signature chain* is defined recursively as follows:
 
-A message received by party $p_i$ in round $j$ is said to be valid if
-- The first signer of the signature chain is the designated dealer
-- All signers are distinct
-- $p_i$ is not in the signature chain
+A *1-signature chain* on $v$ is a pair $(v, sign(v,1))$. For $k>1$, a *k-signature chain* on $v$ is a pair $(m, sign (m,j))$ where $m$ is a $(k-1)$-signature chain on $v$ that *does not* contain a signature from $j$. In other words, a message (signature chain) received by party $j$ in round $k$ is said to be valid if
+- The first signer of the signature chain is the leader
+- All signers in the chain are distinct
+- Party $j$ is not in the signature chain
 - All signatures are valid
-- The signature chain has length $j$
+- The signature chain has length $k$
 
 
 The protocol:
 ```
+// Leader (Party 1) with input v
 
-Round 1: The dealer $p_1$ signs $v$ and sends (v, $p_1$, \sigma_{p_1}) to all parties
+Round 1: send <v, sign(v,1)> to all
+```
 
-Round $j \in \[2, n-1\]$: When a party $p_i$ receives a round $j-1$ valid message $(v, p_1, \sigma_{p_1}, p_2, \sigma_{p_2}, \ldots, p_{j-1}, \sigma_{p_{j-1}})$ at the end of round $j-1$, it signs this message and sends $(v, p_1, \sigma_{p_1}, p_2, \sigma_{p_2}, \ldots, p_{j-1}, \sigma_{p_{j-1}}, p_{j}, \sigma_{p_{j}})$ it to all parties.
+Party $i$ does the following:
+```
+// Party i
+
+For a message m arriving at round j:
+  if party i has sent less than two messages; and
+    if m is a valid (j-1)-signature chain on $v$ that does not contain a signature from i, then
+      send <m,sign(m,i)> to all
+```
+
+
+
+```
+// Party i decision rule
+
+Decision at the end of round f+1:
+  Let V be the set of values that i received some signature chain on.
+  If |V|=0 or |V|>1, then decide null
+  Otherwise decide v, where V={v}.
 ```
 ----------------
 ```
