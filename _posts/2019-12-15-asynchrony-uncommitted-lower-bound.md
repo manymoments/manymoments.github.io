@@ -61,12 +61,12 @@ Recall the **proof pattern** for showing the existence of an *uncommitted config
 
 3. Let $Y,Y'$ be these two adjacent configurations. There are two cases to consider about $e=(p,m)$ and $e'=(p',m')$:
 
-    3.1. If $p \neq p'$: this is the trivial case. It implies that processing $e$ and then $e'$ will lead to a different outcome than processing $e'$ and only then $e$. But since $e,e'$ reach different parties there is no way to distinguish these two worlds.
+    3.1. Case 1 (trivial case): $p \neq p'$. This implies that processing $e$ and then $e'$ will lead to a different outcome than processing $e'$ and only then $e$. But since $e,e'$ reach different parties there is no way to distinguish these two worlds.
 
     Formally $Y \xrightarrow{e=(p,m)} Z$ is 1-committed and so  $Y \xrightarrow{e=(p,m)} Z \xrightarrow{e'=(p',m')} Z''$ is  1-committed. But $Y \xrightarrow{e'=(p',m')} Y' \xrightarrow{e=(p,m)} Z'$ is 0-committed. This is a contradiction because $Z''$ and $Z'$ have exactly the same configuration and pending messages.
 
 
-    3.2. If $p=p'$, then the committed value must change between the world where $p$ receives $m$ before it receives $m'$ relative to the world where $p$ receives $m'$ before it receives $m$! But what if $p$ crashes? These two worlds will be indistinguishable to the rest of the parties! Moreover, $p$ does not need to crash; it can just be slow!
+    3.2. Case 2:  $p=p'$. This implies  that the committed value must change between the world where $p$ receives $m$ before it receives $m'$ relative to the world where $p$ receives $m'$ before it receives $m$! But what if $p$ crashes? These two worlds will be indistinguishable to the rest of the parties! Moreover, $p$ does not need to crash; it can just be slow!
 
     Formally, consider some execution where party $p$ crashes at $Y$.  So there must be some $Y \stackrel{\sigma}{\rightsquigarrow} D$ where $D$ is a deciding configuration and $\sigma$ does not contain party $p$. But if party $p$ was just slow then $Y \stackrel{\sigma}{\rightsquigarrow} D \xrightarrow{e} D'$ must be a configuration where all parties other than $p$ have decided.
 
