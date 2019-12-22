@@ -6,7 +6,7 @@ tags:
 author: Ittai Abraham, Kartik Nayak
 ---
 
-In this post is about the classic result on authenticated broadcast against a Byzantine adversary:
+In this post is about the classic result from 1983 on authenticated broadcast against a Byzantine adversary:
 
 **Theorem ([Dolev Strong \[1983\]](https://www.cse.huji.ac.il/~dolev/pubs/authenticated.pdf)):** *there exists an authenticated protocol for solving broadcast, against any adversary controlling $t<n$ out of $n$ parties, in $t+1$ rounds, using $O(n^2t)$ words*
 
@@ -14,7 +14,7 @@ In this post is about the classic result on authenticated broadcast against a By
 Recall [Broadcast properties](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/): (1) *Termination* -  all honest decide and terminate; (2) *Validity* - if the leader is honest, its value is the decision value; and (3) *Agreement* - all honest decide the same value.
 
 
-The Dolev Strong protocol works in the *authentiacted* setting. In this setting we assume a PKI infrastructure. We denote the signature of message $m$ by party $i$ as $sign(m,i)$. We assume signature unforgeability.
+The Dolev Strong protocol works in the synchronous and *authentiacted* setting. In this setting we assume a PKI infrastructure. We denote the signature of message $m$ by party $i$ as $sign(m,i)$. We assume signature unforgeability.
 
 Lets try to obtain the following: if a value sent by the leader is received by some honest party, it will be received by all honest parties. Thus, at the end of the protocol, all honest parties would receive the same set of values and deterministically agree on the same value.
 
@@ -104,7 +104,8 @@ Now, let us argue how the protocol satisfies agreement, validity, and terminatio
 Every party sends at most two values, and each value may contain $O(t)$ signatures. The total communication is $O(n^2t)$ signatures.
 Open: reduce communication to $o(n^3)$ against adaptive an adaptive adversary.
 
-Note that this protocol [does not work](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) in client-server model where the client are passive.
+Note that this protocol relies heavily on synchrony and [does not work](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) in client-server model where the clients are passive or may be offline.
 
+In the blockchain space, the Dolev Strong protocol is mention by [Spacemesh](https://spacemesh.io/byzantine-agreement-algorithms-and-dolev-strong/).
 
 Please leave comments on [Twitter]()
