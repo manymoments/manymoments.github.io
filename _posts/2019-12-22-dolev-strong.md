@@ -6,7 +6,7 @@ tags:
 author: Ittai Abraham, Kartik Nayak
 ---
 
-In this post is about the classic result from 1983 on authenticated broadcast against a Byzantine adversary:
+This post is about the classic result from 1983 on authenticated broadcast against a Byzantine adversary:
 
 **Theorem ([Dolev Strong \[1983\]](https://www.cse.huji.ac.il/~dolev/pubs/authenticated.pdf)):** *there exists an authenticated protocol for solving broadcast, against any adversary controlling $t<n$ out of $n$ parties, in $t+1$ rounds, using $O(n^2t)$ words*
 
