@@ -63,7 +63,7 @@ Recall the **proof pattern** for showing the existence of an *uncommitted config
 
     3.1. If $p \neq p'$: this is the trivial case. It implies that processing $e$ and then $e'$ will lead to a different outcome than processing $e'$ and only then $e$. But since $e,e'$ reach different parties there is no way to distinguish these two worlds.
 
-    Formally $Y \xrightarrow{e=(p,m)} Z$ is 1-committed and so  $Y \xrightarrow{e=(p,m)} Z \xrightarrow{e'=(p',m')} Z''$ is  1-committed. But $Y \xrightarrow{e=(p,m)} Y' \xrightarrow{e=(p,m)} Z'$ is 0-committed. This is a contradiction because $Z''$ and $Z'$ have exactly the same configuration and pending messages.
+    Formally $Y \xrightarrow{e=(p,m)} Z$ is 1-committed and so  $Y \xrightarrow{e=(p,m)} Z \xrightarrow{e'=(p',m')} Z''$ is  1-committed. But $Y \xrightarrow{e'=(p',m')} Y' \xrightarrow{e=(p,m)} Z'$ is 0-committed. This is a contradiction because $Z''$ and $Z'$ have exactly the same configuration and pending messages.
 
 
     3.2. If $p=p'$, then the committed value must change between the world where $p$ receives $m$ before it receives $m'$ relative to the world where $p$ receives $m'$ before it receives $m$! But what if $p$ crashes? These two worlds will be indistinguishable to the rest of the parties! Moreover, $p$ does not need to crash; it can just be slow!
@@ -90,7 +90,8 @@ We started from an uncommitted configuration (Lemma 1) and then showed that we c
 
 This proof is non-constructive; it shows that an infinite execution must exist. Using randomization, there are protocols that are *almost surely terminating* (the probability measure of terminating is one). In fact, there exist protocols that terminate in an expected constant number of rounds. More on that in later posts.
 
-**Acknowledgment.** We would like to thank Kartik Nayak and Ling Ren for helpful feedback on this post.
+**Acknowledgment.** We would like to thank Kartik Nayak and Ling Ren
+[Nibesh Shrestha](https://twitter.com/NibeshShrestha1) for helpful feedback on this post.
 
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1206298743823355905?s=20)
