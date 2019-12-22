@@ -1,7 +1,6 @@
 ---
 title: Dolev Strong Broadcast
 date: 2019-12-22 09:05:00 -08:00
-published: true
 tags:
 - dist101
 authors:
