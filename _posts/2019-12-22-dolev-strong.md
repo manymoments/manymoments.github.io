@@ -102,10 +102,11 @@ Now, let us argue how the protocol satisfies agreement, validity, and terminatio
 
 #### Complexity measures and Notes
 Every party sends at most two values, and each value may contain $O(t)$ signatures. The total communication is $O(n^2t)$ signatures.
-Open: reduce communication to $o(n^3)$ against adaptive an adaptive adversary.
+
+Here is an open question: for $t<n$, reduce communication to $o(n^3)$ against some type of adaptive adversary or perhaps show that $O(n^3)$ is required is some conditions.
 
 Note that this protocol relies heavily on synchrony and [does not work](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) in client-server model where the clients are passive or may be offline.
 
-In the blockchain space, the Dolev Strong protocol is mention by [Spacemesh](https://spacemesh.io/byzantine-agreement-algorithms-and-dolev-strong/).
+In the blockchain space, the Dolev Strong protocol is mentioned by [Spacemesh](https://spacemesh.io/byzantine-agreement-algorithms-and-dolev-strong/).
 
 Please leave comments on [Twitter]()
