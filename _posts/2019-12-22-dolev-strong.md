@@ -95,7 +95,7 @@ Now, let us argue how the protocol satisfies agreement, validity, and terminatio
 
 **Validity.** For validity, observe that the (honest) leader will only sign one value, and this value will be sent to all honest parties in the next round. Due to the unforgeability of digital signatures, no other signature chain can exist.
 
-**Agreement.** Observe that if an honest party receives a $k$-signature chain at the end of round $k$, then it will send it to all honest parties in round $k+1$. This holds for all rounds except the last round, round $t+1$. But since the honest party can only receive a $t+1$-sized chain in round $t+1$ and a $t+1$-sized chain contains at least one honest party $h$, $h$ must have sent this value to all other honest parties. Thus, every value received by one honest party will be received by all other parties. (This does not hold in the case where the leader has sent more than two values. But the protocol ensures that all honest parties receive at least two of the values and hence they will agree on a default value).
+**Agreement.** Observe that if an honest party receives a $k$-signature chain at the end of round $k$, then it will send it to all honest parties in round $k+1$. This holds for all rounds except the last round, round $t+1$. But since the honest party can only receive a $t+1$-sized chain in round $t+1$ and a $t+1$-sized chain contains at least one honest party $h$, $h$ must have already sent this value to all other honest parties. Thus, every value received by one honest party will be received by all other parties. (This does not hold in the case where the leader has sent more than two values. But the protocol ensures that all honest parties receive at least two of the values and hence they will agree on a default value).
 
 #### Complexity measures and Notes
 Every party sends at most two values, and each value may contain $O(t)$ signatures. The total communication is $O(n^2t)$ signatures.
@@ -105,6 +105,6 @@ Here is an open question: for $t<n$, reduce communication to $o(n^3)$ against so
 Note that this protocol relies heavily on synchrony and [does not work for $t \geq n/2$](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) in the client-server model where the clients are passive or maybe offline.
 In Dolev Strong,  an online server accepts a length $k$ chain in round $k$ but must reject it in round $>k$. However, there is no way for a server to prove to a client when it received a message (other than to sign and send and the client to verify online in the next round).
 
-In the blockchain space, the Dolev-Strong protocol is mentioned by [Spacemesh](https://spacemesh.io/byzantine-agreement-algorithms-and-dolev-strong/).
+Another great description and proof of Dolev Strong can be found in Jonathan Katz's [Advanced Topics in Cryptography course notes](http://www.cs.umd.edu/~jkatz/gradcrypto2/NOTES/lecture26.pdf). In the blockchain space, the Dolev-Strong protocol is mentioned by [Spacemesh](https://spacemesh.io/byzantine-agreement-algorithms-and-dolev-strong/).
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1208871356516966401?s=20)
