@@ -53,10 +53,10 @@ In more detail, messages in the protocol are signature chains where a *k-signatu
 
 A **1-signature chain** on $v$ is a pair $(v, sign(v,1))$.
 
-For $k>1$, a **k-signature chain** on $v$ is a pair $(m, sign (m,j))$ where $m$ is a $(k-1)$-signature chain on $v$ that *does not* contain a signature from $j$. In other words, a message (signature chain) received by party $j$ at the end of round $k$ is said to be valid if
+For $k>1$, a **k-signature chain** on $v$ is a pair $(m, sign (m,i))$ where $m$ is a $(k-1)$-signature chain on $v$ that *does not* contain a signature from $i$. In other words, a message (signature chain) received by party $i$ at the end of round $k$ is said to be valid if
 - The first signer of the signature chain is the leader
 - All signers in the chain are distinct
-- Party $j$ is not in the signature chain
+- Party $i$ is not in the signature chain
 - All signatures are valid
 - The signature chain has length $k$
 
@@ -72,11 +72,10 @@ Party $i$ does the following:
 ```
 // Party i in round j
 
-For a message m arriving at round j:
+For a message m arriving at the beginning of round j:
   if party i has sent less than two messages; and
-    if m is a valid (j-1)-signature chain on $v$,
-      that does not contain a signature from i, then
-        send <m, sign(m,i)> to all
+    if m is a valid (j-1)-signature chain on $v$, then
+        send <m, sign(m,i)> to all parties
 ```
 
 
@@ -85,8 +84,8 @@ For a message m arriving at round j:
 // Party i decision rule
 
 Decision at the end of round t+1:
-  Let V be the set of values that i received some signature chain on.
-  If |V|=0 or |V|>1, then decide null
+  Let V be the set of values for party i received a valid signature chain.
+  If |V|=0 or |V|>1, then decide default value $\bot$.
   Otherwise decide v, where V={v}.
 ```
 
@@ -96,15 +95,15 @@ Now, let us argue how the protocol satisfies agreement, validity, and terminatio
 
 **Validity.** For validity, observe that the (honest) leader will only sign one value, and this value will be sent to all honest parties in the next round. Due to the unforgeability of digital signatures, no other signature chain can exist.
 
-**Agreement.** Observe that if an honest party receives a $k$-signature chain in round $k$, then it will send it to all honest parties in round $k+1$. This holds for all rounds except the last round, round $t+1$. But since the honest party can only receive a $t+1$-sized chain in round $t+1$ and a $t+1$-sized chain contains at least one honest party $h$, $h$ must have sent this value to all other honest parties. Thus, every value received by one honest party will be received by all other parties. (This does not hold in the case where the leader has sent more than 2 values. But the protocol ensures that all honest parties receive at least $2$ values and hence they will agree on a default value)
+**Agreement.** Observe that if an honest party receives a $k$-signature chain at the end of round $k$, then it will send it to all honest parties in round $k+1$. This holds for all rounds except the last round, round $t+1$. But since the honest party can only receive a $t+1$-sized chain in round $t+1$ and a $t+1$-sized chain contains at least one honest party $h$, $h$ must have sent this value to all other honest parties. Thus, every value received by one honest party will be received by all other parties. (This does not hold in the case where the leader has sent more than two values. But the protocol ensures that all honest parties receive at least two of the values and hence they will agree on a default value).
 
 #### Complexity measures and Notes
 Every party sends at most two values, and each value may contain $O(t)$ signatures. The total communication is $O(n^2t)$ signatures.
 
-Here is an open question: for $t<n$, reduce communication to $o(n^3)$ against some type of adaptive adversary, or perhaps show that $O(n^3)$ is required is some conditions.
+Here is an open question: for $t<n$, reduce communication to $o(n^3)$ against some type of adaptive adversary, or perhaps show that $O(n^3)$ is required under some conditions.
 
 Note that this protocol relies heavily on synchrony and [does not work](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) in client-server model where the clients are passive or maybe offline.
 
-In the blockchain space, the Dolev Strong protocol is mentioned by [Spacemesh](https://spacemesh.io/byzantine-agreement-algorithms-and-dolev-strong/).
+In the blockchain space, the Dolev-Strong protocol is mentioned by [Spacemesh](https://spacemesh.io/byzantine-agreement-algorithms-and-dolev-strong/).
 
 Please leave comments on [Twitter]()
