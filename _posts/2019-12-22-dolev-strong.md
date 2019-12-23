@@ -102,8 +102,9 @@ Every party sends at most two values, and each value may contain $O(t)$ signatur
 
 Here is an open question: for $t<n$, reduce communication to $o(n^3)$ against some type of adaptive adversary, or perhaps show that $O(n^3)$ is required under some conditions.
 
-Note that this protocol relies heavily on synchrony and [does not work](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) in client-server model where the clients are passive or maybe offline.
+Note that this protocol relies heavily on synchrony and [does not work for $t \geq n/2$](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) in the client-server model where the clients are passive or maybe offline.
+In Dolev Strong,  an online server accepts a length $k$ chain in round $k$ but must reject it in round $>k$. However, there is no way for a server to prove to a client when it received a message (other than to sign and send and the client to verify online in the next round).
 
 In the blockchain space, the Dolev-Strong protocol is mentioned by [Spacemesh](https://spacemesh.io/byzantine-agreement-algorithms-and-dolev-strong/).
 
-Please leave comments on [Twitter]()
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1208871356516966401?s=20)
