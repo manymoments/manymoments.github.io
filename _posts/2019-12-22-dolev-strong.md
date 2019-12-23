@@ -23,39 +23,37 @@ Here is an attempt to put the above intuition in a protocol that can handle one 
 ```
 // Attempt 1:
 
-Round 1: Leader (party 1) sends message <v, sign(v,1)> to all parties
-Round 2: If party i receives <v, sign(v,1)> from leader, then
-          sends <v, sign(v,1)> to all.
+Round 1: Leader (party 1) sends message <v, sign(v,1)> to all parties.
+Round 2: If party i receives <v, sign(v,1)> from leader, then it sends <v, sign(v,1)> to all.
 Round 3: If party i receives only a single leader-signed value $v$, output $v$.
          If it receives more than one leader-signed value, output a default value $\bot$.
 ```
 
 Observe: If the leader is honest, then all parties will see the leader's value. Even if a Byzantine leader sends its value to some honest in round 1, all honest parties will receive it at the beginning of round 3. So does this protocol work?
 
-No! the problem is that a malicious leader can send no value in round 1, but send a value to only a few honest parties in round 2. The solution is to build a chain of signatures:
+No! the problem is that a Byzantine leader can send no value in round 1, but send a value to only a few honest parties in round 2. The honest parties who receive the value will output that value whereas other honest parties will output a $\bot$. Dolev-Strong fixes this by building a chain of signatures containing:
 
 
 ```
 // Attempt 2:
 
-Round 1: Leader (party 1) sends message <v, sign(v,1)> to all parties
-Round 2: If party i receives m=<v, sign(v,1)> from leader, then
-          sends <m, sign(v,i)> to all.
-Round 3: If party i receives only a single leader signed value $v$, output $v$.
+Round 1: Leader (party 1) sends message <v, sign(v,1)> to all parties.
+Round 2: If party i receives m=<v, sign(v,1)> from leader, then it sends <m, sign(v,i)> to all.
+Round 3: If party i receives only a single signed value $v$, output $v$.
          If it receives more than one value, output a default value $\bot$.
 ```
 
-This protocol is indeed a Broadcast protocol resilient to 1 Byzantine failure (where "signed value" is either a signature from the leader or a signature from $i$ on a signature of the leader).
+This protocol is indeed a Broadcast protocol resilient to 1 Byzantine failure (where "signed value" is either a signature from the leader or a signature from some party $i$ on a signature of the leader).
 
-The Dolev-Strong protocol extends this approach and uses *signatures chains*. Signature chains have two essential properties that allow honest parties to agree on a value at the end of $t+1$ rounds.
-- A signature chain consists of signatures from *distinct* parties. So, if we have a signature chain of length $t+1$, it will certainly contain an honest signature. This honest party can send the value to everyone.
+To tolerate more than 1 Byzantine failure, the Dolev-Strong protocol extends this approach and uses *signatures chains*. Signature chains have two essential properties that allow honest parties to agree on a value at the end of $t+1$ rounds.
+- A signature chain consists of signatures from *distinct* parties. So, if we have a signature chain of length $t+1$, it will certainly contain an honest signature by honest party $h$. Party $h$ can send the value to all parties.
 - A round $i$ signature chain will be of length $i$. This is to disallow a Byzantine party from creating a Byzantine-only chain of length $< t$ and send it to honest parties at round $t+1$.
 
 In more detail, messages in the protocol are signature chains where a *k-signature chain* is defined recursively as follows:
 
 A **1-signature chain** on $v$ is a pair $(v, sign(v,1))$.
 
-For $k>1$, a **k-signature chain** on $v$ is a pair $(m, sign (m,j))$ where $m$ is a $(k-1)$-signature chain on $v$ that *does not* contain a signature from $j$. In other words, a message (signature chain) received by party $j$ in round $k$ is said to be valid if
+For $k>1$, a **k-signature chain** on $v$ is a pair $(m, sign (m,j))$ where $m$ is a $(k-1)$-signature chain on $v$ that *does not* contain a signature from $j$. In other words, a message (signature chain) received by party $j$ at the end of round $k$ is said to be valid if
 - The first signer of the signature chain is the leader
 - All signers in the chain are distinct
 - Party $j$ is not in the signature chain
@@ -65,9 +63,9 @@ For $k>1$, a **k-signature chain** on $v$ is a pair $(m, sign (m,j))$ where $m$ 
 
 The protocol:
 ```
-// Leader (Party 1) with input v
+// Leader (party 1) with input v
 
-Round 1: send <v, sign(v,1)> to all
+Round 1: send <v, sign(v,1)> to all parties.
 ```
 
 Party $i$ does the following:
