@@ -26,9 +26,9 @@ Here is an attempt to put the above intuition in a protocol that can handle one 
 Round 1: Leader (party 1) sends message <v, sign(v,1)> to all parties
 Round 2: If party i receives <v, sign(v,1)> from leader,
             then sends <v, sign(v,1)> to all
-Round 3: If party i receives only a single leader-signed value $v$,
-            then output $v$.
-         Otherwise output a default value $\bot$.
+Round 3: If party i receives only a single leader-signed value v,
+            then output v
+         Otherwise output a default value \bot
 ```
 
 Observe: If the leader is honest, then all parties will see the leader's value. Even if a Byzantine leader sends its value to some honest in round 1, all honest parties will receive it at the beginning of round 3. So does this protocol work?
@@ -43,8 +43,8 @@ Round 1: Leader (party 1) sends message <v, sign(v,1)> to all parties.
 Round 2: If party i receives m=<v, sign(v,1)> from leader,
             then it sends <m, sign(v,i)> to all.
 Round 3: If party i receives only a single leader-signed value $v$,
-            then output $v$.
-         Otherwise output a default value $\bot$.
+            then output v
+         Otherwise output a default value \bot$
 ```
 
 This protocol is indeed a Broadcast protocol resilient to 1 Byzantine failure (where "signed value" is either a signature from the leader or a signature from some party $i$ on a signature of the leader).
