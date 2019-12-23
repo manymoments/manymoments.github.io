@@ -14,9 +14,9 @@ This post is about the classic result from 1983 on authenticated broadcast again
 Recall [Broadcast properties](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/): (1) *Termination* -  all honest decide and terminate; (2) *Validity* - if the leader is honest, its value is the decision value; and (3) *Agreement* - all honest decide the same value.
 
 
-The Dolev Strong protocol works in the synchronous and *authentiacted* setting. In this setting we assume a PKI infrastructure. We denote the signature of message $m$ by party $i$ as $sign(m,i)$. We assume signature unforgeability.
+The Dolev Strong protocol works in the synchronous and *authenticated* setting. In this setting, we assume a PKI infrastructure. We denote the signature of message $m$ by party $i$ as $sign(m,i)$. We assume signature unforgeability.
 
-Lets try to obtain the following: if a value sent by the leader is received by some honest party, it will be received by all honest parties. Thus, at the end of the protocol, all honest parties would receive the same set of values and deterministically agree on the same value.
+Let us try to obtain the following: if some honest party receives a value sent by the leader, all honest parties will receive it. Thus, at the end of the protocol, all honest parties would receive the same set of values, and deterministically agree on the same value.
 
 Here is an attempt to put the above intuition in a protocol that can handle one malicious party:
 
@@ -24,13 +24,13 @@ Here is an attempt to put the above intuition in a protocol that can handle one 
 // Attempt 1:
 
 Round 1: Leader (party 1) sends message <v, sign(v,1)> to all parties
-Round 2: If Party i receives <v, sign(v,1)> from leader, then
+Round 2: If party i receives <v, sign(v,1)> from leader, then
           sends <v, sign(v,1)> to all.
 Round 3: If party i receives only a single signed value $v$, output $v$
           If it receives more than one value, output a default value $\bot$
 ```
 
-Observe: If the leader is honest then all parties will see the leader value. If the leader is Byzantine and sends its value so some honest by the end of round 1 then  all honest parties will receive it at the beginning of round 3. So does this protocol work?
+Observe: If the leader is honest, then all parties will see the leader's value. Even if a Byzantine leader sends its value to some honest in round 1, all honest parties will receive it at the beginning of round 3. So does this protocol work?
 
 No! the problem is that a malicious non-leader can invent a value that the honest leader did not send. The solution is to build a chain of signatures:
 
@@ -39,7 +39,7 @@ No! the problem is that a malicious non-leader can invent a value that the hones
 // Attempt 2:
 
 Round 1: Leader (party 1) sends message <v, sign(v,1)> to all parties
-Round 2: If Party i receives m=<v, sign(v,1)> from leader, then
+Round 2: If party i receives m=<v, sign(v,1)> from leader, then
           sends <m, sign(v,i)> to all.
 Round 3: If party i receives only a single signed value $v$, output $v$
           If it receives more than one value, output a default value $\bot$
@@ -47,9 +47,9 @@ Round 3: If party i receives only a single signed value $v$, output $v$
 
 This protocol is indeed a Broadcast protocol resilient to 1 Byzantine failure (where "signed value" is either a signature from the leader or a signature from $i$ on a signature of the leader).
 
-The Dolev-Strong protocol extends this approach and uses *signatures chains*. Signature chains have two essential properties that allows honest parties to agree on a value at the end of $t+1$ rounds.
+The Dolev-Strong protocol extends this approach and uses *signatures chains*. Signature chains have two essential properties that allow honest parties to agree on a value at the end of $t+1$ rounds.
 - A signature chain consists of signatures from *distinct* parties. So, if we have a signature chain of length $t+1$, it will certainly contain an honest signature. This honest party can send the value to everyone.
-- A round $i$ signature chain will be of length $i$. This is to disallow a Byzantine party from  creating a Byzantine-only chain of length $< t$ and send it to honest parties at round $t+1$.
+- A round $i$ signature chain will be of length $i$. This is to disallow a Byzantine party from creating a Byzantine-only chain of length $< t$ and send it to honest parties at round $t+1$.
 
 In more detail, messages in the protocol are signature chains where a *k-signature chain* is defined recursively as follows:
 
@@ -96,16 +96,16 @@ Now, let us argue how the protocol satisfies agreement, validity, and terminatio
 
 **Termination.** The protocol is deterministic and terminates in $t+1$ rounds.
 
-**Validity.** For validity, observe that the (honest) leader will only sign one value and this value will be sent to all honest parties in the next round. Due to unforgeability of digital signatures, no other signature chain can exist.
+**Validity.** For validity, observe that the (honest) leader will only sign one value, and this value will be sent to all honest parties in the next round. Due to the unforgeability of digital signatures, no other signature chain can exist.
 
 **Agreement.** Observe that if an honest party receives a $k$-signature chain in round $k$, then it will send it to all honest parties in round $k+1$. This holds for all rounds except the last round, round $t+1$. But since the honest party can only receive a $t+1$-sized chain in round $t+1$ and a $t+1$-sized chain contains at least one honest party $h$, $h$ must have sent this value to all other honest parties. Thus, every value received by one honest party will be received by all other parties. (This does not hold in the case where the leader has sent more than 2 values. But the protocol ensures that all honest parties receive at least $2$ values and hence they will agree on a default value)
 
 #### Complexity measures and Notes
 Every party sends at most two values, and each value may contain $O(t)$ signatures. The total communication is $O(n^2t)$ signatures.
 
-Here is an open question: for $t<n$, reduce communication to $o(n^3)$ against some type of adaptive adversary or perhaps show that $O(n^3)$ is required is some conditions.
+Here is an open question: for $t<n$, reduce communication to $o(n^3)$ against some type of adaptive adversary, or perhaps show that $O(n^3)$ is required is some conditions.
 
-Note that this protocol relies heavily on synchrony and [does not work](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) in client-server model where the clients are passive or may be offline.
+Note that this protocol relies heavily on synchrony and [does not work](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) in client-server model where the clients are passive or maybe offline.
 
 In the blockchain space, the Dolev Strong protocol is mentioned by [Spacemesh](https://spacemesh.io/byzantine-agreement-algorithms-and-dolev-strong/).
 
