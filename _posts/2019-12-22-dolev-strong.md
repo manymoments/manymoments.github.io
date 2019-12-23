@@ -1,5 +1,5 @@
 ---
-title: Dolev Strong Authenticated Broadcast
+title: Dolev-Strong Authenticated Broadcast
 date: 2019-12-22 09:05:00 -08:00
 tags:
 - dist101
@@ -8,13 +8,13 @@ author: Ittai Abraham, Kartik Nayak
 
 This post is about the classic result from 1983 on authenticated broadcast against a Byzantine adversary:
 
-**Theorem ([Dolev Strong \[1983\]](https://www.cse.huji.ac.il/~dolev/pubs/authenticated.pdf)):** *there exists an authenticated protocol for solving broadcast, against any adversary controlling $t<n$ out of $n$ parties, in $t+1$ rounds, using $O(n^2t)$ words*
+**Theorem ([Dolev-Strong \[1983\]](https://www.cse.huji.ac.il/~dolev/pubs/authenticated.pdf)):** *there exists an authenticated protocol for solving broadcast, against any adversary controlling $t<n$ out of $n$ parties, in $t+1$ rounds, using $O(n^2t)$ words*
 
 
 Recall [Broadcast properties](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/): (1) *Termination* -  all honest decide and terminate; (2) *Validity* - if the leader is honest, its value is the decision value; and (3) *Agreement* - all honest decide the same value.
 
 
-The Dolev Strong protocol works in the synchronous and *authenticated* setting. In this setting, we assume a PKI infrastructure. We denote the signature of message $m$ by party $i$ as $sign(m,i)$. We assume signature unforgeability.
+The Dolev-Strong protocol works in the synchronous and *authenticated* setting. In this setting, we assume a PKI infrastructure. We denote the signature of message $m$ by party $i$ as $sign(m,i)$. We assume signature unforgeability.
 
 Let us try to obtain the following: if some honest party receives a value sent by the leader, all honest parties will receive it. Thus, at the end of the protocol, all honest parties would receive the same set of values, and deterministically agree on the same value.
 
