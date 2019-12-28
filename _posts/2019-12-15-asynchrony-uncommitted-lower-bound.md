@@ -86,12 +86,11 @@ This completes the proof of Lemma 2, and that completes the proof of the FLP The
 
 
 **Discussion.**
-We started from an uncommitted configuration (Lemma 1) and then showed that we could extend this to another uncommitted configuration infinitely many times and do this while eventually delivering every pending message   (Lemma 2).
+We started from an uncommitted configuration (Lemma 1) and then showed that we could extend this to another uncommitted configuration infinitely many times and do this while eventually delivering every pending message  (Lemma 2).
 
-This proof is non-constructive; it shows that an infinite execution must exist. Using randomization, there are protocols that are *almost surely terminating* (the probability measure of terminating is one). In fact, there exist protocols that terminate in an expected constant number of rounds. More on that in later posts.
+This proof is non-constructive; it shows that an infinite execution must exist. Using randomization, there are protocols that are *almost surely terminating* (their probability measure of terminating is one). There exist asynchronous consensus protocols that terminate in an expected constant number of rounds. More on that in later posts.
 
-**Acknowledgment.** We would like to thank Kartik Nayak and Ling Ren
-[Nibesh Shrestha](https://twitter.com/NibeshShrestha1) for helpful feedback on this post.
+**Acknowledgment.** We would like to thank Nancy Lynch, Kartik Nayak, Ling Ren, [Nibesh Shrestha](https://twitter.com/NibeshShrestha1) for helpful feedback on this post.
 
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1206298743823355905?s=20)

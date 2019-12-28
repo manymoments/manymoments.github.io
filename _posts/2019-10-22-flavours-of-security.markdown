@@ -20,4 +20,4 @@ In many cases we can choose $\lambda$ so that $P$ with $\lambda$ is still effici
 
 ### computational security
 
-This definition assumes the adversary is *computationally bounded*. Just defining this notion requires 
+This definition assumes the adversary is *computationally bounded*. Just defining this notion requires  
