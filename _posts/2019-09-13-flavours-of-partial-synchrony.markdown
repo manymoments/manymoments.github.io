@@ -6,9 +6,10 @@ tags:
 author: Ittai Abraham
 ---
 
-This is a follow up post to the post on [Synchrony, Asynchrony and Partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). Here we discuss in more details the two flavours of partial synchrony from [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf): **GST** and **Unknown Latency**.
+This is a follow up post to the post on [Synchrony, Asynchrony and Partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). The partial synchrony model of [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf) comes in two flavours: **GST** and **Unknown Latency**. In this post we discuss:
 
-We discuss why *in practice* the GST flavour seems to be a better model of the real world and why *in theory*, the two flavours are equivalent.
+1. why, *in practice*, the GST flavour seems to be a better model of the real world.
+2. why, *in theory*, the two flavours are equivalent.
 
 
 ### The GST flavour of Partial Synchrony
@@ -19,22 +20,21 @@ The **Global Stabilization Time** (GST) model for Partial Synchrony assumes that
 
 The real world definitely does not behave like this, so why is this model so popular? its because it abstracts away a much more plausible model of how networks behave:
 
-1. say 99% of the time the network is stable and message delays are bounded. For example, it's probably true that internet latencies are less than a second 99% of the time (more formally the 99% percentile of latency is less than a second).
-2. during times of crisis (for example when under a Denial of Service attack) there is no good way to bound latency.
+1. say 99% of the time the network is stable and message delays are bounded. For example, it's probably true that internet latencies are less than a second 99% of the time (more formally, the 99% percentile of latency is less than a second).
+2. during times of crisis (for example, when under a Denial-of-Service attack) there is no good way to bound latency.
 
-The *GST* flavour allows to build systems that perform well in the best case but maintain safety even if the conservative assumptions on latency fail in rare cases. This allows protocol designers to fix the parameter $\Delta$ based on reasonably conservative values.
+The *GST* flavour allows to build systems that perform well in the *best case* but maintain safety even if the conservative assumptions on latency fail in *rare cases*. This allows protocol designers to fix the parameter $\Delta$ based on reasonably conservative values.
 
 ### The Unknown Latency flavour of Partial Synchrony
-In the UL flavour, the system is always synchronous, but the bound of the maximum delay is unknown to the protocol designer.
+In the UL flavour, the system is always *synchronous*, but the bound of the maximum delay is *unknown* to the protocol designer.
 
-There are several advantages of this flavour in terms of simplicity. First, it requires less parameters (no GST, just $
-Delta)$. Second, it avoids defining asynchronous communication.  
+There are several advantages of this flavour in terms of simplicity. First, it requires less parameters (no GST, just $\Delta)$. Second, it avoids defining asynchronous communication.  
 
-The way the *Unknown Latency* models the real world is somewhat problematic, it essentially strives to set the latency of the protocol to be as large as the worst case latency that will ever occur.
+The way the *Unknown Latency* models the real world is somewhat problematic, it essentially strives to set the latency of the protocol to be as large as the *worst case* latency that will ever occur.
 
-Unlike the GST flavour where $\Delta$ can be set conservatively, in the UL flavour the estimation of latency needs to grow based on the worst case behaviour of the system.
+Unlike the GST flavour where $\Delta$ can be set conservatively, in the UL flavour the estimation of latency needs to grow based on the worst case behavior of the system.
 
-In fact many early academic BFT systems had mechanisms that **double** the protocol's estimation of $\Delta$ each time there was a timeout. [Prime](http://www.dsn.jhu.edu/pub/papers/Prime_tdsc_accepted.pdf) showed that this causes a serious denial of service attack.
+In fact, many early academic BFT systems had mechanisms that **double** the protocol's estimation of $\Delta$ each time there was a timeout. [Prime](http://www.dsn.jhu.edu/pub/papers/Prime_tdsc_accepted.pdf) showed that this may cause a serious denial of service attack.
 
 ### The theoretical equivalence of both flavours of Partial Synchrony
 
@@ -44,10 +44,16 @@ We will now show that the two flavours are in theory equivalent: any protocol th
 
 Assume we have a protocol that obtains safety and liveness in the GST flavour. How can we transform it to a protocol that runs in the Unknown Latency flavour?
 
-[DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf) propose a very elegant solution: start with some estimation $\Lambda$ of the actual UL parameter $\Delta$. Each time a protocol timeout expires, double $\Lambda$.
 
-Clearly such a protocol is safe (its safe even in asynchrony). For liveness, at some point $\Lambda$ will grow to be more than $
-\Delta$ (but no more than $2\Delta$) and at that point liveness will be obtained. In terms of efficiency, note that it may happen that even after $\Lambda>\Delta$ there may still happen at least $f$ timeouts due to malicious primaries. So $\Lambda$ may grow exponentially.
+Such a protocol must have a timeout mechanism that is based on some parameter that represents the latency after GST. Let's assume this parameter is $\Lambda$.
+
+[DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf) propose an elegant solution: start with some estimation $\Lambda$ of the actual UL parameter $\Delta$. Each time a protocol timeout expires, increment $\Lambda$.
+
+Clearly such a protocol is safe (by definition, it is safe even in asynchrony). For liveness, at some point $\Lambda$ will grow to be more than $\Delta$. At that point and onwards, liveness will be obtained.
+
+In terms of efficiency:
+1. incrementing $\Lambda$ too slowly means that it may take a lot of time to reach consensus. This is a type of a denial-of-service that slows down the system.
+2. incrementing  $\Lambda$ too aggressively (say by doubling) means that while we may reach  $\Lambda>\Delta$ quickly, it may still happen that there are at least $f$ more timeouts due to malicious primaries. So $\Lambda$ may grow exponentially. This again may cause a denial-of-service that slows down the system.
 
 
 ### From UL to GST
@@ -58,5 +64,6 @@ That's quite easy: let $x$ be the maximum of $\Delta$ and the time until $GST$ s
 
 Again note that this reduction is extremely wasteful: the value of $x$ may be huge.
 
+**Acknowledgment.** We would like to thank [L. Astefanoaei](https://twitter.com/3zambile)  for helpful feedback on this post.
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1181013611491184640?s=20)
