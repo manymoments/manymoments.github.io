@@ -1,5 +1,4 @@
 ---
-# NOTE: Inspiration for using footnotes as citations came from https://kramdown.gettalong.org/syntax.html#footnotes
 title: Accumulators for Cryptocurrency Enthusiasts and Beyond
 date: 2020-02-10 09:05:00 -08:00
 published: false
