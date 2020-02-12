@@ -1,11 +1,11 @@
 ---
-title: "Cryptographic Accumulators 101"
+title: Cryptographic Accumulators 101
 date: 2020-02-10 09:05:00 -08:00
+published: false
 tags:
 - cryptography
 - accumulators
 author: Alin Tomescu
-published: false
 ---
 
 Accumulators are an alternative to Merkle Hash Trees (MHTs) for committing to **sets** of **elements**.
