@@ -7,6 +7,6 @@ layout: page
 
 Ittay Eyal is a senior lecturer (assistant professor) in the faculty of Electrical Engineering at the Technion. 
 
-He studies security of distributed systems. 
+He studies the security of distributed and decentralized systems. 
 
 [Webpage](https://webee.technion.ac.il/people/ittay/) \| [Google Scholar](https://scholar.google.ch/citations?user=1oUGY7cAAAAJ&hl=en&oi=ao) 
