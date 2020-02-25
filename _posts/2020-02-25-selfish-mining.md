@@ -75,3 +75,7 @@ The analysis has demonstrated that Selfish Mining outperforms honest mining when
 For a deeper dive that including weaker models and a patch to strengthen the protocol, take a look at the Selfish Mining paper ([FC](https://webee.technion.ac.il/people/ittay/publications/btcProcFC.pdf), [cacm$](https://dl.acm.org/doi/10.1145/3212998). 
 
 Subsequent work, including recent results [Hou+;https://arxiv.org/pdf/1912.01798.pdf], use Markov Decision Processes to provide thresholds for miners under which there is no better strategy than honest mining.
+
+--- 
+
+Thanks to Ittai Abraham for important comments on an initial version of this post. 
