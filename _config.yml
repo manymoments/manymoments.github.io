@@ -25,7 +25,7 @@ defaults:
     layout: page
     show-avatar: true
 url: https://decentralizedthoughts.github.io
-baseurl:
+baseurl: 
 description: Decentralized thoughts about decentralization
 navbar-links:
   Contents: contents
@@ -56,12 +56,12 @@ share-links-active:
   google: false
   linkedin: false
 staticman:
-  repository:
-  branch:
-  endpoint:
+  repository: 
+  branch: 
+  endpoint: 
   reCaptcha:
-    siteKey:
-    secret:
+    siteKey: 
+    secret: 
 excerpt_length: 70
 title-separator: "-"
 markdown: kramdown
