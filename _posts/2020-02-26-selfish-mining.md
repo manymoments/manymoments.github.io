@@ -82,4 +82,4 @@ including [recent results](https://arxiv.org/pdf/1912.01798.pdf), use Markov Dec
 **Acknowledgment.** Thanks to Ittai Abraham for helpful feedback on this post.
 
 
-Please leave comments on [Twitter](...)
+Please leave comments on [Twitter](https://twitter.com/ittayeyal/status/1232652755921260544)
