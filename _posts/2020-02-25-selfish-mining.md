@@ -1,7 +1,7 @@
 ---
 title: Blockchain Selfish Mining
-date: 2020-02-25 13:00:00 -08:00
-published: false
+date: 2020-02-26 10:00:00 -05:00
+published: true
 tags:
 - blockchain
 - game_theory
