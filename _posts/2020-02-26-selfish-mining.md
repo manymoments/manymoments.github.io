@@ -10,7 +10,7 @@ author: Ittay Eyal
 Proof of Work (PoW) Blockchains implement a form of State Machine Replication (SMR). Unlike classical SMR protocols, they are **open**, i.e., anyone can join the system, and the system incentivizes participants, called **miners**, to follow the protocol. Therefore, unlike classical SMR protocols, reasoning about blockchain security relies not only on bounding the number of malicious participants. One should crucially ask whether miners are indeed *incentivized* to follow the prescribed protocol. This is the topic of this post.
 
 To make things concrete, we’ll consider Nakamoto’s Bitcoin protocol.
-[Ling](https://decentralizedthoughts.github.io/about-ling/) already provided [background](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/) and an analysis of security against malicious adversaries. For our analysis we’ll describe the system as a *game* played among miners.
+[Ling](https://decentralizedthoughts.github.io/about-ling/) already provided [background](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/) and an analysis of security against malicious adversaries. For our analysis, we’ll describe the system as a *game* played among miners.
 
 ## The Game
 
@@ -18,7 +18,7 @@ The players are the miners who generate blocks. The game proceeds in rounds, whe
 
 This is of course a simplification, e.g., it ignores the slow variation in the total mining power in the system and forks that happen accidentally, which are rare but still occur. Nevertheless, this model is sufficient as a first order approximation of the system.
 
-The prescribed protocol is for each miner to extend the longest chain, or the one it heard of first in case of a fork where two branches have the same length.
+The prescribed protocol is for each miner to extend the longest chain, or the one it heard of first, in case of a fork where two branches have the same length.
 
 Each player in the game strives to maximize her revenue -- this is her **utility function**. Specifically, we consider an infinite-horizon game, that is, the revenue of a miner is her average ratio of blocks in the main chain as the game length tends to infinity. This represents the reward in terms of cryptocurrency granted to miners for each block they generate. Note that blocks that end up outside the main chain (pruned) do not count towards the miner’s revenue.
 
@@ -82,4 +82,4 @@ including [recent results](https://arxiv.org/pdf/1912.01798.pdf), use Markov Dec
 **Acknowledgment.** Thanks to Ittai Abraham for helpful feedback on this post.
 
 
-Please leave comments on [Twitter](https://twitter.com/ittayeyal/status/1232652755921260544)
+Please leave comments on [Twitter](https://twitter.com/ittayeyal/status/1232652755921260544).
