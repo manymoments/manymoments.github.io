@@ -1,6 +1,6 @@
 ---
 title: Bilinear Accumulators for Cryptocurrency Enthusiasts
-date: 2020-02-10 09:05:00 -08:00
+date: 2020-02-27 09:10:00 -08:00
 published: false
 tags:
 - cryptography
@@ -8,7 +8,7 @@ tags:
 author: Alin Tomescu
 ---
 
-**Accumulator schemes** are an alternative to Merkle Hash Trees (MHTs) for committing to **sets** of **elements**.
+**Accumulator schemes** are an alternative to [Merkle Hash Trees (MHTs)](/2020-02-27-what-is-a-merkle-tree) for committing to **sets** of **elements**.
 Their main advantages are:
 
  - *Constant-sized* **membership** and **non-membership proofs**, an improvement over logarithmic-sized proofs in MHTs,
@@ -32,7 +32,7 @@ Nonetheless, some accumulators have hiding properties.
 
 ## The setting
 
-Just like with MHTs, we'll consider accumulators in the setting of a **prover** and one or more **verifiers**.
+Just like with [MHTs](/2020-02-27-what-is-a-merkle-tree), we'll consider accumulators in the setting of a **prover** and one or more **verifiers**.
 The prover will be the party committing to the set and computing proofs (e.g., membership, non-membership, disjointness).
 The verifiers will be the parties that verify proofs.
 
@@ -260,7 +260,7 @@ By now, it should be easy to tell how to verify such a proof:
 
 ## Conclusion
 
-This post introduced _bilinear accumulators_, an alternative to MHTs that offers constant-sized (non)membership proofs.
+This post introduced _bilinear accumulators_, an alternative to [MHTs](/2020-02-27-what-is-a-merkle-tree) that offers constant-sized (non)membership proofs.
 Bilinear accumulators are also more expressive: they can prove subset and disjointness relations between sets.
 This is typically not possible to do efficiently with MHTs, which must be "organized" differently to allow for either efficient subset proofs or efficient disjointness proofs (but not both).
 
