@@ -1,7 +1,11 @@
 ---
-tags: polynomials kzg range-proofs zero-knowledge
-title: "Range Proofs from Polynomial Commitments, Re-explained"
-#published: false
+title: Range Proofs from Polynomial Commitments, Re-explained
+date: 2020-03-03 00:00:00 -08:00
+tags:
+- polynomials
+- kzg
+- range-proofs
+- zero-knowledge
 author: Alin Tomescu
 ---
 
