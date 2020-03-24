@@ -9,4 +9,4 @@ Avishay is a [Postdoctoral Resesarcher](https://research.vmware.com/researchers/
 
 He does research in applied cryptography (secure multiparty computation, private set intersection, anonymous communication and more). 
 
-[Webpage](https://https://www.yanai.io/) \| [Twitter](https://twitter.com/AvishaiY) \| [GitHub](https://github.com/AvishayYanay)
+[Webpage](https://www.yanai.io/) \| [Twitter](https://twitter.com/AvishaiY) \| [GitHub](https://github.com/AvishayYanay)
