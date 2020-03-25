@@ -99,12 +99,12 @@ We will show 2 different ways to detect the above cheating strategy:
 ## Redundancy-based proof (based on [[KMRS14]](https://fc14.ifca.ai/papers/fc14_submission_52.pdf))
 This is based on a work by Seny Kamara, Payman Mohassel, Mariana Raykova and Saeed Sadeghian.
 
-The idea is this, choose some redundancy parameter $t$, now Alice, instead of sending to Steve only $a'_i=F(K,a_i)$ (for all $i$), she will send $t$ values $a'_i^1, a'_i^2,\ldots,a'_i^t$ where $a'_i^j=F(K,a_i||j)$ (the term $a_i||j$ means a concatenation of values $a_i$ and $j$). In additin, Alice stores $D_A[a'_i^j]=a_i$ for every $i=1,\ldots,n$ and $j=1,\ldots,t$.
-Bob will do the same, for every $i=1,\ldots, n$ he sends $b'_i^1, b'_i^2,\ldots, b'_i^t$ where $b'_i^j=F(K,b_i||k)$. In additin, Bob stores $D_B[b'_i^j]=b_i$ for every $i=1,\ldots,n$ and $j=1,\ldots,t$.
+The idea is this, choose some redundancy parameter $t$, now Alice, instead of sending to Steve only $a'_i=F(K,a_i)$ (for all $i$), she will send $t$ values $a'_i^1, a'_i^2,\ldots,a'_i^t$ where $a'_i^j=F(K,a_i\|\|j)$ (the term $a_i\|\|j$ means a concatenation of values $a_i$ and $j$). In additin, Alice stores $D_A[a'_i^j]=a_i$ for every $i=1,\ldots,n$ and $j=1,\ldots,t$.
+Bob will do the same, for every $i=1,\ldots, n$ he sends $b'_i^1, b'_i^2,\ldots, b'_i^t$ where $b'_i^j=F(K,b_i\|\|k)$. In additin, Bob stores $D_B[b'_i^j]=b_i$ for every $i=1,\ldots,n$ and $j=1,\ldots,t$.
 
 But now, it is important that before Alice and Bob sends $A'$ and $B'$ to Steve, they will shuffle them. This is in order to prevent a linkage between the $t$ PRF's results (e.g. $a'_i^1, a'_i^2,\ldots,a'_i^t$) that actually refer to the same original item (e.g. $a_i$).
 
-Steve receives $n\cdot t$ values in total from Alice and from Bob. Obviously, if $|A\cap B|=q$ then now Steve finds that $|A'\cap B'|=q\cdo t$ because each value appears $t$ times.
+Steve receives $n\cdot t$ values in total from Alice and from Bob. Obviously, if $\|A\cap B\|=q$ then now Steve finds that $\|A'\cap B'\|=q\cdot t$ because each value appears $t$ times.
 
 When Alice and Bob receive the list $A'\cap B'$ from Steve, they will check that each item appears $t$ times. That is, Alice will check that for each item $x$ in the intersection there are exactly $t$ values $c_1,\ldots,c_t$ such that $D_A[c_i]=x$. If that doesn't hold then Alice conclude that either Steve is cheating or Bob is cheating.
 
@@ -122,6 +122,6 @@ To solve the first case, Alice and Bob agree on a set of $s$ values $E=\{e_1,\ld
 
 
 ## Polynomial-based proof (based on [[LRG19]](https://eprint.iacr.org/2019/1338.pdf))
-Phi Hung Le, Samuel Ranellucci and Dov Gordon proposed a different approach for solving the above cheating potential by Steve without the need for redunduncy. In their solution, Steve sends back to Alice and Bob the intersection $A'\cap B'$ as described above. In addition, if $|A'\cap B'|=k$, then Steve also proves to Alice and Bob that there are at least $2n-k$ values in the union $A\cup B$ and at least $k$ values in the intersection. Since the intersection and union sizes complete each other to a sum of $2n$, these two proofs are sufficient for convincing Alice and Bob that Steve does not cheat.
+Phi Hung Le, Samuel Ranellucci and Dov Gordon proposed a different approach for solving the above cheating potential by Steve without the need for redunduncy. In their solution, Steve sends back to Alice and Bob the intersection $A'\cap B'$ as described above. In addition, if $\|A'\cap B'\|=k$, then Steve also proves to Alice and Bob that there are at least $2n-k$ values in the union $A\cup B$ and at least $k$ values in the intersection. Since the intersection and union sizes complete each other to a sum of $2n$, these two proofs are sufficient for convincing Alice and Bob that Steve does not cheat.
 
 Let's keep the description of the polynomial-based proofs to the next post :)
