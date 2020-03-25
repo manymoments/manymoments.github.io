@@ -1,10 +1,11 @@
 ---
+layout: post
 title: Private set intersection - A Soft Introduction
-date: 2020-03-26 03:00:00 -07:00
+date: 'Thu Mar 26 2020 12:00:00 GMT+0200 (Israel Standard Time)'
 published: false
 tags:
-- cryptography
-- private-set-intersection
+  - cryptography
+  - private-set-intersection
 author: Avishay Yanai
 ---
 
@@ -121,9 +122,3 @@ To solve the first case, Alice and Bob agree on a set of $s$ values $E=\{e_1,\ld
 Phi Hung Le, Samuel Ranellucci and Dov Gordon proposed a different approach for solving the above cheating potential by Steve without the need for redunduncy. In their solution, Steve sends back to Alice and Bob the intersection $A'\cap B'$ as described above. In addition, if $|A'\cap B'|=k$, then Steve also proves to Alice and Bob that there are at least $2n-k$ values in the union $A\cup B$ and at least $k$ values in the intersection. Since the intersection and union sizes complete each other to a sum of $2n$, these two proofs are sufficient for convincing Alice and Bob that Steve does not cheat.
 
 Let's keep the description of the polynomial-based proofs to the next post :)
-
-
-
-
-
-
