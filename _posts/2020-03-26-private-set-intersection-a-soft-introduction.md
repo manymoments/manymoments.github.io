@@ -51,14 +51,14 @@ We are going to use following ingredient:
 > **Pseudorandom function (PRF)** - a function $F$ over two arguments, a key $K$ and an input $X$, outputs $Y$. $F$ is pseudorandom if for every $X$, the output $Y=F(K,X)$ looks random to someone who does not know the key $K$.
 
 Now, the protocol proceeds as follows:
-0. Alice has $A=\{a_1,\ldots,a_n\}$, Bob has $B=\{b_1,\ldots,b_n\}$.
-1. Alice, Bob and Steve agree on a PRF $F$ they are going to use.
-2. Alice and Bob agree on a key $K$ for $F$. This key remains secret to Steve.
-3. For each $i=1,\ldots,n$, Alice sends $a'_i=F(K,a_i)$ to Steve. Alice also stores $D_A[a'_i]=a_i$.
-4. For each $i=1,\ldots,n$, Bob sends $b'_i=F(K,b_i)$ to Steve. Bob also stores $D_B[b'_i]=b_i$.
-5. Steve computes $A'\cap B'$, namely, the intersection between $\{a'_1,\ldots,a'_n\}$ and $\{b'_1,\ldots,b'_n\}$ and send $A'\cap B'$ to Alice and Bob.
-6. Let $A'\cap B'=(c_1,\ldots,c_m)$.
-7. For each $i=1,\ldots,m$, Alice (resp. Bob) outputs $D_A[c_i]$ (resp. $D_B[c_i]$) as the intersection.
+1. Alice has $A=\{a_1,\ldots,a_n\}$, Bob has $B=\{b_1,\ldots,b_n\}$.
+2. Alice, Bob and Steve agree on a PRF $F$ they are going to use.
+3. Alice and Bob agree on a key $K$ for $F$. This key remains secret to Steve.
+4. For each $i=1,\ldots,n$, Alice sends $a'_i=F(K,a_i)$ to Steve. Alice also stores $D_A[a'_i]=a_i$.
+5. For each $i=1,\ldots,n$, Bob sends $b'_i=F(K,b_i)$ to Steve. Bob also stores $D_B[b'_i]=b_i$.
+6. Steve computes $A'\cap B'$, namely, the intersection between $\{a'_1,\ldots,a'_n\}$ and $\{b'_1,\ldots,b'_n\}$ and send $A'\cap B'$ to Alice and Bob.
+7. Let $A'\cap B'=(c_1,\ldots,c_m)$.
+8. For each $i=1,\ldots,m$, Alice (resp. Bob) outputs $D_A[c_i]$ (resp. $D_B[c_i]$) as the intersection.
 
 ## Is the protocol private?
 
