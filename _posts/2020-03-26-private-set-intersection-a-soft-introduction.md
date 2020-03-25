@@ -46,7 +46,7 @@ In this model we assume **no collusion**, meaning that Alice and Steve do not co
 
 We are going to use following ingredient:
 
-> **Pseudorandom function (PRF)** - a function $F$ over two arguments, a key $K$ and an input $X$, outputs $Y$. $F$ is pseudorandom if for every $X$, the output $Y=F(K,X)$ looks random to someone who does not know the key $K$.
+**_Pseudorandom function (PRF)_** - a function $F$ over two arguments, a key $K$ and an input $X$, outputs $Y$. $F$ is pseudorandom if for every $X$, the output $Y=F(K,X)$ looks random to someone who does not know the key $K$.
 
 Now, the protocol proceeds as follows:
 1. Alice has $A=\{a_1,\ldots,a_n\}$, Bob has $B=\{b_1,\ldots,b_n\}$.
