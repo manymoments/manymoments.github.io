@@ -76,7 +76,7 @@ It depends, if we assume that Steve follows the protocol faithfully then yes. If
 
 Steve may sed Alice and Bob a different set of values, even values that are not in the intersection. 
 
-**Example: **
+**Example:**
 Let $A=\{a_1,a_2,a_3,a_4,a_5\}$ and $B=\{b_1,b_2,b_3,b_4,b_5\}$ such that $a_1=b_1$ and $a_2=b_2$ and $A\cap B=\{a_1,a_2\}=\{b_1,b_2\}$. Then Steve receives $A'=\{a'_1,a'_2,a'_3,a'_4,a'_5\}$ from Alice and $B'=\{b'_1,b'_2,b'_3,b'_4,b'_5\}$ from Bob.
 
 Steve may send $\{a'_1,a'_2,a'_3\}$ back to Alice and $\{b'_3, b'_4\}$ back to Bob so Alice outputs $a_1, a_2, a_3$ and Bob outputs $b_3,b_4$ as the intersection. This way, not only Alice and Bob do not agree on the result, they output incorrect results, specifically none of $a_3, b_3$ and $b_4$ are in the intersection.
