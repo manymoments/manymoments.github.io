@@ -4,7 +4,7 @@ date: 2020-03-26 03:00:00 -07:00
 published: false
 tags:
 - cryptography
-- private set intersection
+- private-set-intersection
 author: Avishay Yanai
 ---
 
