@@ -99,7 +99,7 @@ We will show 2 different ways to detect the above cheating strategy:
 ## Redundancy-based proof (based on [[KMRS14]](https://fc14.ifca.ai/papers/fc14_submission_52.pdf))
 This is based on a work by Seny Kamara, Payman Mohassel, Mariana Raykova and Saeed Sadeghian.
 
-The idea is this, choose some redundancy parameter $t$, now Alice, instead of sending to Steve only $a'_i=F(K,a_i)$ (for all $i$), she will send $t$ values $a'_i^1, a'_i^2,\ldots,a'_i^t$ where $\hat a_i^j=F(K,a_i\||j)$ (the term $a_i\||j$ means a concatenation of values $a_i$ and $j$). In additin, Alice stores $D_A[a'_i^j]=a_i$ for every $i=1,\ldots,n$ and $j=1,\ldots,t$.
+The idea is this, choose some redundancy parameter $t$, now Alice, instead of sending to Steve only $\hat a_i=F(K,a_i)$ (for all $i$), she will send $t$ values $\hat a_i^1, a'_i^2,\ldots,\hat a_i^t$ where $\hat a_i^j=F(K,a_i\||j)$ (the term $\hat a_i\||j$ means a concatenation of values $\hat a_i$ and $j$). In additin, Alice stores $D_A[\hat a_i^j]=a_i$ for every $i=1,\ldots,n$ and $j=1,\ldots,t$.
 Bob will do the same, for every $i=1,\ldots, n$ he sends $b'_i^1, b'_i^2,\ldots, b'_i^t$ where $b'_i^j=F(K,b_i\||k)$. In additin, Bob stores $D_B[b'_i^j]=b_i$ for every $i=1,\ldots,n$ and $j=1,\ldots,t$.
 
 But now, it is important that before Alice and Bob sends $A'$ and $B'$ to Steve, they will shuffle them. This is in order to prevent a linkage between the $t$ PRF's results (e.g. $a'_i^1, a'_i^2,\ldots,a'_i^t$) that actually refer to the same original item (e.g. $a_i$).
