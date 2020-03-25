@@ -30,8 +30,6 @@ The answer is yes, it finds applications in many areas, for a cool application, 
 
 As in any problem in secure computation, we can design a protocol that involves a trusted third party (TTP), called Steve, to which Alice and Bob send $A$ and $B$ respectively. Then Steve computes the set $A\cap B$ and sends it back to Alice and Bob. Such a protocol is not acceptable as Alice and Bob want to avoid the disclosure of their items to anyone. They are willing to reveal $A\cap B$ to each other only.
 
-except $A\cap B$ that they accept to reveal to each other).
-
 In addition, Alice and Bob do not want to rely on a hardware solution like SGX or any other trusted execution environment (TEE).
 
 They do, however, agree to use the service of an **untrusted** third party:
