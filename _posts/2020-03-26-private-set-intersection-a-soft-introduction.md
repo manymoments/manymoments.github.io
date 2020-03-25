@@ -99,7 +99,7 @@ This is based on a work by Seny Kamara, Payman Mohassel, Mariana Raykova and Sae
 
 The idea is this, choose some redundancy parameter $t$, now Alice, instead of sending to Steve only $\hat{a}_i=F(K,a_i)$ (for all $i$), she will send $t$ values $\hat a^1_i, \hat a^2_i,\ldots,\hat a^t_i$ where $\hat a^j_i=F(K,a_i\|\|j)$ (the term $a_i\|\|j$ means a concatenation of values $\hat a_i$ and $j$). 
 In additin, Alice stores $D_A[\hat a^j_i]=a_i$ for every $j=1,\ldots,t$.
-Bob will do the same, for every $i=1,\ldots, n$ he sends $\hat b^1_i, \hat b^2_i,\ldots, \hat b^t_i$ where $b^j_i=F(K,b_i\|\|k)$. In additin, Bob stores $D_B[\hat b^j_i]=b_i$ for every $j=1,\ldots,t$.
+Bob will do the same, for every $i=1,\ldots, n$ he sends $\hat b^1_i, \hat b^2_i,\ldots, \hat b^t_i$ where $\hat b^j_i=F(K,b_i\|\|k)$. In additin, Bob stores $D_B[\hat b^j_i]=b_i$ for every $j=1,\ldots,t$.
 
 But now, it is important that before Alice and Bob send $\hat A$ and $\hat B$ to Steve, they will shuffle them. This is in order to prevent a linkage between the $t$ PRF's results (e.g. $\hat a^1_i, \hat a^2_i,\ldots,\hat a^t_i$) that actually refer to the same original item (e.g. $a_i$).
 
