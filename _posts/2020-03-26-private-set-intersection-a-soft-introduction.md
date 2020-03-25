@@ -8,7 +8,6 @@ tags:
 author: Avishay Yanai
 ---
 
-
 Private set intersection (PSI) is a problem within the broader field of [secure computation](https://en.wikipedia.org/wiki/Secure_multi-party_computation).
 
 
