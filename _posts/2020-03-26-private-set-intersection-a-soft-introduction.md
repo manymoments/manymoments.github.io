@@ -99,7 +99,7 @@ This is based on a work by Seny Kamara, Payman Mohassel, Mariana Raykova and Sae
 
 The idea is this, choose some redundancy parameter $t$, now Alice, instead of sending to Steve only $\hat{a}_i=F(K,a_i)$ (for all $i$), she will send $t$ values $\hat a^1_i, \hat a^2_i,\ldots,\hat a^t_i$ where $\hat a^j_i=F(K,a_i\|\|j)$ (the term $a_i\|\|j$ means a concatenation of values $\hat a_i$ and $j$). 
 In additin, Alice stores $D_A[\hat a^j_i]=a_i$ for every $j=1,\ldots,t$.
-Bob will do the same, for every $i=1,\ldots, n$ he sends $\hat b^1_i, \hat b^2_i,\ldots, \hat b^t_i$ where $\hat b^j_i=F(K,b_i\|\|k)$. In additin, Bob stores $D_B[\hat b^j_i]=b_i$ for every $j=1,\ldots,t$.
+Bob will do the same, for every $i=1,\ldots, n$ he sends $\hat b^1_i, \hat b^2_i,\ldots, \hat b^t_i$ where $\hat b^j_i=F(K,b_i\|\|k)$. In addition, Bob stores $D_B[\hat b^j_i]=b_i$ for every $j=1,\ldots,t$.
 
 But now, it is important that before Alice and Bob send $\hat A$ and $\hat B$ to Steve, they will shuffle them. This is in order to prevent a linkage between the $t$ PRF's results (e.g. $\hat a^1_i, \hat a^2_i,\ldots,\hat a^t_i$) that actually refer to the same original item (e.g. $a_i$).
 
@@ -107,7 +107,7 @@ Steve receives $n\cdot t$ values in total from Alice and from Bob. Obviously, if
 
 When Alice and Bob receive the list $\hat A\cap \hat B$ from Steve, they will check that each item appears $t$ times. That is, Alice will check that for each item $x$ in the intersection there are exactly $t$ values $c_1,\ldots,c_t$ such that $D_A[c_i]=x$. If that doesn't hold then Alice conclude that either Steve is cheating or Bob is cheating.
 
-Now, suppose Steve wants to omit one value, say $a_i$, from the intersection, he will have to omit $t$ values $\hat a^1_i, a^2_i,\ldots,a^t_i$, but those are spread randomly all over the list $\hat A$ so he could not tell (except with small probability) where they are.
+Now, suppose Steve wants to omit one value, say $a_i$, from the intersection, he will have to omit $t$ values $\hat a^1_i, \hat a^2_i,\ldots,\hat a^t_i$, but those are spread randomly all over the list $\hat A$ so he could not tell (except with small probability) where they are.
 
 Take our concrete example above and fix $t=3$, Steve receives $n\cdot t=5\cdot 3=15$ values from Alice and from Bob. If Steve wants to omit $a_1$ from the result intersection then it has to find the 3 values associated with $a_1$, that is, the values $\hat a^1_1, \hat a^2_1$ and $\hat a^3_1$. Since the set $\hat A$ is randomly shuffled, the probability ofguessing correctly is $\binom{5}{3}^{-1}=1/10$. In general, the probability to remove one value from the intersection would be $\binom{n}{t}^{-1}$.
 
