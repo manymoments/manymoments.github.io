@@ -1,14 +1,15 @@
 ---
-title: Private Set Intersection (a Soft Introduction)
-date: 2020-03-26 21:00:00 -07:00
-tags:
-- cryptography
-- private-set-intersection
 layout: post
+title: Private Set Intersection (a Soft Introduction)
+date: 'Fri Mar 27 2020 07:00:00 GMT+0300 (Israel Daylight Time)'
+tags:
+  - cryptography
+  - private-set-intersection
 author: Avishay Yanai
+published: true
 ---
 
-Private set intersection (PSI) is a problem within the broader field of [secure computation](https://en.wikipedia.org/wiki/Secure_multi-party_computation).
+Private Set Intersection (PSI) is a problem within the broader field of [secure computation](https://en.wikipedia.org/wiki/Secure_multi-party_computation).
 
 
 ## The PSI problem
