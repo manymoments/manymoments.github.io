@@ -109,13 +109,13 @@ When Alice and Bob receive the list $\hat A\cap \hat B$ from Steve, they will ch
 
 Now, suppose Steve wants to omit one value, say $a_i$, from the intersection, he will have to omit $t$ values $\hat a^1_i, \hat a^2_i,\ldots,\hat a^t_i$, but those are spread randomly all over the list $\hat A$ so he could not tell (except with small probability) where they are.
 
-Take our concrete example above and fix $t=3$, Steve receives $n\cdot t=5\cdot 3=15$ values from Alice and from Bob. If Steve wants to omit $a_1$ from the result intersection then it has to find the 3 values associated with $a_1$, that is, the values $\hat a^1_1, \hat a^2_1$ and $\hat a^3_1$. Since the set $\hat A$ is randomly shuffled, the probability of guessing correctly is $\binom{5}{3}^{-1}=1/10$. In general, the probability to remove one value from the intersection would be $\binom{n}{t}^{-1}$.
+Take our concrete example above and fix $t=3$, Steve receives $n\cdot t=5\cdot 3=15$ values from Alice and from Bob. If Steve wants to omit $a_1$ from the result intersection then it has to find the 3 values associated with $a_1$, that is, the values $\hat a^1_1, \hat a^2_1$ and $\hat a^3_1$. Since the set $\hat A$ is randomly shuffled, the probability of guessing correctly is $\binom{5}{3}^{-1}=1/10$. In general, the probability to remove a specific value from the intersection would be $\binom{n}{t}^{-1}$.
 
 ### Are we done?
 
 No. There are two edge cases:
-1. Steve can omit _all_ values from the intersection and simply give back an empty list to Alice and Bob. The condition of having each value in the intersection appearing $t$ times in the list returned from Steve holds here, because there are no values at all in the intersection.
-2. Steve can send back to Alice her _entire list_ $\hat A$ and to Bob his _entire list_ $\hat B$. The condition holds also here. However, recall that we have already treated this case. This is considered as cheating only if $\hat A\neq \hat B$, which is covered by the equality test performed by Alice and Bob after receiving the result. 
+1. Steve can omit _all_ values from the intersection and simply give back an empty list to Alice and Bob.
+2. Steve can send back to Alice her _entire list_ $\hat A$ and to Bob his _entire list_ $\hat B$. However, recall that we have already treated this case. This is considered as cheating only if $\hat A\neq \hat B$, which is covered by the equality test performed by Alice and Bob after receiving the result. 
 
 To solve the first case, Alice and Bob agree on a set of $s$ values $E=\{e_1,\ldots,e_s\}$ such that both Alice and Bob take $E$ as part of their input sets. So now instead of computing the intersection $A\cap B$, they will compute the intersection $(A\cup E)\cap (B\cup E)$ which has at least $s$ items. This way, Bob could not return an empty set.
 
