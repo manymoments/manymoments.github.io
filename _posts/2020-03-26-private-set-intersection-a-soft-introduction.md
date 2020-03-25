@@ -2,7 +2,7 @@
 layout: post
 title: Private set intersection - A Soft Introduction
 date: 'Thu Mar 26 2020 12:00:00 GMT+0200 (Israel Standard Time)'
-published: false
+published: true
 tags:
   - cryptography
   - private-set-intersection
