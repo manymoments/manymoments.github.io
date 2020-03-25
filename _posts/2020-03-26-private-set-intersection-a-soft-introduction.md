@@ -109,7 +109,7 @@ When Alice and Bob receive the list $\hat A\cap \hat B$ from Steve, they will ch
 
 Now, suppose Steve wants to omit one value, say $a_i$, from the intersection, he will have to omit $t$ values $\hat a^1_i, \hat a^2_i,\ldots,\hat a^t_i$, but those are spread randomly all over the list $\hat A$ so he could not tell (except with small probability) where they are.
 
-Take our concrete example above and fix $t=3$, Steve receives $n\cdot t=5\cdot 3=15$ values from Alice and from Bob. If Steve wants to omit $a_1$ from the result intersection then it has to find the 3 values associated with $a_1$, that is, the values $\hat a^1_1, \hat a^2_1$ and $\hat a^3_1$. Since the set $\hat A$ is randomly shuffled, the probability ofguessing correctly is $\binom{5}{3}^{-1}=1/10$. In general, the probability to remove one value from the intersection would be $\binom{n}{t}^{-1}$.
+Take our concrete example above and fix $t=3$, Steve receives $n\cdot t=5\cdot 3=15$ values from Alice and from Bob. If Steve wants to omit $a_1$ from the result intersection then it has to find the 3 values associated with $a_1$, that is, the values $\hat a^1_1, \hat a^2_1$ and $\hat a^3_1$. Since the set $\hat A$ is randomly shuffled, the probability of guessing correctly is $\binom{5}{3}^{-1}=1/10$. In general, the probability to remove one value from the intersection would be $\binom{n}{t}^{-1}$.
 
 ### Are we done?
 
