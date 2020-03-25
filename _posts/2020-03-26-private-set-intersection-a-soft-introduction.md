@@ -103,7 +103,7 @@ The idea is this, choose some redundancy parameter $t$, now Alice, instead of se
 In additin, Alice stores $D_A[\hat a^j_i]=a_i$ for every $i=1,\ldots,n$ and $j=1,\ldots,t$.
 Bob will do the same, for every $i=1,\ldots, n$ he sends $\hat b^1_i, \hat b^2_i,\ldots, \hat b^t_i$ where $b^j_i=F(K,b_i\|\|k)$. In additin, Bob stores $D_B[\hat b^j_i]=b_i$ for every $i=1,\ldots,n$ and $j=1,\ldots,t$.
 
-But now, it is important that before Alice and Bob send $\hat A$ and $\hat B$ to Steve, they will shuffle them. This is in order to prevent a linkage between the $t$ PRF's results (e.g. $\hat a^1_i, a^2_i,\ldots,a^t_i$) that actually refer to the same original item (e.g. $a_i$).
+But now, it is important that before Alice and Bob send $\hat A$ and $\hat B$ to Steve, they will shuffle them. This is in order to prevent a linkage between the $t$ PRF's results (e.g. $\hat a^1_i, \hat a^2_i,\ldots,\hat a^t_i$) that actually refer to the same original item (e.g. $a_i$).
 
 Steve receives $n\cdot t$ values in total from Alice and from Bob. Obviously, if $\|A\cap B\|=q$ then now Steve finds that $\|\hat A\cap \hat B\|=q\cdot t$ because each value appears $t$ times.
 
