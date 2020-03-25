@@ -56,7 +56,7 @@ Now, the protocol proceeds as follows:
 3. Alice and Bob agree on a key $K$ for $F$. This key remains secret to Steve.
 4. For each $i=1,\ldots,n$, Alice sends $a'_i=F(K,a_i)$ to Steve. Alice also stores $D_A[a'_i]=a_i$.
 5. For each $i=1,\ldots,n$, Bob sends $b'_i=F(K,b_i)$ to Steve. Bob also stores $D_B[b'_i]=b_i$.
-6. Steve computes $A'\cap B'$, namely, the intersection between $\{a'_1,\ldots,a'_n\}$ and $\{b'_1,\ldots,b'_n\}$ and send $A'\cap B'$ to Alice and Bob.
+6. Steve computes $A'\cap B'$, namely, the intersection between $\{a'_1,\ldots,a'_n\}$ and $\{b'_1,\ldots,b'_n\}$ and sends $A'\cap B'$ to Alice and Bob.
 7. Let $A'\cap B'=(c_1,\ldots,c_m)$.
 8. For each $i=1,\ldots,m$, Alice (resp. Bob) outputs $D_A[c_i]$ (resp. $D_B[c_i]$) as the intersection.
 
@@ -74,7 +74,10 @@ It depends, if we assume that Steve follows the protocol faithfully then yes. If
 
 ### Steve may cheat (1)
 
-Steve may sed Alice and Bob a different set of values, even values that are not in the intersection. For example let $A=\{a_1,a_2,a_3,a_4,a_5\}$ and $B=\{b_1,b_2,b_3,b_4,b_5\}$ such that $a_1=b_1$ and $a_2=b_2$, namely, $A\cap B=\{a_1,a_2\}=\{b_1,b_2\}$. Then Steve receives $A'=\{a'_1,a'_2,a'_3,a'_4,a'_5\}$ from Alice and $B'=\{b'_1,b'_2,b'_3,b'_4,b'_5\}$ from Bob.
+Steve may sed Alice and Bob a different set of values, even values that are not in the intersection. 
+
+# Example
+Let $A=\{a_1,a_2,a_3,a_4,a_5\}$ and $B=\{b_1,b_2,b_3,b_4,b_5\}$ such that $a_1=b_1$ and $a_2=b_2$, namely, $A\cap B=\{a_1,a_2\}=\{b_1,b_2\}$. Then Steve receives $A'=\{a'_1,a'_2,a'_3,a'_4,a'_5\}$ from Alice and $B'=\{b'_1,b'_2,b'_3,b'_4,b'_5\}$ from Bob.
 
 Steve may send $\{a'_1,a'_2,a'_3\}$ back to Alice and $\{b'_3, b'_4\}$ back to Bob so Alice outputs $a_1, a_2, a_3$ and Bob outputs $b_3,b_4$ as the intersection. This way, not only Alice and Bob do not agree on the result, they output incorrect results, specifically none of $a_3, b_3$ and $b_4$ are in the intersection.
 
