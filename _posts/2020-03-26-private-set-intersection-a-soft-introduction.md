@@ -1,11 +1,10 @@
 ---
-layout: post
 title: Private set intersection (A Soft Introduction)
-date: 'Thu Mar 26 2020 12:00:00 GMT+0200 (Israel Standard Time)'
-published: true
+date: 2020-03-26 12:00:00 -07:00
 tags:
-  - cryptography
-  - private-set-intersection
+- cryptography
+- private-set-intersection
+layout: post
 author: Avishay Yanai
 ---
 
