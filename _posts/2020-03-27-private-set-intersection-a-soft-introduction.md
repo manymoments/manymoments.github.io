@@ -1,11 +1,12 @@
 ---
-title: Private Set Intersection (a Soft Introduction)
-date: 2020-03-27 17:00:00 -07:00
-tags:
-- cryptography
-- private-set-intersection
 layout: post
+title: Private Set Intersection (a Soft Introduction)
+date: 'Sat Mar 28 2020 03:00:00 GMT+0300 (Israel Daylight Time)'
+tags:
+  - cryptography
+  - private-set-intersection
 author: Avishay Yanai
+published: true
 ---
 
 Private Set Intersection (PSI) is a problem within the broader field of [secure computation](https://en.wikipedia.org/wiki/Secure_multi-party_computation).
@@ -26,7 +27,7 @@ For example, the following solution is not private: Alice sends $A$ to Bob, Bob 
 The answer is yes, it finds applications in many areas.
 
 **An example**.
-Suppose you sequenced your DNA and obtain a set of genes $A=a_1,\ldots,a_n$. You want to find the risk of having a complex disease in the future. To this end, you use the service of a research institute, which found a set of genes, $B=b_1,\ldots,b_m$, that increase the risk for complex diseases. You don't want to reveal to the institue your set of genes (since it is a highly personal and sensitive information) and the institute does not want to reveal its findings. Say that having the gene $b_i$ in your sequence increases the risk by a single unit. Then, you conduct a PSI protocol with the institute, obtain $A\cap B$ and conclude that your risk is $\|A\cap B\|/m$. In fact, there are variants of PSI that will reveal to you (and to the institute) $\|A\cap B\|/m$ only (rather than the set itself); such variants are called PSI-Cardinality.
+Suppose you sequenced your DNA and obtained a set of genes $A=a_1,\ldots,a_n$. You want to find the risk of having a complex disease in the future. To this end, you use the service of a research institute, which found a set of genes, $B=b_1,\ldots,b_m$, that increase the risk for complex diseases. Say that having the gene $b_i$ in your sequence increases the risk by a constant $1/c$. You don't want to reveal to the institue your set of genes (since it is a highly personal and sensitive information) and the institute does not want to reveal its findings. Then, you conduct a PSI protocol with the institute, obtain $A\cap B$ and conclude that your risk is $\|A\cap B\|/cm$. In fact, there are variants of PSI protocols that reveal to you (and to the institute) $\|A\cap B\|$ only (rather than the set itself); such variants are called PSI-Cardinality.
 
 
 **Other applications**:
