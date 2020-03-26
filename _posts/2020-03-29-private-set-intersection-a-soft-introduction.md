@@ -1,11 +1,12 @@
 ---
-title: Private Set Intersection
-date: 2020-03-29 09:00:00 -07:00
-tags:
-- cryptography
-- private-set-intersection
 layout: post
+title: Private Set Intersection
+date: 'Sun Mar 29 2020 19:00:00 GMT+0300 (Israel Daylight Time)'
+tags:
+  - cryptography
+  - private-set-intersection
 author: Avishay Yanai
+published: true
 ---
 
 Private Set Intersection (PSI) is a problem within the broader field of [secure computation](https://en.wikipedia.org/wiki/Secure_multi-party_computation).
@@ -20,6 +21,10 @@ _The goal is to design a protocol by which Alice and Bob obtain the intersection
 If $a_i\notin B$ then Bob learns nothing about it. In other words, Bob's apriori knowledge about whether Alice has item $z$, where $z$ is not in the intersection, is not affected by the execution of the protocol.
 
 For example, the following solution is not private: Alice sends $A$ to Bob, Bob computes $A\cap B$ and sends the result to Alice. This is not private because Bob learns that Alice has item $a_j$ even if $a_j\notin A\cap B$.
+
+Another problematic solution would be: Alice and Bob agree on some cryptographic hash function $H$. Alice computes $\hat A=H(a_1),\ldots,H(a_n)$ and Bob computes $\hat B=H(b_1),\ldots,H(b_n)$. In addition, for each $b_i$ Bob stores the entry $D_B[H(b_i)]=b_i$ in a dictionary $D_B$. Then, Alice sends $\hat A$ to Bob, who computes $\hat A \cap \hat B$. For every item $c\in \hat A \cap \hat B$ Bob outputs $D_B[c]$ as the intersection.
+
+In general this is not a private solution since if the items of the parties are from a small space (e.g. phone numbers and SSN) then Bob may amount a brute force attack to learn all of Alice's items. Specifically, if the space of all possible items is $S$ and it is of size $N$, then Bob can compute $\hat S=H(s_1),\ldots,H(s_N)$ and store $D_B[H(s_i)]=s_i$ for every $i=1,\ldots,N$. Then, for every item $\hat a_i\in \hat A$ that Bob receives from Alice it computes $D_B[\hat a_i]$ to learn $a_i$. That is, Bob learns all Alice's items, regardless of whether they are in the intersection or not.
 
 ### Is PSI an important problem?
 
