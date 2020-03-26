@@ -1,11 +1,12 @@
 ---
-title: Private Set Intersection (a Soft Introduction)
-date: 2020-03-27 07:00:00 -07:00
-tags:
-- cryptography
-- private-set-intersection
 layout: post
+title: Private Set Intersection (a Soft Introduction)
+date: 'Fri Mar 27 2020 17:00:00 GMT+0300 (Israel Daylight Time)'
+tags:
+  - cryptography
+  - private-set-intersection
 author: Avishay Yanai
+published: true
 ---
 
 Private Set Intersection (PSI) is a problem within the broader field of [secure computation](https://en.wikipedia.org/wiki/Secure_multi-party_computation).
@@ -23,7 +24,19 @@ For example, the following solution is not private: Alice sends $A$ to Bob, Bob 
 
 ### Is PSI an important problem?
 
-The answer is yes, it finds applications in many areas, for a cool application, check out [this paper](https://eprint.iacr.org/2017/738.pdf) by Google. I will cover many interesting applications of PSI in a separate post.
+The answer is yes, it finds applications in many areas.
+
+**An example**.
+Suppose you sequenced your DNA and obtain a set of genes $A=a_1,\ldots,a_n$. You want to find the risk of having a complex disease in the future. To this end, you use the service of a research institute, which found a set of genes, $B=b_1,\ldots,b_m$, that increase the risk for complex diseases. You don't want to reveal to the institue your set of genes (since it is a highly personal and sensitive information) and the institute does not want to reveal its findings. Say that having the gene $b_i$ in your sequence increases the risk by a single unit. Then, you conduct a PSI protocol with the institute, obtain $A\cap B$ and conclude that your risk is $\|A\cap B\|/m$. In fact, there are variants of PSI that will reveal to you (and to the institute) $\|A\cap B\|/m$ only (rather than the set itself); such variants are called PSI-Cardinality.
+
+
+**Other applications**:
+- Contact discovery (see [this](https://eprint.iacr.org/2018/579.pdf) and references within)
+- Remote diagnostic (see [this](https://www.cs.cornell.edu/~shmat/shmat_ccs07.pdf))
+- Record linkage (see [this](https://arxiv.org/pdf/1702.00535.pdf))
+- Measuring the effectiveness of online advertising (see [this](https://eprint.iacr.org/2017/738.pdf))
+
+And more. Providing a comprehensive set of applications of PSI worth a separate blog post, will do that soon!
 
 ### What are the rules? What can we use when designing a PSI protocol?
 
