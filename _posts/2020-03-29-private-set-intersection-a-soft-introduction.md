@@ -1,11 +1,12 @@
 ---
-title: Private Set Intersection
-date: 2020-03-29 19:00:00 -07:00
-tags:
-- cryptography
-- private-set-intersection
 layout: post
+title: Private Set Intersection
+date: 'Mon Mar 29 2020 05:00:00 GMT+0300 (Israel Daylight Time)'
+tags:
+  - cryptography
+  - private-set-intersection
 author: Avishay Yanai
+published: true
 ---
 
 Private Set Intersection (PSI) is a problem within the broader field of [secure computation](https://en.wikipedia.org/wiki/Secure_multi-party_computation).
@@ -23,7 +24,7 @@ For example, the following solution is not private: Alice sends $A$ to Bob, Bob 
 
 Another problematic solution would be: Alice and Bob agree on some cryptographic hash function $H$. Alice computes $\hat A=H(a_1),\ldots,H(a_n)$ and Bob computes $\hat B=H(b_1),\ldots,H(b_n)$. In addition, for each $b_i$ Bob stores the entry $D_B[H(b_i)]=b_i$ in a dictionary $D_B$. Then, Alice sends $\hat A$ to Bob, who computes $\hat A \cap \hat B$. For every item $c\in \hat A \cap \hat B$ Bob outputs $D_B[c]$ as the intersection.
 
-In general this is not a private solution since if the items of the parties are from a small space (e.g. phone numbers and SSN) then Bob may amount a brute force attack to learn all of Alice's items. Specifically, if the space of all possible items is $S$ and it is of size $N$, then Bob can compute $\hat S=H(s_1),\ldots,H(s_N)$ and store $D_B[H(s_i)]=s_i$ for every $i=1,\ldots,N$. Then, for every item $\hat a_i\in \hat A$ that Bob receives from Alice it computes $D_B[\hat a_i]$ to learn $a_i$. That is, Bob learns all Alice's items, regardless of whether they are in the intersection or not.
+In general this is not a private solution since if the items of the parties are from a small space (e.g. phone numbers and SSN) then Bob may launch a brute force attack to learn all of Alice's items. Specifically, if the space of all possible items is $S$ and it is of size $N$, then Bob can compute $\hat S=H(s_1),\ldots,H(s_N)$ and store $D_B[H(s_i)]=s_i$ for every $i=1,\ldots,N$. Then, for every item $\hat a_i\in \hat A$ that Bob receives from Alice it computes $D_B[\hat a_i]$ to learn $a_i$. That is, Bob learns all Alice's items, regardless of whether they are in the intersection or not.
 
 ### Is PSI an important problem?
 
@@ -40,7 +41,7 @@ Suppose you sequenced your DNA and obtained a set of genes $A=a_1,\ldots,a_n$. Y
 - Measuring the effectiveness of online advertising (see [this](https://eprint.iacr.org/2017/738.pdf))
 - and many more...
 
-Providing a comprehensive set of applications of PSI worth a separate blog post, will do that soon!
+Providing a comprehensive set of applications of PSI is worth a separate blog post, will do that soon!
 
 ### What are the rules? What can we use when designing a PSI protocol?
 
