@@ -25,6 +25,7 @@ Their main **dis**advantages are:
 
 In this post, we'll talk about the ins and outs of **bilinear accumulators**[^Nguyen05].
 (We hope to address **RSA accumulators**[^Bd93] in a future post.)
+Bilinear accumulators can be regarded as a particular type of Kate-Zaverucha-Goldberg (KZG) polynomial commitments[^KZG10a].
 
 {: .box-note}
 **Note:** We use the term **commitment** here lightly.
@@ -100,7 +101,8 @@ The prover can commit to or **accumulate** any set $T=\\{e_1,e_2,\dots,e_n\\}$ w
 First, the prover computes an **accumulator polynomial** $\alpha$ which has roots at all the $e_i$'s:
 
 \begin{align}
-\alpha(X) = (X-e_1)(X-e_2)\cdots(X-e_n)\label{eq:acc-poly}
+\alpha(X) &= (X-e_1)(X-e_2)\cdots(X-e_n)\label{eq:acc-poly}\\\
+\alpha(X) &= \prod_{j\in[n]} (X-e_j)
 \end{align}
 
 Here, "computing a polynomial" means computing its **coefficients** $(a_0, a_1, \dots, a_n)$ given its roots (i.e., the $e_i$'s) such that $\alpha(X)=\sum_{i=0}^n a_i X^i$.
@@ -132,18 +134,36 @@ Here's an example for a set $T=\\{e_1, e_2, \dots, e_8\\}$:
 
 Let's see how long it takes to compute $\alpha$ in this manner.
 First, recall that two degree-$n$ polynomials can be multiplied fast in $O(n\log{n})$ time using the **Discrete Fourier Transform (DFT)** (see Chapter 30.1 in CLRS[^CLRS09]).
-Second, let's (recursively) define the time $T(n)$ to compute the tree on $n$ leaves as the sum of:
+Second, let's (recursively) define the time $t(n)$ to compute the tree on $n$ leaves as the sum of:
 
- 1. The time $2\cdot T(n/2)$ to compute its two subtrees of $n/2$ leaves, and
+ 1. The time $2\cdot t(n/2)$ to compute its two subtrees of $n/2$ leaves, and
  2. The $O(n\log{n})$ time to multiply the two degree-$(n/2)$ polynomials at the root of these two subtrees (via DFT).
 
-More formally, $T(n)=2T(n/2)+O(n\log{n})$, which simplifies to $T(n)=O(n\log^2{n})$ time.
+More formally, $t(n)=2t(n/2)+O(n\log{n})$, which simplifies to $t(n)=O(n\log^2{n})$ time.
 
 {: .box-note}
 **Concrete performance:**
 The $O(n\log^2{n})$ time to compute $\alpha$ is the most costly step, asymptotically.
 However, in a concrete implementation, more time is spent computing $g^{\alpha(\tau)}$.
 To speed this up, a fast multi-exponentiation[^Henry10] algorithm should be used. <!-- TODO: cite -->
+
+#### Updating commitments
+
+Unlike [MHTs][mht-post-link] and RSA accumulators, bilinear accumulators cannot be _efficiently updated_.
+Specifically, given an old accumulator $a=g^{\alpha(\tau)}$, the prover cannot _efficiently_ compute the new accumulator $a'=g^{\alpha'(\tau)}$, after a new element $e'$ has been added to the accumulator (i.e., $\alpha'(X) = \alpha(X) (X-e')$).
+
+Instead, the prover has to:
+
+ - Multiply $\alpha(X)$ by $(X-e')$ in $O(n)$ time to obtain $\alpha'(X)$,
+ - Commit to $\alpha'(X)$ from scratch in $O(n)$ time.
+
+Thus, if done naively, updates take $O(n)$ time, which is very expensive.
+(In an MHT, they take $O(\log{n})$ time and in RSA accumulators they take $O(1)$ time.)
+
+**So, is there any hope to speed up updating accumulators?**
+Fortunately, classic static-to-dynamic transformations[^Erickson15] can be used to enable more efficient updates for bilinear accumulators, although at some costs.
+For example, we take this approach in our work when designing and implementing append-only authenticated dictionaries[^TBPplus19].
+The details are outside the scope of this post.
 
 ### Computing membership proofs
 
@@ -161,12 +181,28 @@ To compute a *membership proof*, the prover first divides $\alpha$ by $(X-e_i)$ 
 \alpha(X) = q(X)(X-e_i)
 \end{align\*}
 
+Some simple math shows the quotient $q(X)$ is just $\alpha(X)$ without a root at $e_i$:
+
+$$q(X) = \prod_{j\in[n]\setminus\{i\}} (X-e_j)$$
+
 Second, the prover commits to $q(X)$ using the same algorithm we described for $\alpha(X)$.
 The proof is the commitment $g^{q(\tau)}$.
 
 {: .box-note}
 **Note**: Dividing $\alpha$ by $(x-e_i)$ takes $O(n)$ time and committing to the quotient $q$ also takes $O(n)$ time.
 (As before, the commitment step is more expensive in practice and should be implemented with a multiexp[^Henry10].)
+
+This is easier to see with an example, so let's consider the set $$T=\{5,7,10\}$$.
+The accumulator is $g^{(\tau-5)(\tau-7)(\tau-10)}$.
+The proof for element $5$ is just $g^{(\tau-7)(\tau-10)}$.
+This is just a commitment to the quotient:
+
+$$q(X) = \frac{\alpha(X)}{(X-5)}=\frac{(X-5)(X-7)(X-10)}{(X-5)} = (X-7)(X-10)$$
+
+Similarly:
+
+ - The proof for element $7$ is just $g^{(\tau-5)(\tau-10)}$.
+ - The proof for element $10$ is just $g^{(\tau-5)(\tau-7)}$.
 
 #### Verifying membership proofs
 
@@ -189,6 +225,31 @@ It turns out that, as long as nobody knows $\tau$, this is sufficient for securi
 
 {: .box-warning}
 **Important:** To verify proofs, the verifier needs a small subset of the public parameters: just $g$ and $g^\tau$.
+
+#### Updating membership proofs
+
+Suppose we have an accumulator $a$ for $$\{e_1, \dots, e_n\}$$ and we also have membership proofs $\pi_i$ for each $e_i$.
+If a new element $e_{n+1}$ is added to the accumulator, it seems like we would have to recompute all proofs $\pi_i$ for each $e_i$.
+This would take $O(n^2)$ time, which is impractical for large $n$.
+
+Fortunately, Papamanthou[^Papamanthou11] shows an efficient way to update all membership proofs after a _single_ update to the accumulator.
+The idea is to update each proof $\pi_i$ to $\pi'_i$ as:
+
+$$\pi'_i = a \cdot \pi_i^{e_{n+1}-e_i}$$
+
+To see why this works, note that:
+
+\begin{align\*}
+\pi'\_i &= a \cdot \pi_i^{e_{n+1}-e_i}\\\
+       &= g^{\prod_{j\in[n]} (\tau - e_j)} \cdot \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau-e_j)}\right)^{-(e_{n+1}+e_i)}\\\
+       &= \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau - e_j)}\right)^{(\tau - e_i)} \cdot \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau-e_j)}\right)^{(-e_{n+1}+e_i)}\\\
+       &= \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau - e_j)}\right)^{(\tau - e_i) + (-e_{n+1}+e_i)}\\\
+       &= \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau - e_j)}\right)^{(\tau - e_{n+1})}\\\
+       &= g^{\prod_{j\in[n+1]\setminus\\{i\\}} (\tau - e_j)}
+\end{align\*}
+
+In fact, Papamanthou gives also gives proof update techniques when an element is modified or deleted from the accumulator.
+For more details, see Lemma 3.16 in Papamanthou's PhD thesis[^Papamanthou11].
 
 ### Computing non-membership proofs
 
@@ -235,7 +296,11 @@ As before, this only verifies that the $\alpha(X) = q(X)(X-\hat{e}) + y$ equatio
 {: .box-note}
 **Note:** The $\alpha(X) = q(X)(X-e_i)$ equation we relied on for proving membership is just the PRT applied to $\alpha(e_i) = 0 $
 
-### Computing subset proofs
+### Computing subset proofs (or batching membership proofs)
+
+What if we want to prove $T_1 \subseteq T_2$ given their accumulators $a_1$ and $a_2$?
+One application of this is **batching** membership proofs: i.e., compute a _single_, _constant-sized_ membership proof for multiple elements.
+This can be done by just setting $T_1$ to be the set of those elements.
 
 Subset proofs are based on the observation that if $T_1 \subseteq T_2$, then $\alpha_1$ divdes $\alpha_2$, where $\alpha_1$ and $\alpha_2$ are the accumulator polynomials of $T_1$ and $T_2$.
 
@@ -268,12 +333,6 @@ By now, it should be easy to tell how to verify such a proof:
     e(a_1, g^{u(\tau)}) e(a_2, g^{v(\tau)}) &\stackrel{?}{=} e(g, g)
 \end{align\*}
 
-## A few remaining thoughts
-
- - Bilinear accumulators can be regarded as a particular type of Kate-Zaverucha-Goldberg (KZG) polynomial commitments[^KZG10a].
- - There's a bunch of libraries I found useful when implementing bilinear accumulators:
-    - Victor Shoup's [libntl](https://www.shoup.net/ntl/)
-    - Zcash's [libff](https://github.com/scipr-lab/libff) and [libfqfft](https://github.com/scipr-lab/libfqfft)
 
 ## Conclusion
 
@@ -289,6 +348,19 @@ Unfortunately, the power of bilinear accumulators is paid for with:
  3. $O(\ell)$-sized public parameters for the prover to commit to sets of size $\le \ell$
 
 In our next post, we'll see how RSA accumulators can address (1) and (3), by further sacrificing on (2).
+ 
+If you ever need to implement bilinear accumulators in C++, I found the following libraries useful:
+    - Victor Shoup's [libntl](https://www.shoup.net/ntl/), for fast polynomial arithmetic like division and EEA
+    - Zcash's [libff](https://github.com/scipr-lab/libff), for fast elliptic curve groups with bilinear maps (e.g., BN254)
+    - Zcash's [libfqfft](https://github.com/scipr-lab/libfqfft), for computing FFTs in the finite field $\mathbb{F}_p$ associated with [libff](https://github.com/scipr-lab/libff)'s elliptic curve groups of order $p$
+
+## Open problems
+
+Many interesting problems remain open for bilinear accumulators:
+
+ - Efficiently updating accumulators after updates
+ - Efficiently updating non-membership proofs
+ - Efficiently updating subset and disjointness proofs
 
 ## References
 
@@ -297,12 +369,14 @@ In our next post, we'll see how RSA accumulators can address (1) and (3), by fur
 [^BGG18]: **A Multi-party Protocol for Constructing the Public Parameters of the Pinocchio zk-SNARK**, by Bowe, Sean and Gabizon, Ariel and Green, Matthew D., *in Financial Cryptography and Data Security*, 2019
 [^BGM17]: **Scalable Multi-party Computation for zk-SNARK Parameters in the Random Beacon Model**, by Sean Bowe and Ariel Gabizon and Ian Miers, *in Cryptology ePrint Archive, Report 2017/1050*, 2017
 [^CLRS09]: **Introduction to Algorithms, Third Edition**, by Cormen, Thomas H. and Leiserson, Charles E. and Rivest, Ronald L. and Stein, Clifford, 2009
+[^Erickson15]: **Static-to-dynamic tranformations**, by Jeff Erickson, 2015, [[URL]](http://jeffe.cs.illinois.edu/teaching/datastructures/notes/01-statictodynamic.pdf)
 [^Fiore20]: **Zero-Knowledge Proofs for Set Membership**, by Dario Fiore, in [ZKProof Blog](https://zkproof.org/2020/02/27/zkp-set-membership/), 2020
 [^Henry10]: **Pippenger's Multiproduct and Multiexponentiation Algorithms (Extended Version)**, by Ryan Henry, 2010
 [^Joux00]: **A One Round Protocol for Tripartite Diffie--Hellman**, by Joux, Antoine, *in Algorithmic Number Theory*, 2000
 [^KZG10a]: **Constant-Size Commitments to Polynomials and Their Applications**, by Kate, Aniket and Zaverucha, Gregory M. and Goldberg, Ian, *in ASIACRYPT '10*, 2010
 [^MGGR13]: **Zerocoin: Anonymous Distributed E-Cash from Bitcoin**, by Ian Miers and Christina Garman and Matthew Green and Aviel D. Rubin, *in IEEE Security and Privacy '13*, 2013
 [^Nguyen05]: **Accumulators from Bilinear Pairings and Applications**, by Nguyen, Lan, *in CT-RSA '05*, 2005
+[^Papamanthou11]: **Cryptography for Efficiency: New Directions in Authenticated Data Structures**, by Charalampos Papamanthou, 2011, [[URL]](https://user.eng.umd.edu/~cpap/published/theses/cpap-phd.pdf)
 [^TBPplus19]: **Transparency Logs via Append-Only Authenticated Dictionaries**, by Tomescu, Alin and Bhupatiraju, Vivek and Papadopoulos, Dimitrios and Papamanthou, Charalampos and Triandopoulos, Nikos and Devadas, Srinivas, *in ACM CCS '19*, 2019, #shamelessplug
 [^vG13ModernCh9]: **Newton iteration**, by von zur Gathen, Joachim and Gerhard, Jurgen, *in Modern Computer Algebra*, 2013
 [^vG13ModernCh11]: **Fast Euclidean Algorithm**, by von zur Gathen, Joachim and Gerhard, Jurgen, *in Modern Computer Algebra*, 2013
