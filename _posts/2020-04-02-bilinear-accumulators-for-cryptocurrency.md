@@ -350,6 +350,7 @@ Unfortunately, the power of bilinear accumulators is paid for with:
 In our next post, we'll see how RSA accumulators can address (1) and (3), by further sacrificing on (2).
  
 If you ever need to implement bilinear accumulators in C++, I found the following libraries useful:
+
     - Victor Shoup's [libntl](https://www.shoup.net/ntl/), for fast polynomial arithmetic like division and EEA
     - Zcash's [libff](https://github.com/scipr-lab/libff), for fast elliptic curve groups with bilinear maps (e.g., BN254)
     - Zcash's [libfqfft](https://github.com/scipr-lab/libfqfft), for computing FFTs in the finite field $\mathbb{F}_p$ associated with [libff](https://github.com/scipr-lab/libff)'s elliptic curve groups of order $p$
