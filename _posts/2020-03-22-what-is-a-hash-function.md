@@ -1,6 +1,6 @@
 ---
 title: What is a Hash Function?
-date: 2020-03-22 09:05:00 -08:00
+date: 2020-03-22 10:05:00 -07:00
 published: false
 tags:
 - cryptography

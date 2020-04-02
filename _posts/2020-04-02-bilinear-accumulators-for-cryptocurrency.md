@@ -1,12 +1,12 @@
 ---
 title: Bilinear Accumulators for Cryptocurrency Enthusiasts
-date: 2020-04-02 00:10:00 -08:00
+date: 2020-04-02 01:10:00 -07:00
 tags:
 - cryptography
 - accumulators
 - bilinear accumulators
 - bilinear maps
-- polynomials 
+- polynomials
 author: Alin Tomescu
 ---
 
