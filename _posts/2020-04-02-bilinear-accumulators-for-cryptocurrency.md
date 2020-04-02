@@ -1,18 +1,20 @@
 ---
 title: Bilinear Accumulators for Cryptocurrency Enthusiasts
-date: 2020-02-27 09:10:00 -08:00
-published: false
+date: 2020-04-02 00:10:00 -08:00
 tags:
 - cryptography
 - accumulators
+- bilinear accumulators
+- bilinear maps
+- polynomials 
 author: Alin Tomescu
 ---
 
-**Accumulator schemes** are an alternative to [Merkle Hash Trees (MHTs)](/2020-02-27-what-is-a-merkle-tree) for committing to **sets** of **elements**.
+**Accumulator schemes** are an alternative to [Merkle Hash Trees (MHTs)][mht-post-link] for committing to **sets** of **elements**.
 Their main advantages are:
 
  - *Constant-sized* **membership** and **non-membership proofs**, an improvement over logarithmic-sized proofs in MHTs,
- - Algebraic structure that enables more *efficient* proofs about committed elements <small>(e.g., ZeroCoin[^MGGR13] uses RSA accumulators for anonymity)</small>,
+ - Algebraic structure that enables more *efficient* proofs about committed elements[^Fiore20] <small>(e.g., ZeroCoin[^MGGR13] uses RSA accumulators for anonymity)</small>,
  - Constant-sized proofs for set relations such as subset, disjointness and difference <small>(e.g., append-only authenticated dictionaries[^TBPplus19] can be built using subset and disjointness proofs)</small>.
 
 Their main **dis**advantages are:
@@ -32,7 +34,7 @@ Nonetheless, some accumulators have hiding properties.
 
 ## The setting
 
-Just like with [MHTs](/2020-02-27-what-is-a-merkle-tree), we'll consider accumulators in the setting of a **prover** and one or more **verifiers**.
+Just like with [MHTs][mht-post-link], we'll consider accumulators in the setting of a **prover** and one or more **verifiers**.
 The prover will be the party committing to the set and computing proofs (e.g., membership, non-membership, disjointness).
 The verifiers will be the parties that verify proofs.
 
@@ -46,8 +48,9 @@ Furthermore, the verifier might need (a subset of) these parameters to verify pr
 <!-- TODO: make sure you say what these are for the verifier of bilinear accs -->
 
 {: .box-note}
-**Example:** For MHTs, the public parameters are simply the collision-resistant hash function (CRHF) used to compute the MHT, shared by both the prover and verifier.
-For accumulators, the PPs will typically consist of the description of an algebraic group (e.g., an elliptic curve or $\mathbb{Z}_N^\*$) as well as some other group elements.
+**Example:** For MHTs, the public parameters are simply the collision-resistant hash function (CRHF) used to compute the MHT.
+Both the prover and verifier have this CRHF (e.g., they know how to compute SHA256 hashes).
+In contrast, for accumulators, the PPs will typically consist of the description of an algebraic group (e.g., an elliptic curve or $\mathbb{Z}_N^\*$) as well as some other group elements.
 
 ## Bilinear accumulators
 
@@ -64,12 +67,16 @@ Such groups have an efficiently-computable **bilinear map** $e : \mathbb{G}\time
 Let $g$ denote the generator of $\mathbb{G}$ and let $p$ denote the order of $\mathbb{G}$.
 The most important thing to know about bilinear maps is that they have very useful algebraic properties:
 
-$$e(g^a,g^b)=e(g^a,g)^b=e(g,g^b)^a=e(g,g)^{ab}, \forall a,b\in \mathbb{Z}_p$$
+\begin{align\*}
+e(g^a,g^b)=e(g^a,g)^b=e(g,g^b)^a=e(g,g)^{ab}, \forall a,b\in \mathbb{Z}_p
+\end{align\*}
 
 Second, bilinear accumulators can only be used to commit to sets of _bounded_ size $\ell$.
 For this, the prover needs **$\ell$-Strong Diffie-Hellman ($\ell$-SDH)** public parameters:
 
-$$\left(g^{\tau^i}\right)_{i=0}^{\ell} = (g, g^\tau, g^{\tau^2}, g^{\tau^3},\dots,g^{\tau^\ell})$$
+\begin{align\*}
+\left(g^{\tau^i}\right)_{i=0}^{\ell} &= (g, g^\tau, g^{\tau^2}, g^{\tau^3},\dots,g^{\tau^\ell})
+\end{align\*}
 
 Here, $\tau$ is a **trapdoor**: a random number in $\mathbb{Z}_p$ that must *not* be made public or else the accumulator scheme will be completely insecure.
 (We'll discuss what "security" means later.)
@@ -85,16 +92,18 @@ This way, all parties must collude in order to learn $\tau$, which means a singl
 {: .box-warning}
 **Warning:**
 This requirement of a trusted setup phase is a disadvantage of bilinear accumulators, since it complicates the set up of the scheme.
-As we'll see later, RSA accumulators do not necessarily need a trusted setup.
+As we'll see later, in some settings, RSA accumulators have the advantage of not needing a trusted setup.
 
 ### Committing to sets
 
 The prover can commit to or **accumulate** any set $T=\\{e_1,e_2,\dots,e_n\\}$ where $e_i \in \mathbb{Z}_p$ and $n < \ell$.
 First, the prover computes an **accumulator polynomial** $\alpha$ which has roots at all the $e_i$'s:
 
-$$\alpha(X) = (X-e_1)(X-e_2)\cdots(X-e_n)$$
+\begin{align}
+\alpha(X) = (X-e_1)(X-e_2)\cdots(X-e_n)\label{eq:acc-poly}
+\end{align}
 
-Here, "computing a polynomial" means computing its **coefficients** $(a_0, a_1, \dots, a_n)$ such that $\alpha(X)=\sum_{i=0}^n a_i X^i$.
+Here, "computing a polynomial" means computing its **coefficients** $(a_0, a_1, \dots, a_n)$ given its roots (i.e., the $e_i$'s) such that $\alpha(X)=\sum_{i=0}^n a_i X^i$.
 Also, note that the $a_i$'s are elements of $\mathbb{Z}_p$ and $\alpha$ has degree $n$.
 
 Second, the **digest** or **accumulator** of $T$ is set to $a=g^{\alpha(\tau)}$, computed as:
@@ -134,12 +143,17 @@ More formally, $T(n)=2T(n/2)+O(n\log{n})$, which simplifies to $T(n)=O(n\log^2{n
 **Concrete performance:**
 The $O(n\log^2{n})$ time to compute $\alpha$ is the most costly step, asymptotically.
 However, in a concrete implementation, more time is spent computing $g^{\alpha(\tau)}$.
-To speed this up, a fast multi-exponentiation algorithm should be used. <!-- TODO: cite -->
+To speed this up, a fast multi-exponentiation[^Henry10] algorithm should be used. <!-- TODO: cite -->
 
 ### Computing membership proofs
 
 Now that we know how to accumulate sets, let's talk about how to prove membership of elements w.r.t. the accumulator of a set. 
-The key idea is that $e_i$ is in the accumulator if, and only if, $(X-e_i)$ divides $\alpha(X)$.
+Looking back at Equation \ref{eq:acc-poly}, we notice that $e_i$ is in the accumulator if, and only if, $(X-e_i)$ divides $\alpha(X)$.
+Accumulator membership proofs leverage this observation!
+
+{: .box-note}
+Another way to look at this is that $e_i$ is in the accumulator if, and only if, $\alpha(e_i)=0$.
+But $\alpha(e_i)=0$ is equivalent to $(X-e_i)$ divides $\alpha(X)$!
 
 To compute a *membership proof*, the prover first divides $\alpha$ by $(X-e_i)$ obtaining a **quotient** polynomial $q(X)$ of degree $n-1$:
 
@@ -152,7 +166,7 @@ The proof is the commitment $g^{q(\tau)}$.
 
 {: .box-note}
 **Note**: Dividing $\alpha$ by $(x-e_i)$ takes $O(n)$ time and committing to the quotient $q$ also takes $O(n)$ time.
-(As before, the commitment step is more expensive in practice and should be implemented with a multiexp.)
+(As before, the commitment step is more expensive in practice and should be implemented with a multiexp[^Henry10].)
 
 #### Verifying membership proofs
 
@@ -178,8 +192,10 @@ It turns out that, as long as nobody knows $\tau$, this is sufficient for securi
 
 ### Computing non-membership proofs
 
-It is also possible to prove that an element $\hat{e}\notin T$ is not in the accumulator.
-Such *non-membership proofs* leverage the **polynomial remainder theorem (PRT)**, which says that:
+It is also possible to create a _non-membership proof_ that an element $\hat{e}\notin T$ is not in the accumulator.
+We just have to (somehow) show that $\alpha(\hat{e})\ne 0$.
+
+For this, we'll leverage the **polynomial remainder theorem (PRT)**, which says that:
 
 \begin{align\*}
 \forall\ \text{polynomials}\ \phi,\forall k, \exists\ \text{polynomial}\ q,\ \text{s.t.}\ \phi(X) = q(X)(x - k) + \phi(k)
@@ -187,15 +203,13 @@ Such *non-membership proofs* leverage the **polynomial remainder theorem (PRT)**
 
 <!-- $$\phi(k) = v \Leftrightarrow \exists q, \phi(X) = q(X)(x - k) + v$$ -->
 
-{: .box-note}
-**Note:** The $\alpha(X) = q(X)(X-e_i)$ equation we relied on for proving membership is just the PRT applied to $\alpha(e_i) = 0 $
-
-Recall that an element $\hat{e}$ is *not* in the accumulator if, and only if, $\alpha(\hat{e}) = y$ where $y \ne 0$.
-Applying the PRT, we get:
+Now, suppose we have an element $\hat{e}$ that is *not* in the accumulator.
+This means $\alpha(\hat{e}) = y$ where $y \ne 0$.
+In other words, by applying the PRT, we get:
 
 $$\alpha(\hat{e}) = y \Leftrightarrow \exists q, \alpha(X) = q(X)(x - \hat{e}) + y$$
 
-The non-membership proof will consist of (1) a commitment to $q$ as before and (2) the non-zero value $y=\alpha(\hat{e})$.
+The non-membership proof will consist of (1) a commitment to $q$ (as before) and (2) the non-zero value $y=\alpha(\hat{e})$.
 
 Let $\pi=g^{q(\tau)}$ denote the quotient commitment.
 The proof verification remains largely the same:
@@ -213,10 +227,13 @@ Note that this is equivalent to checking that:
     \alpha(\tau) &\stackrel{?}{=} q(\tau)(\tau - \hat{e}) + y
 \end{align\*}
 
+As before, this only verifies that the $\alpha(X) = q(X)(X-\hat{e}) + y$ equation holds *only for* $X=\tau$ rather than for all $X$.
+
 {: .box-note}
 **Note:** The verification can be done more efficiently as $e(g^{\alpha(\tau)} / g^y, g) \stackrel{?}{=} e(g^{q(\tau)}, g^{\tau -\hat{e}})$.
 
-As before, this only verifies that the $\alpha(X) = q(X)(X-\hat{e}) + y$ equation holds *only for* $X=\tau$ rather than for all $X$.
+{: .box-note}
+**Note:** The $\alpha(X) = q(X)(X-e_i)$ equation we relied on for proving membership is just the PRT applied to $\alpha(e_i) = 0 $
 
 ### Computing subset proofs
 
@@ -242,7 +259,7 @@ Disjointness proofs are based on the observation that if $T_1 \cap T_2 = \varnot
 
 $$u(X)\alpha_1(X)+v(X)\alpha_2(X) = 1$$
 
-The $u,v$ polynomials can be computed using (fast versions of) the Extended Euclidean Algorithm (EEA)[^vG13ModernCh11] in $O(n\log{n})$ time, where $n$ is the max degree of the two polynomials.
+The $u,v$ polynomials can be computed using (fast versions of) the Extended Euclidean Algorithm (EEA)[^vG13ModernCh11] in $O(n\log^2{n})$ time, where $n$ is the max degree of the two polynomials.
 
 The disjointness proof will be the $g^{u(\tau)}$ and $g^{v(\tau)}$ commitments to $u$ and $v$ respectively.
 By now, it should be easy to tell how to verify such a proof:
@@ -260,8 +277,9 @@ By now, it should be easy to tell how to verify such a proof:
 
 ## Conclusion
 
-This post introduced _bilinear accumulators_, an alternative to [MHTs](/2020-02-27-what-is-a-merkle-tree) that offers constant-sized (non)membership proofs.
-Bilinear accumulators are also more expressive: they can prove subset and disjointness relations between sets.
+This post introduced _bilinear accumulators_, an alternative to [MHTs][mht-post-link] that offers constant-sized (non)membership proofs.
+
+Bilinear accumulators are more "expressive" than MHTs: they can prove subset and disjointness relations between sets.
 This is typically not possible to do efficiently with MHTs, which must be "organized" differently to allow for either efficient subset proofs or efficient disjointness proofs (but not both).
 
 Unfortunately, the power of bilinear accumulators is paid for with:
@@ -270,19 +288,24 @@ Unfortunately, the power of bilinear accumulators is paid for with:
  2. More computational overhead,
  3. $O(\ell)$-sized public parameters for the prover to commit to sets of size $\le \ell$
 
-In our next post, we'll see how RSA accumulators can address (1) and (3), at the cost of even more computation.
+In our next post, we'll see how RSA accumulators can address (1) and (3), by further sacrificing on (2).
 
 ## References
 
+[^BB08]: **Short Signatures Without Random Oracles and the SDH Assumption in Bilinear Groups**, by Boneh, Dan and Boyen, Xavier, *in Journal of Cryptology*, 2008
 [^Bd93]: **One-Way Accumulators: A Decentralized Alternative to Digital Signatures**, by Benaloh, Josh and de Mare, Michael, *in EUROCRYPT '93*, 1994
-[^Nguyen05]: **Accumulators from Bilinear Pairings and Applications**, by Nguyen, Lan, *in CT-RSA '05*, 2005
-[^MGGR13]: **Zerocoin: Anonymous Distributed E-Cash from Bitcoin**, by Ian Miers and Christina Garman and Matthew Green and Aviel D. Rubin, *in IEEE Security and Privacy '13*, 2013
-[^TBPplus19]: **Transparency Logs via Append-Only Authenticated Dictionaries**, by Tomescu, Alin and Bhupatiraju, Vivek and Papadopoulos, Dimitrios and Papamanthou, Charalampos and Triandopoulos, Nikos and Devadas, Srinivas, *in ACM CCS '19*, 2019, #shamelessplug
-[^Joux00]: **A One Round Protocol for Tripartite Diffie--Hellman**, by Joux, Antoine, *in Algorithmic Number Theory*, 2000
 [^BGG18]: **A Multi-party Protocol for Constructing the Public Parameters of the Pinocchio zk-SNARK**, by Bowe, Sean and Gabizon, Ariel and Green, Matthew D., *in Financial Cryptography and Data Security*, 2019
 [^BGM17]: **Scalable Multi-party Computation for zk-SNARK Parameters in the Random Beacon Model**, by Sean Bowe and Ariel Gabizon and Ian Miers, *in Cryptology ePrint Archive, Report 2017/1050*, 2017
 [^CLRS09]: **Introduction to Algorithms, Third Edition**, by Cormen, Thomas H. and Leiserson, Charles E. and Rivest, Ronald L. and Stein, Clifford, 2009
-[^BB08]: **Short Signatures Without Random Oracles and the SDH Assumption in Bilinear Groups**, by Boneh, Dan and Boyen, Xavier, *in Journal of Cryptology*, 2008
+[^Fiore20]: **Zero-Knowledge Proofs for Set Membership**, by Dario Fiore, in [ZKProof Blog](https://zkproof.org/2020/02/27/zkp-set-membership/), 2020
+[^Henry10]: **Pippenger's Multiproduct and Multiexponentiation Algorithms (Extended Version)**, by Ryan Henry, 2010
+[^Joux00]: **A One Round Protocol for Tripartite Diffie--Hellman**, by Joux, Antoine, *in Algorithmic Number Theory*, 2000
 [^KZG10a]: **Constant-Size Commitments to Polynomials and Their Applications**, by Kate, Aniket and Zaverucha, Gregory M. and Goldberg, Ian, *in ASIACRYPT '10*, 2010
+[^MGGR13]: **Zerocoin: Anonymous Distributed E-Cash from Bitcoin**, by Ian Miers and Christina Garman and Matthew Green and Aviel D. Rubin, *in IEEE Security and Privacy '13*, 2013
+[^Nguyen05]: **Accumulators from Bilinear Pairings and Applications**, by Nguyen, Lan, *in CT-RSA '05*, 2005
+[^TBPplus19]: **Transparency Logs via Append-Only Authenticated Dictionaries**, by Tomescu, Alin and Bhupatiraju, Vivek and Papadopoulos, Dimitrios and Papamanthou, Charalampos and Triandopoulos, Nikos and Devadas, Srinivas, *in ACM CCS '19*, 2019, #shamelessplug
 [^vG13ModernCh9]: **Newton iteration**, by von zur Gathen, Joachim and Gerhard, Jurgen, *in Modern Computer Algebra*, 2013
 [^vG13ModernCh11]: **Fast Euclidean Algorithm**, by von zur Gathen, Joachim and Gerhard, Jurgen, *in Modern Computer Algebra*, 2013
+
+<!-- TODO: Update this to our own blogpost on MHTs -->
+[mht-post-link]: http://en.wikipedia.org/wiki/Merkle_Tree
