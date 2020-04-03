@@ -232,7 +232,7 @@ Suppose we have an accumulator $a$ for $$\{e_1, \dots, e_n\}$$ and we also have 
 If a new element $e_{n+1}$ is added to the accumulator, it seems like we would have to recompute all proofs $\pi_i$ for each $e_i$.
 This would take $O(n^2)$ time, which is impractical for large $n$.
 
-Fortunately, Papamanthou[^Papamanthou11] shows an efficient way to update all membership proofs after a _single_ update to the accumulator.
+Fortunately, there is an efficient way to update all membership proofs after a _single_ element $e_{n+1}$ was added to the accumulator[^Nguyen05].
 The idea is to update each proof $\pi_i$ to $\pi'_i$ as:
 
 $$\pi'_i = a \cdot \pi_i^{e_{n+1}-e_i}$$
@@ -248,8 +248,12 @@ To see why this works, note that:
        &= g^{\prod_{j\in[n+1]\setminus\\{i\\}} (\tau - e_j)}
 \end{align\*}
 
-In fact, Papamanthou gives also gives proof update techniques when an element is modified or deleted from the accumulator.
-For more details, see Lemma 3.16 in Papamanthou's PhD thesis[^Papamanthou11].
+There is also a similar technique for updating proofs after a _single_ element deletion (see Section 4, pg. 10, in the original paper on bilinear accumulators[^Nguyen05]).
+Lastly, [Papamanthou](https://twitter.com/chbpap) also gives a proof update techniques when a single element is modified in the accumulator (see Lemma 3.16 in his thesis[^Papamanthou11]).
+
+{: .box-warning}
+Still, compared to MHTs, which can update all proofs in $O(\log{n})$ time, updating all proofs in $O(n)$ time remains slow for many bilinear accumulator applications.
+This seems to the cost paid to get constant-sized membership proofs.
 
 ### Computing non-membership proofs
 
