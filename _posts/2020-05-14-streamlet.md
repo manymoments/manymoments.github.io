@@ -5,15 +5,14 @@ tags:
 - blockchain101
 ---
 
-## Streamlet: A Simple Textbook Blockchain Protocol
-
 <p align="center">
 Guest post by  <a href="https://www.cs.cornell.edu/\~byc/">Benjamin Chan</a> and <a href="http://elaineshi.com/">Elaine Shi</a>
 </p>
 
 In this post, we describe an extraordinarily simple blockchain protocol called [Streamlet](https://eprint.iacr.org/2020/088). Consensus is a complex problem and has been studied since the 1980s. More recently, blockchain research has spawned many new works aiming for performance and ease-of-implementation. However, *simple*, *understandable* protocols remain elusive, and that's where Streamlet comes in.
 
-**Streamlet in a nutshell:**
+### Streamlet in a nutshell:
+
 
 * The protocol proceeds in synchronized epochs.
 
