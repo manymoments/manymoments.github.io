@@ -38,7 +38,7 @@ In this section, we dive into the details of the Streamlet protocol; for a forma
 
 Streamlet solves the following problem -- besides the modern name &quot;blockchain&quot;, it was also known as State Machine Replication ([SMR](https://decentralizedthoughts.github.io/2019-10-25-flavours-of-state-machine-replication/)) or Byzantine-Fault Tolerance (i.e. [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf)) in the literature. We&#39;ll just call it (permissioned) &#39;blockchain&#39;:
 
-- _n_ players, _f_ of which are byzantine. Honest players follow the protocol, whereas Byzantine players may deviate arbitrarily from the protocol. Assume that $f <n/3$.
+- $n$ players, $f$ of which are byzantine. Honest players follow the protocol, whereas Byzantine players may deviate arbitrarily from the protocol. Assume that $f <n/3$.
 - Players receive signed transactions from the environment, and seek to order these transactions into a log, which we call a blockchain, comprised of blocks.
 - (Consistency) Every honest player must finalize prefixes of the same blockchain.
 - (Liveness) If some honest player receives a transaction, that transaction must eventually be finalized by every honest player - ideally in expected constant time when the network is reliable.
