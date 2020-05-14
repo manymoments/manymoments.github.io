@@ -1,10 +1,6 @@
 ---
-title: Streamlet: A Simple Textbook Blockchain Protocol
-date: 2020-05-15 01:10:00 -07:00
-tags:
-- blockchain 101
-author: Benjamin Chan, Elaine Shi
-published: false
+title: 2020 05 15 Streamlet
+date: 2020-05-14 10:48:29.415000000 -07:00
 ---
 
 ## Streamlet: A Simple Textbook Blockchain Protocol
