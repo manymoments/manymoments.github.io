@@ -6,7 +6,7 @@ tags:
 - lowerbound
 author: Kartik Nayak, Ittai Abraham
 share-img: "/uploads/FLM-world3.png"
-Field name:
+Field name: 
 ---
 
 The [Fischer, Lynch, and Merritt, 1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bound states that Byzantine agreement is impossible if the adversary controls $f>n/3$ parties. It is well known that this lower bound does not hold if there is a PKI setup.
