@@ -1,6 +1,7 @@
 ---
 title: 2020 05 15 Streamlet
-date: 2020-05-14 10:48:29.415000000 -07:00
+date: 2020-05-14 10:48:00 -07:00
+published: false
 ---
 
 ## Streamlet: A Simple Textbook Blockchain Protocol
