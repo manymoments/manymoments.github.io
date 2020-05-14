@@ -6,28 +6,29 @@ tags:
 - lowerbound
 author: Kartik Nayak, Ittai Abraham
 share-img: "/uploads/FLM-world3.png"
-Field name: 
+Field name:
 ---
 
-The [FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bound states that Byzantine agreement is impossible if the adversary controls $f>n/3$ parties. It is well known that this lower bound does not hold if there is a PKI setup.
+The [Fischer, Lynch, and Merritt, 1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf) lower bound states that Byzantine agreement is impossible if the adversary controls $f>n/3$ parties. It is well known that this lower bound does not hold if there is a PKI setup.
 
-The modern view of this lower bound is that it holds if the adversary can simulate $n+f$ parties.
+The modern view of this lower bound is that it holds if the adversary can *simulate* $n+f$ parties.
 
-The ability to simulate honest parties is trivial with a traditional poly-time adversary (and no PKI setup). A key modern observation is that in the *proof-of-work*  setting the adversary controlling $f$ parties cannot simulate $n+f$ parties. So the FLM lower bound does not hold in these models. Indeed  Byzantine Agreement may be possible even of there is no PKI setup (in the *proof-of-work*  setting)!
+The ability to simulate a polynomial number of honest parties is trivial with a traditional poly-time adversary (assuming no PKI setup). A key modern observation is that in the *proof-of-work*  setting, an adversary controlling $f$ parties cannot simulate $n+f$ parties. So the FLM lower bound does not hold in these models. Indeed  Byzantine Agreement may be possible even of there is no PKI setup (in the *proof-of-work*  setting)!
 
 > When nothing is known, anything is possible
 > <cite> [Margaret Drabble](http://jacobjwalker.effectiveeducation.org/blog/2013/11/29/quote-of-the-day-when-nothing-is-known-anything-is-possible/)</cite>
 
 In this series of posts we are revisiting classic lower bounds from the 1980's. Most of them focused on *deterministic* protocols and computationally *unbounded* adversaries. Part of our goal is to provide a more modern view that also considers *randomized* protocols and *computational restrictions* on the adversary.
 
-In our [first post](https://ittaiab.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) we reviewed the classic lower for [Partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound turned out to be very robust, it holds even against a static adversary and even if there is [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/).
+In our [first post](https://ittaiab.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) we reviewed the classic lower for [Partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). That lower bound turned out to be very robust, it holds even against a static adversary and even if there is [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/).
 
-In this post we discuss another classic impossibility result. This time in the [synchronous model](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound shows that with $n=3f$ parties one cannot solve Byzantine agreement in the face of an adversary controlling $f$ parties. We show the version where $n=3$ parties.
+In this post we discuss another classic impossibility result. This time in the [synchronous model](https://ittaiab.github.io/2019-06-01-2019-5-31-models/). This lower bound shows that with $n
+\leq 3f$ parties, one cannot solve Byzantine agreement in the face of an adversary controlling $f$ parties. We show the version where $n=3$ and $f=1$.
 
 Informally this lower bound captures the following:
 *if there are only three parties $A,B,C$ and say $B$ and $C$ blame each other for lying and provide no proof-of-malice to $A$, then $A$ has no way to decide between $B$ and $C$. $A$ has no way to know who to trust and agree with.*
 
-**[Fisher, Lynch and Merritt 1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf): It is impossible to solve synchronous [agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) in a plain authenticated channels model if $f \geq n/3$.**
+**[Fisher, Lynch, and Merritt,  1985](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf): It is impossible to solve synchronous [agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) in a plain authenticated channels model if $f \geq n/3$.**
 
 
 
@@ -77,13 +78,13 @@ Thus, if the validity property holds in Worlds 1 and 2, the agreement property c
 **Simulation of parties by the adversary**
 
 The main thing to observe is that the lower bound requires the adversary to simulate $4$ parties (in general, $n+f$ parties). So this lower bound does not hold if the adversary cannot simulate. Here are a couple of interesting cases:
-- Trusted setup: Under the *classic* computational assumptions that assume the adversary is *polynomially bounded*, this lower bound still holds assuming there is not setup. If there is a [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/), then the adversary will not be able to simulate all of the other parties with different inputs.
+- Trusted setup: Under the *classic* computational assumptions that assume the adversary is *polynomially bounded*, this lower bound still holds assuming there is not setup. If there is a [trusted PKI setup](https://ittaiab.github.io/2019-07-18-setup-assumptions/), then the adversary will not be able to simulate any of the other parties.
 - Computationally bounded adversaries: Under more fine grained assumptions where the adversaries' power to solve certain computational puzzles is restricted, it is in fact possible to circumvent this lower bound - without any trusted setup. See [KMS](https://eprint.iacr.org/2014/857.pdf), [AD](https://www.iacr.org/archive/crypto2015/92160235/92160235.pdf), and [GGLP](https://eprint.iacr.org/2016/991.pdf).
 
-- In particular, Nakamoto Consensus is an example of a Byzantine Agreement protocol that only requires a fresh random genesis as a setup and can withstand $(n/2)(1+\epsilon)>f>n/3$ corruptions (see [GKL](https://eprint.iacr.org/2014/765.pdf)).
+- In particular, Nakamoto Consensus is an example of a Byzantine Agreement protocol that only requires a fresh random genesis as a setup and can withstand $(n/2)(1+\epsilon)>f>n/3$ corruptions (see [GKL](https://eprint.iacr.org/2014/765.pdf)) or this [blog post](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/).
 
 
-The other thing to observe is that when the FLM bound holds, it holds in a strong way for randomized protocols, disallowing even protocols that reach agreement with a small constant probability of error.
+The other thing to observe is that when the FLM bound holds, it holds in a strong way for randomized protocols, disallowing even protocols that reach agreement with a small constant probability of error. See the unpublished manuscript of [KY](http://www.math.ucsd.edu/~ronspubs/89_08_byzantine.pdf).
 
 
 **[FLM 85 modern version] It is impossible to solve synchronous agreement with probability $> 2/3$ against a Byzantine adversary that can simulate $n+f$ parties if $f \geq n/3$.**
