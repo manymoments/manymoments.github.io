@@ -122,7 +122,9 @@ We hope that this post is a useful exposition of what might be the simplest bloc
 
 We thank [Decentralized Thoughts](https://decentralizedthoughts.github.io/) for the opportunity to write this blog post, and Ittai Abraham for insightful and thoughtful feedback on an initial draft.
 
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1261261415391862784?s=20).
+
+
 [^1]: The length of each epoch should be configured to match the time it takes for a message round trip when network conditions are good. We guarantee consistency even when network conditions are arbitrary but guarantee liveness when network conditions are good.
 
 [^2]: With high probability, using a collision resistant hash function family.
-
