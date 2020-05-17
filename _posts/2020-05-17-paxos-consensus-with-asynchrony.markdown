@@ -1,11 +1,4 @@
 ---
-title: Paxos: Consensus with Asynchronous Crash Faults
-date: 2020-05-17 01:10:00 -07:00
-tags:
-- consensus
-- SMR
-author: Kartik Nayak
-published = False
 ---
 
 ### Generalized Primary-Backup
