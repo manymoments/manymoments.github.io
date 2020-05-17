@@ -1,11 +1,5 @@
 ---
-title: Paxos: Consensus with Crash Failures under Asynchrony
-date: 2020-05-17 03:10:00 -07:00
-tags:
-- dist101
-- SMR
-author: Kartik Nayak
-published: false
+title: 2020 05 17 Paxos Consensus With Asynchrony
 ---
 
 ### Generalized Primary-Backup
