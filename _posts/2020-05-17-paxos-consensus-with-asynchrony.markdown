@@ -60,3 +60,46 @@ Can we use the above protocol under an asynchronous network communication? No! H
 The modified protocol is simple: it tries to emulate synchrony using acknowledgments. However, a careful reader may have observed that this protocol works *only when no backup replicas have crashed*. In other words, despite using $n$ backups, it cannot tolerate a single crash fault (which is perhaps worse than using a single state machine). If any backup crashes, then the primary will never receive all $n$ acknowledgments, ultimately stopping progress. Due to the FLP impossibility result, the primary cannot distinguish between a crash and an acknowledgement delayed due to asynchrony in the network. Interestingly, the synchronous protocol described earlier could tolerate $f < n$ faults.
 
 
+```
+// Replica j
+
+state = init
+log = []
+last-executed = 0
+seq-no = 0
+view = 0
+acks = []
+
+while true:
+   // as a Backup
+   on receiving ("request", cmd, seq-no) from replica[view]:
+      log[seq-no] = (cmd, "requested")
+      send ("ack", cmd, seq-no) to replica[view]
+      
+   on receiving ("acks", cmd, seq-no) from replica[view]:
+      log[seq-no] = (cmd, "acks-received")
+      
+      // execute commands in the order of their seq-no
+      while log.length >= last-executed and log[last-executed].second == "acks-received":
+         state, output = apply(log[last-executed].first, state)
+         log[last-executed].second = "executed"
+         last-executed = last-executed + 1
+      
+   // as a Primary
+   on receiving cmd from a client library (and view == j):
+      send ("request", cmd, seq-no) to all replicas
+      log.append(cmd, "requested")
+      seq-no = seq-no + 1
+      
+   on receiving ("ack", cmd, seq-no) from a backup replica r:
+      acks[seq-no] = acks[seq-no + 1] // TODO(ASSUMES RECEIVES A MESSAGE ONLY ONCE)
+      if acks[seq-no] > n/2: // TODO(SHOULD DO THIS ONLY ONCE for a seq-no)
+         send ("acks", cmd, seq-no) to all replicas
+         log[seq-no] = (cmd, "acks-received")
+         // execute commands in the order of their seq-no
+         while log.length >= last-executed and log[last-executed].second == "acks-received":
+            state, output = apply(log[last-executed].first, state)
+            send output to the client library
+            log[last-executed].second = "executed"
+            last-executed = last-executed + 1
+```
