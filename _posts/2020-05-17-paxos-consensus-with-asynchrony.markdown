@@ -16,7 +16,7 @@ To explain this idea, we start with the generalized Primary-Backup SMR with cras
 
 Recall that in a generalized primary-backup system, the primary behaves exactly like an ideal state machine until it crashes. If it does crash, the backup takes over the execution to continue serving the client. To provide the client with an interface of a single non-faulty server, the primary sends client commands to all backups before updating the state machine and responding to the client. The backups passively replicate all the commands sent by the primary. In case the primary fails, which is detected by the absence of a "heartbeat", the next designated backup replica j invokes a ("view change", $j$) to all replicas along with the last command sent by the primary in view $j-1$. It then becomes the primary.
 
-FOr completeness, we have repeated the generalized primary-backup pseudocode below. Assume $n$ replicas with identifiers $\{0,1,2,\dots,n-1\}$.
+For completeness, we have repeated the generalized primary-backup pseudocode below. Assume $n$ replicas with identifiers $\{0,1,2,\dots,n-1\}$.
 
 ```
 // Replica j
@@ -59,6 +59,7 @@ Can we use the above protocol under an asynchronous network communication? No! H
 
 The modified protocol is simple: it tries to emulate synchrony using acknowledgments. However, a careful reader may have observed that this protocol works *only when no backup replicas have crashed*. In other words, despite using $n$ backups, it cannot tolerate a single crash fault (which is perhaps worse than using a single state machine). If any backup crashes, then the primary will never receive all $n$ acknowledgments, ultimately stopping progress. Due to the FLP impossibility result, the primary cannot distinguish between a crash and an acknowledgement delayed due to asynchrony in the network. Interestingly, the synchronous protocol described earlier could tolerate $f < n$ faults.
 
+**The Paxos approach.** The Paxos approach to fix the above concern is to follow the basic idea in Attempt 1. However, there is a key modification: instead of waiting for acknowledgments from all $n$ replicas, the primary waits for only $> n/2$ acknowledgments. In terms of fault tolerance, it tolerates $< n/2$ crash faults. The fault tolerance is optimal under an asynchronous network (see exercise 5 in this [post](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/)). We first explain the protocol under a fixed primary; we will discuss the view-change process later.
 
 ```
 // Replica j
