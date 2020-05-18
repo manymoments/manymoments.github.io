@@ -104,3 +104,11 @@ while true:
             log[last-executed].second = "executed"
             last-executed = last-executed + 1
 ```
+
+EXPLAIN PROTOCOL UNDER GOOD PRIMARY
+
+EXPLAIN WHEN VIEW-CHANGE CAN HAPPEN
+
+PROVIDE CODE FOR VIEW-CHANGE
+
+EXPLAIN HOW A BACKUP TAKES OVER (IN PAXOS AND RAFT)
