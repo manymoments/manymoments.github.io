@@ -8,9 +8,9 @@ tags:
 author: Kartik Nayak, Ittai Abraham
 ---
 
-We continue our series of posts on [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) (SMR). In this post, we extend our post on [Primary-Backup for crash failures](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) to consider [asynchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) communication between replicas. The idea discussed here forms the key underpinning for the celebrated [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) protocol.
+We continue our series of posts on [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) (SMR). In this post, we extend our post on [Primary-Backup for crash failures](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) to consider [omission](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures while still making the synchrony assumption. In a subsequent post, we will extend the idea to consider asynchronous communication; this protocol will form the key underpinning for the celebrated [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) protocol.
 
-To explain this idea, we start with the generalized Primary-Backup SMR with crash failures under synchrony (discussed in this [post](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/)). We will discuss what goes wrong under asynchrony and how to fix it.
+To explain this idea, we start with the generalized Primary-Backup SMR with crash failures under synchrony (discussed in this [post](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/)). We will discuss what goes wrong under omission faults and how to fix it.
 
 ### Generalized Primary-Backup
 
