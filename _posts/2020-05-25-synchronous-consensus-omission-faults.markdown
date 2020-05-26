@@ -114,7 +114,7 @@ In the steady state protocol, a primary receives commands from the client. The p
 Let us try to understand how we performed in achieving the challenges described earlier:
 
 - [x] The primary commits only after ensuring that subsequent primaries can recover this value: the $f+1$ replicas store the acknowledged value in a resend variable that can be sent to a subsequent primary.
-- [&#9745;] When a view-change is invoked, the new primary should *safely* be able to adopt a value
+- [&check;] When a view-change is invoked, the new primary should *safely* be able to adopt a value
 - The steady-state and view-change process should be *live*, i.e., the protocol should not be stuck.
 
 // ALL of them are in the same view
