@@ -30,19 +30,22 @@ while true:
    on receiving cmd from replica[view]:
       log.append(cmd)
       state, output = apply(cmd, state)
-      resend = cmd        
+      resend = cmd
+      
    // as a Primary
    on receiving cmd from a client library (and view == j):
       send cmd to all replicas
       log.append(cmd)
       state, output = apply(cmd, state)
       send output to the client library
+      
    // View change
    on missing "heartbeat" from replica[view] in the last t + $\Delta$ time units:
       view = view + 1
       if view == j
          send ("view change", j) to all client libraries
          send resend to all replicas (in order)
+         
    // Heartbeat from primary
    if no client message for some predetermined time t: 
       send "heartbeat" to all replicas (in order)
@@ -76,32 +79,40 @@ view = 0
 acks = []
 
 while true:
-   // as a backup
-   on receiving ("request", cmd) from replica[view]: // WHAT IF THIS IS A LATER VIEW?
+   // as a Backup
+   on receiving ("request", cmd) from replica[view]:
       send ("ack", cmd) to replica[view]
       resend = cmd
       
-   on receiving ("acks", cmd, seq-no) from replica[view]:
-      log.append(cmd)
+   on receiving ("acks", cmd) from replica[view]:
+      log.append(cmd) // CHECK IF THIS IS CALLED MULTIPLE TIMES FOR A COMMAND
       state, output = apply(cmd, state)
       
-   // as a primary
+   // as a Primary
    on receiving cmd from a client library (and view == j):
       if cur == none:
          send ("request", cmd) to all replicas
          cur = cmd // ASSUME CMDS ARE UNIQUE
-      else // SAY SEND AGAIN?
       
    on receiving ("ack", cmd) from a backup replica r:
       if cur == cmd:
          acks[cmd] = acks[cmd] + 1 // TODO(ASSUMES RECEIVES A MESSAGE ONLY ONCE)
-         if acks[cmd] > n/2: // TODO(SHOULD DO THIS ONLY ONCE for a seq-no)
-            send ("acks", cmd, seq-no) to all replicas
+         if acks[cmd] > n/2 and cmd not in log:
+            send ("acks", cmd) to all replicas
             log.append(cmd)
             state, output = apply(cmd, state)
             send output to the client library
             cur = none
+    
+   // Heartbeat from primary
+   if no client message for some predetermined time t: 
+      send "heartbeat" to all replicas (in order)
 ```
+
+In the steady state protocol, a primary receives commands from the client. The primary sends the command to every replica through ("request", cmd) message. A backup replica, on receiving a ("request", cmd) from the current primary, sends an ("ack", cmd) message back to the primary. If the primary receives ()
+
+// ALL of them are in the same view
+// Can ignore messages from other view primaries.
 
 EXPLAIN PROTOCOL UNDER GOOD PRIMARY
 
