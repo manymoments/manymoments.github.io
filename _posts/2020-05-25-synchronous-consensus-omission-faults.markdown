@@ -147,11 +147,5 @@ We now describe the view-change protocol to satisfy the other two constraints.
 // ALL of them are in the same view
 // Can ignore messages from other view primaries.
 // backups are screwed
-
-EXPLAIN PROTOCOL UNDER GOOD PRIMARY
-
-EXPLAIN WHEN VIEW-CHANGE CAN HAPPEN
-
-PROVIDE CODE FOR VIEW-CHANGE
-
-EXPLAIN HOW A BACKUP TAKES OVER (IN PAXOS AND RAFT)
+// TODO(ASSUMES RECEIVES A MESSAGE ONLY ONCE)
+// CHECK IF THIS IS CALLED MULTIPLE TIMES FOR A COMMAND
