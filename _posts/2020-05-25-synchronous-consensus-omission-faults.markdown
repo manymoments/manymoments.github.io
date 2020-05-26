@@ -47,8 +47,8 @@ while true:
          send resend to all replicas (in order)
          
    // Heartbeat from primary
-   if no client message for some predetermined time t: 
-      send "heartbeat" to all replicas (in order)
+   if no client message for some predetermined time t (and view == j):
+      send ("heartbeat", j) to all replicas (in order)
 ```
 
 Can we use the above protocol under omission failures? No! Here is where the protocol fails:
@@ -105,11 +105,17 @@ while true:
             cur = none
     
    // Heartbeat from primary
-   if no client message for some predetermined time t: 
-      send "heartbeat" to all replicas (in order)
+   if no client message for some predetermined time t (and view == j):
+      send ("heartbeat", j) to all replicas (in order)
 ```
 
-In the steady state protocol, a primary receives commands from the client. The primary sends the command to every replica through ("request", cmd) message. A backup replica, on receiving a ("request", cmd) from the current primary, sends an ("ack", cmd) message back to the primary. If the primary receives ()
+In the steady state protocol, a primary receives commands from the client. The primary sends the command to every replica through ("request", cmd) message. A backup replica, on receiving a ("request", cmd) from the current primary, sends an ("ack", cmd) message back to the primary. If the primary receives acknowledgments from a majority of replicas, the primary can the command to the log, execute it, and send an output to the client. It also sends these acknowledgments to the backup replicas who can then add it to their logs and execute it. The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
+
+Let us try to understand how we performed in achieving the challenges described earlier:
+
+- [x] The primary commits only after ensuring that subsequent primaries can recover this value.
+- When a view-change is invoked, the new primary should *safely* be able to adopt a value.
+- The steady-state and view-change process should be *live*, i.e., the protocol should not be stuck.
 
 // ALL of them are in the same view
 // Can ignore messages from other view primaries.
