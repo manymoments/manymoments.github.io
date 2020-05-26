@@ -60,52 +60,45 @@ To make such a protocol work, we need to ensure the following:
 
 **Attempt 1.** The key property that synchrony under crash failures provided was guaranteed delivery within a bounded time. We will attempt to replicate this under omission faults by having a backup replica acknowledge a message received from the primary -- this ensures that the primary learns of the receipt of the message. Thus, under a modified protocol, the primary will send cmd "request" received from the client to all backup replicas. The primary then waits for an acknowledgment "ack" from all $n$ replicas. Once it receives these acknowledgments, it executes the cmd and responds to the client. It also informs all backup replicas about the receipt of $n$ acknowledgments. The backup replicas execute the cmd only on the receipt of all acknowledgments (and not when it receives a "request").
 
-The modified protocol is simple: it tries to emulate synchrony under crash faults using acknowledgments. This way, an omission faulty primary ensures that its commits will be adopted by subsquent primaries, who can safely use this value in subsequent views. However, a careful reader may have observed that this protocol works *only when no replica is omission faulty*. In other words, despite using $n$ backups, it cannot tolerate a single omission (or crash) fault, which is perhaps worse than using a single state machine. If any backup is omission faulty, then the primary will never receive all $n$ acknowledgments, ultimately stopping progress.
+The modified protocol is simple: it tries to emulate synchrony under crash faults using acknowledgments. This way, an omission faulty primary ensures that its commits will be adopted by subsquent primaries, who can safely use this value in subsequent views. However, a careful reader may have observed that this protocol works *only when no replica is omission faulty*. In other words, despite using $n$ backups, it cannot tolerate a single omission (or crash) fault, which is perhaps worse than using a single state machine. If any backup is omission faulty, then the primary will never receive all $n$ acknowledgments, ultimately stopping progress. This will be the case in all views.
 
-**The Paxos approach.** The Paxos approach to fix the above concern is to follow the basic idea in Attempt 1. However, there is a key modification: instead of waiting for acknowledgments from all $n$ replicas, the primary waits for only $> n/2$ acknowledgments. In terms of fault tolerance, it tolerates $< n/2$ crash faults. The fault tolerance is optimal under an asynchronous network (see exercise 5 in this [post](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/)). We first explain the protocol under a fixed primary; we will discuss the view-change process later.
+**The Paxos approach.** The approach to fix the above concern is to follow the basic idea in Attempt 1. However, there is a key modification: instead of waiting for acknowledgments from all $n$ replicas, the primary waits for only $> n/2$ acknowledgments. In terms of fault tolerance, it tolerates $< n/2$ crash faults. The fault tolerance is optimal for omission failurs (see this [post](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/)). We first explain the protocol under a fixed primary; we will discuss the view-change process later.
 
 ```
 // Replica j
 
 state = init
 log = []
-last-executed = 0
-seq-no = 0
+cur = none
 view = 0
 acks = []
 
 while true:
-   // as a Backup
-   on receiving ("request", cmd, seq-no) from replica[view]:
-      log[seq-no] = (cmd, "requested")
-      send ("ack", cmd, seq-no) to replica[view]
+   // as a backup
+   on receiving ("request", cmd) from replica[view]: // WHAT IF THIS IS A LATER VIEW?
+      send ("ack", cmd) to replica[view]
+      resend = cmd
       
    on receiving ("acks", cmd, seq-no) from replica[view]:
-      log[seq-no] = (cmd, "acks-received")
+      log.append(cmd)
+      state, output = apply(cmd, state)
       
-      // execute commands in the order of their seq-no
-      while log.length >= last-executed and log[last-executed].second == "acks-received":
-         state, output = apply(log[last-executed].first, state)
-         log[last-executed].second = "executed"
-         last-executed = last-executed + 1
-      
-   // as a Primary
+   // as a primary
    on receiving cmd from a client library (and view == j):
-      send ("request", cmd, seq-no) to all replicas
-      log.append(cmd, "requested")
-      seq-no = seq-no + 1
+      if cur == none:
+         send ("request", cmd) to all replicas
+         cur = cmd // ASSUME CMDS ARE UNIQUE
+      else // SAY SEND AGAIN?
       
-   on receiving ("ack", cmd, seq-no) from a backup replica r:
-      acks[seq-no] = acks[seq-no + 1] // TODO(ASSUMES RECEIVES A MESSAGE ONLY ONCE)
-      if acks[seq-no] > n/2: // TODO(SHOULD DO THIS ONLY ONCE for a seq-no)
-         send ("acks", cmd, seq-no) to all replicas
-         log[seq-no] = (cmd, "acks-received")
-         // execute commands in the order of their seq-no
-         while log.length >= last-executed and log[last-executed].second == "acks-received":
-            state, output = apply(log[last-executed].first, state)
+   on receiving ("ack", cmd) from a backup replica r:
+      if cur == cmd:
+         acks[cmd] = acks[cmd] + 1 // TODO(ASSUMES RECEIVES A MESSAGE ONLY ONCE)
+         if acks[cmd] > n/2: // TODO(SHOULD DO THIS ONLY ONCE for a seq-no)
+            send ("acks", cmd, seq-no) to all replicas
+            log.append(cmd)
+            state, output = apply(cmd, state)
             send output to the client library
-            log[last-executed].second = "executed"
-            last-executed = last-executed + 1
+            cur = none
 ```
 
 EXPLAIN PROTOCOL UNDER GOOD PRIMARY
