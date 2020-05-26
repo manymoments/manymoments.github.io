@@ -66,7 +66,7 @@ To make such a protocol work, we need to ensure the following:
 
 The modified protocol is simple: it tries to emulate synchrony under crash faults using acknowledgments. This way, an omission faulty primary ensures that its commits will be adopted by subsquent primaries, who can safely use this value in subsequent views. However, a careful reader may have observed that this protocol works *only when no replica is omission faulty*. In other words, despite using $n$ backups, it cannot tolerate even a single omission (or crash) fault, which is perhaps worse than using a single state machine. If any backup is omission faulty, then the primary will never receive all $n$ acknowledgments, ultimately preventing progress (in all views).
 
-**A protocol secure under synchrony and a minority omission faultsh.** The approach to fix the above concern is to follow the basic idea in Attempt 1. However, there is a key modification: instead of waiting for acknowledgments from all $n$ replicas, the primary waits for only $> n/2$ acknowledgments. In terms of fault tolerance, it tolerates $< n/2$ omission faults. The fault tolerance is optimal for omission failures (see this [post](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/)). 
+**A protocol secure under synchrony and a minority omission faults.** The approach to fix the above concern is to follow the basic idea in Attempt 1. However, there is a key modification: instead of waiting for acknowledgments from all $n$ replicas, the primary waits for only $> n/2$ acknowledgments. In terms of fault tolerance, it tolerates $< n/2$ omission faults. The fault tolerance is optimal for omission failures (see this [post](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/)). 
 
 We now explain the steady-state protocol under a fixed primary; we will later discuss the view-change process.
 
@@ -90,7 +90,7 @@ while true:
       
    on receiving ("acks", cmd, seq-no') from any replica:
       if seq-no' == seq-no:
-         log[seq-no] = cmd // CHECK IF THIS IS CALLED MULTIPLE TIMES FOR A COMMAND
+         log[seq-no] = cmd
          state, output = apply(cmd, state)
          seq-no = seq-no + 1
          send ("acks", cmd, seq-no) to all replicas
@@ -99,11 +99,11 @@ while true:
    on receiving cmd from a client library (and view == j):
       if cur == none:
          send ("request", cmd, seq-no) to all replicas
-         cur = cmd // ASSUME CMDS ARE UNIQUE
+         cur = cmd
       
    on receiving ("ack", cmd, seq-no) from a backup replica r:
       if cur == cmd:
-         acks[seq-no] = acks[seq-no] + 1 // TODO(ASSUMES RECEIVES A MESSAGE ONLY ONCE)
+         acks[seq-no] = acks[seq-no] + 1
          if acks[cmd] > n/2:
             send ("acks", cmd) to all replicas
             log[seq-no] = cmd
@@ -134,8 +134,8 @@ We now describe the view-change protocol to satisfy the other two constraints.
       send ("no heartbeat", view, resend, seq-no) to all replicas
       stop participating in this view
       
-   on receiving ("no heartbeat", view, resend, seq-no) from f+1 replicas or ("view change", view, resend, seq-no) from a replica:
-      send ("view change", view, resend, seq-no) to all replicas
+   on receiving ("no heartbeat", view, resend, seq-no) from f+1 replicas or ("view-change", view, resend, seq-no) from a replica:
+      send ("view-change", view, resend, seq-no) to all replicas
       view = view + 1
       if view == j
          send ("view change", j - 1) to all client libraries
@@ -143,9 +143,11 @@ We now describe the view-change protocol to satisfy the other two constraints.
       transition to steady state
 ```
 
-// MUltiple seq numbers
-// ALL of them are in the same view
+
+Some observations are in order:
+- For simplicity, we assume that the commands sent are unique.
+- The replicas accept client commands one at a time -- if the current primary is currently working on consensus for a command, it will not accept the next command until the current command has been committed.
+- Due to synchrony and predetermined time-outs t, all of the replicas stay in the same view at the same time -- as soon as a replica receives a view-change message, it sends this message to everyone. So within \Delta time all replicas will be within the same view.
+
+
 // Can ignore messages from other view primaries.
-// backups are screwed
-// TODO(ASSUMES RECEIVES A MESSAGE ONLY ONCE)
-// CHECK IF THIS IS CALLED MULTIPLE TIMES FOR A COMMAND
