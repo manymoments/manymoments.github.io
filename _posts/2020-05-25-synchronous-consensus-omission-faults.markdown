@@ -77,12 +77,13 @@ log = []
 cur = none
 view = 0
 acks = []
+resend = []
 
 while true:
    // as a Backup
    on receiving ("request", cmd) from replica[view]:
       send ("ack", cmd) to replica[view]
-      resend = cmd
+      resend.add(cmd)
       
    on receiving ("acks", cmd) from replica[view]:
       log.append(cmd) // CHECK IF THIS IS CALLED MULTIPLE TIMES FOR A COMMAND
@@ -114,9 +115,27 @@ In the steady state protocol, a primary receives commands from the client. The p
 Let us try to understand how we performed in achieving the challenges described earlier:
 
 - [x] The primary commits only after ensuring that subsequent primaries can recover this value: the $f+1$ replicas store the acknowledged value in a resend variable that can be sent to a subsequent primary.
-- [&check;] When a view-change is invoked, the new primary should *safely* be able to adopt a value
-- The steady-state and view-change process should be *live*, i.e., the protocol should not be stuck.
+- [x] When a view-change is invoked, the new primary should *safely* be able to adopt a value: not described yet.
+- [ ] The steady-state process should be *live*.
+- [x] The view-change process should be *live*: not described yet. 
 
+We now describe the view-change protocol. 
+
+```
+   // View change
+   on missing "heartbeat" from replica[view] in the last t + $\Delta$ time units:
+      send ("no heartbeat", view, resend) to all replicas
+      
+   on receiving ("no heartbeat", view, resend) from f+1 replicas or ("view change", view) from a replica:
+      send ("view change", view) to all replicas
+      view = view + 1
+      if view == j
+         send ("view change", j - 1) to all client libraries
+         send ("request", resend) to all replicas (in order)
+      transition to steady state
+```
+
+// MUltiple seq numbers
 // ALL of them are in the same view
 // Can ignore messages from other view primaries.
 
