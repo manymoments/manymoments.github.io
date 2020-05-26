@@ -57,9 +57,10 @@ Can we use the above protocol under omission failures? No! Here is where the pro
 2. When a backup needs to invoke a view-change to become the new primary, it may not know the last command that was executed. Simply maintaining a "resend" variable consisting of the last command does not suffice since the last few commands may not have been received by the backup.
 
 To make such a protocol work, we need to ensure the following:
-- The primary commits only after ensuring that subsequent primaries can recover this value.
-- When a view-change is invoked, the new primary should *safely* be able to adopt a value.
-- The steady-state and view-change process should be *live*, i.e., the protocol should not be stuck.
+- [ ] The primary commits only after ensuring that subsequent primaries can recover the value.
+- [ ] When a view-change is invoked, the new primary should *safely* be able to adopt a value that may have been committed.
+- [ ] The steady-state process should be *live*.
+- [ ] The view-change process should be *live*.
 
 **Attempt 1.** The key property that synchrony under crash failures provided was guaranteed delivery within a bounded time. We will attempt to replicate this under omission faults by having a backup replica acknowledge a message received from the primary -- this ensures that the primary learns of the receipt of the message. Thus, under a modified protocol, the primary will send cmd "request" received from the client to all backup replicas. The primary then waits for an acknowledgment "ack" from all $n$ replicas. Once it receives these acknowledgments, it executes the cmd and responds to the client. It also informs all backup replicas about the receipt of $n$ acknowledgments. The backup replicas execute the cmd only on the receipt of all acknowledgments (and not when it receives a "request").
 
@@ -77,67 +78,75 @@ log = []
 cur = none
 view = 0
 acks = []
-resend = []
+resend = none
+seq-no = 0
 
 while true:
    // as a Backup
-   on receiving ("request", cmd) from replica[view]:
-      send ("ack", cmd) to replica[view]
-      resend.add(cmd)
+   on receiving ("request", cmd, seq-no') from replica[view]:
+      if seq-no' == seq-no:
+         send ("ack", cmd, seq-no) to replica[view]
+         resend = cmd
       
-   on receiving ("acks", cmd) from replica[view]:
-      log.append(cmd) // CHECK IF THIS IS CALLED MULTIPLE TIMES FOR A COMMAND
-      state, output = apply(cmd, state)
+   on receiving ("acks", cmd, seq-no') from any replica:
+      if seq-no' == seq-no:
+         log[seq-no] = cmd // CHECK IF THIS IS CALLED MULTIPLE TIMES FOR A COMMAND
+         state, output = apply(cmd, state)
+         seq-no = seq-no + 1
+         send ("acks", cmd, seq-no) to all replicas
       
    // as a Primary
    on receiving cmd from a client library (and view == j):
       if cur == none:
-         send ("request", cmd) to all replicas
+         send ("request", cmd, seq-no) to all replicas
          cur = cmd // ASSUME CMDS ARE UNIQUE
       
-   on receiving ("ack", cmd) from a backup replica r:
+   on receiving ("ack", cmd, seq-no) from a backup replica r:
       if cur == cmd:
-         acks[cmd] = acks[cmd] + 1 // TODO(ASSUMES RECEIVES A MESSAGE ONLY ONCE)
-         if acks[cmd] > n/2 and cmd not in log:
+         acks[seq-no] = acks[seq-no] + 1 // TODO(ASSUMES RECEIVES A MESSAGE ONLY ONCE)
+         if acks[cmd] > n/2:
             send ("acks", cmd) to all replicas
-            log.append(cmd)
+            log[seq-no] = cmd
             state, output = apply(cmd, state)
             send output to the client library
             cur = none
+            seq-no = seq-no + 1
     
    // Heartbeat from primary
    if no client message for some predetermined time t (and view == j):
       send ("heartbeat", j) to all replicas (in order)
 ```
 
-In the steady state protocol, a primary receives commands from the client. The primary sends the command to every replica through ("request", cmd) message. A backup replica, on receiving a ("request", cmd) from the current primary, sends an ("ack", cmd) message back to the primary. If the primary receives acknowledgments from a majority of replicas, the primary can the command to the log, execute it, and send an output to the client. It also sends these acknowledgments to the backup replicas who can then add it to their logs and execute it. The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
+In the steady state protocol, a primary receives commands from the client. The primary sends the command to every replica through ("request", cmd, seq-no) message. The sequence number seq-no keeps track of the ordering of messages. A backup replica, on receiving a ("request", cmd, seq-no) from the current primary, sends an ("ack", cmd, seq-no) message back to the primary. If the primary receives acknowledgments from a majority of replicas, the primary can add the command to the log, execute it, and send an output to the client. It also sends these acknowledgments to the backup replicas who can then add it to their logs and execute it. The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
 
 Let us try to understand how we performed in achieving the challenges described earlier:
 
-- [x] The primary commits only after ensuring that subsequent primaries can recover this value: the $f+1$ replicas store the acknowledged value in a resend variable that can be sent to a subsequent primary.
-- [x] When a view-change is invoked, the new primary should *safely* be able to adopt a value: not described yet.
-- [ ] The steady-state process should be *live*.
-- [x] The view-change process should be *live*: not described yet. 
+- [x] The primary commits only after ensuring that subsequent primaries can recover the value: the $f+1$ replicas store the acknowledged value in a resend list that can be sent to a subsequent primary in case of a view change
+- [ ] When a view-change is invoked, the new primary should *safely* be able to adopt a value that may have been committed: not described yet.
+- [x] The steady-state process should be *live*.
+- [ ] The view-change process should be *live*: not described yet.
 
-We now describe the view-change protocol. 
+We now describe the view-change protocol to satisfy the other two constraints.
 
 ```
    // View change
    on missing "heartbeat" from replica[view] in the last t + $\Delta$ time units:
-      send ("no heartbeat", view, resend) to all replicas
+      send ("no heartbeat", view, resend, seq-no) to all replicas
+      stop participating in this view
       
-   on receiving ("no heartbeat", view, resend) from f+1 replicas or ("view change", view) from a replica:
-      send ("view change", view) to all replicas
+   on receiving ("no heartbeat", view, resend, seq-no) from f+1 replicas or ("view change", view, resend, seq-no) from a replica:
+      send ("view change", view, resend, seq-no) to all replicas
       view = view + 1
       if view == j
          send ("view change", j - 1) to all client libraries
-         send ("request", resend) to all replicas (in order)
+         send ("request", resend, seq-no) to all replicas (in order)
       transition to steady state
 ```
 
 // MUltiple seq numbers
 // ALL of them are in the same view
 // Can ignore messages from other view primaries.
+// backups are screwed
 
 EXPLAIN PROTOCOL UNDER GOOD PRIMARY
 
