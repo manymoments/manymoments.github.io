@@ -1,7 +1,7 @@
 ---
 title: On the Optimality of Optimistic Responsiveness
 date: 2020-06-12 01:10:00 -07:00
-published: false
+published: true
 tags:
 - blockchain 101
 - SMR
@@ -78,7 +78,7 @@ Additionally, since a responsive quorum requires $\lfloor 3n/4 \rfloor + 1$ vote
 The above explanation suffices to argue why two conflicting commands cannot be committed at the same log position. Within a state machine replication (SMR) setting, replicas keep voting and committing new commands by extending on previously proposed commands thus forming a linear chain of commands. As we just saw, there could exist a *responsive certificate* and a *synchronous certificate* for conflicting commands. As a result, there could be conflicting chains extending from conflicting *responsive* and *synchronous* certificates. We resolve this conflict by proposing a novel chain ranking rule that ranks *responsive certificates* higher than *synchronous certificates*
 We refer the readers to our [paper](https://eprint.iacr.org/2020/458.pdf) for more details on chain ranking and the complete protocol specification.
 
-**Remark** 
+**Remark.** 
 In the paper, we present two additional protocols:
 - an *optimal optimistic responsive* protocol with only $\Delta$ synchronous latency. This protocol requires all $n$ replicas to be honest; thus we circumvent the 'optimistic rule should tolerate at least one fault' constraint.
 - a protocol that allows the view-change protocol to be responsive too. This was not obtained in either of the other protocols.
