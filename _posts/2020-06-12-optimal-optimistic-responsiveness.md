@@ -1,7 +1,6 @@
 ---
 title: On the Optimality of Optimistic Responsiveness
 date: 2020-06-12 01:10:00 -07:00
-published: true
 tags:
 - blockchain 101
 - SMR
