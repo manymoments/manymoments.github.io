@@ -19,7 +19,7 @@ are met. In their protocol, the optimistic conditions require an honest leader a
 and (ii) a slow synchronous commit path with a commit latency of $O(\Delta)$.
 
 <p align="center">
-  <img src="/uploads/slowpath-fastpath.png" width="256" title="Slow-path--Fast-path">
+  <img src="/uploads/slowpath-fastpath.png" width="512" title="Slow-path--Fast-path">
 </p>
 
 When optimistic conditions are met, the replicas make an explicit switch to 
@@ -71,13 +71,13 @@ Here's an intuitive reasoning for the safety of the steady state protocol at a g
 </p>
 
 Suppose an honest replica *r* commits *cmd* *responsively* at time *t*. This implies (i) no honest replica has voted for a conflicting command *cmd'* before time $t-\Delta$, and (ii) all honest replicas will hear a vote for *cmd* by time $t+\Delta$.
-The earliest an honest replica *r'* could have voted for *cmd'* is at time $t'$ such that $t-\Delta \le t' \le t$. Since, replica $r'$ learns *cmd* by time $t+\Delta \le $t' + 2\Delta$, it would not commit *cmd'* synchronously. 
+The earliest an honest replica *r'* could have voted for *cmd'* is at time $t'$ such that $t-\Delta \le t' \le t$. Since, replica $r'$ learns *cmd* by time $t+\Delta \le t' +2\Delta$, it would not commit *cmd'* synchronously. 
 Additionally, since a responsive quorum requires $\lfloor 3n/4 \rfloor + 1$ votes, two responsive quorums intersect at least one honest replica. Thus, no conflicting command could get committed responsively.
 
 The above explanation suffices to argue why two conflicting commands cannot be committed at the same log position. Within a state machine replication (SMR) setting, replicas keep voting and committing new commands by extending on previously proposed commands thus forming a linear chain of commands. As we just saw, there could exist a *responsive certificate* and a *synchronous certificate* for conflicting commands. As a result, there could be conflicting chains extending from conflicting *responsive* and *synchronous* certificates. We resolve this conflict by proposing a novel chain ranking rule that ranks *responsive certificates* higher than *synchronous certificates*
 We refer the readers to our [paper](https://eprint.iacr.org/2020/458.pdf) for more details on chain ranking and the complete protocol specification.
 
-**Remark.** 
+**Remarks.** 
 In the paper, we present two additional protocols:
 - an *optimal optimistic responsive* protocol with only $\Delta$ synchronous latency. This protocol requires all $n$ replicas to be honest; thus we circumvent the 'optimistic rule should tolerate at least one fault' constraint.
 - a protocol that allows the view-change protocol to be responsive too. This was not obtained in either of the other protocols.
