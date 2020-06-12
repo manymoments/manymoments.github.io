@@ -1,12 +1,12 @@
 ---
 title: On the Optimality of Optimistic Responsiveness
 date: 2020-06-12 01:10:00 -07:00
+published: false
 tags:
 - blockchain 101
 - SMR
 - research
 author: Nibesh Shrestha, Kartik Nayak
-published: false
 ---
 
 [Synchronous consensus protocols](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/) tolerating Byzantine failures 
