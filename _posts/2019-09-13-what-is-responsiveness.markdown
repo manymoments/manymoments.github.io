@@ -6,9 +6,11 @@ tags:
 - dist101
 ---
 
-Intuitively speaking a protocol is **responsive** if it runs as fast as the network allows.
+Intuitively speaking a protocol is *responsive* if it runs as fast as the network allows. A protocol is not responsive if it incurs delays (timeouts, etc) that are fixed and do not depend on the current network conditions.
 
-More formally, consider a model where messages arrive after at most $\delta$ time. We say that a protocol is responsive if the time to completion goes to zero as $\delta$ goes to zero.
+TCP...
+
+For any execution, let $\delta$ be the maximum network delay of any message. We say that a protocol is **responsive** if the time to completion goes to zero as $\delta$ goes to zero.
 
 Clearly any protocol that is live in an [asynchronous model] is responsive. In fact  one of the main advantages of protocols that work in the asynchronous model is that they do not depend on any timeout and can run as fast as the network allows them.
 
@@ -18,7 +20,7 @@ It turns out that reasoning about responsiveness is important even for protocols
 
 Pass and Shi suggest the following striking idea: they design a protocol for Byzantine Agreement in the synchronous model assuming the adversary controls $f$ parties and that $f<n/2$. Their protocol has an additional surprising property: in execution where the adversary controls just $f<n/4$ parties then the protocol for  Byzantine Agreement is responsive. They call this optimistic responsiveness.
 
-In executions where the adversary controls less than a forth, their protocol is responsive and in execution where the adversary controls less than a half, their protocol is still safe, but the time it takes to terminate depends on $\Delta$ (which is the upper bound for message delays), even if the real message delays $\delta$ are much smaller than $\Delta$ (even if $\delta << \Delta$). 
+In executions where the adversary controls less than a forth, their protocol is responsive and in execution where the adversary controls less than a half, their protocol is still safe, but the time it takes to terminate depends on $\Delta$ (which is the upper bound for message delays), even if the real message delays $\delta$ are much smaller than $\Delta$ (even if $\delta << \Delta$).
 
 TALK ABOUT LOWER BOUNDS
 
