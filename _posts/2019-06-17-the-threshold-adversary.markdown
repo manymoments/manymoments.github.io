@@ -24,7 +24,7 @@ A threshold adversary is an adversary that controls some **_f_** nodes. There ar
 3. $n>3f$ where the adversary controls less than a third of the nodes. Often called the _dishonst third_ adversary.
 
 There are many examples of protocols that work in the above threshold models. Here are some classics:
-1. The Dolev, Strong [Broadcast protocol](https://www.cs.huji.ac.il/~dolev/pubs/authenticated.pdf)  solves Byzantine broadcast assuming an adversary that can control up to $n-1$ parties out of $n$ in the Synchronous model.
+1. The Dolev, Strong [Broadcast protocol](https://www.cs.huji.ac.il/~dolev/pubs/authenticated.pdf)  solves Byzantine broadcast assuming an adversary that can control up to $n-1$ parties out of $n$ in the Synchronous model. See [this post](https://decentralizedthoughts.github.io/2019-12-22-dolev-strong/) for details.
 2. Lamport's [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol solves state machine replication assuming an adversary that can control less than $n/2$ parties out of $n$ in the Partially synchronous model.
 3. Ben Or's [randomized protocol](http://www.cs.utexas.edu/users/lorenzo/corsi/cs380d/papers/p27-ben-or.pdf) solves Byzantine agreement in the Asynchronous model assuming a $5f<n$ threshold. This was later [improved by Bracha](https://core.ac.uk/download/pdf/82523202.pdf) to the optimal $3f<n$ bound.
 
@@ -55,3 +55,7 @@ Basing the security assumption on the adversary controlling a threshold of some 
 
 ## A note on Distributed Computing vs Game Theory
 Note that this model has a clear separation between honest parties and a monolithic adversary. This model captures some real-world interactions where worst-case assumptions capture important attack vectors. There is a completely different view that aims to reason about how _rational_ parties will make decisions in cases of strategic interaction. This is captured in solution concepts of Game Theory. In later posts, we will cover the amazing connections between these seemingly different points of view.
+
+
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1141475000278556674?s=20)
+
