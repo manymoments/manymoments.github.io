@@ -17,11 +17,11 @@ This post is about the work of Stuart Haber and W. Scott Stornetta from 1991 [Ho
 The ideas of this paper have been in use from 1995 by [Surety](http://www.surety.com/solutions/intellectual-property-protection/sign-seal). This makes it the longest-running blockchain! Here is a photo from 2018 of Stuart Haber with the hash circled in red on the NYT.
 
 <p align="center">
-    <img src="/uploads/Haber1" width="600" title="The first blockchain">
+    <img src="/uploads/Haber1.jpeg" width="600" title="The first blockchain">
 </p>
 
 <p align="center">
-    <img src="/uploads/Haber2" width="600" title="The first blockchain">
+    <img src="/uploads/Haber2.jpeg" width="600" title="The first blockchain">
 </p>
 
 ## How to Time-Stamp a Digital Document?
