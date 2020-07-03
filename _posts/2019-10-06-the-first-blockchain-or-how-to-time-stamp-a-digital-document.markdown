@@ -9,12 +9,11 @@ tags:
 This post is about the work of Stuart Haber and W. Scott Stornetta from 1991 [How to Time-Stamp a Digital Document](https://www.anf.es/pdf/Haber_Stornetta.pdf) and their followup paper [Improving the Efficiency and Reliability of Digital Time-Stamping](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.71.4891&rep=rep1&type=pdf). These are two of the eight papers cited by the [bitcoin whitepaper](https://bitcoin.org/bitcoin.pdf). 
 
 > Who watches the watchmen?
->
 > Quis custodiet ipsos custodes?
 > -- <cite> [Juvenal](https://en.wikipedia.org/wiki/Juvenal) </cite>
 
 
-The ideas of this paper have been in use from 1995 by [Surety](http://www.surety.com/solutions/intellectual-property-protection/sign-seal). This makes it the longest-running blockchain! Here is a photo from 2018 of Stuart Haber with the hash circled in red on the NYT.
+The ideas of this paper have been in use from 1995 by [Surety](http://www.surety.com/solutions/intellectual-property-protection/sign-seal). This makes it the longest-running blockchain! Here are two photos from 2018 of Stuart Haber with the hash circled in red on the New York Times:
 
 <p align="center">
     <img src="/uploads/Haber1.jpeg" width="600" title="The first blockchain">
@@ -27,8 +26,46 @@ The ideas of this paper have been in use from 1995 by [Surety](http://www.surety
 ## How to Time-Stamp a Digital Document?
 In 1991, Haber and Stornetta asked this very basic question. Today, after 30 years of exponential growth in digital documents, this question is even more revenant! Let's describe their basic scheme:
 
-1. The system is composed of users, a Time-Stamp Service (TSS), and a repository. 
+The system is composed of users, a Time-Stamp Service (TSS), and a repository. At some regular interval, the TSS publishes an "interval hash" to the "widely available repository".
 
-2. At some regular interval, the TSS publishes an "internal hash" to the "widely available repository".
+1. Users send certification requests to the TSS. 
 
-3. Users 
+2. The TSS creates a Merkle Tree of all the requests. 
+
+3. Now the "hash chaining" happens: The new interval hash is computed by taking the root hash of the Merkle tree and hashing it with the previous "interval hash". 
+
+4. The TSS then publishes the new interval hash to the public repository.
+
+5. The TSS also sends each requester a Merkle proof that their document is committed in the Merkle tree. 
+
+6. Users can validate a document's time-stamp by querying the repository for the relevant interval hash and use the Merkle proof to compare the relevant leaf to the hash of the document.
+
+In their own words, if we assume the repository is durable and trusted (think about the New York Times weekend circulation) then:
+
+1.  "The TSS cannot forward-date a document, because the certificate must contain bits from requests that immediately preceded the desired time, yet the TSS has not received them." -- note that this assumes there is enough uncertainty in the future requests that is beyond the control of the TSS.
+
+2. "The TSS cannot feasibly back-date a document by preparing a fake time-stamp for an earlier time, because bits from the document in question must be embedded in certificates immediately following that earlier time, yet these certificates have already been issued." -- Note that this assumes the hash function is collision-resistant.
+
+3. "The only possible spoof is to prepare a fake chain of time-stamps, long enough to exhaust the most suspicious challenger that one anticipates." -- quite remarkable that even the notion of the longest chain has origins in this paper!
+
+This is a very elegant scheme, let's discuss potential uses cases.
+
+## Connection to Bitcoin and Cryptocurrencies
+
+The bitcoin whitepaper made a breakthrough connection between this scheme and proof-of-work: instead of having a centralized TSS and a centralized repository, we can use the chain of hashes to incentivize miners to implement the TSS and the repository in a decentralized manner! A miner that wins the race to produce a proof-of-work is incentives to implement the TSS functionality and correctly publish a new "interval hash". All miners are incentivized to implement a replicated repository that maintains the longest chain of hashes.
+
+
+Seen from the lens of distributed computing, the bitcoin blockchain implements the TSS state machine and the repository is replicated via a byzantine fault-tolerant protocol called [Nakamoto Consensus](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/). Seen from the lets of game theory, the content of the documents recorded are restricted to be transactions over a digital asset (bitcoin) with a controlled supply. Using this scare resource, bitcoin builds a novel incentive scheme that [typically](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/) incentivizes miners to implement the TSS and public repository.
+
+## Is it only about Cryptocurrencies?
+
+Clearly, the ability to order (time-stamp) all transactions in a trusted and immutable manner is a key ingredient of decentralized state machines as exhibited by many cryptocurrencies.
+
+There could be many cases where a trusted way to time-stamp digital documents is needed but a central trusted parted is accepted. Here are some examples:
+
+1. Digital news outlets, blogs, or any web server could be able to provide a signed certificate of the time-stamp of their documents. For example, a blogger could prove [that their posts are not backdated](https://medium.com/@cryptofuse/the-legendary-nick-szabo-bitgold-smart-contracts-cryptocurrency-and-blockchain-story-3523db6766a3).
+
+2. Educational institutions, Medical institutions, Government authorities could be able to provide a signed certificate of the time-stamp of their documents. This could allow digital verification of certificates of education, health, licenses, title, and more
+
+3. Financial institutions and multi-party business transactions could all rely on a trusted part to sign certificates about financial facts. Having a single source of truth that all parties can verify could reduce friction and risk in many transactions.
+
