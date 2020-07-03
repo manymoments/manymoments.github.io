@@ -55,21 +55,21 @@ This is a very simple and intuitive scheme. It does make quite strong trust assu
 
 ## Connection to Bitcoin and Cryptocurrencies
 
-The Bitcoin whitepaper made a breakthrough connection between this scheme and proof-of-work: instead of assuming a centralized trusted TSS and a centralized trusted repository, we can use the chain of hashes to incentivize miners to implement the TSS and the repository in a decentralized manner! A miner that wins the race to produce a proof-of-work is incentives to implement the TSS functionality and correctly publish a new interval hash. Moreover, the miner is incentivized to not censor the user requests. All miners are incentivized to implement a replicated repository that maintains the longest chain of hashes which provides consistency.
+The Bitcoin whitepaper made a breakthrough connection between this scheme and proof-of-work: instead of assuming a centralized trusted TSS and a centralized trusted repository, it uses the chain of hashes to incentivize miners to implement the TSS and the repository in a decentralized manner! A miner that wins the race to produce a proof-of-work is incentives to implement the TSS functionality and correctly publish a new interval hash. Moreover, censorship resistance is obtained by randomizing the winning miner and by adding fees that incentivize add user requests. All miners are incentivized to implement a replicated repository that maintains the longest chain of hashes which provides consistency.
 
 
-Seen from the lens of distributed computing, the Bitcoin blockchain implements the TSS state machine and the repository is replicated via a byzantine fault-tolerant protocol called [Nakamoto Consensus](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/). Seen from the lens of game theory, the contents of the documents recorded are restricted to be transactions over an internal digital asset with a controlled supply. Using this scarce resource, Bitcoin builds a novel incentive scheme that [typically](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/) incentivizes miners to implement the TSS and public repository.
+Seen from the lens of distributed computing, the Bitcoin blockchain implements the TSS state machine and the repository is replicated via a byzantine fault-tolerant protocol called [Nakamoto Consensus](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/). Seen from the lens of game theory, the contents of the documents recorded are restricted to be transactions over an internal digital asset with a controlled supply. Using this scarce resource, Bitcoin builds a novel incentive scheme that [typically](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/) incentivizes miners to implement the TSS and the public repository.
 
 ## Is it only about Cryptocurrencies?
 
 Clearly, the ability to order (time-stamp) all transactions in a trusted and immutable manner is a key ingredient of decentralized state machines as exhibited by many cryptocurrencies.
 
-There could be many cases where a trusted way to time-stamp digital documents is needed but a central trusted parted is accepted. Here are some examples:
+There could be many cases where a trusted way to time-stamp digital documents is needed and a central trusted party is accepted. Here are some examples:
 
 1. Digital news outlets, blogs, or any web server could be able to provide a signed certificate of the time-stamp of their documents. For example, a blogger could prove [that their posts are not backdated](https://medium.com/@cryptofuse/the-legendary-nick-szabo-bitgold-smart-contracts-cryptocurrency-and-blockchain-story-3523db6766a3).
 
 2. Educational institutions, Medical institutions, Government authorities could be able to provide a signed certificate of the time-stamp of their documents. This could allow digital verification of certificates of education, health, licenses, title, and more
 
-3. Financial institutions and multi-party business transactions could all rely on a trusted part to sign certificates about financial facts. Having a single source of truth that all parties can verify could reduce friction and risk in many transactions.
+3. Financial institutions and multi-party business transactions could all rely on a trusted party to sign certificates about financial facts. Having a single source of truth that all parties can verify could reduce friction and risk in many transactions.
 
 I can imagine that sometime in the future many digital documents will use some form of time-stamp based on the work of Haber and Stornetta. 
