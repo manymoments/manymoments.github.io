@@ -5,6 +5,21 @@ layout: page
 
 ## The Decentralization will not be Televised
 
+** [Theory and Practice of Blockchains 2020](https://eventum.upf.edu/51585/section/25185/theory-and-practice-of-blockchains-online-weekly-seminar-series-.html). Kartik Nayak: On the Optimality of Optimistic Responsiveness**
+
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4nZHp1-kM4U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+***
+
+** ZK Podcast: [Consensus Algorithms & HotStuff with Ittai Abraham](https://www.zeroknowledge.fm/127) **
+
+<iframe src="https://fireside.fm/player/v2/3yp1oIzN+sogdgKYR?theme=dark" width="740" height="200" frameborder="0" scrolling="no"></iframe>
+
+***
+
 **The 10th BIU Winter School on Cryptography - [Information Theoretic Cryptography](http://cyber.biu.ac.il/event/the-10th-biu-winter-school-on-cryptography/), February 17-20, 2020**
 
 Part 1: Basics of information theoretic consensus
