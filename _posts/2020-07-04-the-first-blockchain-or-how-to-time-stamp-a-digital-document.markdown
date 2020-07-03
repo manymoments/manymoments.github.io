@@ -1,19 +1,19 @@
 ---
 title: The First Blockchain or How to Time-Stamp a Digital Document
-date: 2019-10-06 19:58:00 -07:00
+date: 2020-07-04 19:58:00 -07:00
 published: false
 tags:
 - blockchain101
 ---
 
-This post is about the work of Stuart Haber and W. Scott Stornetta from 1991 [How to Time-Stamp a Digital Document](https://www.anf.es/pdf/Haber_Stornetta.pdf) and their followup paper [Improving the Efficiency and Reliability of Digital Time-Stamping](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.71.4891&rep=rep1&type=pdf). These are two of the eight papers cited by the [bitcoin whitepaper](https://bitcoin.org/bitcoin.pdf). 
+This post is about the work of Stuart Haber and W. Scott Stornetta from 1991 [How to Time-Stamp a Digital Document](https://www.anf.es/pdf/Haber_Stornetta.pdf) and their followup paper [Improving the Efficiency and Reliability of Digital Time-Stamping](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.71.4891&rep=rep1&type=pdf). In many ways, this work introduced the idea of a chain of hashes to create a total order of commitments to a set of documents. It's no wonder these two papers are cited by the [bitcoin whitepaper](https://bitcoin.org/bitcoin.pdf). 
 
 > Who watches the watchmen?
 > Quis custodiet ipsos custodes?
 > -- <cite> [Juvenal](https://en.wikipedia.org/wiki/Juvenal) </cite>
 
 
-The ideas of this paper have been in use from 1995 by [Surety](http://www.surety.com/solutions/intellectual-property-protection/sign-seal). This makes it the longest-running blockchain! Here are two photos from 2018 of Stuart Haber with the hash circled in red on the New York Times:
+From 1995, the ideas of this paper have been in use by a company called [Surety](http://www.surety.com/solutions/intellectual-property-protection/sign-seal). This makes it the longest-running chain of hashes! Here are two photos from 2018 of Stuart Haber with the current hash circled in red on the New York Times:
 
 <p align="center">
     <img src="/uploads/Haber1.jpeg" width="600" title="The first blockchain">
@@ -28,17 +28,17 @@ In 1991, Haber and Stornetta asked this very basic question. Today, after 30 yea
 
 The system is composed of users, a Time-Stamp Service (TSS), and a repository. At some regular interval, the TSS publishes an "interval hash" to the "widely available repository".
 
-1. Users send certification requests to the TSS. 
+1. Users send *certification requests* to the TSS. 
 
-2. The TSS creates a Merkle Tree of all the requests. 
+2. The TSS creates a *Merkle tree* of all the requests. 
 
-3. Now the "hash chaining" happens: The new interval hash is computed by taking the root hash of the Merkle tree and hashing it with the previous "interval hash". 
+3. The "hash chaining" happens: The *new interval hash* is computed by taking the *root hash* of the Merkle tree and hashing it with the *previous interval hash*. 
 
-4. The TSS then publishes the new interval hash to the public repository.
+4. The TSS publishes the new interval hash to the *public repository*.
 
-5. The TSS also sends each requester a Merkle proof that their document is committed in the Merkle tree. 
+5. The TSS also sends each requester a *Merkle proof* that their document is committed in the Merkle tree. 
 
-6. Users can validate a document's time-stamp by querying the repository for the relevant interval hash and use the Merkle proof to compare the relevant leaf to the hash of the document.
+6. Users can *validate* a document's time-stamp by querying the repository for the relevant interval hash and use the Merkle proof to compare the relevant leaf to the hash of the document.
 
 In their own words, if we assume the repository is durable and trusted (think about the New York Times weekend circulation) then:
 
@@ -48,14 +48,14 @@ In their own words, if we assume the repository is durable and trusted (think ab
 
 3. "The only possible spoof is to prepare a fake chain of time-stamps, long enough to exhaust the most suspicious challenger that one anticipates." -- quite remarkable that even the notion of the longest chain has origins in this paper!
 
-This is a very elegant scheme, let's discuss potential uses cases.
+This is a very simple and intuitive scheme, let's discuss potential uses cases.
 
 ## Connection to Bitcoin and Cryptocurrencies
 
-The bitcoin whitepaper made a breakthrough connection between this scheme and proof-of-work: instead of having a centralized TSS and a centralized repository, we can use the chain of hashes to incentivize miners to implement the TSS and the repository in a decentralized manner! A miner that wins the race to produce a proof-of-work is incentives to implement the TSS functionality and correctly publish a new "interval hash". All miners are incentivized to implement a replicated repository that maintains the longest chain of hashes.
+The bitcoin whitepaper made a breakthrough connection between this scheme and proof-of-work: instead of having a centralized TSS and a centralized repository, we can use the chain of hashes to incentivize miners to implement the TSS and the repository in a decentralized manner! A miner that wins the race to produce a proof-of-work is incentives to implement the TSS functionality and correctly publish a new interval hash. All miners are incentivized to implement a replicated repository that maintains the longest chain of hashes.
 
 
-Seen from the lens of distributed computing, the bitcoin blockchain implements the TSS state machine and the repository is replicated via a byzantine fault-tolerant protocol called [Nakamoto Consensus](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/). Seen from the lets of game theory, the content of the documents recorded are restricted to be transactions over a digital asset (bitcoin) with a controlled supply. Using this scare resource, bitcoin builds a novel incentive scheme that [typically](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/) incentivizes miners to implement the TSS and public repository.
+Seen from the lens of distributed computing, the bitcoin blockchain implements the TSS state machine and the repository is replicated via a byzantine fault-tolerant protocol called [Nakamoto Consensus](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/). Seen from the lets of game theory, the content of the documents recorded are restricted to be transactions over a digital asset with a controlled supply. Using this scare resource, bitcoin builds a novel incentive scheme that [typically](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/) incentivizes miners to implement the TSS and public repository.
 
 ## Is it only about Cryptocurrencies?
 
@@ -69,3 +69,4 @@ There could be many cases where a trusted way to time-stamp digital documents is
 
 3. Financial institutions and multi-party business transactions could all rely on a trusted part to sign certificates about financial facts. Having a single source of truth that all parties can verify could reduce friction and risk in many transactions.
 
+I can imagine that sometime in the future many digital documents will use some form of time-stamp based on the work of Haber and Stornetta. 
