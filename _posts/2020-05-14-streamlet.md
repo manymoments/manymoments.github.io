@@ -40,7 +40,7 @@ Streamlet solves the following problem -- besides the modern name "blockchain", 
 
 * $n$ players, $f$ of which are byzantine. Honest players follow the protocol, whereas Byzantine players may deviate arbitrarily from the protocol. Assume that $f <n/3$.
 
-* Players receive signed transactions from the environment, and seek to order these transactions into a log, which we call a blockchain, comprised of blocks.
+* Players receive signed transactions from the environment and seek to order these transactions into a log, which we call a blockchain, comprised of blocks.
 
 * (Consistency) Every honest player must finalize prefixes of the same blockchain.
 
@@ -50,21 +50,21 @@ Streamlet solves the following problem -- besides the modern name "blockchain", 
 
 We describe a simplified model in which Streamlet operates:
 
-* **Epochs** : The protocol runs sequentially in synchronized 'epochs' that are 2 seconds long. Every player starts in epoch 0 at the same time, and then after 2 seconds have elapsed, every player enters epoch 1 at the same time, and so forth[^1].
+* **Epochs**: The protocol runs sequentially in synchronized 'epochs' that are 2 seconds long. Every player starts in epoch 0 at the same time, and then after 2 seconds have elapsed, every player enters epoch 1 at the same time, and so forth[^1].
 
-* **Epoch Leaders** : For each epoch, there is a single global 'leader' of that epoch, known to all players. We assume the leader is randomly chosen, e.g., with a public hash function.
+* **Epoch Leaders**: For each epoch, there is a single global 'leader' of that epoch, known to all players. We assume the leader is randomly chosen, e.g., with a public hash function.
 
-* **Partially Synchronous Network** : The network can at times be unreliable, or adversarial; the protocol must not lose consistency in this case. However, when network conditions are good, i.e., when honest players can communicate with each other within 1 second, the protocol must make progress.
+* **Partially Synchronous Network**: The network can at times be unreliable, or adversarial; the protocol must not lose consistency in this case. However, when network conditions are good, i.e., when honest players can communicate with each other within 1 second, the protocol must make progress.
 
-* **Digital Signatures** : every vote and proposal is signed by the corresponding player.
+* **Digital Signatures**: every vote and proposal is signed by the corresponding player.
 
 ## Data Structures
 
 Streamlet has only a single message type, a 'vote', which is a signature on a block.
 
-* **Blocks** : The protocol reaches agreement on 'blocks', each of which comprise a set of transactions, and contain a cryptographic hash of a parent chain. Each block thus 'extends' and commits to a unique blockchain[^2], which can be thought of as a history or distributed ledger of transactions.
+* **Blocks**: The protocol reaches agreement on 'blocks', each of which comprises a set of transactions, and contains a cryptographic hash of a parent chain. Each block thus 'extends' and commits to a unique blockchain[^2], which can be thought of as a history or distributed ledger of transactions.
 
-* **Notarized Blocks** : Players can cast 'votes' for specific blocks using digital signatures. When a player sees a block with $2n/3$ votes from unique players (where n is the number of total players), the player considers that block 'notarized'. When every block in a chain of blocks is notarized, the player calls that chain a 'notarized blockchain'.
+* **Notarized Blocks**: Players can cast 'votes' for specific blocks using digital signatures. When a player sees a block with $2n/3$ votes from unique players (where n is the number of total players), the player considers that block 'notarized'. When every block in a chain of blocks is notarized, the player calls that chain a 'notarized blockchain'.
 
 ## Finally, the Protocol
 
@@ -76,7 +76,7 @@ Streamlet has only a single message type, a 'vote', which is a signature on a bl
 
 * During each epoch,
 
-  **Vote** : Each player, when it sees a new block proposal for that epoch, votes for it iff it extends (one of) the longest notarized chain(s) the voter has seen thus far. Each player casts at most one vote per epoch.
+  **Vote**: Each player, when it sees a new block proposal for that epoch, votes for it iff it extends (one of) the longest notarized chain(s) the voter has seen thus far. Each player casts at most one vote per epoch.
 
 * A block is finalized when:
 
