@@ -83,3 +83,6 @@ In the paper, we present two additional protocols:
 - a protocol that allows the view-change protocol to be responsive too. This was not obtained in either of the other protocols.
 
 This is a joint work with [Ittai](https://research.vmware.com/researchers/ittai-abraham) and [Ling](https://sites.google.com/view/renling). Read more about it [here](https://eprint.iacr.org/2020/458.pdf).
+
+Please leave comments on [Twitter](https://twitter.com/kartik1507/status/1279096016361447424?s=20).
+
