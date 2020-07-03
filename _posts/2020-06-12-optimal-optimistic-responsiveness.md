@@ -35,7 +35,7 @@ Informally, our lower bound result says the following:
 There does not exist a Byzantine Broadcast protocol that can tolerate *$f \geq n/3$* faults and when all messages between
  non-faulty parties arrive instantaneously, achieves the following simultaneously under an honest designated sender:  
 (i) (optimistic commit) a commit latency of $O(\delta)$ in the presence of $\max(1, n − 2f)$ faults,  
-(ii) (synchronous commit) a commit latency of < $2\Delta − O(\delta)$ in the presence of f faults.
+(ii) (synchronous commit) a commit latency of < $2\Delta − O(\delta)$ in the presence of $f$ faults.
 
 Informally, the lower bound says that the sum of latencies of these two commit rules should be at least $2\Delta$. This bound on latency holds when the following conditions are met:
 - The total number of faults tolerated $f \geq n/3$: otherwise, we can always commit responsively by using a partially synchronous protocol.
