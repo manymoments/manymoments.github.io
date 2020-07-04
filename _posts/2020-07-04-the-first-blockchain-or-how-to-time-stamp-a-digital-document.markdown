@@ -66,10 +66,16 @@ Clearly, the ability to order (time-stamp) all transactions in a trusted and imm
 
 There could be many cases where a trusted way to time-stamp digital documents is needed and a central trusted party is accepted. Here are some examples:
 
-1. Digital news outlets, blogs, or any web server could be able to provide a signed certificate of the time-stamp of their documents. For example, a blogger could prove [that their posts are not backdated](https://medium.com/@cryptofuse/the-legendary-nick-szabo-bitgold-smart-contracts-cryptocurrency-and-blockchain-story-3523db6766a3).
+1. The git protocol implements a [hash chain on all commits](https://git-scm.com/docs/commit-graph). In a way, [GitHub](https://stackoverflow.com/questions/46192377/why-is-git-not-considered-a-block-chain) can be viewed as a centralized implementation of a TSS and public repository for documents and in particular code.
 
-2. Educational institutions, Medical institutions, Government authorities could be able to provide a signed certificate of the time-stamp of their documents. This could allow digital verification of certificates of education, health, licenses, title, and more
+2. Certificate transparency uses a chain of hashes (in fact, a Merkle tree) to maintain a public log of certificates and their revocations.
 
-3. Financial institutions and multi-party business transactions could all rely on a trusted party to sign certificates about financial facts. Having a single source of truth that all parties can verify could reduce friction and risk in many transactions.
+3. The InterPlanetary File System (IPFS) protocol (https://ipfs.io/) uses a the TSS and repository idea to build a verifiable DHT for documents.
+
+4. Digital news outlets, blogs, or any web server could be able to provide a signed certificate of the time-stamp of their documents. For example, a blogger could prove [that their posts are not backdated](https://medium.com/@cryptofuse/the-legendary-nick-szabo-bitgold-smart-contracts-cryptocurrency-and-blockchain-story-3523db6766a3).
+
+5. Educational institutions, Medical institutions, Government authorities could be able to provide a signed certificate of the time-stamp of their documents. This could allow digital verification of certificates of education, health, licenses, title, and more
+
+6. Financial institutions and multi-party business transactions could all rely on a trusted party to sign certificates about financial facts. Having a single source of truth that all parties can verify could reduce friction and risk in many transactions.
 
 I can imagine that sometime in the future many digital documents will use some form of time-stamp based on the work of Haber and Stornetta. 
