@@ -82,4 +82,4 @@ I can imagine that sometime in the future many digital documents will use some f
 **Acknowledgment.** Thanks to [Kartik](https://users.cs.duke.edu/~kartik/), [Avishay](https://research.vmware.com/researchers/avishay-yanai), and [Ittay](https://webee.technion.ac.il/people/ittay/) for helpful feedback on this post.
 
 
-Please leave comments on [Twitter](...).
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1279716517140140032?s=20).
