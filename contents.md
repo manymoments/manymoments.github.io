@@ -1,6 +1,6 @@
 ---
 title: Decentralized Thoughts
-layout: page
+layout: page2
 ---
 
 ### A Mindmap to Decentralized Thoughts
