@@ -54,14 +54,14 @@ This is a very simple and intuitive scheme. It does make quite strong trust assu
 
 ## Connection to Bitcoin and Cryptocurrencies
 
-The Bitcoin whitepaper made a breakthrough connection between this time-stamping scheme and proof-of-work: instead of assuming a centralized trusted TSS and a centralized trusted repository, it uses the chain of hashes to incentivize miners to implement the TSS and the repository in a decentralized manner! A miner that wins the race to produce a proof-of-work is incentives to implement the TSS functionality and correctly publish a new interval hash. Moreover, censorship resistance is obtained by randomizing the winning miner and by adding fees that incentivize adding user requests. Miners are collectively incentivized to implement a replicated repository. Consistency is obtained by incentivizing Miners to use the notion of the *longest (PoW heaviest) chain of hashes*.
+The Bitcoin whitepaper made a breakthrough connection between this time-stamping scheme and proof-of-work: instead of assuming a centralized trusted TSS and a centralized trusted repository, it uses the chain of hashes to incentivize miners to implement the TSS and the repository in a decentralized manner! A miner that wins the race to produce a proof-of-work is incentivized to implement the TSS functionality and correctly publish a new interval hash. Censorship resistance is obtained by randomizing the winning miner and by adding fees that reward adding user requests. Miners are collectively incentivized to implement a replicated repository. Consistency is obtained by incentivizing Miners to use the notion of the *longest (PoW heaviest) chain of hashes*.
 
 
 Seen from the lens of distributed computing, the Bitcoin blockchain implements the TSS state machine and the repository is replicated via a byzantine fault-tolerant protocol called [Nakamoto Consensus](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/). Seen from the lens of game theory, the contents of the documents recorded are restricted to be transactions over an internal digital asset with a controlled supply. Using this scarce resource, Bitcoin builds a novel incentive scheme that [typically](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/) incentivizes miners to implement the TSS and the public repository.
 
 ## Is it only about Cryptocurrencies?
 
-The ability to order (time-stamp) all transactions in a trusted and immutable manner is a key ingredient of decentralized state machines. This is a core enabler of many cryptocurrencies.
+The ability to order (time-stamp) all transactions in a trusted and immutable manner is a key ingredient of many decentralized state machines. This is a core enabler of many cryptocurrencies.
 
 There could be many other cases where a trusted method to time-stamp digital documents is beneficial and a central trusted party is acceptable. Here are some examples:
 
