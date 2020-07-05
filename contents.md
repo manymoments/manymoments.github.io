@@ -5,4 +5,4 @@ layout: page
 
 ### A Mindmap to Decentralized Thoughts
 
-<iframe width='853' height='480' src='https://embed.coggle.it/diagram/WdA_HcDIOgAB9ke9/3fb22c410f803e4e822bb43e1f0e220614ae80095901e074637b900ef342e380' frameborder='0' allowfullscreen></iframe>
+<iframe width='853' height='480' src='https://embed.coggle.it/diagram/WdA_HcDIOgAB9ke9/c274578a794cb47a90e06c24ae1c5d44e19a221b2daf9311bc4d900bf83b1eaf' frameborder='0' allowfullscreen></iframe>
