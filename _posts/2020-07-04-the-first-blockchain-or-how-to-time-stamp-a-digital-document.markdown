@@ -64,7 +64,7 @@ Seen from the lens of distributed computing, the Bitcoin blockchain implements t
 
 The ability to order (time-stamp) all transactions in a trusted and immutable manner is a key ingredient of decentralized state machines. This is a core enabler of many cryptocurrencies.
 
-There could be many cases where a trusted method to time-stamp digital documents is needed and a central trusted party is accepted. Here are some examples:
+There could be many other cases where a trusted method to time-stamp digital documents is beneficial and a central trusted party is acceptable. Here are some examples:
 
 1. The git protocol implements a [hash chain on all commits](https://git-scm.com/docs/commit-graph). In a way, [GitHub](https://stackoverflow.com/questions/46192377/why-is-git-not-considered-a-block-chain) can be viewed as a centralized implementation of a TSS and public repository for documents (in particular, for code).
 
