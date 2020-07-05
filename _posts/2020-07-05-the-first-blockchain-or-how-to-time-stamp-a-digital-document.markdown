@@ -70,7 +70,7 @@ There could be many other cases where a trusted method to time-stamp digital doc
 
 2. [Certificate transparency](https://www.certificate-transparency.org/log-proofs-work) uses a chain of hashes (in fact, a Merkle tree) to maintain a public log of certificates and their revocations.
 
-3. The [InterPlanetary File System (IPFS) protocol](https://ipfs.io/) uses elements of the TSS and repository idea to build a verifiable Distributed Hash Table (DHT) for documents.
+3. The [InterPlanetary File System (IPFS) protocol](https://ipfs.io/) uses elements of the TSS and repository idea to build a verifiable file system with a global namespace using a Distributed Hash Table (DHT).
 
 4. Digital news outlets, blogs, or any web server could be able to provide a signed certificate of the time-stamp of their documents. For example, a blogger could prove [that their posts are not backdated](https://medium.com/@cryptofuse/the-legendary-nick-szabo-bitgold-smart-contracts-cryptocurrency-and-blockchain-story-3523db6766a3).
 
