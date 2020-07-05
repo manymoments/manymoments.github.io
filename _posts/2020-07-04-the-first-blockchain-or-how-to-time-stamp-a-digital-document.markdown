@@ -62,7 +62,7 @@ Seen from the lens of distributed computing, the Bitcoin blockchain implements t
 
 ## Is it only about Cryptocurrencies?
 
-Clearly, the ability to order (time-stamp) all transactions in a trusted and immutable manner is a key ingredient of decentralized state machines as exhibited by many cryptocurrencies.
+The ability to order (time-stamp) all transactions in a trusted and immutable manner is a key ingredient of decentralized state machines. This is a core enabler of many cryptocurrencies.
 
 There could be many cases where a trusted method to time-stamp digital documents is needed and a central trusted party is accepted. Here are some examples:
 
