@@ -1,7 +1,6 @@
 ---
 title: The First Blockchain or How to Time-Stamp a Digital Document
 date: 2020-07-05 19:58:00 -07:00
-published: false
 tags:
 - blockchain101
 ---
