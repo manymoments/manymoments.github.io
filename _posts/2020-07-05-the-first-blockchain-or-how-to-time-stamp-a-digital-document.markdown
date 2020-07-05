@@ -1,12 +1,12 @@
 ---
 title: The First Blockchain or How to Time-Stamp a Digital Document
-date: 2020-07-04 19:58:00 -07:00
+date: 2020-07-05 19:58:00 -07:00
 published: false
 tags:
 - blockchain101
 ---
 
-This post is about the work of Stuart Haber and W. Scott Stornetta from 1991 on [How to Time-Stamp a Digital Document](https://www.anf.es/pdf/Haber_Stornetta.pdf) and their followup paper [Improving the Efficiency and Reliability of Digital Time-Stamping](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.71.4891&rep=rep1&type=pdf). In many ways, this work introduced the idea of a chain of hashes to create a total order of commitments to a set of documents. It's no wonder these two papers are cited by the [Bitcoin whitepaper](https://bitcoin.org/bitcoin.pdf). 
+This post is about the work of Stuart Haber and W. Scott Stornetta from 1991 on [How to Time-Stamp a Digital Document](https://www.anf.es/pdf/Haber_Stornetta.pdf) and their followup paper [Improving the Efficiency and Reliability of Digital Time-Stamping](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.71.4891&rep=rep1&type=pdf). In many ways, this work introduced the idea of a chain of hashes to create a total order of commitments to a dynamically growing set of documents. It's no wonder these two papers are cited by the [Bitcoin whitepaper](https://bitcoin.org/bitcoin.pdf). 
 
 > Who watches the watchmen?
 > Quis custodiet ipsos custodes?
@@ -26,7 +26,7 @@ From 1995, the ideas of this paper have been in use by a company called [Surety]
 ## How to Time-Stamp a Digital Document?
 In 1991, Haber and Stornetta asked this very basic question. Today, after 30 years of exponential growth in digital documents, this question is even more relevant! Let's describe their basic scheme:
 
-The system is composed of users, a Time-Stamp Service (TSS), and a repository. At some regular interval, the TSS publishes an "interval hash" to the "widely available repository".
+The system is composed of users, a Time-Stamp Service (TSS), and a repository. At some regular interval, the TSS publishes an "interval hash" to a "widely available repository".
 
 1. Users send *certification requests* to the TSS. 
 
@@ -55,7 +55,7 @@ This is a very simple and intuitive scheme. It does make quite strong trust assu
 
 ## Connection to Bitcoin and Cryptocurrencies
 
-The Bitcoin whitepaper made a breakthrough connection between this scheme and proof-of-work: instead of assuming a centralized trusted TSS and a centralized trusted repository, it uses the chain of hashes to incentivize miners to implement the TSS and the repository in a decentralized manner! A miner that wins the race to produce a proof-of-work is incentives to implement the TSS functionality and correctly publish a new interval hash. Moreover, censorship resistance is obtained by randomizing the winning miner and by adding fees that incentivize adding user requests. Miners are collectively incentivized to implement a replicated repository. Consistency is obtained by incentivizing Miners to use the notion of the *longest (PoW heaviest) chain of hashes*.
+The Bitcoin whitepaper made a breakthrough connection between this time-stamping scheme and proof-of-work: instead of assuming a centralized trusted TSS and a centralized trusted repository, it uses the chain of hashes to incentivize miners to implement the TSS and the repository in a decentralized manner! A miner that wins the race to produce a proof-of-work is incentives to implement the TSS functionality and correctly publish a new interval hash. Moreover, censorship resistance is obtained by randomizing the winning miner and by adding fees that incentivize adding user requests. Miners are collectively incentivized to implement a replicated repository. Consistency is obtained by incentivizing Miners to use the notion of the *longest (PoW heaviest) chain of hashes*.
 
 
 Seen from the lens of distributed computing, the Bitcoin blockchain implements the TSS state machine and the repository is replicated via a byzantine fault-tolerant protocol called [Nakamoto Consensus](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/). Seen from the lens of game theory, the contents of the documents recorded are restricted to be transactions over an internal digital asset with a controlled supply. Using this scarce resource, Bitcoin builds a novel incentive scheme that [typically](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/) incentivizes miners to implement the TSS and the public repository.
