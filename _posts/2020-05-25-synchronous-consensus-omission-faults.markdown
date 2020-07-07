@@ -95,16 +95,16 @@ seq-no = 0
 while true:
    // as a Primary
    on receiving cmd from a client library (and view == j):
-      if cur == none:
+      if cur == none: // if not currently processing a cmd 
          send ("propose", cmd, seq-no) to all replicas
          cur = cmd
 
-   on receiving ("vote", cmd, seq-no) from a backup replica r:
-      if cur == cmd:
+   on receiving ("vote", cmd, seq-no') from a backup replica r:
+      if seq-no == seq-no':
          acks[seq-no] = acks[seq-no] + 1
-         if acks[cmd] > n/2:
+         if acks[seq-no] > n/2:
             send ("notify", cmd) to all replicas
-            log[seq-no] = cmd
+            log.append(cmd)
             state, output = apply(cmd, state)
             send output to the client library
             cur = none
@@ -118,7 +118,7 @@ while true:
 
    on receiving ("notify", cmd, seq-no') from any replica:
       if seq-no' == seq-no:
-         log[seq-no] = cmd
+         log.append(cmd)
          state, output = apply(cmd, state)
          seq-no = seq-no + 1
          send ("notify", cmd, seq-no) to all replicas
@@ -132,9 +132,9 @@ In the steady state protocol, a primary receives commands from the client. The p
 
 Let us try to understand how we performed in achieving the challenges described earlier:
 
-- [x] The primary commits only after ensuring that subsequent primaries can recover the value: the $f+1$ replicas store the acknowledged value in a resend list that can be sent to a subsequent primary in case of a view change
+- [x] The primary commits only after ensuring that subsequent primaries can recover the value: the $f+1$ replicas store the acknowledged value in a resend variable that can be sent to a subsequent primary in case of a view change
 - [ ] When a view-change is invoked, the new primary should *safely* be able to adopt a value that may have been committed: not described yet.
-- [x] The steady-state process should be *live*.
+- [x] The steady-state process should be *live*: when the primary is not faulty, it will be in sync with all other non-faulty replicas just like in the primary-backup protocol for crash failures. Hence, it will keep making progress. If the primary is faulty, we are not guaranteed to make progress; we will rely on the view-change mechanism then.
 - [ ] The view-change process should be *live*: not described yet.
 
 We now describe the view-change protocol to satisfy the other two constraints.
