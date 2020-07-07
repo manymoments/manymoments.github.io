@@ -8,20 +8,20 @@ tags:
 author: Kartik Nayak, Ittai Abraham
 ---
 
-We continue our series of posts on [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) (SMR). In this post, we move from consensus under [crash failures](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) to consensus under [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). We still keep the [synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) assumption. For increased simplicity we focus on the lock-step model of synchrony. ITTAI: do we need this addition?
+We continue our series of posts on [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) (SMR). In this post, we move from consensus under [crash failures](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) to consensus under [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). We still keep the [synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) assumption.
 
-In a subsequent posts in the series, we will extend this to consider asynchronous communication ([partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/)); this protocol will form the key underpinning for the celebrated [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) protocol.
+In a subsequent post in the series, we will extend this to consider asynchronous communication ([partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/)); this protocol will form the key underpinning for the celebrated [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) protocol.
 
 Let's begin with a quick overview of previous posts:
-1.  [Upper bound](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/): Under crash failures, can tolerate $n-1$ crashe failures.
+1. [Upper bound](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/): We can tolerate up to $n-1$ crash failures.
 
-2. [Lower bound](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/): Under omission failures, the best can can hope for is to tolerate less than $n/2$ omission failures.
+2. [Lower bound](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/): The best can can hope for is to tolerate less than $n/2$ omission failures.
 
-We first go over the upper bound for crash failures. Then see what goes wrong and how we can fix it.
+We first go over the upper bound for crash failures. Then see what goes wrong when the failures are omission and how we can fix the protocol.
 
 ### Primary-Backup for $n$ Replicas
 
-Recall that in crash model, the primary behaves exactly like an ideal state machine until it crashes. If it does crash, the backup takes over the execution to continue serving the clients. To provide the clients with an interface of a single non-faulty server, the primary sends client commands to all backups before updating the state machine and responding to the client. The backups passively replicate all the commands sent by the primary. In case the primary fails, which is detected by the absence of a "heartbeat", the next designated backup replica $j$ invokes a ("view change", $j$) to all replicas along with the last command sent by the primary in view $j-1$. It then becomes the primary.
+Recall that in the crash model, the primary behaves exactly like an ideal state machine until it crashes. If it does crash, the backup takes over the execution to continue serving the clients. To provide the clients with an interface of a single non-faulty server, the primary sends client commands to all backups before updating the state machine and responding to the client. The backups passively replicate all the commands sent by the primary. In case the primary fails, which is detected by the absence of a "heartbeat", the next designated backup replica $j$ invokes a ("view change", $j$) to all replicas along with the last command sent by the primary in view $j-1$. It then becomes the primary.
 
 For completeness, we repeat the primary-backup pseudocode below. Assume $n$ replicas with identifiers $\{0,1,2,\dots,n-1\}$.
 
@@ -33,11 +33,6 @@ log = []
 resend = []
 view = 0
 while true:
-   // as a Backup
-   on receiving cmd from replica[view]:
-      log.append(cmd)
-      state, output = apply(cmd, state)
-      resend = cmd
 
    // as a Primary
    on receiving cmd from a client library (and view == j):
@@ -45,6 +40,16 @@ while true:
       log.append(cmd)
       state, output = apply(cmd, state)
       send output to the client library
+      
+   // as a Backup
+   on receiving cmd from replica[view]:
+      log.append(cmd)
+      state, output = apply(cmd, state)
+      resend = cmd
+
+   // Heartbeat from primary
+   if no client message for some predetermined time t (and view == j):
+      send ("heartbeat", j) to all replicas (in order)
 
    // View change
    on missing "heartbeat" from replica[view] in the last t + $\Delta$ time units:
@@ -52,10 +57,6 @@ while true:
       if view == j
          send ("view change", j) to all client libraries
          send resend to all replicas (in order)
-
-   // Heartbeat from primary
-   if no client message for some predetermined time t (and view == j):
-      send ("heartbeat", j) to all replicas (in order)
 ```
 
 Can we use the above protocol under omission failures? No! Here is where the protocol fails:
@@ -70,9 +71,9 @@ To make such a protocol work, we need to ensure the following:
 - [ ] *Live view change*: The view-change process should not get stuck.
 
 
-**Main problem.** The main problem we have to deal with is a faulty primary  that is not aware that it is omission faulty. So how can a primary know if its message was sent? By waiting to hear an acknowledgment. But even if the primary is honest and sends a message to all replicas, how many acknowledgments can it wait for without loosing liveness? Clearly it can wait for at most $n-f$.
+The key problem we have to deal with is a faulty primary  that is not aware that it is omission faulty. So how can a primary know if its message was sent? By waiting to hear an acknowledgment. But even if the primary is honest and sends a message to all replicas, how many acknowledgments can it wait for without losing liveness? Clearly, it cannot wait for more than $n-f$!
 
-**Steady-state protocol.** We now explain the steady-state protocol under a fixed primary; we will later discuss the view-change process.
+**Steady-state protocol.** We now explain the steady-state protocol tolerating omission failures under a fixed primary; we will later discuss the view-change process.
 
 
 ITTAI: THINGS TO CHECK::
@@ -92,19 +93,6 @@ resend = none
 seq-no = 0
 
 while true:
-   // as a Backup
-   on receiving ("propose", cmd, seq-no') from replica[view]:
-      if seq-no' == seq-no:
-         send ("vote", cmd, seq-no) to replica[view]
-         resend = cmd
-
-   on receiving ("notify", cmd, seq-no') from any replica:
-      if seq-no' == seq-no:
-         log[seq-no] = cmd
-         state, output = apply(cmd, state)
-         seq-no = seq-no + 1
-         send ("notify", cmd, seq-no) to all replicas
-
    // as a Primary
    on receiving cmd from a client library (and view == j):
       if cur == none:
@@ -121,6 +109,19 @@ while true:
             send output to the client library
             cur = none
             seq-no = seq-no + 1
+  
+   // as a Backup
+   on receiving ("propose", cmd, seq-no') from replica[view]:
+      if seq-no' == seq-no:
+         send ("vote", cmd, seq-no) to replica[view]
+         resend = cmd
+
+   on receiving ("notify", cmd, seq-no') from any replica:
+      if seq-no' == seq-no:
+         log[seq-no] = cmd
+         state, output = apply(cmd, state)
+         seq-no = seq-no + 1
+         send ("notify", cmd, seq-no) to all replicas
 
    // Heartbeat from primary
    if no client message for some predetermined time t (and view == j):
