@@ -48,7 +48,7 @@ In their own words, if we assume the repository is durable and trusted (think ab
 3. "The only possible spoof is to prepare a fake chain of time-stamps, long enough to exhaust the most suspicious challenger that one anticipates." -- quite remarkable that even the notion of the longest chain has origins in this paper!
 
 
-Note the there are some underlying assumptions here. We are trusting the TSS (Surety) to *not censor users* and we are trusting the repository (New York Times) to be *durable and show a consistent version to all users*. 
+Note that there are some underlying assumptions here. We are trusting the TSS (Surety) to *not censor users* and we are trusting the repository (New York Times) to be *durable and show a consistent version to all users*. 
 
 This is a very simple and intuitive scheme. It does make quite strong trust assumptions. Can we remove them?
 
