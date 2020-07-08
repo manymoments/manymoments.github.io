@@ -89,7 +89,7 @@ log = []
 cur = none
 view = 0
 acks = []
-resend = none
+lock = none
 seq-no = 0
 
 while true:
@@ -114,7 +114,7 @@ while true:
    on receiving ("propose", cmd, seq-no') from replica[view]:
       if seq-no' == seq-no:
          send ("vote", cmd, seq-no) to replica[view]
-         resend = cmd
+         lock = cmd
 
    on receiving ("notify", cmd, seq-no') from any replica:
       if seq-no' == seq-no:
@@ -130,9 +130,41 @@ while true:
 
 In the steady state protocol, a primary receives commands from the client. The primary sends the command to every replica through ("request", cmd, seq-no) message. The sequence number seq-no keeps track of the ordering of messages. A backup replica, on receiving a ("request", cmd, seq-no) from the current primary, sends an ("ack", cmd, seq-no) message back to the primary. If the primary receives acknowledgments from a majority of replicas, the primary can add the command to the log, execute it, and send an output to the client. It also sends these acknowledgments to the backup replicas who can then add it to their logs and execute it. The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
 
+The key observation here is the following: *the primary commits only after ensuring that $f+1$ replicas store the acknowledged value in a lock variable. This observation is key to obtaining safety*.
+
+We now describe the view-change protocol:
+```
+   // View change
+   on missing "heartbeat" from replica[view] in the last t + $\Delta$ time units:
+      send ("no heartbeat", view) to replica[view + 1]
+
+   // new primary
+   on receiving ("no heartbeat", view) from f+1 replicas (and view == j-1):
+      send ("view-change", view) to all replicas
+      send ("view-change", view) to all client libraries
+      view = view + 1
+
+   // as a backup
+   on receiving ("view-change", view) from replica[view+1]: // KARTIK: SHOULD WE ACCEPT MESSAGES FROM LEADERS FROM view+c? what if there were consecutive bad leaders who failed to notify me?
+      send ("status", view, lock, seq-no) to replica[view+1]
+      stop participating in this view, set view = view+1
+      transition to steady state
+   
+   // new primary: proposes the highest-view-lock
+   on receiving ("status", view, lock, seq-no) from f+1 replicas (and view == j):
+      highest-view-lock = the lock from the highest view among the f+1 locks received
+      send ("propose", highest-view-lock, seq-no) to all replicas (in order)
+      cur = highest-view-lock
+      transition to steady state
+```
+
+The view-change protocol works as follows. If a replica does not receive a heartbeat from the primary for a sufficient amount of time, it stops participating in the view and sends a "no heartbeat" message to the primary of the next view. If the new primary collects f+1 such messages
+
+// if one honest sends, all honest send?
+
 Let us try to understand how we performed in achieving the challenges described earlier:
 
-- [x] The primary commits only after ensuring that subsequent primaries can recover the value: the $f+1$ replicas store the acknowledged value in a resend variable that can be sent to a subsequent primary in case of a view change
+- [x] The primary commits only after ensuring that subsequent primaries can recover the value: the $f+1$ replicas store the acknowledged value in a lock variable. This ensures that whenever a view-change happens, at least that can be sent to a subsequent primary in case of a view change
 - [ ] When a view-change is invoked, the new primary should *safely* be able to adopt a value that may have been committed: not described yet.
 - [x] The steady-state process should be *live*: when the primary is not faulty, it will be in sync with all other non-faulty replicas just like in the primary-backup protocol for crash failures. Hence, it will keep making progress. If the primary is faulty, we are not guaranteed to make progress; we will rely on the view-change mechanism then.
 - [ ] The view-change process should be *live*: not described yet.
