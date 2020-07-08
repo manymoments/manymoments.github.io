@@ -137,6 +137,7 @@ We now describe the view-change protocol:
    // View change
    on missing "heartbeat" from replica[view] in the last t + $\Delta$ time units:
       send ("no heartbeat", view) to replica[view + 1]
+      // EXPLAIN we do not stop participating in this view, we first need everyone to end their view at the same time
 
    // new primary
    on receiving ("no heartbeat", view) from f+1 replicas (and view == j-1):
@@ -147,7 +148,7 @@ We now describe the view-change protocol:
    // as a backup
    on receiving ("view-change", view) from replica[view+1]: // KARTIK: SHOULD WE ACCEPT MESSAGES FROM LEADERS FROM view+c? what if there were consecutive bad leaders who failed to notify me?
       send ("status", view, lock, seq-no) to replica[view+1]
-      stop participating in this view, set view = view+1
+      stop participating in this view, set view = view + 1
       transition to steady state
    
    // new primary: proposes the highest-view-lock
