@@ -23,11 +23,12 @@ In 1993, [Canetti and Rabin](https://dl.acm.org/doi/10.1145/167088.167105) obtai
 In 1994, [Ben-Or, Kelmer, and Rabin](https://dl.acm.org/doi/10.1145/197917.198088) addressed this problem. They provided an optimal resilience asynchronous secure multiparty computation protocol with the same "annoying property": the non-termination event has a **on-zero** probability measure. Moreover, BKR  claim that this is unavoidable. That is, if $n\le 4t$ then any t-resilient asynchronous verifiable secret sharing protocol $A$ must have some **non-zero** probability $q_A>0$ of not terminating. 
 
 In other words, there is a fundamental limit to Asynchronous Fault Tolerant Computation with Optimal Resilience:
+
 **Theorem [BCG]: any protocol solving verifiable secret sharing in the asynchronous model with optimal resilience mus have a positive probability of deadlock.**
 
 In this blog post, we provide a proof overview of this lower bound. For a full proof (and a fascinating new upper bound) please see our [PODC 2020 paper](https://arxiv.org/pdf/2006.16686.pdf). 
 
-### what is verifiable secret sharing?
+### What is Verifiable Secret Sharing (VSS)?
 
 Verifiable Secret Sharing (VSS) is a pair of protocols: *Share* and *Recover*, with one designated party, called the *Dealer*. The Dealer has an *input value* $s$ for the Share protocol. The Recover protocol has an output value. VSS has the following properties:
 
@@ -47,7 +48,7 @@ If the dealer is non-faulty, and no honest party has begun the Recover protocol,
 
 In other words, the Share protocol allows the dealer to *commit* to a value without revealing it. In particular, if the dealer is non-faulty, the Hiding property keeps the value hidden from the adversary. If the dealer is faulty, the Binding property prevents the adversary from changing the committed value (once one non-faulty competed the Share protocol). 
 
-### lower bound techniques
+### Lower bound techniques
 
 Like many of previous lower bounds, this lower bound heavily relies on two powerful techniques: *indistinguishability* (where some parties can not tell between two potential worlds) and *hybridization* (where we build intermediate worlds between the two contradicting worlds and use a chain of indistinguishability arguments for a contradiction.). Unlike these previous lower bounds, this one uses indistinguishability in a more subtle manner. I will call this **indistinguishability boosting**:
 1. Start with a very weak notion of *conditional indistinguishability*: that there is a non-zero probability event during the Share protocol, such that conditioned on this event two worlds are indistinguishable.
