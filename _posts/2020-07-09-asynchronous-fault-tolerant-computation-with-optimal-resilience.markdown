@@ -15,12 +15,12 @@ Given the above, the following question is natural:
 
 
 
-In 1983,  [Ben-Or, Canetti, and Goldreich](https://dl.acm.org/doi/10.1145/167088.167109) initiated the study of secure multiparty computation in the asynchronous model. Their fundamental result is that the answer above is \textit{yes} when there are $n >4t$ servers and an adversary that can corrupt at most $t$ parties in a Byzantine manner. They show that \emph{perfect} security with finite expected run time can be obtained for any functionality.
+In 1983,  [Ben-Or, Canetti, and Goldreich](https://dl.acm.org/doi/10.1145/167088.167109) initiated the study of secure multiparty computation in the asynchronous model. Their fundamental result is that the answer above is **yes** when there are $n >4t$ servers and an adversary that can corrupt at most $t$ parties in a Byzantine manner. They show that **perfect** security with finite expected run time can be obtained for any functionality.
 
 The BCG work left open the domain of $3t<n \le 4t$.
-In 1993, [Canetti and Rabin](https://dl.acm.org/doi/10.1145/167088.167105) obtained a protocol for Asynchronous Byzantine Agreement with optimal resilience ($3t<n$). Their protocol had an "annoying property": the non-termination event has a \textbf{non-zero} probability measure. This problematic non-zero probability of non-termination came from their verifiable secret sharing protocol.
+In 1993, [Canetti and Rabin](https://dl.acm.org/doi/10.1145/167088.167105) obtained a protocol for Asynchronous Byzantine Agreement with optimal resilience ($3t<n$). Their protocol had an *"annoying property"*: the non-termination event has a **non-zero** probability measure. This problematic non-zero probability of non-termination came from their verifiable secret sharing protocol.
 
-In 1994, [Ben-Or, Kelmer, and Rabin](https://dl.acm.org/doi/10.1145/197917.198088)addressed this problem. They provided an optimal resilience asynchronous secure multiparty computation protocol with the same "annoying property": the non-termination event has a \textbf{non-zero} probability measure. Moreover, BKR  claim that this is unavoidable. That is, if $n\le 4t$ then any t-resilient asynchronous verifiable secret sharing protocol $A$ must have some \textbf{non-zero} probability $q_A>0$ of not terminating. 
+In 1994, [Ben-Or, Kelmer, and Rabin](https://dl.acm.org/doi/10.1145/197917.198088)addressed this problem. They provided an optimal resilience asynchronous secure multiparty computation protocol with the same "annoying property": the non-termination event has a **on-zero** probability measure. Moreover, BKR  claim that this is unavoidable. That is, if $n\le 4t$ then any t-resilient asynchronous verifiable secret sharing protocol $A$ must have some **non-zero** probability $q_A>0$ of not terminating. 
 
 In other words, there is a fundamental limit to Asynchronous Fault Tolerant Computation with Optimal Resilience:
 **Theorem [BCG]: any protocol solving verifiable secret sharing in the asynchronous model with optimal resilience mus have a positive probability of deadlock.**
