@@ -42,9 +42,9 @@ In particular, if $K$ were just a ring and not a field (e.g., $K=\mathbb{Z}_{12}
 
 For $d\geq 2$, we will use an induction step. There are two cases.
 First, if $p$ has no zeroes, then we are done.
-Otherwise, let $a \in K$ be such that $p(a)=0$. We will prove that there exists a polynomial $q$ of degree $<d$ such that $p=(X-a) q$. Since $q$ has a degree that is smaller than $d$ we can use the induction hypothesis. So $p$ can have at most $d-1$ zeros from $q$ and at most one more zero (at $a$) from the degree 1 polynomial $X-a$.
+Otherwise, let $a \in K$ be such that $p(a)=0$. Suppose that we could prove that there exists a polynomial $q$ of degree $<d$ such that $p=(X-a) q$. Since $q$ has a degree that is smaller than $d$ we can use the induction hypothesis on $q$. So $p$ can have at most $d-1$ zeros from $q$ and at most one more zero (at $a$) from the degree 1 polynomial $X-a$.
 
-So to complete the induction argument we need to prove the following claim:
+So to complete the induction argument we need to prove the existence of such $q$ using the following claim:
 
 **Claim: if $p$ has degree $d\ge 1$ and $p(a)=0$ then there exists $q$ such that $p=(X-a)q$ and $q$ has a lower degree than $p$**
 
