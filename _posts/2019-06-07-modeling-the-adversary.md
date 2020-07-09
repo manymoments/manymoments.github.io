@@ -51,10 +51,12 @@ The visibility is the power of the adversary to see the messages and the states 
 For models that are round-based, another distinction about visibility is when does the adversary see the messages for a given round. In the *rushing adversary model*, the adversary is allowed to see all the messages sent to parties it controls in round $i$ before it sends its round $i$ messages. In the *non-rushing adversary model*, the adversary must commit to the round $i$ messages it sends before it receives any round $i$ messages from non-faulty parties.
 
 ### 4. Adaptivity 
-Adaptivity is the ability of the adversary to corrupt dynamically based on information the adversary learns during the execution. There are two basic variants: static and adaptive. The adaptive model has several sub-variants but we will cover here only the simplest one.
+Adaptivity is the ability of the adversary to corrupt dynamically based on information the adversary learns during the execution. There are three basic variants: static, adaptive, and mobile. The adaptive model has several sub-variant, we will cover here only the simplest one.
 
-1. *Static*: the adversary has to decide which $f$ parties to corrupt in advance before the execution of the protocol.
+1. *Static*: the adversary has to decide which $f$ parties to corrupt in advance before the execution of the protocol. 
 
 2. *Adaptive*: the adversary can decide dynamically as the protocol progresses who to corrupt based on what the adversary learns over time. The main parameter that still needs to be decided is how long it takes between the adversary _decision_ to corrupt and the _event_ that the control is passed to the adversary. One standard assumption is that this is instantaneous. Another is that it takes an additional round (for example [here](https://web.cs.ucla.edu/~rafail/PUBLIC/05.pdf)). We will later review several other options (for example, see [here](https://users.cs.duke.edu/~kartik/papers/podc2019.pdf)).
+
+3. *Mobile*: the adversary can decide dynamically who to corrupt and who to un-corrupt.  The total number of corrupted parties at any given time is at most $f$, but over time the set of corrupted parties may change. It is often required that there is a *gap* between the time the adversary corrupts one party and the time it is allowed to corrupt another. This model was introduced by [Ostrovsky and Yung](https://web.cs.ucla.edu/~rafail/PUBLIC/05.pdf) and exemplified by [proactive secret sharing](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.40.8922&rep=rep1&type=pdf).
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1141481767121170434?s=20)
