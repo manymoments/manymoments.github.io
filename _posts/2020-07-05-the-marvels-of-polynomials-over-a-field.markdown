@@ -4,7 +4,7 @@ date: 2020-07-05 10:55:00 -07:00
 published: false
 ---
 
-In this series of posts, we study the mathematical foundations of polynomials over a [field](https://en.wikipedia.org/wiki/Field_(mathematics)). These objects are at the heart of several results in computer science: [secret sharing](https://cs.jhu.edu/~sdoshi/crypto/papers/shamirturing.pdf),
+In this series of posts, we explore the mathematical foundations of polynomials over a [field](https://en.wikipedia.org/wiki/Field_(mathematics)). These objects are at the heart of several results in computer science: [secret sharing](https://cs.jhu.edu/~sdoshi/crypto/papers/shamirturing.pdf),
 [Multi Party Computation](https://eprint.iacr.org/2011/136.pdf), [Complexity](https://lance.fortnow.com/papers/files/ip.pdf), and [Zero](https://www.iacr.org/archive/asiacrypt2010/6477178/6477178.pdf) [Knowledge](https://cyber.biu.ac.il/event/the-9th-biu-winter-school-on-cryptography/) [protocols](https://eprint.iacr.org/2019/953.pdf).
 
 All this wonder and more can be traced back to a very useful fact about polynomials over a field:
