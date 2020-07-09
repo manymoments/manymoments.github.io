@@ -2,6 +2,7 @@
 title: The Marvels of Polynomials over a Field
 date: 2020-07-05 10:55:00 -07:00
 published: false
+author: Ittai Abraham
 ---
 
 In this series of posts, we explore the mathematical foundations of polynomials over a [field](https://en.wikipedia.org/wiki/Field_(mathematics)). These objects are at the heart of several results in computer science: [secret sharing](https://cs.jhu.edu/~sdoshi/crypto/papers/shamirturing.pdf),
@@ -23,8 +24,7 @@ $$
 
 We say that a polynomial $p$ is *non-trivial* if some coefficient $p_i \neq 0$. Then, we define the *degree* of $p$ to be the maximal $i$ such that $p_i \neq 0$ (it is natural to define the degree of the trivial polynomial to be $- \infty$).
 
-We say that $a \in K$ is a *zero* of $p \in K[X]$ if $p(a)=0$ and say that $p$ has *at most $d$ zeroes* if there are at most $d$ elements in $K$ that are a zero of $p$.
-"Zeroes" of polynomials are also referred to as "roots."
+We say that $a \in K$ is a *zero* of $p \in K[X]$ if $p(a)=0$ and say that $p$ has *at most $d$ zeroes* if there are at most $d$ elements in $K$ that are a zero of $p$. The zeroes of polynomials are also referred to as *roots*.
 
 For example, consider the polynomial $p=2X-4$. It is clearly a polynomial of degree one and we all know that, over the rational field $K=\mathbb{Q}$, it has just one zero (at $2$).  Now, consider that same polynomial over the finite field $K=\mathbb{Z}_7$, which are just the integers modulo 7: i.e., $\\{0,1,2,\dots,6\\}$.
 Then, a quick check shows that $2$ is still the only zero of $p$. In other words, the equation $2X=4 \pmod 7$ has exactly one solution: $2$.
@@ -77,7 +77,9 @@ $$
 It is direct to see that $q$ has degree $d-1$.
 
 In the next posts, we will use this very useful fact about roots of polynomials over finite fields.
-First, we will use it as the foundations for Secret Sharing and then as the foundation for Zero Knowledge Proofs.
+First, we will use it as the foundation for Secret Sharing and then as the foundation for Zero Knowledge Proofs.
+
+A significantly more general result about polynomials over a field views them as a special case of a [unique factorization domain](https://en.wikipedia.org/wiki/Unique_factorization_domain). This view exposes deep connections between the natural numbers, polynomials over a field, and the [fundamental theorem of Arithmetic](https://www.maths.tcd.ie/pub/Maths/Courseware/Primality/Primality.pdf).  
 
 
 **Acknowledgment.** Thanks to [Alin](https://research.vmware.com/researchers/alin-tomescu) for helpful feedback on this post.
