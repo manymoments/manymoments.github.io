@@ -7,7 +7,7 @@ published: false
 In this series of posts, we study the mathematical foundations of polynomials over a field. These objects are at the heart of several results in computer science: [secret sharing](https://cs.jhu.edu/~sdoshi/crypto/papers/shamirturing.pdf),
 [Multi Party Computation](https://eprint.iacr.org/2011/136.pdf), [Complexity](https://lance.fortnow.com/papers/files/ip.pdf), and [Zero](https://www.iacr.org/archive/asiacrypt2010/6477178/6477178.pdf) [Knowledge](https://cyber.biu.ac.il/event/the-9th-biu-winter-school-on-cryptography/) [protocols](https://eprint.iacr.org/2019/953.pdf).
 
-All this wonder and more can be traced back to a very usfull fact about polynomials over a field:
+All this wonder and more can be traced back to a very useful fact about polynomials over a field:
 
 **Theorem: any non-trivial polynomial over a field of degree at most $d$ has at most $d$ zeroes**
 
@@ -23,17 +23,17 @@ We say that $p$ is *non-trivial* if some $p_i \neq 0$ and define the *degree* of
 
 We say that $a \in K$ is a *zero* of $p \in K[X]$ if $p(a)=0$ and say that $p$ has *at most $d$ zeroes* if there are at most $d$ elements in $K$ that are a zero of $p$.
 
-For example, consider the polynomial $p=2X-4$. It clearly is a polynomial of degree 1 and we all know that over the rational field it has just one zeroes at 2.  Now consider that $K$ is the finite filed $\mathcal{F}_7$, then a quick check shows that $2$ is the only zeroes of $p$. In other words the equasion $2X=4 \mod 7$ has exaclty one solutions: $2$.
+For example, consider the polynomial $p=2X-4$. It clearly is a polynomial of degree one and we all know that over the rational field it has just one zero at 2.  Now consider that $K$ is the finite filed $\mathcal{F}_7$, then a quick check shows that $2$ is still the only zero of $p$. In other words, the equation $2X=4 \mod 7$ has exactly one solution: $2$.
 
 
 Note that if instead of a field we chose $K$ to be $\mod 12$ (formally $\mathcal{Z}/\mathcal{Z}_{12}$) then the equation $2X=4 \mod 12$ would have 2 (!) solutions: $2$ and $8$ (because 16-12=4). More than the degree!
 
 **Proof of the Theorem**
-Not suprisingly, the proof will be via induction on $d$. 
+Not surprisingly, the proof will be via induction on $d$. 
 
 For $d=0$ the statement is trivial, since $p$ is non-trivial then $p_0 \neq 0$ and hence $p$ has no zeros.
 
-For $d=1$, as we have been above, we need to use the fact that $K$ is a field. Hence the unique zero of $p=p_0+p_1 X$ is the uniqie element $-p_0/p_1 = -(p_0) (p_1)^{-1}$. Note that if $K$ was just a ring and not a field then the inverse of $p_1$ may not exist or more worrisome may not be unique!
+For $d=1$, as we have been above, we need to use the fact that $K$ is a field. Hence the unique zero of $p=p_0+p_1 X$ is the unique element $-p_0/p_1 = -(p_0) (p_1)^{-1}$. Note that if $K$ was just a ring and not a field then the inverse of $p_1$ may not exist or more worrisome may not be unique!
 
 For $d\geq 2$ we will use an induction step, suppose $p$ is of degree $d$. There are two cases, if $p$ has no zeroes then we are done. Otherwise let $a \in K$ be such that $p(a)=0$, we will prove that there exists a polynomial $q$ of degree $<d$ such that $p=(X-a) q$. Since $q$ has a degree that is smaller than $d$ we can use the induction hypothesis. So $p$ can have at most $d-1$ zeros from $q$ and at most one more zero (at $a$) from the degree 1 polynomial $X-a$.
 
