@@ -55,17 +55,17 @@ Like many of previous lower bounds, this lower bound heavily relies on two power
 2. Boost this conditional indistinguishability in the Share protocol to a full indistinguishability argument in the Recover protocol. 
 
 ### The setting
-We have four parties $A,B,C,D$, where $D$ is the dealer and at most one party may be byzantine.
+We have four parties $A,B,C,D$, where $D$ is the dealer and at most one party may be byzantine. The network is fully synchronous so messages can be delayed by any finite amount.
 
-### Share World A
+**Share World A:**
 In Share World A, party $C$ is slow, $D$ has input 0, party $B$ is malicious and acts as if $D$ has input 1.
 
 
-### Share World B
+**Share World B:**
 In Share World 1, party $C$ is slow, $D$ has input 1, party $A$ is malicious and acts as if $D$ has input 0.
 
-### Share World Hybrid
-In Share World B, party $C$ has crashed, party $D$ is malicious, and acts as if its input is 0 to $A$ and if its input is 1 to $B$.
+**Share World Hybrid:**
+In Share World Hybrid, party $C$ has crashed, party $D$ is malicious, and acts as if its input is 0 to $A$ and as if its input is 1 to $B$.
 
 
 Note that Share Worlds A and B, all non-faulty must complete the Share Protocol. The important question to ask if the Share World Hybrid will complete the Share protocol. Because if it always completes then one could derive an easy lower bound. Either in Share Worlds A or in B there would be a violation of the Binding property (that $r=s$) with constant probability.
@@ -80,21 +80,26 @@ This already shows an important point: **perfect VSS is impossible in this setti
 
 The idea will be to boost this non-zero probability of an indistinguishability result for the Share phase, under the assumption that there is no deadlock, to a constant probability of error during the Recover protocol.
 
-### Recover World A:
+**Recover World A:**
 In Recover World A, party $C$ is slow during Share, $D$ has input 0 and is slow during Recover, party $B$ is malicious: during Share, it acts correctly, but during Recover, it acts as if $D$ had input 1.
 
-### Recover World B:
+
+**Recover World B:**
 In Recover World B, party $C$ is slow during Share, $D$ has input 1 and is slow during Recover, party $A$ is malicious: during Share, it acts correctly, but during Recover, it acts as if $D$ had input 0.
 
-The main trick here is that the malicious party can "act as if $D$ had the opposite value" because it uses the probability distribution induced by the conditional event of completing the Share protocol in the Share World Hybrid. 
+The main challenge here is to show that the malicious party can "act as if $D$ had the opposite value" by using the probability distribution induced by the conditional event of completing the Share protocol in the Share World Hybrid. 
 
-We can now finally look at party $C$ and claim an indistinguishability argument between Recover World A and Recover World B. This indistinguishability implies that party $C$ must output the wrong value with a constant (large) probability. Proving this indistinguishability by using the conditional probability distribution of completing the Share protocol in the Share World Hybrid is subtle. It relies heavily on the Hiding property of the Share protocol to allow the adversary (party $A$ or $B$) to sample from this distribution during the Recover protocol without knowing the actual random bits of the non-faulty Dealer during the Share protocol.
+We can now finally look at party $C$ and claim an indistinguishability argument between Recover World A and Recover World B. This indistinguishability implies that party $C$ must output the wrong value with a constant (large) probability. Proving this indistinguishability by using the conditional probability distribution of completing the Share protocol in the Share World Hybrid is subtle and non-trivial. It relies heavily on the Hiding property of the Share protocol to allow the adversary (party $A$ or $B$) to sample from this distribution during the Recover protocol without knowing the actual random bits of the non-faulty Dealer during the Share protocol.
 
-Observe that to get a constant probability of error, we strongly used the fact that party $C$ **must** complete the Recover protocol. If a small probability of deadlock is allowed, then party $C$ could just not terminate. This would only violate the termination property of the Recovery protocol in Share World Hybrid, but would only do so with a very small probability.
+Observe that to get a constant probability of error, we strongly used the fact that party $C$ **must** complete the Recover protocol and output some value. If a small probability of deadlock is allowed, then party $C$ could just not terminate. This would only violate the termination property of the Recovery protocol in Share World Hybrid, but would only do so with a very small probability.
 
-To conclude we showed that if you assume there is no deadlock, then a strategy causing a small (non-zero) error probability in the Share protocol can be boosted to a strategy causing a large (constant) probability of error in the Recover protocol, under the assumption that there is never a deadlock.
+To conclude we showed that if you assume there is no deadlock, then a malicious strategy in the Share protocol causing a small (non-zero) error probability can be boosted to a malicious strategy in the Recover protocol causing a large (constant) probability of error, under the assumption that there is never a deadlock.
 
 The contrapositive is: there cannot be a protocol that is both correct with constant probability and has a measure zero probability of deadlock. This concludes the lower bound overview.
+
+For a full proof (and a fascinating new upper bound showing what can be done without a non-zero probability of non-termination) please see our [PODC 2020 paper](https://arxiv.org/pdf/2006.16686.pdf). 
+
+Please leave comments on [Twitter](...).
 
 
 
