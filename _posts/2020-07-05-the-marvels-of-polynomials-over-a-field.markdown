@@ -80,7 +80,10 @@ In the next posts, we will use this very useful fact about roots of polynomials 
 First, we will use it as the foundations for Secret Sharing and then as the foundation for Zero Knowledge Proofs.
 
 
+**Acknowledgment.** Thanks to [Alin](https://research.vmware.com/researchers/alin-tomescu) for helpful feedback on this post.
 
+
+Please leave comments on [Twitter](...).
 
 
 
