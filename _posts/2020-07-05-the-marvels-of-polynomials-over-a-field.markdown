@@ -43,9 +43,15 @@ We will define a new polynomial $p' = p - p_d X^{d-1} (X-a)$, note that $p_d$ is
 1. The degree of $p'$ is smaller than $d$, this is becasue the $d$th coeffieicent of $p_d X^{d-1} (X-a)$ equals $p_d$ so will cancel out.
 2. $p'$ has the propoerty that $p'(a)=0$, this is because $p(a)=0$ and becuase $p_d X^{d-1} (X-a)$ also zeros at $a$.
 
-Hence we can apply the induction hypothesis on $p'$ to obtain $p'=(X-a)q'$ such that the degree of $q'$ is lower than $d-1$.
+Hence we can apply the induction hypothesis on $p'$ to obtain that there exists $q'$ such that $p'=(X-a)q'$ and the degree of $q'$ is lower than $d-1$.
 
-Since $p=p'+ p_d X^{d-1} (X-a)$ then we can substituie and get $p= (X-a)q' + (X-a) p_d X^{d-1}$. Hence we have proved that $p= (X-a)q$ with $q=q_1+p_d X^{d-1}$. It is direct to see that $q$ has a lower degree than $d$.
+Since 
+$$p=p'+ p_d X^{d-1} (X-a)$$
+then we can substituie and get 
+$$p= (X-a)q' + (X-a) p_d X^{d-1}.$$
+Hence we have proved that 
+$$p= (X-a)q$ with $q=q_1+p_d X^{d-1}.$$
+It is direct to see that $q$ has a lower degree than $d$.
 
 In the next posts, we will use this very useful fact. First as the foundations for Secret Sharing and then as the foundation for Zero Knowledge proofs.
 
