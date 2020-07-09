@@ -4,6 +4,8 @@ date: 2020-07-09 01:39:00 -07:00
 published: false
 ---
 
+OLD VERSION, SEE HACKERMD 
+
 A basic question of distributed computing is:
 **Is there a fundamental limit to fault tolerant computation in the Asynchronous model?**
 
