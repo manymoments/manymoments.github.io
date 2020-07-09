@@ -1,7 +1,6 @@
 ---
 title: The Marvels of Polynomials over a Field
 date: 2020-07-05 10:55:00 -07:00
-#published: false
 ---
 
 In this series of posts, we study the mathematical foundations of polynomials over a [field](https://en.wikipedia.org/wiki/Field_(mathematics)). These objects are at the heart of several results in computer science: [secret sharing](https://cs.jhu.edu/~sdoshi/crypto/papers/shamirturing.pdf),
