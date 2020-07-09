@@ -31,17 +31,17 @@ In this blog post, we provide a proof overview of this lower bound. For a full p
 
 Verifiable Secret Sharing (VSS) is a pair of protocols: *Share* and *Recover*, with one designated party, called the *Dealer*. The Dealer has an *input value* $s$ for the Share protocol. The Recover protocol has an output value. VSS has the following properties:
 
-**Termination**
+**Termination:**
 1. If the dealer is non-faulty, then all non-faulty will complete the Share protocol.
 2. If any non-faulty completes the Share protocol, then all non-faulty will complete the Share protocol.
 3. If all non-faulty complete the Share protocol, then if all non-faulty start the Recover protocol, then all non-faulty will complete the Recover protocol.
 
-**Binding**
-1. Once the first non-faulty completes the Share protocol there exists some value $r$ such that:
-a. If the dealer is honest, then $r=s$ ($r$ is the Dealer's input value).
-b. Any non-faulty that completes the Recover protocol outputs $r$.
+**Binding:**
+Once the first non-faulty completes the Share protocol there exists some value $r$ such that:
+1. If the dealer is honest, then $r=s$ ($r$ is the Dealer's input value).
+2. Any non-faulty that completes the Recover protocol outputs $r$.
 
-**Hiding**
+**Hiding:**
 If the dealer is non-faulty, and no honest party has begun the Recover protocol, then the adversary can gain no information about $s$.
 
 
