@@ -86,8 +86,8 @@ To prove the hiding property we will show that no matter what the secret $s$ is,
 We have shown above that $\phi$ is a bijective mapping from $p_0,\dots,p_{f+1}$ to $p(z_1),\dots,p(z_{f+1})$ for any set $Z=\{z_1,\dots,z_{f+1}\}$. 
 
 Consider the set $Z=\{0\} \cup B$ where $B=\{b_1,\dots,b_f\}$ is the set pf parties controlled by the passive adversary (here we use the assumption that party identities start from 1). 
-1. Observe that when $0 \in Z$ then the first input of $\phi$ is $p_0$ and the first output of $\phi$ is the same $p(0)=p_0$.
-2. Since $\phi$ is a binjection it maps the uniform distribution on $p_0,p_1,\dots,p_{f+1}$ to the uniform distribution on $p(0),p(b_1),\dots, p(b_{f})$.
+1. Observe that when $0 \in Z$, then the first input of $\phi$ is $p_0$, and the first output of $\phi$, are the same: $p(0)=p_0$.
+2. Since $\phi$ is a binjection, it maps the uniform distribution on $p_0,p_1,\dots,p_{f+1}$ to the uniform distribution on $p(0),p(b_1),\dots, p(b_{f})$.
 
 From the above two obeservations, we immediately get that for any *fixed* $p_0$, $\phi$ must map the uniform distribution on $p_1,\dots,p_{f+1}$ to the uniform distribution on $p(b_1),\dots,p(b_{f})$.
 
