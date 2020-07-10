@@ -56,7 +56,8 @@ Why does the equality hold? its because both $p$ and $\sum_{x \in X} L_x(Y) p(x)
 
 This argument shows that there is a *unique representation* of $p=\{p_0,\dots,p_{f+1}\}$ for the Lagrange Basis induced by $X=\{x_1,\dots,x_{f+1}\}$, this is the set $\{p(x_1),\dots,p(x_{f+1})\}$.
 
-Formally, let $\phi_X(p_0,\dots,p_{f+1})=(p(x_1),\dots,p(x_{f+1}))$ for $X=\{x_1,\dots,x_{f+1}\}$. 
+Formally, let $\phi(p_0,\dots,p_{f+1})=(p(x_1),\dots,p(x_{f+1}))$ for $X=\{ x_1,\dots,x_{f+1} \}$. 
+
 **Claim: $\phi$ is a bijective map from the set of degree-at-most-$f$ polynomials and their interpolations at the points in $X$ where $|X|=f+1$**
 To show that $\phi$ is bijective it is enough to show that the source and target sets are of the same size and that $\phi$ is [injective](https://en.wikipedia.org/wiki/Injective_function).
 
