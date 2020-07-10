@@ -8,7 +8,7 @@ tags:
 author: Archita Agarwal, Seny Kamara, Tarik Moataz
 ---
 
-## Encrypted Blockchain Databases (Part I)
+## Encrypted Blockchain Databases (Part I) 
 
 [^1]: We reserve the term key to refer to cryptographic keys.
 
@@ -27,7 +27,7 @@ is to design a new blockchain with dedicated support for EMMs. This approach has
 
 2. Since blockchains are tamper-resistant by design, how can we update the EMM -- in particular, how can we add/delete data from it?
 
-One naive solution for (2) is as follows: on every update, we can read the entire EMM from the blockchain, make the necessary changes, and write it back as a completely new EMM. This is an ideal  solution for query correctness since every query always reads from an up-to-date EMM. This solution, however, is extremely inefficient for update  operations since the entire structure has to be read and written back for every single update operation. Therefore, one also needs to think about the following third challenge:
+One naive solution for (2) is as follows: on every update, we can read the entire EMM from the blockchain, make the necessary changes, and write it back as a completely new EMM. This is an ideal solution for query correctness since every query always reads from an up-to-date EMM. This solution, however, is extremely inefficient for update operations since the entire structure has to be read and written back for every single update operation. Therefore, one also needs to think about the following third challenge:
 
 3. How to design an efficient blockchain EMM with respect to query and update complexity?
 
