@@ -65,4 +65,4 @@ Similarly, we can super-impose more complex data structures on a blockchain such
 
  In the [next part](...) of the series, we describe three schemes to store dynamic EMMs on blockchains, each of which achieves different tradeoffs between *query*, *add* and *delete* efficiency.
 
-Please leave comments on [Twitter](https://twitter.com/ittaia/status/1206298743823355905?s=20)
+Please leave comments on [Twitter](...)
