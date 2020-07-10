@@ -70,7 +70,7 @@ Since any degree-at-most-$f$ polynomial has at most $f+1$ coefficients then the 
 
 To show that $\phi$ is injective, assume that two degree-at-most-$f$ polynomials $p, p'$ are such that $p(z)=p'(z)$ for all $z \in Z$. This impleis that $p-p'$ is a degree-at-most-$f$ polynomial that has at least $f+1$ zeros. From the [Theorem of our previous](...) post this means that $p-p'=0$ and hence $p=p'$.
 
-We conclude that $\phi$ is [bijective](https://en.wikipedia.org/wiki/Bijection). In fact $\phi$ is a [linear isomorphisim](https://en.wikipedia.org/wiki/Linear_map) and so $L_{x_1},\dots,L_{x_{f+1}}$ is a [basis](https://en.wikipedia.org/wiki/Basis_(linear_algebra)) for the set of degree-at-most-$f$ polynomials. 
+We conclude that $\phi$ is [bijective](https://en.wikipedia.org/wiki/Bijection). In fact $\phi$ is a [linear isomorphisim](https://en.wikipedia.org/wiki/Linear_map) and so $L_{z_1},\dots,L_{z_{f+1}}$ is a [basis](https://en.wikipedia.org/wiki/Basis_(linear_algebra)) for the set of degree-at-most-$f$ polynomials. 
 
 ### Proof of the properties
 
