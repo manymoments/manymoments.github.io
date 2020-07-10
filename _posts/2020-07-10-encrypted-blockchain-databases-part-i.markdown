@@ -51,13 +51,13 @@ To read the values, do the following:
 3. Continue this process until all the values have been read.
 
 <p align="center">
-<img src="/uploads/list.png" width="512" title="Figure 1">
+<img src="/uploads/list.png" width="720" title="Figure 1">
 </p>
 
 Similarly, we can superimpose more complex data structures on a blockchain such as a _binary trees_. This can be done by concatenating two addresses to each value: one for its left child and one for its right child. This is illustrated in Figure 2.
 
 <p align="center">
-<img src="/uploads/tree.png" width="512" title="Figure 2">
+<img src="/uploads/tree.png" width="720" title="Figure 2">
 </p>
 
 ### Limitations of smart contracts
