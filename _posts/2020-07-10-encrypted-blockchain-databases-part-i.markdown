@@ -33,7 +33,7 @@ One naive solution for (2) is as follows: on every update, we can read the entir
 
 Before describing our blockchain EMM constructions, let us discuss the 1st challenge -- the 2<sup>nd</sup> and 3<sup>rd</sup> challenges are trickier, so we will tackle them when detailing the constructions themselves.
 
-###Storing Arbitrary Data Structures on Blockchains
+### Storing Arbitrary Data Structures on Blockchains
  Most blockchains (e.g., Bitcoin, Ethereum, Algorand) allow users to store arbitrary data in their transactions. Since only a limited amount of data can be stored in a single transaction, large data structures have to be split over multiple transactions. The question then becomes: 
  >How can we _link_ these transactions together to build an arbitrary data structure?
 
