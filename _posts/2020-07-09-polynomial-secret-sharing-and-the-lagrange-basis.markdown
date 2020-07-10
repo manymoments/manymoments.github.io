@@ -43,8 +43,8 @@ Lets dig deeper into how and why the values $\lambda_1,\dots,\lambda_{f+1}$ are 
 
 For any set $X=\{x_1,\dots,x_{f+1}\}$ of size $f+1$ we can define the LaGrange basis for degree-at-most-$d$ polynomials as follows:
 
-For every $x \in X$, let $L_x:X \arrow \{0,1\}$ be the function such that 
-$L_x(y)= 1$ if $x=y$ and $L_x(y)=0 if $x \neq y$. We can then extend this function to be $L_x:F_p \arrow \{0,1\}$  by defining it as a degree $f$ polynomial:
+For every $x \in X$, let $L_x:X \mapsto \{0,1\}$ be the [indicator function](https://en.wikipedia.org/wiki/Indicator_function) such that 
+$L_x(y)= 1$ if $x=y$ and $L_x(y)=0 if $x \neq y$. We can then extend this function to be $L_x:F_p \mapsto \{0,1\}$  by defining it as a degree $f$ polynomial:
 $$
 L_x(Y)= \prod_{z \in X \setminus \{x\}} (Y-z) / \prod_{z \in X \setminus \{x\}} (x-z)
 $$
