@@ -32,7 +32,7 @@ the Dealer then sends party $i$ the value p(i).
 $$
 p_0=\sum_{1\leq i \leq f+1} \lambda_i p_i
 $$
-Where $I=\{1,\dots,f+1\}$ and
+Where $I= \{ 1,\dots,f+1 \}$ and
 $$
 \lambda_i = \frac{\prod_{z \in I \setminus \{i\}} z} {\prod_{z \in I \setminus \{i\}} (z-i)}
 $$
