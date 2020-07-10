@@ -15,7 +15,7 @@ In this second part of the [series on Encrypted Blockchain Databases](..part...o
 Recall that a multi-map is a collection of multiple label/value tuples. In this construction, we store the values associated with _each_ label into logical linked-lists on the blockchain. However, to guarantee confidentiality, we encrypt each value concatenated with the previous address, before adding it to the right linked-list. Precisely, given a tuple $(v_1, \dots, v_n)$ to be added to label $l$, for each $i$, we add $Enc_K(v_i \|\| r_{i-1})$ to the blockchain. For the first value, $r_{i-1}$ is the address of the current head of the linked-list of $l$. To achieve dynamism, we use _lazy deletion_, i.e.,  all the added and deleted values are marked as added (+) or deleted (-) and deletion is only performed at query time by removing the values marked as deleted from the output. Refer to Figure 1 for an illustration of LSX -- for clarity, we omit the encryption of the values and addresses from the figure.
 
 <p align="center">
-<img src="/uploads/lsx.png" width="720" title="Figure 1: Adding and deleting from a multimap using LSX">
+<img src="/uploads/Lsx.png" width="720" title="Figure 1: Adding and deleting from a multimap using LSX">
 </p>
 
 ### Efficiency
@@ -29,7 +29,7 @@ Next, we describe a tree-based scheme which improves the stabilization complexit
  In this scheme, we modify the way the values are organized with the goal of reducing the number of addresses needed before storing a value. Given a tuple to add/delete, we super-impose a complete binary tree instead of super-imposing a linked list on the blockchain. This allows us to parallelize the insertions of all the values that are at the same depth of the tree.  Furthermore, we also link the roots of the trees constructed across multiple add/delete operations. Notice that this simple structural change reduces the stabilization complexity from linear to logarithmic.
  
 <p align="center">
-<img src="/uploads/trx.png" width="720" title="Figure 2: multimap structure on blockchains in TRX scheme.">
+<img src="/uploads/Trx.png" width="720" title="Figure 2: multimap structure on blockchains in TRX scheme.">
 </p>
 
 Since both the schemes described above have a query complexity linear in the number of values ever added/deleted -- which can be terrible when most updates are delete operations -- we now describe a scheme that improves the query complexity to be optimal but at the cost of making deletes a little expensive. 
