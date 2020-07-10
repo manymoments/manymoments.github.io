@@ -51,16 +51,18 @@ To read the values, do the following:
 3. Continue this process until all the values have been read.
 
 <p align="center">
-<img src="uploads/list.png" width="512" title="Figure 1">
+<img src="/uploads/list.png" width="512" title="Figure 1">
 </p>
 
 Similarly, we can super-impose more complex data structures on a blockchain such as a _binary trees_. This can be done by concatenating two addresses to each value: one for its left child and one for its right child. This is illustrated in Figure 2.
 
 <p align="center">
-<img src="uploads/tree.png" width="512" title="Figure 2">
+<img src="/uploads/tree.png" width="512" title="Figure 2">
 </p>
 
 ### Limitations of smart contracts
  For blockchains that support smart contracts, an alternative approach could be to store an entire data structure as the state of a smart contract and to implement the query and update operations as a smart contract. Unfortunately, there are two main limitations to this approach. First, it is not general-purpose since: (1) many blockchains do not support smart contracts (e.g Bitcoin), and (2) many smart contract platforms do not maintain state across transactions (e.g., Algorand). The second limitation is related to the cost of using such platforms. In fact, smart contract platforms require payment not only for storing data and code but also for executing code; and the more complex the code is, the higher the cost. Note that the first approach where we super-impose a data structure on top of the blockchain is not only general, but also entails lower cost since we can store data in transactions as opposed to smart contracts and don’t need to execute any code on the blockchain.
 
  In the [next part](...) of the series, we describe three schemes to store dynamic EMMs on blockchains, each of which achieves different tradeoffs between *query*, *add* and *delete* efficiency.
+
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1206298743823355905?s=20)
