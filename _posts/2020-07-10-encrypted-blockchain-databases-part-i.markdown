@@ -1,7 +1,6 @@
 ---
 title: Encrypted Blockchain Databases (Part I)
 date: 2020-07-10 13:10:00 -07:00
-published: false
 tags:
 - blockchain databases
 - encrypted search
