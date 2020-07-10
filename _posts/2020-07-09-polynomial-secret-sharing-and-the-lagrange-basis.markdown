@@ -46,7 +46,7 @@ For any set $X$ of size $|X| = f+1$ we can define the LaGrange basis of degree a
 For every $x \in X$, let $L_x:X \to \{0,1\}$ be the function such that 
 $L_x(y)= 1$ if $x=y$ and $L_x(y)=0 if $x \neq y$. We can then extend this function to be $L_x:F_p \to \{0,1\}$  by defining it as a degree $f$ polynomial:
 $$
-L_x(Y)= \prod_{z \in X \setminus \{\x}} (Y-z) / \prod_{z \in X \setminus \{\x}} (x-z)
+L_x(Y)= \prod_{z \in X \setminus \{x\}} (Y-z) / \prod_{z \in X \setminus \{x\}} (x-z)
 $$
 We can now represent *any* degree $f$ polynomial $p$ as follows:
 $$
@@ -68,7 +68,7 @@ As $\phi$ is [bijective](https://en.wikipedia.org/wiki/Bijection)  then $\phi$ i
 
 ### Proof of the properties
 
-**Proof for Binding and Validity**: Since the adversary is passive, all we need to do is show that indeed all parties will output $s$. This follows directly from the fact that  $p=\sum_{1\leq i \leq f+1} L_i(Y) p(i)$ and so $p(0)= \sum_{1\leq i \leq f+1} L_i(0) p(i) = \sum_{1\leq i \leq f+1} \Lambda_i p_i$.
+**Proof for Binding and Validity**: Since the adversary is passive, all we need to do is show that indeed all parties will output $s$. This follows directly from the fact that  $p=\sum_{1\leq i \leq f+1} L_i(Y) p(i)$ and so $p(0)= \sum_{1\leq i \leq f+1} L_i(0) p(i) = \sum_{1\leq i \leq f+1} \lambda_i p_i$.
 
 **Proof of Hiding**: 
 
@@ -95,6 +95,4 @@ In other words, anything the adversary could learn by observing the distribution
 
 
 Please leave comments on [Twitter](...).
-
-
 
