@@ -41,47 +41,52 @@ $$
 
 Lets dig deeper into how and why the values $\lambda_1,\dots,\lambda_{f+1}$ are defined.
 
-For any set $X=\{x_1,\dots,x_{f+1}\}$ of size $f+1$ we can define the LaGrange basis for degree-at-most-$d$ polynomials as follows:
+For any set $Z=\{z_1,\dots,z_{f+1}\}$ of size $f+1$ we can define the *LaGrange basis* for degree-at-most-$f$ polynomials as follows:
 
-For every $x \in X$, let $L_x:X \mapsto \{0,1\}$ be the [indicator function](https://en.wikipedia.org/wiki/Indicator_function) such that 
-$L_x(y)= 1$ if $x=y$ and $L_x(y)=0$ if $x \neq y$. We can then extend this function to be $L_x:F_p \mapsto \{0,1\}$  by defining it as a degree $f$ polynomial:
+For every $z \in Z$, let $L_y:Z \mapsto \{0,1\}$ be the [indicator function](https://en.wikipedia.org/wiki/Indicator_function) such that 
+$L_z(x)= 1$ if $x=z$ and $L_z(x)=0$ if $x \neq z$. We can then extend this function to be $L_z:F_p \mapsto \{0,1\}$  by defining it as a degree $f$ polynomial:
 $$
-L_x(Y)= \prod_{z \in X \setminus \{x\}} (Y-z) / \prod_{z \in X \setminus \{x\}} (x-z)
+L_z(X)= \prod_{y \in Z \setminus \{z\}} (X-y) / \prod_{y \in Z \setminus \{z\}} (z-y)
 $$
 We can now represent *any* degree $f$ polynomial $p$ as follows:
 $$
-p=\sum_{x \in X} L_x(Y) p(x)
+p(X)=\sum_{z \in Z} L_z(X) p(x)
 $$
-Why does the equality hold? its because both $p$ and $\sum_{x \in X} L_x(Y) p(x)$ are degree-at-most-$f$ polynomials so $p-\sum_{x \in X} L_x(Y) p(x)$ is also of degree-at-most-$f$ and has $f+1$ zeros. From the [Theorem of our previous](...) post this means that $p-\sum_{x \in X} L_x(Y) p(x)$ must be the zero polynomial!
+Why does the equality hold? its because both $p(x)$ and $l(x)=\sum_{z \in Z} L_z(X) p(x)$ are degree-at-most-$f$ polynomials so $p-l$ is also of degree-at-most-$f$ and has $f+1$ zeros. From the [Theorem of our previous](...) post this means that $p-l=0$ must be the zero polynomial, so they are equal!
 
-This argument shows that there is a *unique representation* of $p=\{p_0,\dots,p_{f+1}\}$ for the Lagrange Basis induced by $X=\{x_1,\dots,x_{f+1}\}$, this is the set $\{p(x_1),\dots,p(x_{f+1})\}$.
+This argument shows that there is a *unique representation* of $p=\{p_0,\dots,p_{f+1}\}$ for the Lagrange Basis induced by $Z=\{z_1,\dots,z_{f+1}\}$, this is the set $\{p(z_1),\dots,p(z_{f+1})\}$.
 
-Formally, let $\phi(p_0,\dots,p_{f+1})=(p(x_1),\dots,p(x_{f+1}))$ for $X=\{ x_1,\dots,x_{f+1} \}$. 
+Let 
+$$
+\phi(p_0,\dots,p_{f+1}) = (p(z_1),\dots,p(z_{f+1}))
+$$
+for $Z=\{ z_1,\dots,z_{f+1} \}$. 
 
-**Claim: $\phi$ is a bijective map from the set of degree-at-most-$f$ polynomials and their interpolations at the points in $X$ where $|X|=f+1$**
+**Claim: $\phi$ is a bijective map from the set of degree-at-most-$f$ polynomials and their interpolations at the points in $Z$ where $|Z|=f+1$.**
+
 To show that $\phi$ is bijective it is enough to show that the source and target sets are of the same size and that $\phi$ is [injective](https://en.wikipedia.org/wiki/Injective_function).
 
-Since any degree-at-most-$f$ polynomial has at most $f+1$ coefficients then the number of degree-at-most-$f$ polynomials is exactly $|F|^{f+1}$ (where $|F|=|F_p|=p$). The number of possible output values for $\phi$, for any set $|X|=f+1$, is also $|F|^{f+1}$.
+Since any degree-at-most-$f$ polynomial has at most $f+1$ coefficients then the number of degree-at-most-$f$ polynomials is exactly $|F|^{f+1}$ (where $|F|=|F_p|=p$). The number of possible output values for $\phi$, for any set $|Z|=f+1$, is also $|F|^{f+1}$.
 
-To show that $\phi$ is injective, assume that two degree-at-most-$f$ polynomials $p, p'$ are such that $p(x)=p'(x)$ for all $x \in X$. This impleis that $p-p'$ is a degree-at-most-$f$ polynomial that has at least $f+1$ zeros. From the [Theorem of our previous](...) post this means that $p-p'=0$ and hence $p=p'$.
+To show that $\phi$ is injective, assume that two degree-at-most-$f$ polynomials $p, p'$ are such that $p(z)=p'(z)$ for all $z \in Z$. This impleis that $p-p'$ is a degree-at-most-$f$ polynomial that has at least $f+1$ zeros. From the [Theorem of our previous](...) post this means that $p-p'=0$ and hence $p=p'$.
 
-WE conclude that $\phi$ is [bijective](https://en.wikipedia.org/wiki/Bijection). In fact $\phi$ is a [linear isomorphisim](https://en.wikipedia.org/wiki/Linear_map) and so $L_{x_1},\dots,L_{x_{f+1}}$ is a [basis](https://en.wikipedia.org/wiki/Basis_(linear_algebra)) for the set of degree-at-most-$f$ polynomials. 
+We conclude that $\phi$ is [bijective](https://en.wikipedia.org/wiki/Bijection). In fact $\phi$ is a [linear isomorphisim](https://en.wikipedia.org/wiki/Linear_map) and so $L_{x_1},\dots,L_{x_{f+1}}$ is a [basis](https://en.wikipedia.org/wiki/Basis_(linear_algebra)) for the set of degree-at-most-$f$ polynomials. 
 
 ### Proof of the properties
 
-**Proof for Binding and Validity**: Since the adversary is passive, all we need to do is show that indeed all parties will output $s$. This follows directly from the fact that  $p=\sum_{1\leq i \leq f+1} L_i(Y) p(i)$ and so $p(0)= \sum_{1\leq i \leq f+1} L_i(0) p(i) = \sum_{1\leq i \leq f+1} \lambda_i p_i$.
+**Proof for Binding and Validity**: Since the adversary is passive, all we need to do is show that indeed all parties will output $s$. This follows directly from the fact that  $p(X)=\sum_{1\leq i \leq f+1} L_i(X) p(i)$ and so $p(0)= \sum_{1\leq i \leq f+1} L_i(0) p(i) = \sum_{1\leq i \leq f+1} \lambda_i p_i$.
 
 **Proof of Hiding**: 
 
-Let's define the *view* of an adversary that controls the parties $B=\{b_1,\dots,b_f\}$ as the messages that the adversary sees during the Share protocol.  In our case this is just $\{p(b_1),\dots,p(b_{f})\}$ which are the sahre that the parties in $B$ receive from the Dealer.
+Let's define the *view* of an adversary that controls the parties $B=\{b_1,\dots,b_f\}$ as the messages that the adversary sees during the Share protocol.  In our case this is just $\{ p(b_1),\dots,p(b_{f}) \}$ which are the sahres that the parties in $B$ receive from the Dealer.
 
 To prove the hiding property we will show that no matter what the secret $s$ is, the distribution of the view of the adversary is a uniform distribution.
 
 
-We have shown above that $\phi$ is a bijective mapping from $p_0,\dots,p_{f+1}$ to $p(x_1),\dots,p(x_{f+1})$ for any set $X=\{x_1,\dots,x_{f+1}\}$. 
+We have shown above that $\phi$ is a bijective mapping from $p_0,\dots,p_{f+1}$ to $p(z_1),\dots,p(z_{f+1})$ for any set $Z=\{z_1,\dots,z_{f+1}\}$. 
 
-Consider the set $X=\{0\} \cup B$ where $B=\{b_1,\dots,b_f\}$ is the set pf parties controlled by the passive adversary (here we use the assumption that party identities start from 1). 
-1. Observe that when $0 \in X$ then the first input of $\phi$ is $p_0$ and the first output of $\phi$ is the same $p(0)=p_0$.
+Consider the set $Z=\{0\} \cup B$ where $B=\{b_1,\dots,b_f\}$ is the set pf parties controlled by the passive adversary (here we use the assumption that party identities start from 1). 
+1. Observe that when $0 \in Z$ then the first input of $\phi$ is $p_0$ and the first output of $\phi$ is the same $p(0)=p_0$.
 2. Since $\phi$ is a binjection it maps the uniform distribution on $p_0,p_1,\dots,p_{f+1}$ to the uniform distribution on $p(0),p(b_1),\dots, p(b_{f})$.
 
 From the above two obeservations, we immediately get that for any *fixed* $p_0$, $\phi$ must map the uniform distribution on $p_1,\dots,p_{f+1}$ to the uniform distribution on $p(b_1),\dots,p(b_{f})$.
