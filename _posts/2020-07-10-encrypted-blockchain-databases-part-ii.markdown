@@ -8,7 +8,6 @@ author: Archita Agarwal, Seny Kamara, Tarik Moataz
 ---
 
 ## Encrypted Blockchain Databases (Part II)
-
 In this second part of the series on [Encrypted Blockchain Databases](https://decentralizedthoughts.github.io/2020-07-10-encrypted-blockchain-databases-part-i/), we are going to describe three schemes to store dynamic encrypted multi-maps (EMMs) on blockchains, each of which achieves different tradeoffs between query, add and delete efficiency. 
 
 ### A List-Based Scheme (LSX)
