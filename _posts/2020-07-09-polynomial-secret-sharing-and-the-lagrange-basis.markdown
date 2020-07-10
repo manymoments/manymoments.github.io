@@ -30,16 +30,16 @@ the Dealer then sends party $i$ the value p(i).
 
 **Recover protocol**: party $i$ sends its share $p_i$ to all parties. Each party receives all the shares $p_1,\dots,p_n$ and outputs 
 $$
-p_0=\sum_{1\leq i \leq f+1} \Lambda_i p_i
+p_0=\sum_{1\leq i \leq f+1} \lambda_i p_i
 $$
 Where
 $$
-\Lambda_i = \prod_{z \in \{1,\dots,f+1\} \setminus \{i\}} (-z) / \prod_{z \in \{1,\dots,f+1\} \setminus \{i\}} (i-z)
+\lambda_i = \prod_{z \in \{1,\dots,f+1\} \setminus \{i\}} (-z) / \prod_{z \in \{1,\dots,f+1\} \setminus \{i\}} (i-z)
 $$
 
 ### Lagrange Basis
 
-Lets dig deeper into how and why the values $\Lambda_1,\dots,Lambda_{f+1}$ are defined.
+Lets dig deeper into how and why the values $\lambda_1,\dots,\lambda_{f+1}$ are defined.
 
 For any set $X$ of size $|X| = f+1$ we can define the LaGrange basis of degree at most $d$ polynomials as follows:
 
