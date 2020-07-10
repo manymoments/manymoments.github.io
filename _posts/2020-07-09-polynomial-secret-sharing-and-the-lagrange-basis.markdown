@@ -41,10 +41,10 @@ $$
 
 Lets dig deeper into how and why the values $\lambda_1,\dots,\lambda_{f+1}$ are defined.
 
-For any set $X$ of size $|X| = f+1$ we can define the LaGrange basis of degree at most $d$ polynomials as follows:
+For any set $X=\{x_1,\dots,x_{f+1}\}$ of size $f+1$ we can define the LaGrange basis for degree-at-most-$d$ polynomials as follows:
 
-For every $x \in X$, let $L_x:X \to \{0,1\}$ be the function such that 
-$L_x(y)= 1$ if $x=y$ and $L_x(y)=0 if $x \neq y$. We can then extend this function to be $L_x:F_p \to \{0,1\}$  by defining it as a degree $f$ polynomial:
+For every $x \in X$, let $L_x:X \arrow \{0,1\}$ be the function such that 
+$L_x(y)= 1$ if $x=y$ and $L_x(y)=0 if $x \neq y$. We can then extend this function to be $L_x:F_p \arrow \{0,1\}$  by defining it as a degree $f$ polynomial:
 $$
 L_x(Y)= \prod_{z \in X \setminus \{x\}} (Y-z) / \prod_{z \in X \setminus \{x\}} (x-z)
 $$
@@ -72,7 +72,7 @@ As $\phi$ is [bijective](https://en.wikipedia.org/wiki/Bijection)  then $\phi$ i
 
 **Proof of Hiding**: 
 
-Let's define the *view* of an adversary that controls the parties $B=\{b_1,\dots,b_f\}$ as the messages that the adversary sees during the Share protocol.  In our case this is just $\{p(b_1),\dots,p(b_{f}\}$.
+Let's define the *view* of an adversary that controls the parties $B=\{b_1,\dots,b_f\}$ as the messages that the adversary sees during the Share protocol.  In our case this is just $\{p(b_1),\dots,p(b_{f})\}$.
 
 To prove the hiding property we will show that no matter what the secret $s$ is, the distribution of the view of the adversary is a uniform distribution.
 
