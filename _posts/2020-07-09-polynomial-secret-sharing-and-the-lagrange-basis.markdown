@@ -34,7 +34,7 @@ p_0=\sum_{1\leq i \leq f+1} \lambda_i p_i
 $$
 Where
 $$
-\lambda_i = \prod_{z \in \{1,\dots,f+1\} \setminus \{i\}} (-z) / \prod_{z \in \{1,\dots,f+1\} \setminus \{i\}} (i-z)
+\lambda_i = \frac{\prod_{z \in \{1,\dots,f+1\} \setminus \{i\}} z} {\prod_{z \in \{1,\dots,f+1\} \setminus \{i\}} (z-i)}
 $$
 
 ### Lagrange Basis
@@ -60,7 +60,7 @@ Formally, let $\phi_X(p_0,\dots,p_{f+1})=(p(x_1),\dots,p(x_{f+1}))$ for $X=\{x_1
 **Claim: $\phi$ is a bijective map from the set of degree-at-most-$f$ polynomials and their interpolations at the points in $X$ where $|X|=f+1$**
 To show that $\phi$ is bijective it is enough to show that the source and target sets are of the same size and that $\phi$ is [injective](https://en.wikipedia.org/wiki/Injective_function).
 
-Since any degree-at-most-$f$ polynomial has at most $f+1$ coefficients then the number of degree-at-most-$f$ polynomials is exactly $|F|^{f+1}$ (where $|F|=|F_p|=p$). The number of possible values for Lagrage basis for any set $|X|=f+1$ is also $|F|^{f+1}$.
+Since any degree-at-most-$f$ polynomial has at most $f+1$ coefficients then the number of degree-at-most-$f$ polynomials is exactly $ |F|^{f+1} $ (where $|F|=|F_p|=p$). The number of possible values for Lagrage basis for any set $|X|=f+1$ is also $|F|^{f+1}$.
 
 To show that $\phi$ is injective, assume that two degree-at-most-$f$ polynomials $p, p'$ are such that $p(x)=p'(x)$ for all $x \in X$. This impleis that $p-p'$ is a degree-at-most-$f$ polynomial that has at least $f+1$ zeros. From the [Theorem of our previous](...) post this means that $p-p'=0$ and hence $p=p'$.
 
