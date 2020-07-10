@@ -4,16 +4,15 @@ date: 2020-07-10 13:10:00 -07:00
 tags:
 - blockchain databases
 - encrypted search
-author: Archita Agarwal, Seny Kamara, Tarik Moataz
+author: Daniel Adkins, Archita Agarwal, Seny Kamara, Tarik Moataz
 ---
-
-## Encrypted Blockchain Databases (Part I) 
-
 [^1]: We reserve the term key to refer to cryptographic keys.
 
-_Blockchain databases_ are storage systems that combine properties of both blockchains and databases like decentralization, tamper-resistance, low query latency, and support for complex queries. As they gain wider adoption, concerns over the confidentiality of the data they manage will increase. Already, several projects use blockchains to store sensitive data like electronic healthcare and financial records, legal documents and customer data. In this post, we discuss the problem of designing _end-to-end encrypted blockchain databases_ to support decentralized applications that need to store and query sensitive data. In particular, we focus on what we call _**blockchain encrypted multi-maps**_ (EMM), which can be used to instantiate various kinds of NoSQL blockchain databases, like key-value stores or document databases. 
+_Blockchain databases_ are storage systems that combine properties of both blockchains and databases like decentralization, tamper-resistance, low query latency, and support for complex queries. As they gain wider adoption, concerns over the confidentiality of the data they manage will increase. Already, several projects use blockchains to store sensitive data like electronic healthcare and financial records, legal documents and customer data. 
 
-The area of cryptography that focuses on the design of end-to-end encrypted databases and, more generally, on the problem of searching on encrypted data is called *encrypted search*. For an introduction to the area, please see [this](http://esl.cs.brown.edu/blog/how-to-search-on-encrypted-data-introduction-part-1/) series of blog posts from the [Encrypted Systems Lab](http://esl.cs.brown.edu/) at Brown University. The [5th post](http://esl.cs.brown.edu/blog/how-to-search-on-encrypted-data-searchable-symmetric-encryption-part-5/), in particular, describes a construction of a standard/centralized EMM, which in the post is called an encrypted database (EDB). 
+In this post, we discuss our new paper [Encrytped Blockchain Databases](https://eprint.iacr.org/2020/827.pdf) in which we design _end-to-end encrypted blockchain databases_ to support decentralized applications that need to store and query sensitive data. In particular, we focus on what we call _**blockchain encrypted multi-maps**_ (EMM) which can be used to instantiate various kinds of NoSQL blockchain databases like key-value stores or document databases. 
+
+The area of cryptography that focuses on the design of end-to-end encrypted databases and, more generally, on the problem of searching on encrypted data is called *encrypted search*. For an introduction to the area, please see [this](http://esl.cs.brown.edu/blog/how-to-search-on-encrypted-data-introduction-part-1/) series of blog posts from the [Encrypted Systems Lab](http://esl.cs.brown.edu/) at Brown University. The [5th post](http://esl.cs.brown.edu/blog/how-to-search-on-encrypted-data-searchable-symmetric-encryption-part-5/), in particular, describes a construction of a standard/centralized EMM (which in the post is called an encrypted database (EDB)). 
                 
 ### Encrypted Multi-maps
 NoSQL databases have recently become prominent in the database industry due to their simplicity, scalability and high-performance guarantees. A variety of NoSQL databases, like key-value stores (e.g., DynamoDB) and document databases (e.g., MongoDB), can be instantiated with a multi-map data structure. Multi-maps are a generalization of dictionaries that map _labels_ to a tuple of _values_[^1]. They support *get* and *put* operations which, given a label, can either store or retrieve the tuple of values associated with the label. An encrypted multi-map (EMM) is an end-to-end encrypted multi-map that supports get and put operations but over encrypted data. Since multi-maps can be used to represent NoSQL databases, designing blockchain encrypted NoSQL databases is essentially the same as designing blockchain EMMs.
