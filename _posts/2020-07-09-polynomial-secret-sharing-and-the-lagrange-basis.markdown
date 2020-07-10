@@ -65,15 +65,15 @@ $$
 $$
 for $Z=\{ z_1,\dots,z_{f+1} \}$. 
 
-**Claim: $\phi$ is a bijective map from the set of degree-at-most-$f$ polynomials to their interpolations at the points in $Z$ where $|Z|=f+1$.**
+**Claim: $\phi$ is a bijective map from the set of degree-at-most-$f$ polynomials to their evaluations at the points in $Z$ where $|Z|=f+1$.**
 
-To show that $\phi$ is bijective it is enough to show that the source and target sets are of the same size and that $\phi$ is [injective](https://en.wikipedia.org/wiki/Injective_function).
+To show that $\phi$ is [bijective](https://en.wikipedia.org/wiki/Bijection) it is enough to show that the source and target sets are of the same size and that $\phi$ is [injective](https://en.wikipedia.org/wiki/Injective_function).
 
 Since any degree-at-most-$f$ polynomial has at most $f+1$ coefficients then the number of degree-at-most-$f$ polynomials is exactly $|F|^{f+1}$ (where $|\mathbb{F}|=|\mathbb{F}_p|=p$). The number of possible output values for $\phi$, for any set $|Z|=f+1$, is also $|\mathbb{F}|^{f+1}$.
 
 To show that $\phi$ is injective, assume that two degree-at-most-$f$ polynomials $p, p'$ are such that $p(z)=p'(z)$ for all $z \in Z$. This impleis that $p-p'$ is a degree-at-most-$f$ polynomial that has at least $f+1$ zeros. From the [Theorem of our previous](...) post this means that $p-p'=0$ and hence $p=p'$.
 
-We conclude that $\phi$ is [bijective](https://en.wikipedia.org/wiki/Bijection). In fact $\phi$ is a [linear isomorphisim](https://en.wikipedia.org/wiki/Linear_map) and so $L_{z_1},\dots,L_{z_{f+1}}$ is a [basis](https://en.wikipedia.org/wiki/Basis_(linear_algebra)) for the set of degree-at-most-$f$ polynomials. 
+We conclude that $\phi$ is bijective. In fact $\phi$ is a [linear isomorphisim](https://en.wikipedia.org/wiki/Linear_map) and so $L_{z_1},\dots,L_{z_{f+1}}$ is a [basis](https://en.wikipedia.org/wiki/Basis_(linear_algebra)) for the set of degree-at-most-$f$ polynomials. 
 
 ### Proof of the properties
 
