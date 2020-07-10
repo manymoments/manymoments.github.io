@@ -62,7 +62,7 @@ $$
 $$
 for $Z=\{ z_1,\dots,z_{f+1} \}$. 
 
-**Claim: $\phi$ is a bijective map from the set of degree-at-most-$f$ polynomials and their interpolations at the points in $Z$ where $|Z|=f+1$.**
+**Claim: $\phi$ is a bijective map from the set of degree-at-most-$f$ polynomials to their interpolations at the points in $Z$ where $|Z|=f+1$.**
 
 To show that $\phi$ is bijective it is enough to show that the source and target sets are of the same size and that $\phi$ is [injective](https://en.wikipedia.org/wiki/Injective_function).
 
