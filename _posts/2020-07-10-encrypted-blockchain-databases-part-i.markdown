@@ -6,6 +6,7 @@ tags:
 - encrypted search
 author: Daniel Adkins, Archita Agarwal, Seny Kamara, Tarik Moataz
 ---
+
 [^1]: We reserve the term key to refer to cryptographic keys.
 
 _Blockchain databases_ are storage systems that combine properties of both blockchains and databases like decentralization, tamper-resistance, low query latency, and support for complex queries. As they gain wider adoption, concerns over the confidentiality of the data they manage will increase. Already, several projects use blockchains to store sensitive data like electronic healthcare and financial records, legal documents and customer data. 
