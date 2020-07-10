@@ -4,7 +4,10 @@ date: 2020-07-09 08:36:00 -07:00
 published: false
 ---
 
-In this post, we introduce an amazing result: Shamir's [secret sharing scheme](https://cs.jhu.edu/~sdoshi/crypto/papers/shamirturing.pdf). The setting is that there are $n$ parties with one designated party called the *Dealer*. The secret sharing scheme is composed of two protocols: *Share* and *Recover*. In the *Share* protocol, the Dealer has some *input value* $s$. In the Recover protocol, each party outputs a *decision value*.
+In this post, we highlight an amazing result: Shamir's [secret sharing scheme](https://cs.jhu.edu/~sdoshi/crypto/papers/shamirturing.pdf). This is one of the most powerful uses of polynomials over a finite field in distributed computing.
+
+
+The setting is that there are $n$ parties with one designated party called the *Dealer*. A *secret sharing scheme* is composed of two protocols: *Share* and *Recover*. In the Share protocol, the Dealer has some *input value* $s$. In the Recover protocol, each party outputs a *decision value*.
 
 There are three properties for a secret sharing scheme:
 
@@ -19,14 +22,14 @@ The first two properties seem well defined, but what about the hiding property? 
 
 ### Shamir's scheme
 
-In Shamir's scheme, we assume a [passive adversary](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) that controls some $f<n$ parties. We will enumerate the parties via the integers $\{1,2,3,\dots,n\}$. We also assume there is a commonly known finite field $F_p$ with $p>n$.
+In Shamir's scheme, we assume a [passive adversary](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) that controls some $f<n$ parties. We will enumerate the parties via the integers $\{1,2,3,\dots,n\}$. We also assume there is a commonly known finite field $\mathbb{F}_p$ with $p>n$.
 
 
-**Share protocol**: Given input $s$, the Dealer randomly chooses $f$ values $p_1,\dots,p_f \in_R F_p$ and defines a degree $f$ polynomial 
+**Share protocol**: Given input $s$, the Dealer randomly chooses $f$ values $p_1,\dots,p_f \in_R \mathbb{F}_p$ and defines a degree-at-most-$f$ polynomial 
 $$
 p=s+p_1 X + \dots + p_f X^f
 $$
-the Dealer then sends party $i$ the value p(i).
+the Dealer then sends party $i$ the share p(i).
 
 **Recover protocol**: party $i$ sends its share $p_i$ to all parties. Each party receives all the shares $p_1,\dots,p_n$ and outputs 
 $$
@@ -44,7 +47,7 @@ Lets dig deeper into how and why the values $\lambda_1,\dots,\lambda_{f+1}$ are 
 For any set $Z=\{z_1,\dots,z_{f+1}\}$ of size $f+1$ we can define the *LaGrange basis* for degree-at-most-$f$ polynomials as follows:
 
 For every $z \in Z$, let $L_y:Z \mapsto \{0,1\}$ be the [indicator function](https://en.wikipedia.org/wiki/Indicator_function) such that 
-$L_z(x)= 1$ if $x=z$ and $L_z(x)=0$ if $x \neq z$. We can then extend this function to be $L_z:F_p \mapsto \{0,1\}$  by defining it as a degree $f$ polynomial:
+$L_z(x)= 1$ if $x=z$ and $L_z(x)=0$ if $x \neq z$. We can then extend this function to be $L_z:\mathbb{F}_p \mapsto \{0,1\}$  by defining it as a degree $f$ polynomial:
 $$
 L_z(X)= \prod_{y \in Z \setminus \{z\}} (X-y) / \prod_{y \in Z \setminus \{z\}} (z-y)
 $$
@@ -66,7 +69,7 @@ for $Z=\{ z_1,\dots,z_{f+1} \}$.
 
 To show that $\phi$ is bijective it is enough to show that the source and target sets are of the same size and that $\phi$ is [injective](https://en.wikipedia.org/wiki/Injective_function).
 
-Since any degree-at-most-$f$ polynomial has at most $f+1$ coefficients then the number of degree-at-most-$f$ polynomials is exactly $|F|^{f+1}$ (where $|F|=|F_p|=p$). The number of possible output values for $\phi$, for any set $|Z|=f+1$, is also $|F|^{f+1}$.
+Since any degree-at-most-$f$ polynomial has at most $f+1$ coefficients then the number of degree-at-most-$f$ polynomials is exactly $|F|^{f+1}$ (where $|\mathbb{F}|=|\mathbb{F}_p|=p$). The number of possible output values for $\phi$, for any set $|Z|=f+1$, is also $|\mathbb{F}|^{f+1}$.
 
 To show that $\phi$ is injective, assume that two degree-at-most-$f$ polynomials $p, p'$ are such that $p(z)=p'(z)$ for all $z \in Z$. This impleis that $p-p'$ is a degree-at-most-$f$ polynomial that has at least $f+1$ zeros. From the [Theorem of our previous](...) post this means that $p-p'=0$ and hence $p=p'$.
 
