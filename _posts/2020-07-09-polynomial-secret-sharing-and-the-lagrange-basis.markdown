@@ -6,7 +6,7 @@ published: false
 
 In this post, we introduce an amazing result: Shamir's [secret sharing scheme](https://cs.jhu.edu/~sdoshi/crypto/papers/shamirturing.pdf). The setting is that there are $n$ parties with one designated party called the *Dealer*. The secret sharing scheme is composed of two protocols: *Share* and *Recover*. In the *Share* protocol, the Dealer has some *input value* $s$. In the Recover protocol, each party outputs a *decision value*.
 
-There are three properties we want to have:
+There are three properties for the secret sharing scheme that we want to have:
 
 **Binding**: Once the first non-faulty completes the Share protocol there exists some value $r$ such that $r$ is the output value of all non-faulty parties that complete the Recover protocol.
 
@@ -15,7 +15,7 @@ There are three properties we want to have:
 **Hiding**: If the dealer is non-faulty, and no honest party has begun the Recover protocol, then the adversary can gain no information about $s$. 
 
 
-The first two properties seem clear, but what about the hiding property. What does it mean that the adversary "gains no information about $s$"? We will be more formal about this later but informally this means that anything the adversary can output by interacting with this protocol, the adversary could have output the same without any interaction at all.
+The first two properties seem well defined, but what about the hiding property? What does it mean that the adversary "gains no information about $s$"? We will be more formal about this later but informally this means that anything the adversary can output by interacting with this protocol, the adversary could have output the same without any interaction at all.
 
 ### Shamir's scheme
 
@@ -78,7 +78,7 @@ We conclude that $\phi$ is [bijective](https://en.wikipedia.org/wiki/Bijection).
 
 **Proof of Hiding**: 
 
-Let's define the *view* of an adversary that controls the parties $B=\{b_1,\dots,b_f\}$ as the messages that the adversary sees during the Share protocol.  In our case this is just $\{ p(b_1),\dots,p(b_{f}) \}$ which are the sahres that the parties in $B$ receive from the Dealer.
+Let's define the *view* of an adversary that controls the parties $B=\{b_1,\dots,b_f\}$ as the messages that the adversary sees during the Share protocol.  In our case this is just $\{ p(b_1),\dots,p(b_{f}) \}$ which are the shares that the parties in $B$ receive from the Dealer during the Share protocol.
 
 To prove the hiding property we will show that no matter what the secret $s$ is, the distribution of the view of the adversary is a uniform distribution.
 
