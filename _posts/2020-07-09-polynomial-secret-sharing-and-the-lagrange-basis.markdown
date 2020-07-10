@@ -32,9 +32,9 @@ the Dealer then sends party $i$ the value p(i).
 $$
 p_0=\sum_{1\leq i \leq f+1} \lambda_i p_i
 $$
-Where
+Where $I=\{1,\dots,f+1\}$ and
 $$
-\lambda_i = \frac{\prod_{z \in \{1,\dots,f+1\} \setminus \{i\}} z} {\prod_{z \in \{1,\dots,f+1\} \setminus \{i\}} (z-i)}
+\lambda_i = \frac{\prod_{z \in I \setminus \{i\}} z} {\prod_{z \in I \setminus \{i\}} (z-i)}
 $$
 
 ### Lagrange Basis
@@ -44,7 +44,7 @@ Lets dig deeper into how and why the values $\lambda_1,\dots,\lambda_{f+1}$ are 
 For any set $X=\{x_1,\dots,x_{f+1}\}$ of size $f+1$ we can define the LaGrange basis for degree-at-most-$d$ polynomials as follows:
 
 For every $x \in X$, let $L_x:X \mapsto \{0,1\}$ be the [indicator function](https://en.wikipedia.org/wiki/Indicator_function) such that 
-$L_x(y)= 1$ if $x=y$ and $L_x(y)=0 if $x \neq y$. We can then extend this function to be $L_x:F_p \mapsto \{0,1\}$  by defining it as a degree $f$ polynomial:
+$L_x(y)= 1$ if $x=y$ and $L_x(y)=0$ if $x \neq y$. We can then extend this function to be $L_x:F_p \mapsto \{0,1\}$  by defining it as a degree $f$ polynomial:
 $$
 L_x(Y)= \prod_{z \in X \setminus \{x\}} (Y-z) / \prod_{z \in X \setminus \{x\}} (x-z)
 $$
@@ -60,11 +60,11 @@ Formally, let $\phi_X(p_0,\dots,p_{f+1})=(p(x_1),\dots,p(x_{f+1}))$ for $X=\{x_1
 **Claim: $\phi$ is a bijective map from the set of degree-at-most-$f$ polynomials and their interpolations at the points in $X$ where $|X|=f+1$**
 To show that $\phi$ is bijective it is enough to show that the source and target sets are of the same size and that $\phi$ is [injective](https://en.wikipedia.org/wiki/Injective_function).
 
-Since any degree-at-most-$f$ polynomial has at most $f+1$ coefficients then the number of degree-at-most-$f$ polynomials is exactly $ |F|^{f+1} $ (where $|F|=|F_p|=p$). The number of possible values for Lagrage basis for any set $|X|=f+1$ is also $|F|^{f+1}$.
+Since any degree-at-most-$f$ polynomial has at most $f+1$ coefficients then the number of degree-at-most-$f$ polynomials is exactly $|F|^{f+1}$ (where $|F|=|F_p|=p$). The number of possible output values for $\phi$, for any set $|X|=f+1$, is also $|F|^{f+1}$.
 
 To show that $\phi$ is injective, assume that two degree-at-most-$f$ polynomials $p, p'$ are such that $p(x)=p'(x)$ for all $x \in X$. This impleis that $p-p'$ is a degree-at-most-$f$ polynomial that has at least $f+1$ zeros. From the [Theorem of our previous](...) post this means that $p-p'=0$ and hence $p=p'$.
 
-As $\phi$ is [bijective](https://en.wikipedia.org/wiki/Bijection)  then $\phi$ is an isomorphisim where $L_{x_1},\dots,L_{x_{f+1}}$ is a basis for the set of degree-at-most-$f$ polynomials. 
+WE conclude that $\phi$ is [bijective](https://en.wikipedia.org/wiki/Bijection). In fact $\phi$ is a [linear isomorphisim](https://en.wikipedia.org/wiki/Linear_map) and so $L_{x_1},\dots,L_{x_{f+1}}$ is a [basis](https://en.wikipedia.org/wiki/Basis_(linear_algebra)) for the set of degree-at-most-$f$ polynomials. 
 
 ### Proof of the properties
 
@@ -72,7 +72,7 @@ As $\phi$ is [bijective](https://en.wikipedia.org/wiki/Bijection)  then $\phi$ i
 
 **Proof of Hiding**: 
 
-Let's define the *view* of an adversary that controls the parties $B=\{b_1,\dots,b_f\}$ as the messages that the adversary sees during the Share protocol.  In our case this is just $\{p(b_1),\dots,p(b_{f})\}$.
+Let's define the *view* of an adversary that controls the parties $B=\{b_1,\dots,b_f\}$ as the messages that the adversary sees during the Share protocol.  In our case this is just $\{p(b_1),\dots,p(b_{f})\}$ which are the sahre that the parties in $B$ receive from the Dealer.
 
 To prove the hiding property we will show that no matter what the secret $s$ is, the distribution of the view of the adversary is a uniform distribution.
 
@@ -81,9 +81,9 @@ We have shown above that $\phi$ is a bijective mapping from $p_0,\dots,p_{f+1}$ 
 
 Consider the set $X=\{0\} \cup B$ where $B=\{b_1,\dots,b_f\}$ is the set pf parties controlled by the passive adversary (here we use the assumption that party identities start from 1). 
 1. Observe that when $0 \in X$ then the first input of $\phi$ is $p_0$ and the first output of $\phi$ is the same $p(0)=p_0$.
-2. Since $\phi$ is a binjection it maps the uniform distribution on $p_0,p_1,\dots,p_{f+1}$ to the uniform distribution on $p(0),p(b_1),\dots_{b_{f}}$.
+2. Since $\phi$ is a binjection it maps the uniform distribution on $p_0,p_1,\dots,p_{f+1}$ to the uniform distribution on $p(0),p(b_1),\dots, p(b_{f})$.
 
-From the above two obeservations, we immediately get that for any *fixed* $p_0$, $\phi$ must map the uniform distribution on $p_1,\dots,p_{f+1}$ to the uniform distribution on $p(b_1),\dots_{b_{f}}$.
+From the above two obeservations, we immediately get that for any *fixed* $p_0$, $\phi$ must map the uniform distribution on $p_1,\dots,p_{f+1}$ to the uniform distribution on $p(b_1),\dots,p(b_{f})$.
 
 Since for any input $s$ the Delaer uses the uniform distribution to pick the coefficients $p_1,\dots,p_{f+1}$, then for any input $s$ the *view* of the adversary $p(b_1),\dots,p(b_f)$ is also uniformly distributed!
 
@@ -95,4 +95,3 @@ In other words, anything the adversary could learn by observing the distribution
 
 
 Please leave comments on [Twitter](...).
-
