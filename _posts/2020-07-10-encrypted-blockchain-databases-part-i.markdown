@@ -8,17 +8,18 @@ tags:
 author: Archita Agarwal, Seny Kamara, Tarik Moataz
 ---
 
-##Encrypted Blockchain Databases (Part I)
+## Encrypted Blockchain Databases (Part I)
+
 [^1]: We reserve the term key to refer to cryptographic keys.
 
 Blockchain databases are storage systems that combine properties of both blockchains and databases like decentralization, tamper-resistance, low query latency, and support for complex queries. As they gain wider adoption, concerns over the confidentiality of the data they manage will increase. Already, several projects use blockchains to store sensitive data like electronic healthcare and financial records, legal documents and customer data. In this post, we discuss the problem of designing _end-to-end encrypted blockchain databases_ to support decentralized applications that need to store and query sensitive data. In particular, we focus on what we call _**blockchain encrypted multi-maps**_ (EMM) which can be used to instantiate various kinds of NoSQL blockchain databases like key-value stores or document databases. 
 
 The area of cryptography that focuses on the design of end-to-end encrypted databases and, more generally, on the problem of searching on encrypted data is called *encrypted search*. For an introduction to the area, please see [this](http://esl.cs.brown.edu/blog/how-to-search-on-encrypted-data-introduction-part-1/) series of blog posts from the [Encrypted Systems Lab](http://esl.cs.brown.edu/) at Brown University. The [5th post](http://esl.cs.brown.edu/blog/how-to-search-on-encrypted-data-searchable-symmetric-encryption-part-5/) in particular describes a construction of a standard/centralized EMM (which in the post is called an encrypted database (EDB)). 
                 
-###Encrypted Multi-maps
- NoSQL databases have recently become prominent in the database industry due to their simplicity, scalability and high-performance guarantees. A variety of NoSQL databases, like key-value stores (e.g., DynamoDB) and document databases (e.g., MongoDB), can be instantiated with a multi-map data structure. Multi-maps are a generalization of dictionaries and map labels to a tuple of values[^1]. They support *get* and *put* operations which, given a label, can either store or retrieve the tuple of values associated with the label. An encrypted multi-map (EMM) is an end-to-end encrypted multi-map that supports get and put operations but over encrypted data. Since multi-maps can be used to represent NoSQL databases, designing blockchain encrypted NoSQL databases is essentially the same as designing blockchain EMMs.
+### Encrypted Multi-maps
+NoSQL databases have recently become prominent in the database industry due to their simplicity, scalability and high-performance guarantees. A variety of NoSQL databases, like key-value stores (e.g., DynamoDB) and document databases (e.g., MongoDB), can be instantiated with a multi-map data structure. Multi-maps are a generalization of dictionaries and map labels to a tuple of values[^1]. They support *get* and *put* operations which, given a label, can either store or retrieve the tuple of values associated with the label. An encrypted multi-map (EMM) is an end-to-end encrypted multi-map that supports get and put operations but over encrypted data. Since multi-maps can be used to represent NoSQL databases, designing blockchain encrypted NoSQL databases is essentially the same as designing blockchain EMMs.
 
-###Legacy Friendliness
+### Legacy Friendliness
 There are two main approaches to design a blockchain EMM. The first 
 is to design a new blockchain with dedicated support for EMMs. This approach has the advantage that the EMM and blockchain can be co-designed to optimize performance. The second approach consists of designing a solution that is _legacy friendly_ in the sense that it can be used on top of pre-existing blockchains. The advantage of this approach is that the blockchain EMM can be built on top multiple platforms and there is no need to set up a new blockchain. There are, however, a few challenges with the second approach:
 
@@ -59,7 +60,7 @@ Similarly, we can super-impose more complex data structures on a blockchain such
 <img src="uploads/tree.png" width="512" title="Figure 2">
 </p>
 
-###Limitations of smart contracts
+### Limitations of smart contracts
  For blockchains that support smart contracts, an alternative approach could be to store an entire data structure as the state of a smart contract and to implement the query and update operations as a smart contract. Unfortunately, there are two main limitations to this approach. First, it is not general-purpose since: (1) many blockchains do not support smart contracts (e.g Bitcoin), and (2) many smart contract platforms do not maintain state across transactions (e.g., Algorand). The second limitation is related to the cost of using such platforms. In fact, smart contract platforms require payment not only for storing data and code but also for executing code; and the more complex the code is, the higher the cost. Note that the first approach where we super-impose a data structure on top of the blockchain is not only general, but also entails lower cost since we can store data in transactions as opposed to smart contracts and don’t need to execute any code on the blockchain.
 
  In the next part of the series, we describe three schemes to store dynamic EMMs on blockchains, each of which achieves different tradeoffs between *query*, *add* and *delete* efficiency.
