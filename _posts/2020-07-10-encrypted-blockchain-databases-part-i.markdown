@@ -50,13 +50,13 @@ To read the values, do the following:
 2. Then use $r_{n-1}$ to recover $v_{n-1}$ and $r_{n-2}$.
 3. Continue this process until all the values have been read.
 
-><p align="center">
+<p align="center">
 <img src="uploads/list.png" width="512" title="Figure 1">
 </p>
 
 Similarly, we can super-impose more complex data structures on a blockchain such as a _binary trees_. This can be done by concatenating two addresses to each value: one for its left child and one for its right child. This is illustrated in Figure 2.
 
-><p align="center">
+<p align="center">
 <img src="uploads/tree.png" width="512" title="Figure 2">
 </p>
 
