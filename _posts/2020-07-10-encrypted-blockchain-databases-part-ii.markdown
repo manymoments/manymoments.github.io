@@ -9,7 +9,7 @@ author: Archita Agarwal, Seny Kamara, Tarik Moataz
 
 ## Encrypted Blockchain Databases (Part II)
 
-In this second part of the [series on Encrypted Blockchain Databases](..part...one...), we are going to describe three schemes to store dynamic encrypted multi-maps (EMMs) on blockchains, each of which achieves different tradeoffs between query, add and delete efficiency. 
+In this second part of the series on [Encrypted Blockchain Databases](https://decentralizedthoughts.github.io/2020-07-10-encrypted-blockchain-databases-part-i/), we are going to describe three schemes to store dynamic encrypted multi-maps (EMMs) on blockchains, each of which achieves different tradeoffs between query, add and delete efficiency. 
 
 ### A List-Based Scheme (LSX)
 Recall that a multi-map is a collection of multiple label/value tuples. In this construction, we store the values associated with _each_ label into logical linked-lists on the blockchain. However, to guarantee confidentiality, we encrypt each value concatenated with the previous address, before adding it to the right linked-list. Precisely, given a tuple $(v_1, \dots, v_n)$ to be added to label $l$, for each $i$, we add $Enc_K(v_i \|\| r_{i-1})$ to the blockchain. For the first value, $r_{i-1}$ is the address of the current head of the linked-list of $l$. To achieve dynamism, we use _lazy deletion_, i.e.,  all the added and deleted values are marked as added (+) or deleted (-) and deletion is only performed at query time by removing the values marked as deleted from the output. Refer to Figure 1 for an illustration of LSX -- for clarity, we omit the encryption of the values and addresses from the figure.
