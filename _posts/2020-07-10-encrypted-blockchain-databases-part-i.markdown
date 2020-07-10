@@ -40,7 +40,7 @@ Before describing our blockchain EMM constructions, let us discuss the 1st chall
 To answer this question, notice first that transactions can be linked by storing the “addresses” of previous transactions in newer transactions. Leveraging this property, we are going to _superimpose_ a data structure on top of the blockchain in a way that we can update and query the data structure and without any modification to the backend  (the blockchain). In the following, we provide a simple example of how to superimpose a linked list. To store a _list_ with values $V = (v_1, …, v_n)$ on the blockchain, we do the following (refer to Figure 1 for an illustration of this process):
 
 1. Concatenate each value $v_i$ with the address $r_{i-1}$ of the previous transaction which stores $v_{i-1}$.
-2. Create a new transaction with $v_i || r_{i-1}$ and send it to the blockchain. This generates $r_i$, the address of this new transaction.
+2. Create a new transaction with $v_i \|\| r_{i-1}$ and send it to the blockchain. This generates $r_i$, the address of this new transaction.
 3. Repeat this for all the values.
 4. Finally, store the address $r_n$ of the last transaction with the client.
 
