@@ -64,4 +64,4 @@ Similarly, we can superimpose more complex data structures on a blockchain such 
 
  In the [next part](https://decentralizedthoughts.github.io/2020-07-10-encrypted-blockchain-databases-part-ii/) of the series, we describe three schemes to store dynamic EMMs on blockchains, each of which achieves different tradeoffs between *query*, *add* and *delete* efficiency.
 
-Please leave comments on [Twitter](...).
+Please leave comments on [Twitter](https://twitter.com/ArchitaAgarwa18/status/1281746358240714754?s=20).
