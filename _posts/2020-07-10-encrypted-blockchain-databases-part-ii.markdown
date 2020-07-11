@@ -108,4 +108,4 @@ lead to large performance improvements.  Unfortunately, our PAX construction doe
 
 [^1]: This approach does not work on top of trees.
 
-Please leave comments on [Twitter](...).
+Please leave comments on [Twitter](https://twitter.com/ArchitaAgarwa18/status/1281746358240714754?s=20). 
