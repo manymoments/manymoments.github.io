@@ -4,48 +4,52 @@ date: 2020-07-11 10:37:00 -07:00
 published: false
 ---
 
-Many people have popularized the idea that succinct proofs and zero knowledge proofs are a type of [moon math](https://medium.com/@VitalikButerin/quadratic-arithmetic-programs-from-zero-to-hero-f6d558cea649). In this post, our goal is to present a simple proof system that can provide an introduction and intuition for some of these systems. Perhaps surprisingly, the only tool we will use is the [Theorem](first post) that non-trivial degree-at-most-$d$ polynomials over a field have at most $d$ roots. 
+Many people have popularized the idea that succinct proofs and zero knowledge proofs are a type of [moon math](https://medium.com/@VitalikButerin/quadratic-arithmetic-programs-from-zero-to-hero-f6d558cea649). In this post, our goal is to present a simple proof system that can provide an introduction and intuition to this space. Perhaps surprisingly, the only tool we will use is the [Theorem](first post) that non-trivial degree-at-most-$d$ polynomials over a field have at most $d$ roots. 
 
 ### Start with Succinctness, add Zero Knowledge later
 The traditional CS educational approach typically first shows a zero knowledge scheme related to proving [3-colorability of a graph](https://crypto.stanford.edu/cs355/18sp/lec3.pdf), or proving the existence of a [Hamiltonian cycle](https://people.eecs.berkeley.edu/~sanjamg/classes/cs294-spring16/scribes/7.pdf). Succinct proofs are often taught at a [later phase](https://crypto.stanford.edu/cs355/19sp/lec17.pdf) and in connection to the [PCP](https://en.wikipedia.org/wiki/PCP_theorem) theorem.
 
-Since Colorability, Hamilonicity and Satisfiability are all [NP-complete](https://en.wikipedia.org/wiki/NP-completeness) problems, the advantage of this approach is that it immediately gives very general Theoretical Computer Science results via [Karp based reductions](https://en.wikipedia.org/wiki/Polynomial-time_reduction). 
+Since Colorability, Hamilonicity and Satisfiability are all [NP-complete](https://en.wikipedia.org/wiki/NP-completeness) problems, the advantage of this approach is that it immediately gives very general Theoretical Computer Science results via [Karp based reductions](https://en.wikipedia.org/wiki/Polynomial-time_reduction) to any problem in NP. 
 
 In this post, we take a different approach, we start with a seemly useless problem (that is solvable in poly-time) as our goal is to give an intuition for later constructions, not to prove general complexity results.
 
 ### The setting
 We will assume two parties: a Prover, and a Verifier.
 
-The Prover has an input $S=<s_0,\dots,s_{d-1}>$ which is a vector of say  $d=10^6$ field elements, where each element $x_i \in \mathbb{F}_p$. It will be important that assume $p>>d$. All the Prover wants to do is prove to the Verifier this simple fact:
+The Prover has an input $S=<s_0,\dots,s_{d-1}>$ which is a vector of say $d=10^6$ field elements (so $x_i \in \mathbb{F}_p$). It will be important that assume $p$ is large relative to $d$ (so $p >> d$). All the Prover wants to do is prove to the Verifier this simple fact:
 > Is $S$ the all-zero vector or not?
 
 We will assume the only way the Prover and Verifier can interact is via a special communication channel we will call the *virtual cloud*:
-1. The Prover has to *commit* to its input $X$ by uploading a degree-at-most-$d$ polynomial $g(x)=\prod_{0 \leq i <d} (x-s_i)$ to the virtual cloud. Note that $g(i)=s_i$.
+1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$d$ polynomial $g(x)=\prod_{0 \leq i <d} (x-s_i)$ to the virtual cloud. Note that $g(i)=s_i$.
 2. The verifier is allowed to query the virtual cloud by sending it an element $x$ and the virtual cloud responds back with $g(x)$, the evaluation of $x$ on $g$.
 
 
 ### A non-succinct solution, with no error
-How can the verifier be sure that $g$ is the zero (trivial) polynomial? It knows from the [previous post](...) that non-trivial degree-at-most-$d$ polynomials over a field have at most $d$ roots. So it can simply query $d+1=10^6 +1$ distinct points and check that they are all zero.
+How can the verifier be sure that $S$ is all-zero and hence $g$ is the zero (trivial) polynomial? It knows from the [previous post](...) that non-trivial degree-at-most-$d$ polynomials over a field have at most $d$ roots. So it can simply query $d+1=10^6 +1$ distinct points and check that they are all zero.
+
+This solution is not succinct as it requires the Verifier to send many ($d+1$) quarries. Can the Verifier use less queries? 
 
 ### A succinct solution
 We will now recall that we are working over the field $\mathbb{F}_p$ where $p>>d$. By now, it should be quite clear how the Verifier can get a succinct proof that $S$ is all-zero or not.
 
-> The verifier chooses a uniformly random element $x \in_R \mathbb{F}_p$ and queries the virtual cloud with $x$.
+> The Verifier chooses a uniformly random element $x \in_R \mathbb{F}_p$ and queries the virtual cloud just once with $x$:
 
 1. Clearly, if $g(x) \neq 0$ then $g$ is not the trivial polynomial so $S$ is not all-zeros.
-2. What if $g(x)=0$? Then again we can invoke the theorem that $g$ has at most $d$ roots to say that the probability that $g$ is non-zero is at most $d/p$ (where $p$ is the size of the Field). We can choose $p>>d$ so the error probability is as low as we want. So $g(x)=0$ then the Verifier declares that $S$ is all-zero.
+2. What if $g(x)=0$? Then we use the Theorem that $g$ has at most $d$ roots to say: If $x\in_R \mathbb{F_p}$ and $g(x)=0$ then the probability that $g$ is non-zero is at most $d/p$ (where $p$ is the size of the Field). 
+
+We can choose $p>>d$ so the error probability is as low as we want. So if $g(x)=0$, then the Verifier declares that $S$ is all-zero.
 
 That's it! this is a very succinct proof: instead of quarrying $d+1=10^6 +1$ points, the Verifier can succinctly query just one (local) point and learn about a (global) property $S$.
 
 ### Adding Zero Knowledge
 
-The prover managed to prove that $g$ is not zero using a succinct proof. Clearly, if $g=0$ then we know everything about $g$. However, when $g\neq 0$, what if we would also want the verifier to learn nothing about $S$ other than that its not all-zero? 
+The prover managed to prove that $S$ is not zero using a succinct proof. Clearly, if $g=0$ then we know everything about $S$. However, when $g\neq 0$, what if we would also want the verifier to learn nothing about $S$ other than that it's not all-zero? 
 
-The verifier can ask for say $g(i)$ and learn $s_i$, so the first thing we need to do is restrict the verifier to choose random elements that are outside of $\{0,\dots,d-1\}$. 
+The verifier can ask for say $g(i)$ and learn some $s_i \in S$, so the first thing we need to do is restrict the verifier to choose a random element $x$ that is outside of $\{0,\dots,d-1\}$. 
 
 Even that may leak information, for example, for $d=1$, the vector $S$ is of size $2$ and $g$ is a degree one polynomial. If the Verifier learns, say $g(10)$, then it has learned some linear relation between $s_0$ and $s_1$.
 
-To overcome this, the Prover simply adds one more random element $r$ to $S'=<s_0,\dots,s_{d-1}, r>$ and works with a polynomial $g'$ of degree $d+1$. Using an argument that is similar to the one in [our second post](...) it can be seen that for any $S$, the Verifier's view is $g(x)$ for $x>d+1$ is uniformly distributed. Hence the only information the Verifier gains from the protocol, the Verifier could have simulated locally. So the verifies gains no information at all.
+To overcome this, the Prover simply adds one more random element $r$ to its vector, $S'=<s_0,\dots,s_{d-1}, r>$ and works with a polynomial $g'$ of degree $d+1$. Using an argument that is similar to the one in [our second post](...) it can be seen that for any $S$, the Verifier's view, $g(x)$, for $x>d+1$, is uniformly distributed in $\mathbb{F}_p$. Hence the only information the Verifier gains from the protocol, the Verifier could have simulated locally. So the verifies gains no information at all.
 
 So we have shown a way for the verifier to obtain a succinct zero knowledge proof!
 
