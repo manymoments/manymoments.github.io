@@ -13,7 +13,7 @@ There are three properties for a secret sharing scheme:
 
 **Binding**: Once the first non-faulty completes the Share protocol there exists some value $r$ such that $r$ is the output value of all non-faulty parties that complete the Recover protocol.
 
-**Validity**: If the Dealer is non-faulty then the output is the Dealer's input value $s$.
+**Validity**: If the Dealer is non-faulty then the output of the Recover protocol is the Dealer's input value $s$.
 
 **Hiding**: If the dealer is non-faulty, and no honest party has begun the Recover protocol, then the adversary can gain no information about $s$. 
 
