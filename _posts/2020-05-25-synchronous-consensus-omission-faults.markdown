@@ -103,33 +103,41 @@ ITTAI: THINGS TO CHECK::
           if seq-no == seq-no':
              acks[seq-no] = acks[seq-no] + 1
              if acks[seq-no] > n/2:
-                send ("notify", cmd) to all replicas
                 log.append(cmd)
                 state, output = apply(cmd, state)
                 send output to the client library
+                send ("notify", cmd, seq-no) to all replicas
                 cur = none
                 seq-no = seq-no + 1
       
        // as a Backup
-       on receiving ("propose", cmd, seq-no') from replica[view]:
-          if seq-no' == seq-no:
+       on receiving ("propose", cmd, seq-no') from replica[view] or ("propose-forward", cmd, seq-no') from some replica:
+          if seq-no' == seq-no and lock == none: // if the replica is at the same sequence number and has not already voted for this command
              send ("vote", cmd, seq-no) to replica[view]
+             send ("propose-forward", cmd, seq-no) to all replicas // forward the command to all replicas
              lock = cmd
     
-       on receiving ("notify", cmd, seq-no') from any replica:
+       on receiving ("notify", cmd, seq-no') or ("notify-forward", cmd, seq-no') from any replica:
           if seq-no' == seq-no:
              log.append(cmd)
              state, output = apply(cmd, state)
+             send ("notify-forward", cmd, seq-no) to all replicas
+             lock = none
              seq-no = seq-no + 1
-             send ("notify", cmd, seq-no) to all replicas
     
        // Heartbeat from primary
        if no client message for some predetermined time t (and view == j):
           send ("heartbeat", j) to all replicas (in order)
 
-In the steady state protocol, a primary receives commands from the client. The primary sends the command to every replica through ("request", cmd, seq-no) message. The sequence number seq-no keeps track of the ordering of messages. A backup replica, on receiving a ("request", cmd, seq-no) from the current primary, sends an ("ack", cmd, seq-no) message back to the primary. If the primary receives acknowledgments from a majority of replicas, the primary can add the command to the log, execute it, and send an output to the client. It also sends these acknowledgments to the backup replicas who can then add it to their logs and execute it. The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
+In the steady state protocol, the primary receives commands from the client. If the primary is not currently processing a command, it sends the command to every replica through ("propose", cmd, seq-no) message. The sequence number seq-no keeps track of the ordering of messages. It also marks itself as processing the current command.
 
-The key observation here is the following: *the primary commits only after ensuring that $f\+1$ replicas store the acknowledged value in a lock variable. This observation is key to obtaining safety*.
+A backup replica, on receiving a ("propose", cmd, seq-no) from the current primary, or a forwarded proposal, if it has not already voted for this seq-no, sends a ("vote", cmd, seq-no) message back to the primary. To keep all backup replicas in sync, it forwards the leader proposal to all other replicas. It also locks on this command -- the lock will be used in case a view-change happens before this command is executed.
+
+If the primary receives votes from a majority of replicas, the primary can add the command to the log, execute it, and send an output to the client. It also notifies the backup replicas about the commit, who can then add the command to their logs and execute it. To keep all backup replicas in sync, backups also forward the notify message. The backups then relinquish their locks and update their sequence numbers.
+
+The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
+
+The key observation here is the following: *the primary commits only after ensuring that a majority of replicas are locked on the command. At least one of these replicas are honest, and hence, if a view-change happens, the next primary is informed about the committed command. *This observation is key to obtaining safety.
 
 We now describe the view-change protocol:
 
