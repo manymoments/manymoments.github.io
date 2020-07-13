@@ -13,9 +13,9 @@ We continue our series of posts on [State Machine Replication](https://decentral
 In a subsequent post in the series, we will extend this to consider asynchronous communication ([partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/)); this protocol will form the key underpinning for the celebrated [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) protocol. Later posts will cover Byzantine failures.
 
 Let's begin with a quick overview of previous posts:
-1. [Upper bound](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/): We can tolerate up to $n-1$ crash failures.
+1. Crash failures: [Upper bound](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/), we can tolerate up to $n-1$ crashes.
 
-2. [Lower bound](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/): The best one can hope for is to tolerate less than $n/2$ omission failures.
+2. Omission failures: [Lower bound](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/): The best one can hope for is to tolerate less than $n/2$ omission failures.
 
 We first go over the upper bound for crash failures. Then see what goes wrong when the failures are omission and how we can fix the protocol.
 
