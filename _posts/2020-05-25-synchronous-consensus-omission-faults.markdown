@@ -134,7 +134,6 @@ Observe that our steady state processes commands one at a time. Thus, there is a
        // blame the current leader
        on missing "heartbeat" or a proposal from replica[view] in the last t + $\Delta$ time units:
           send ("no heartbeat", view) to replica[view + 1]
-          keep participating in this view
     
        // new primary
        on receiving ("no heartbeat", view) from f+1 replicas (and view == j-1):
