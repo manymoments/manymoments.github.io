@@ -74,7 +74,6 @@ Here's how we deal with the second problem. When the  faulty primary hears from 
     
     state = init
     log = []
-    cur = none
     view = 0
     acks = []
     lock = none
@@ -83,9 +82,9 @@ Here's how we deal with the second problem. When the  faulty primary hears from 
     while true:
        // as a primary
        on receiving cmd from a client library (and view == j):
-          if cur == none: // if not currently processing a cmd 
+          if lock == none: // if not currently processing a cmd 
              send ("propose", cmd, seq-no) to all replicas
-             cur = cmd
+             lock = cmd
     
        on receiving ("vote", cmd, seq-no') from a backup replica r:
           if seq-no == seq-no':
@@ -95,7 +94,7 @@ Here's how we deal with the second problem. When the  faulty primary hears from 
                 state, output = apply(cmd, state)
                 send output to the client library
                 send ("notify", cmd, seq-no) to all replicas
-                cur = none
+                lock = none
                 seq-no = seq-no + 1
       
        // as a backup
@@ -153,7 +152,7 @@ Observe that our steady state processes commands one at a time. Thus, there is a
           highest-lock, seq-no = pick the (lock, seq-no) pair with the highest seq-no
           if highest-lock != none:
             send ("propose", highest-lock, seq-no) to all replicas (in order)
-            cur = highest-lock
+            lock = highest-lock
           transition to steady state
 
 The view-change protocol works as follows. If a replica does not receive a heartbeat from the primary for a sufficient amount of time, it sends a "no heartbeat" message to the primary of the next view. The new primary, on receiving "no heartbeat" messages from a majority of replicas, initiates a view change by sending "view-change" message. It stops participating in this view.
