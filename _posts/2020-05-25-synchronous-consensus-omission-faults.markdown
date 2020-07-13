@@ -125,7 +125,7 @@ If the primary receives votes from a majority of replicas, the primary can add t
 
 The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
 
-The key observation here is the following: *the primary commits only after ensuring that a majority of replicas are locked on the command. At least one of these replicas are non-faulty, and hence, if a view-change happens, the next primary is informed about the committed command. *This observation is key to obtaining safety.
+The key observation here is the following: *the primary commits only after ensuring that a majority of replicas are locked on the command. At least one of these replicas are non-faulty, and hence, if a view-change happens, the next primary is informed about the committed command.* This observation is key to obtaining safety.
 
 **View-change protocol:** What does a new leader need to learn in case of a view-change? The next seq-no to be processed and whether there is an outstanding command (stored in the lock variable).
 
