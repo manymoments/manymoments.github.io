@@ -144,7 +144,7 @@ Observe that our steady state processes commands one at a time. Thus, there is a
        // as a backup
        on receiving ("view-change", view') from replica[view'+1] or ("view-change-forward", view') from any replica (and view' >= view):
           send ("view-change-forward", view') to all replicas
-          wait for $2\Delta$ time units to hear about any locks or notifications and then round stop participating in this view,    
+          wait for $2\Delta$ time units to hear about any locks or notifications and then stop participating in this view,    
           send ("status", view', lock, seq-no) to replica[view'+1]
           set view = view' + 1, transition to steady state
        
