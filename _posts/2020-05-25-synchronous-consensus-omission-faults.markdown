@@ -32,24 +32,24 @@ For completeness, we repeat the primary-backup pseudocode below. Assume $n$ repl
     view = 0
     while true:
     
-       // as a Primary
+       // as a primary
        on receiving cmd from a client library (and view == j):
           send cmd to all replicas
           log.append(cmd)
           state, output = apply(cmd, state)
           send output to the client library
           
-       // as a Backup
+       // as a backup
        on receiving cmd from replica[view]:
           log.append(cmd)
           state, output = apply(cmd, state)
           lock = cmd
     
-       // Heartbeat from primary
+       // heartbeat from primary
        if no client message for some predetermined time t (and view == j):
           send ("heartbeat", j) to all replicas (in order)
     
-       // View change
+       // view change
        on missing "heartbeat" or cmd from replica[view] in the last t + $\Delta$ time units:
           view = view + 1
           if view == j // I am the leader
@@ -60,17 +60,11 @@ Can we use the above protocol under omission failures? No! Here is where the pro
 
 1. In the above protocol, the primary sends the command `cmd` to all backup replicas and then immediately executes the state machine (executing `apply(cmd, state)`) and responds to the client library. Under omission failures, it may so happen that the primary is faulty and no replica has received `cmd`. If all the messages of the primary are blocked subsequently, then there will not be any backup replicating the command sent by it.
 
-2. When a backup needs to invoke a view-change to become the new primary, it may not know the last command that was executed. Simply maintaining a "lock" variable consisting of the last command does not suffice since the last few commands may not have been received by the backup.
+2. When a backup needs to invoke a view-change to become the new primary, it may not know the last command that was executed. Simply maintaining a "lock" variable consisting of the last command does not suffice since the last few commands may not have been received by a backup replica.
 
-To make such a protocol work, we need to ensure safety and liveness, which imply the following:
+To deal with the first problem, how can a primary know if its message was sent to a sufficient number of replicas? By waiting to hear an acknowledgment! But even if the primary is non-faulty and sends a message to all replicas, how many acknowledgments can it wait for without losing liveness? Clearly, it cannot wait for more than $n-f$! Hence, in our protocol, the primary waits for a majority of acknowledgments.
 
-* \[ \] *Safety:* The primary commits only after ensuring that subsequent primaries can learn that the commit occurred. When a view-change is invoked, the new primary must be able to adopt a value, if it was previously committed.
-
-* \[ \] *Liveness*: The steady-state and view-change processes are never stuck.
-
-The key problem we have to deal with is: a faulty primary  that is not aware that it is omission faulty. So how can a primary know if its message was sent? By waiting to hear an acknowledgment! But even if the primary is non-faulty and sends a message to all replicas, how many acknowledgments can it wait for without losing liveness? Clearly, it cannot wait for more than $n-f$! Hence, the primary waits for a majority of acknowledgments.
-
-When the  faulty primary hears from a majority of replicas, it can so happen that for a given command cmd1, its request is only sent to one non-faulty replica, say replica $r_1$, and all other faulty replicas. For the next command cmd2, its request arrives at a different non-faulty replica, say replica $r_2$, and all other faulty replicas. Since replica $r_2$ does not know of the existence of cmd1, to ensure that all non-faulty replicas have an identical log, we need to be careful about how replica $r_2$ responds to the primary. Observe that this concern arises only when we want to achieve consensus on multiple commands, and not for consensus on a single command. Our solution addresses this concern by keeping all non-faulty replicas in sync: if a non-faulty replica receives a message from the leader, it forwards this message to all other replicas. This ensures that, even if the primary is faulty, if its message reaches some non-faulty replica, then all non-faulty replicas know about it.
+Here's how we deal with the second problem. When the  faulty primary hears from a majority of replicas, it can so happen that for a given command cmd1, its request is only sent to one non-faulty replica, say replica $r_1$, and all other faulty replicas. For the next command cmd2, its request arrives at a different non-faulty replica, say replica $r_2$, and all other faulty replicas. Since replica $r_2$ does not know of the existence of cmd1, to ensure that all non-faulty replicas have an identical log, we need to be careful about how replica $r_2$ responds to the primary. Observe that this concern arises only when we want to achieve consensus on multiple commands, and not for consensus on a single command. Our solution addresses this concern by keeping all non-faulty replicas in sync: if a non-faulty replica receives a message from the leader, it forwards this message to all other replicas. This ensures that, even if the primary is faulty, if its message reaches some non-faulty replica, then all non-faulty replicas know about it. Thus, we still have the invariant that there is at most one outstanding command stored in the "lock" variable.
 
 **Steady-state protocol.** We now explain the steady-state protocol tolerating omission failures under a fixed primary; we will later discuss the view-change process.
 
@@ -85,7 +79,7 @@ When the  faulty primary hears from a majority of replicas, it can so happen tha
     seq-no = 0
     
     while true:
-       // as a Primary
+       // as a primary
        on receiving cmd from a client library (and view == j):
           if cur == none: // if not currently processing a cmd 
              send ("propose", cmd, seq-no) to all replicas
@@ -102,7 +96,7 @@ When the  faulty primary hears from a majority of replicas, it can so happen tha
                 cur = none
                 seq-no = seq-no + 1
       
-       // as a Backup
+       // as a backup
        on receiving ("propose", cmd, seq-no') from replica[view] or ("propose-forward", cmd, seq-no') from some replica:
           if seq-no' == seq-no and lock == none: // if the replica is at the same sequence number and has not already voted for this command
              send ("vote", cmd, seq-no) to replica[view]
