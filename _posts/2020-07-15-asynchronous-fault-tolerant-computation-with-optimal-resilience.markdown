@@ -119,7 +119,7 @@ The contrapositive is: there cannot be a protocol that is both: (1) correct with
 
 For a full proof that strengthens the BKR statement (and a fascinating new upper bound showing what can be done without a non-zero probability of non-termination) please see our [PODC 2020 paper](https://arxiv.org/pdf/2006.16686.pdf). 
 
-Please leave comments on [Twitter](...).
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1283411228677857284?s=20).
 
 
 
