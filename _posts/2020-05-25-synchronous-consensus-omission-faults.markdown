@@ -79,13 +79,13 @@ The key problem we have to deal with is a faulty primary that is not aware that 
 ITTAI: THINGS TO CHECK::
 1. that commands are on the right view
 2. do we need log.append or log[sqn] and then we should explain this
-3. add a comment to each line of sate, to give a hint...
+3. cur is not updated at the Replica?
 
 ```
 // Replica j
 
-state = init
-log = []
+state = init // the state of the state machine
+log = []  // the log of commands
 cur = none
 view = 0
 acks = []
