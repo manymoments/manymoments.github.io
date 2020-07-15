@@ -1,6 +1,6 @@
 ---
 title: Asynchronous Fault Tolerant Computation with Optimal Resilience
-date: 2020-07-09 01:39:00 -07:00
+date: 2020-07-15 01:39:00 -07:00
 published: false
 tags:
 - lowerbound
@@ -55,7 +55,7 @@ In other words, the Share protocol forces a dealer that completes Share to *comm
 
 ### Lower bound techniques
 
-Like many previous lower bounds, this lower bound heavily relies on two powerful techniques: *indistinguishability* (where some parties can not tell between two potential worlds) and *hybridization* (where we build intermediate worlds between the two contradicting worlds and use a chain of indistinguishability arguments for a contradiction.). Unlike previous [lower bounds](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) we have seen in this [blog](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/), this one uses indistinguishability in a more subtle manner. We will call this **indistinguishability boosting**:
+Like many previous lower bounds, this lower bound heavily relies on two powerful techniques: *indistinguishability* (where some parties can not tell between two potential worlds) and *hybridization* (where we build intermediate worlds between the two contradicting worlds and use a chain of indistinguishability arguments for a contradiction.). Unlike previous [lower bounds](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) we have seen in this [blog](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/), this one uses indistinguishability more subtly. We will call this **indistinguishability boosting**:
 1. Start with a very weak notion of *conditional indistinguishability*: that there is a non-zero probability event during the Share protocol, such that conditioned on this event two worlds are indistinguishable.
 2. Boost this conditional indistinguishability event in the Share protocol to prove the existence of a full indistinguishability event in the Reconstruct protocol. 
 
@@ -71,7 +71,7 @@ In Crash World C, party $C$ is crashed and $D$ has input 0.
 
 From $B$ and $D$'s point of view, Crash World $0$ and Crash World C are entirely indistinguishable. In crash world 0, all non-faulty participate in the Share protocol and thus must complete it. Since the worlds are indistinguishable, $A$,$B$ and $D$ complete the protocol even if $C$ is slow throughout it.
 
-In Crash World 0 $A$ is faulty so it must not know that the value $0$ was shared (otherwise the Hiding property would be violated). This almost obvious statement gives us a very powerful tool: whichever messages $A$ exchanged throughout the Share protocol, it must be possible for those messages to be exchanged, regardless of the value $D$ shared. Clearly there is nothing special in this argument about $A$ or the value $0$, so we can use this argument with $B$ or with $1$. This tool will be very important for the rest of our arguments.
+In Crash World 0 $A$ is faulty so it must not know that the value $0$ was shared (otherwise the Hiding property would be violated). This almost obvious statement gives us a very powerful tool: whichever messages $A$ exchanged throughout the Share protocol, it must be possible for those messages to be exchanged, regardless of the value $D$ shared. There is nothing special in this argument about $A$ or the value $0$, so we can use this argument with $B$ or with $1$. This tool will be very important for the rest of our arguments.
 
 
 **Share World A:**
@@ -109,10 +109,10 @@ In Reconstruct World Hybrid, $D$ is malicious and executes the attack in Share W
 
 The main challenge here is to show that the malicious party can "act as if $D$ had the opposite value" by using the probability distribution induced by the conditional event of completing the Share protocol in the Share World Hybrid. As shown above, whichever messages $A$ and $B$ exchange during the Share protocol, those messages must be possible both in the case that $D$ shares 0 and in the case that $D$ shares $1$. We will show the attack for Reconstruct World A (the same attack works for Reconstruct World B). After completing the Share protocol, $A$ can claim that $D$ guessed its randomness correctly and sent it messages corresponding to sharing the value $1$. $A$ already knows which messages it exchanged with $B$, and those messages must be possible if $D$ shares the value $1$. This means that $A$ can find some set of messages $D$ could have sent that would result in $A$ sending the messages it sent. Very importantly, even though the original attack in Share World Hybrid would only succeed with some nonzero probability, $A$ can *always* claim $D$'s attack succeeded, because it already knows which messages it exchanged with $B$. This also means that Reconstruct World A is indistinguishable from Reconstruct World Hybrid conditioned upon the event that $D$'s original attack succeeded. This is the core of the *boosting* technique.
 
-We can now finally look at party $C$ and construct a chain of indistinguishable worlds: Reconstruct World A is indistinguishable from Reconstruct World Hybrid, conditioned upon $D$'s attack succeeding, which is indistinguishable from Reconstruct World B. In Reconstruct World Hybrid, if $D$'s attack succeeds, all non-faulty complete the Share protocol and start the Reconstruct protocol. This also means that they all complete the Reconstruct protocol and output some value. Since Reconstruct Worlds A and B are indistinguishable from Reconstruct World Hybrid conitioned upon $D$'s attack succeeding, all non-faulty complete the Recontruct protocol in those worlds as well. The fact that Reconstruct World A is indistinguishable from Reconstruct world B implies that party $C$ must output the wrong value with a constant (large) probability. Proving this indistinguishability chain by using the conditional probability distribution of completing the Share protocol in the Recontruct World Hybrid is subtle and non-trivial.
+We can now finally look at party $C$ and construct a chain of indistinguishable worlds: Reconstruct World A is indistinguishable from Reconstruct World Hybrid, conditioned upon $D$'s attack succeeding, which is indistinguishable from Reconstruct World B. In Reconstruct World Hybrid, if $D$'s attack succeeds, all non-faulty complete the Share protocol and start the Reconstruct protocol. This also means that they all complete the Reconstruct protocol and output some value. Since Reconstruct Worlds A and B are indistinguishable from Reconstruct World Hybrid conditioned upon $D$'s attack succeeding, all non-faulty complete the Reconstruct protocol in those worlds as well. The fact that Reconstruct World A is indistinguishable from Reconstruct world B implies that party $C$ must output the wrong value with a constant (large) probability. Proving this indistinguishability chain by using the conditional probability distribution of completing the Share protocol in the Reconstruct World Hybrid is subtle and non-trivial.
 
 Observe that to get a constant probability of error, we strongly used the fact that party $C$ **must** complete the Reconstruct protocol and output some value. The reason party $C$ must complete and cannot wait for a message from $D$ is that it could be that we are in Reconstruct World Hybrid and $D$ will never respond.
-Lets see where this proof would fail if we allowed even a small probability of deadlock: in that case party $C$ could decide to wait for one more response! If $C$ were in either Recontruct World A or B, it could indeed wait for $D$. This would only violate the termination property of the Reconstruct protocol in Recontruct World Hybrid, but would only do so with a very small probability becasue there is a very small probability that the Share protocol of Share World Hybrid will complete!
+Let's see where this proof would fail if we allowed even a small probability of deadlock: in that case party $C$ could decide to wait for one more response! If $C$ were in either Reconstruct World A or B, it could indeed wait for $D$. This would only violate the termination property of the Reconstruct protocol in Reconstruct World Hybrid, but would only do so with a very small probability because there is a very small probability that the Share protocol of Share World Hybrid will complete!
 
 To conclude we showed that if you assume there is no deadlock, then a malicious strategy in the Share protocol causing a small (non-zero) error probability can be boosted to a malicious strategy in the Reconstruct protocol causing a large (constant) probability of error, under the assumption that there is never a deadlock.
 
@@ -121,7 +121,6 @@ The contrapositive is: there cannot be a protocol that is both correct with the 
 For a full proof that strengthens the BKR statement (and a fascinating new upper bound showing what can be done without a non-zero probability of non-termination) please see our [PODC 2020 paper](https://arxiv.org/pdf/2006.16686.pdf). 
 
 Please leave comments on [Twitter](...).
-
 
 
 
