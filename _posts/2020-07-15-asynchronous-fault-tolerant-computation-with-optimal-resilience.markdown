@@ -115,7 +115,7 @@ Let's see where this proof would fail if we allowed even a small probability of 
 
 To conclude we showed that if you assume there is no deadlock, then a malicious strategy in the Share protocol causing a small (non-zero) error probability can be boosted to a malicious strategy in the Reconstruct protocol causing a large (constant) probability of error, under the assumption that there is never a deadlock.
 
-The contrapositive is: there cannot be a protocol that is both correct with the same constant probability and has a measure zero probability of deadlock. This concludes the lower bound overview.
+The contrapositive is: there cannot be a protocol that is both: (1) correct with some constant probability, and (2) has a measure zero probability of deadlock. This concludes the lower bound overview.
 
 For a full proof that strengthens the BKR statement (and a fascinating new upper bound showing what can be done without a non-zero probability of non-termination) please see our [PODC 2020 paper](https://arxiv.org/pdf/2006.16686.pdf). 
 
