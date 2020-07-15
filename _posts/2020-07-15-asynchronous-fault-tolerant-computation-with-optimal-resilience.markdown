@@ -7,7 +7,7 @@ tags:
 author: Ittai Abraham, Danny Dolev, Gilad Stern
 ---
 
-A basic question of distributed computing is:
+A basic question of distributed computing:
 **Is there a fundamental limit to fault tolerant computation in the Asynchronous model?**
 
 The celebrated [FLP](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/) theorem says that any protocol that solves Agreement in the asynchronous
