@@ -64,7 +64,7 @@ Can we use the above protocol under omission failures? No! Here is where the pro
 
 To deal with the first problem, how can a primary know if its message was sent to a sufficient number of replicas? By waiting to hear an acknowledgment! But even if the primary is non-faulty and sends a message to all replicas, how many acknowledgments can it wait for without losing liveness? Clearly, it cannot wait for more than $n-f$! Hence, in our protocol, the primary waits for a majority of acknowledgments.
 
-Here's how we deal with the second problem. When the  faulty primary hears from a majority of replicas, it can so happen that for a given command cmd1, its request is only sent to one non-faulty replica, say replica $r_1$, and all other faulty replicas. For the next command cmd2, its request arrives at a different non-faulty replica, say replica $r_2$, and all other faulty replicas. Since replica $r_2$ does not know of the existence of cmd1, to ensure that all non-faulty replicas have an identical log, we need to be careful about how replica $r_2$ responds to the primary. Observe that this concern arises only when we want to achieve consensus on multiple commands, and not for consensus on a single command. Our solution addresses this concern by keeping all non-faulty replicas in sync: if a non-faulty replica receives a message from the leader, it forwards this message to all other replicas. This ensures that, even if the primary is faulty, if its message reaches some non-faulty replica, then all non-faulty replicas know about it. Thus, we still have the invariant that there is at most one outstanding command stored in the "lock" variable.
+Here's how we deal with the second problem. When the faulty primary hears from a majority of replicas, it can so happen that for a given command cmd1, its request is only sent to one non-faulty replica, say replica $r_1$, and all other faulty replicas. For the next command cmd2, its request arrives at a different non-faulty replica, say replica $r_2$, and all other faulty replicas. Since replica $r_2$ does not know of the existence of cmd1, to ensure that all non-faulty replicas have an identical log, we need to be careful about how replica $r_2$ responds to the primary. Observe that this concern arises only when we want to achieve consensus on multiple commands, and not for consensus on a single command. Our solution addresses this concern by keeping all non-faulty replicas in sync: if a non-faulty replica receives a message from the leader, it forwards this message to all other replicas. This ensures that, even if the primary is faulty, if its message reaches some non-faulty replica, then all non-faulty replicas know about it. Thus, we still have the invariant that there is at most one outstanding command stored in the "lock" variable.
 
 ## Primary-Backup for $n$ Replicas Under Omission Faults
 
@@ -72,9 +72,9 @@ Here's how we deal with the second problem. When the  faulty primary hears from 
 
     // Replica j
     
-    state = init
-    log = []
-    view = 0
+    state = init // the state of the state machine
+    log = []     // the log of committed commands
+    view = 0     // view number that indicates the current Primary
     acks = []
     lock = none
     seq-no = 0
@@ -124,11 +124,11 @@ If the primary receives votes from a majority of replicas, the primary can add t
 
 The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
 
-The key observation here is the following: *the primary commits only after ensuring that a majority of replicas are locked on the command. At least one of these replicas are non-faulty, and hence, if a view-change happens, the next primary is informed about the committed command.* This observation is key to obtaining safety.
+The key observation here is the following: *the primary commits only after ensuring that a majority of replicas are locked on the command. At least one of these replicas is non-faulty, and hence, if a view-change happens, the next primary is informed about the committed command.* This observation is key to obtaining safety.
 
 **View-change protocol:** What does a new leader need to learn in case of a view-change? The next seq-no to be processed and whether there is an outstanding command (stored in the lock variable).
 
-Observe that our steady state processes commands one at a time. Thus, there is at most one outstanding command. Moreover, since we keep all non-faulty replicas in sync (by forwarding proposals and commit notifications), if the new leader is non-faulty, it already knows the current seq-no and whether there is an outstanding command. However, the new leader may not know whether it is faulty,  and hence, needs to execute the view-change process to learn the next seq-no and the lock. We now describe the view-change protocol:
+Observe that in the steady state, commands are processed one at a time. Thus, there is at most one outstanding command. Moreover, since we keep all non-faulty replicas in sync (by forwarding proposals and commit notifications), if the new leader is non-faulty, it already knows the current seq-no and whether there is an outstanding command. However, the new leader may not know whether it is faulty,  and hence, needs to execute the view-change process to learn the next seq-no and the lock. We now describe the view-change protocol:
 
        // blame the current leader
        on missing "heartbeat" or a proposal from replica[view] in the last t + $\Delta$ time units:
@@ -138,7 +138,7 @@ Observe that our steady state processes commands one at a time. Thus, there is a
        on receiving ("no heartbeat", view) from f+1 replicas (and view == j-1):
           send ("view-change", view) to all replicas
           send ("view-change", view) to all client libraries
-          stop participating in this view, view = view + 1
+          stop participating in this view; set view = view + 1
     
        // as a backup
        on receiving ("view-change", view') from replica[view'+1] or ("view-change-forward", view') from any replica (and view' >= view):
