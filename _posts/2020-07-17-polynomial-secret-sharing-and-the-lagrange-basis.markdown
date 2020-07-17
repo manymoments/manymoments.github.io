@@ -1,16 +1,14 @@
 ---
 title: Polynomial Secret Sharing and the Lagrange Basis
-date: 2020-07-09 08:36:00 -07:00
-published: false
+date: 2020-07-17 11:23:00 -07:00
 author: Ittai Abraham, Alin Tomescu
 ---
 
-In this post, we highlight an amazing result: Shamir's [secret sharing scheme](https://cs.jhu.edu/~sdoshi/crypto/papers/shamirturing.pdf). This is one of the most powerful uses of polynomials over a finite field in distributed computing.
-Intuitively, this scheme allows a $Dealer$ to *commit* to a *secret* $s$ by splitting it into *shares* distributed to $n$ parties. The secret is hidden and requires a threshold of $f+1$ parties in order to be reconstructed. 
+In this post, we highlight an amazing result: Shamir's [secret sharing scheme](https://cs.jhu.edu/~sdoshi/crypto/papers/shamirturing.pdf). This is one of the most powerful uses of [polynomials over a finite field](/2020-07-17-the-marvels-of-polynomials-over-a-field) in distributed computing.
+Intuitively, this scheme allows a $Dealer$ to *commit* to a *secret* $s$ by splitting it into *shares* distributed to $n$ parties. The secret is hidden and requires a threshold of $f+1$ parties in order to be reconstructed, where $f < n$.
 
-
-In the basic scheme, we will assume a [passive adversary](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) that controls [all parties but one](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/) (any $f<n$ parties).
-A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.org/2011/136.pdf) or [Semi-Honest](http://www.wisdom.weizmann.ac.il/~oded/foc-vol2.html)) does not deviate from the protocol but can learn all possible information from its view (the messages received by parties it controls). In later posts, we will extend the secret sharing scheme to [crash and then malicious](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) adversaries.
+In the basic scheme, we will assume a [passive adversary](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) that controls [any $f$ out of the $n$ parties](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/).
+A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.org/2011/136.pdf) or [Semi-Honest](http://www.wisdom.weizmann.ac.il/~oded/foc-vol2.html)) does not deviate from the protocol but can learn all possible information from its _view_: i.e., the messages received by parties it controls. In later posts, we will extend the secret sharing scheme to [crash adversaries and malicious adversaries](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).
 
 
 
@@ -18,7 +16,7 @@ A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.o
 A *secret sharing scheme* is composed of two protocols: *Share* and *Reconstruct*.
 These protocols are distributed: they are run by the $n$ parties, jointly.
 The Dealer has a *secret* $s$, which is given as _input_ to the Share protocol.
-Intuitively, if the Share protocol "succeeds", then the Reconstruct protocol will *outputWe * that same secret $s$.
+Intuitively, if the Share protocol "succeeds", then the Reconstruct protocol will *output* that same secret $s$.
 
 
 These properties of a secret sharing scheme can be described more formally as:
@@ -30,19 +28,21 @@ These properties of a secret sharing scheme can be described more formally as:
 **Hiding**: If the dealer is non-faulty, and no honest party has begun the Reconstruct protocol, then the adversary can gain no information about $s$. 
 
 
-The first two properties seem well defined, but what about the hiding property? What does it mean that the adversary "gains no information about $s$"? We will be more formal about this later but informally this means that anything the adversary can output by interacting with this protocol, the adversary could have output the same without any interaction at all.
+The first two properties seem well defined, but what about the hiding property? What does it mean that the adversary "gains no information about $s$"? We will be more formal about this later but, informally, this means that anything the adversary can output by interacting with this protocol, the adversary could have output the same without any interaction at all.
 
 ### Shamir's scheme
 
-We enumerate the parties via the integers $\{1,2,3,\dots,n\}$. We also assume there is a commonly known finite field $\mathbb{F}_p$ with $p>n$.
+We enumerate the parties via the integers $\\{1,2,3,\dots,n\\}$. We also assume there is a commonly known finite field $\mathbb{F}_p$ with $p>n$.
 
 **Share protocol**: Given a secret $s$ as input, the Dealer _randomly_ chooses $f$ values $p_1,\dots,p_f \in_R \mathbb{F}_p$ and defines a degree $\le f$ polynomial
 
-$$p=s+p_1 X + \dots + p_f X^f$$
+$$p(X)=s+p_1 X + \dots + p_f X^f$$
 
 The Dealer then sends $p(i)$ to each party $i$.
 We refer to $p(i)$ as party $i$'s _share_ of the secret $s$.
-Note that $p(0) = s$, which is the Dealer's secret.
+
+{: .box-note}
+**Importantly,** note that the Dealer's secret $s$ is "stored" in the polynomial as $p(0) = s$.
 
 **Reconstruct protocol**: 
 Each party $i$ sends its share $p(i)$ to all other parties. 
@@ -85,7 +85,7 @@ $$p(X)=\sum_{z \in Z} L_z(X) p(z)$$
 
 Why does this equality hold?
 It's because both $p(X)$ and $\sum_{z \in Z} L_z(X) p(z)$ are degree-at-most-$f$ polynomials so their difference is also of degree-at-most-$f$ and has $f+1$ zeros, since $|Z|=f+1$.
-From the [main theorem in our previous post on polynomials](/2020-07-05-the-marvels-of-polynomials-over-a-field), this means that $p(X)-\sum_{z\in Z} L_z(X) p(z)$ must be the zero polynomial.
+From the [main theorem in our previous post on polynomials](/2020-07-17-the-marvels-of-polynomials-over-a-field), this means that $p(X)-\sum_{z\in Z} L_z(X) p(z)$ must be the zero polynomial.
 Thus, $p(X)=\sum_{z \in Z} L_z(X) p(z)$ follows from the fact that non-trivial degree-at-most-$f$ polynomaisl have at most $d$ roots!
 
 This argument shows that there is a *unique representation* of $p=\{p_0,\dots,p_f\}$ for the Lagrange basis induced by $Z=\{z_1,\dots,z_{f+1}\}$.
@@ -118,7 +118,7 @@ To show that $\phi$ is injective, assume the opposite.
 This means there exist two polynomials $p=(p_0,\dots,p_f)$ and $p'=(p'_0, \dots, p'_f)$ such that $p\ne p'$ but $\phi(p_0, \dots, p_f) = \phi(p'_0, \dots, p'_f)$.
 In other words, we have $p(z)=p'(z)$ for all $z \in Z$.
 But this implies that $p-p'$ is a degree-at-most-$f$ polynomial that has at least $f+1$ zeros.
-From the [main theorem of our previous post](/2020-07-05-the-marvels-of-polynomials-over-a-field), this means that $p-p'=0$ and hence $p=p'$.
+From the [main theorem of our previous post](/2020-07-17-the-marvels-of-polynomials-over-a-field), this means that $p-p'=0$ and hence $p=p'$.
 Contradiction, therefore $\phi$ is injective.
 
 We conclude that $\phi$ is bijective. In fact $\phi$ is a [linear isomorphisim](https://en.wikipedia.org/wiki/Linear_map) and so $L_{z_1},\dots,L_{z_{f+1}}$ is a [basis](https://en.wikipedia.org/wiki/Basis_(linear_algebra)) for the set of degree-at-most-$f$ polynomials (for any set $Z=\{z_1, \dots,z_{f+1}\}$). 
