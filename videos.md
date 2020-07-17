@@ -5,9 +5,16 @@ layout: page
 
 ## The Decentralization will not be Televised
 
-**[Theory and Practice of Blockchains 2020](https://eventum.upf.edu/51585/section/25185/theory-and-practice-of-blockchains-online-weekly-seminar-series-.html). Kartik Nayak: On the Optimality of Optimistic Responsiveness**
+
+**[Theory and Practice of Blockchains 2020](https://eventum.upf.edu/51585/section/25185/theory-and-practice-of-blockchains-online-weekly-seminar-series-.html)**
+
+*Avishay Yanai: Blinder – MPC Based Scalable and Robust Anonymous Committed Broadcast*
 
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ABkuhB-ZOfI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+*Kartik Nayak: On the Optimality of Optimistic Responsiveness*
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4nZHp1-kM4U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
