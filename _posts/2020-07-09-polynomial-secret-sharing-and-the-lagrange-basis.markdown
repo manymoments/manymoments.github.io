@@ -148,8 +148,8 @@ We have shown above that $\phi$ is a bijective mapping from $p_0,\dots,p_{f+1}$ 
 Consider the set $Z=\{0\} \cup B$ where $B=\{b_1,\dots,b_f\}$ is the set of parties controlled by the passive adversary.
 (Here, we use the assumption that party identities start from 1.)
 
-Since $\phi$ is a bijection, it maps the uniform distribution $\mathcal{D}$ on $p_0,p_1,\dots,p_{f+1}$ to the uniform distribution on $p(0),p(b_1),\dots, p(b_{f})$. In more detail, for *any* $z_1,\dots,z_{f} \in \mathbb{F}_p^f$ the uniform distrubtion implies $\Pr_{\mathcal{D}}[\bigwedge p_i=z_i] = 1/|\mathbb{F}_p|^{f}$. From the bijection of $\phi$ we get that for *any* $y_1,\dots,I y_{f} \in \mathbb{F}_p^f$ we have that there must exists unique $z_1,\dots,z_{f} \in \mathbb{F}_p^f$ such that
-$\Pr_{\mathcal{D}}[\bigwedge p(i)=y_i] = \Pr_{\mathcal{D}}[\bigwedge \phi^{-1}(p(1),\dots,p(f))_i=z_i] = 1/|\mathbb{F}_p|^{f}$.
+Since $\phi$ is a bijection, it maps the uniform distribution $\mathcal{D}$ on $p_0,p_1,\dots,p_{f+1}$ to the uniform distribution on $p(0),p(b_1),\dots, p(b_{f})$. In more detail, for *any* $z_1,\dots,z_{f} \in \mathbb{F}_p^f$ the uniform distrubtion implies $\Pr_{\mathcal{D}}[\bigwedge p_i=z_i] = 1/ \|\mathbb{F}_p\|^{f}$. From the bijection of $\phi$ we get that for *any* $y_1,\dots,I y_{f} \in \mathbb{F}_p^f$ we have that there must exists unique $z_1,\dots,z_{f} \in \mathbb{F}_p^f$ such that
+$\Pr_{\mathcal{D}}[\bigwedge p(i)=y_i] = \Pr_{\mathcal{D}}[\bigwedge \phi^{-1}(p(1),\dots,p(f))_i=z_i] = 1/ \|\mathbb{F}_p\|^{f}$.
 
 
 Observe that, since $0 \in Z$, the first input of $\phi$ is $p_0$ and the first output of $\phi$ is $p(0)=p_0$, so they match.
