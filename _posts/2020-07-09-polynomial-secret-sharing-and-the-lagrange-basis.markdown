@@ -52,7 +52,7 @@ $$s=p(0)=\sum_{i \in I} \lambda_i p_i$$
 
 Here, $I= \{ 1,\dots,f+1 \}$, and for any $i \in I$:
 
-$$\lambda_i = \frac{\prod_{z \in I \setminus \{i\}} z}{\prod_{z \in I \setminus \{i\}} (z-i)}$$
+$$\lambda_i = \frac{\prod_{j \in I \setminus \{i\}} j}{\prod_{j \in I \setminus \{i\}} (j-i)}$$
 
 
 
