@@ -72,7 +72,7 @@ For every $z \in Z$, let $\mathcal{L}_z:Z \mapsto \{0,1\}$ be the [indicator fun
 
 $$\mathcal{L}_z(x) = \begin{cases} 1,\ \text{if}\ x=z\\0,\ \text{if}\ x \neq z\end{cases}$$
 
-We can then *extend* this function $\mathcal{L}_z(x)$ to a function $L_z : \mathbb{F}_p \mapsto \mathbb{F}_p$, such that for all $x\in Z:\ \mathcal{L}_z(X)=L_z(X)$ by defining $L_z(X)$ as a degree $f$ polynomial:
+We can then *extend* this function $\mathcal{L}_z(x)$ to a function $L_z : \mathbb{F}_p \mapsto \mathbb{F}_p$, such that for all $x\in Z:\ \mathcal{L}_z(X)=L_z(X)$ by defining $L_z(X)$ as a degree $f$ polynomial!
 
 $$L_z(X)= \frac{\prod_{j \in Z \setminus \{z\}} (X-j)}{\prod_{j \in Z \setminus \{z\}} (z-j)}$$
 
