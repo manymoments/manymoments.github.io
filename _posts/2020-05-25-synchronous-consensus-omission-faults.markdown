@@ -79,7 +79,9 @@ Here's how we deal with the second problem. When the faulty primary hears from a
     while true:
        // as a primary
        on receiving cmd from a client library (and view == j):
-          send ("propose", cmd, seq-no) to all replicas
+          if acks[seq-no] == 0 // seq-no is available
+             send ("propose", cmd, seq-no) to all replicas
+             acks[seq-no] = acks[seq-no] + 1
     
        on receiving ("vote", cmd, seq-no') from a backup replica r:
           if seq-no == seq-no':
@@ -92,11 +94,10 @@ Here's how we deal with the second problem. When the faulty primary hears from a
                 seq-no = seq-no + 1
       
        // as a backup
-       on receiving ("propose", cmd, seq-no') from replica[view] or ("propose-forward", cmd, seq-no') from some replica:
+       on receiving ("propose", cmd, seq-no') from replica[view] from the primary replica[view]:
           if seq-no' == seq-no: // if the replica is at the same sequence number and has not already voted for this command
              send ("vote", cmd, seq-no) to replica[view]
-             send ("propose-forward", cmd, seq-no) to all replicas // forward the command to all replicas
-    
+             
        on receiving ("notify", cmd, seq-no') or ("notify-forward", cmd, seq-no') from any replica:
           if seq-no' == seq-no:
              log.append(cmd)
@@ -108,18 +109,21 @@ Here's how we deal with the second problem. When the faulty primary hears from a
        if no client message for some predetermined time t (and view == j):
           send ("heartbeat", j) to all replicas (in order)
 
-In the steady state protocol, the primary receives commands from the client. If the primary is not currently processing a command, it sends the command to every replica through ("propose", cmd, seq-no) message. The sequence number seq-no keeps track of the ordering of messages. It also marks itself as processing the current command.
+In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("propose", cmd, seq-no) message. The sequence number seq-no keeps track of the ordering of messages. It also marks itself as processing the current command.
 
-A backup replica, on receiving a ("propose", cmd, seq-no) from the current primary, or a forwarded proposal, if it has not already voted for this seq-no, sends a ("vote", cmd, seq-no) message back to the primary. To keep all backup replicas in sync, it forwards the leader proposal to all other replicas. 
+A backup replica, on receiving a ("propose", cmd, seq-no) from the current primary,  if it has not already voted for this seq-no, sends a ("vote", cmd, seq-no) message back to the primary. 
 
 If the primary receives votes from a majority of replicas, the primary can add the command to the log, execute it, and send an output to the client. It also notifies the backup replicas about the commit, who can then add the command to their logs and execute it. To keep all backup replicas in sync, backups also forward the notify message. 
 
 The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
 
-The key observation here is the following: if a non0fualty replica commits and the new primary starts the new view after $\Delta$ time, then by that time all replicas will have received the forwarded notify message.
+The key observation here is the following: if a non-faulty replica decides and adds a command to the log, and the new primary starts the new view after $\Delta$ time, then by that time all replicas will have received the forwarded notify message and will also add this command to their log.
 
-**View-change protocol:** The observation above simple that to maintain safety, a replica should wait for $2\Delta$ before starting a new view.
-We now describe the view-change protocol:
+
+
+ITTAI:HERE
+
+**View-change protocol:** The observation above implies that to maintain safety, a replica should wait for $2\Delta$ before starting a new view (we will explain why 2 below). Let's describe the view-change protocol:
 
        // blame the current leader
        on missing "heartbeat" or a proposal from replica[view] in the last t + $\Delta$ time units:
