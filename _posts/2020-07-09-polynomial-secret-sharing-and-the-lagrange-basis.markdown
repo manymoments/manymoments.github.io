@@ -10,7 +10,7 @@ Intuitively, this scheme allows a $Dealer$ to *commit* to a *secret* $s$ by spli
 
 
 In the basic scheme, we will assume a [passive adversary](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) that controls [all parties but one](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/) (any $f<n$ parties).
-A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.org/2011/136.pdf) or [Semi-Honest](http://www.wisdom.weizmann.ac.il/~oded/foc-vol2.html)  ) does not deviate from the protocol but can learn all possible information from its view (the messages received by parties it controls). In later posts, we will extend this scheme to [crash and then malicious](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) adversaries.
+A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.org/2011/136.pdf) or [Semi-Honest](http://www.wisdom.weizmann.ac.il/~oded/foc-vol2.html)) does not deviate from the protocol but can learn all possible information from its view (the messages received by parties it controls). In later posts, we will extend this scheme to [crash and then malicious](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) adversaries.
 
 
 
@@ -77,7 +77,7 @@ We can then *extend* this function $\mathcal{L}_z(x)$ to a function $L_z : \math
 $$L_z(X)= \frac{\prod_{j \in Z \setminus \{z\}} (X-j)}{\prod_{j \in Z \setminus \{z\}} (z-j)}$$
 
 
-Take a moment to verify the equality on all $x\in Z$. This seemigly simple idea of [extedning](http://people.cs.georgetown.edu/jthaler/IPsandextensions.pdf) a function from $X \mapsto \{0,1\}$ to a low degree polynomial is a very powerful tool! It and its multi-variable generalization are the basis of many results in computer science. 
+Take a moment to verify the equality on all $x\in Z$. This seemingly simple idea of [extedning](http://people.cs.georgetown.edu/jthaler/IPsandextensions.pdf) a function from $X \mapsto \{0,1\}$ to a low degree polynomial is a very powerful tool! It and its multi-variable generalization are the basis of [many](https://pdfs.semanticscholar.org/a87d/3febd2e02c41a9b0a4e423089b6677eaef3b.pdf) [results](https://eccc.weizmann.ac.il/report/2017/108/download/) in computer science. 
 
 We can now claim that, for *any* degree $f$ polynomial $p$, we have:
 $$p(X)=\sum_{z \in Z} L_z(X) p(z)$$
