@@ -15,19 +15,19 @@ A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.o
 
 
 
-A *secret sharing scheme* is composed of two protocols: *Share* and *Recover*.
+A *secret sharing scheme* is composed of two protocols: *Share* and *Reconstruct*.
 These protocols are distributed: they are run by the $n$ parties, jointly.
 The Dealer has a *secret* $s$, which is given as _input_ to the Share protocol.
-Intuitively, if the Share protocol "succeeds", then the Recover protocol will *outputWe * that same secret $s$.
+Intuitively, if the Share protocol "succeeds", then the Reconstruct protocol will *outputWe * that same secret $s$.
 
 
 These properties of a secret sharing scheme can be described more formally as:
 
-**Binding**: Once the first non-faulty completes the Share protocol there exists some value $r$ such that $r$ is the output value of all non-faulty parties that complete the Recover protocol.
+**Binding**: Once the first non-faulty completes the Share protocol there exists some value $r$ such that $r$ is the output value of all non-faulty parties that complete the Reconstruct protocol.
 
-**Validity**: If the Dealer is non-faulty then the output of the Recover protocol is the Dealer's input value $s$.
+**Validity**: If the Dealer is non-faulty then the output of the Reconstruct protocol is the Dealer's input value $s$.
 
-**Hiding**: If the dealer is non-faulty, and no honest party has begun the Recover protocol, then the adversary can gain no information about $s$. 
+**Hiding**: If the dealer is non-faulty, and no honest party has begun the Reconstruct protocol, then the adversary can gain no information about $s$. 
 
 
 The first two properties seem well defined, but what about the hiding property? What does it mean that the adversary "gains no information about $s$"? We will be more formal about this later but informally this means that anything the adversary can output by interacting with this protocol, the adversary could have output the same without any interaction at all.
@@ -44,7 +44,7 @@ The Dealer then sends $p(i)$ to each party $i$.
 We refer to $p(i)$ as party $i$'s _share_ of the secret $s$.
 Note that $p(0) = s$, which is the Dealer's secret.
 
-**Recover protocol**: 
+**Reconstruct protocol**: 
 Each party $i$ sends its share $p(i)$ to all other parties. 
 Each party receives all the shares $p(1),\dots,p(n)$ and outputs the Dealer's original secret $s$ as follows:
 
@@ -123,7 +123,7 @@ We can now use our new insights to prove the secret sharing properties.
 
 **Proof for Binding and Validity**:
 
-Since the adversary is passive, all we need to do is show that indeed all parties will output $s$. Recall that the recovery protocol outputs
+Since the adversary is passive, all we need to do is show that indeed all parties will output $s$. Recall that the Reconstruct protocol outputs:
 
 $$p(0)=\sum_{1\leq i \leq f+1} \lambda_i p_i$$ where
 
