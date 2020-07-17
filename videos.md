@@ -8,6 +8,13 @@ layout: page
 
 **[Theory and Practice of Blockchains 2020](https://eventum.upf.edu/51585/section/25185/theory-and-practice-of-blockchains-online-weekly-seminar-series-.html)**
 
+
+*Ittay Eyal: Manipulating Incentives for Fun and Profit*
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/M2BEgLGJsyU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
 *Avishay Yanai: Blinder – MPC Based Scalable and Robust Anonymous Committed Broadcast*
 
 
