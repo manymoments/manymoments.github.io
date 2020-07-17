@@ -10,7 +10,7 @@ Intuitively, this scheme allows a $Dealer$ to *commit* to a *secret* $s$ by spli
 
 
 In the basic scheme, we will assume a [passive adversary](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) that controls [all parties but one](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/) (any $f<n$ parties).
-A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.org/2011/136.pdf) or [Semi-Honest](http://www.wisdom.weizmann.ac.il/~oded/foc-vol2.html)) does not deviate from the protocol but can learn all possible information from its view (the messages received by parties it controls). In later posts, we will extend this scheme to [crash and then malicious](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) adversaries.
+A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.org/2011/136.pdf) or [Semi-Honest](http://www.wisdom.weizmann.ac.il/~oded/foc-vol2.html)) does not deviate from the protocol but can learn all possible information from its view (the messages received by parties it controls). In later posts, we will extend the secret sharing scheme to [crash and then malicious](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) adversaries.
 
 
 
