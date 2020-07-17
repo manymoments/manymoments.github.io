@@ -148,7 +148,7 @@ We have shown above that $\phi$ is a bijective mapping from $p_0,\dots,p_{f+1}$ 
 Consider the set $Z=\{0\} \cup B$ where $B=\{b_1,\dots,b_f\}$ is the set of parties controlled by the passive adversary.
 (Here, we use the assumption that party identities start from 1.)
 
-Since $\phi$ is a bijection, it maps the uniform distribution $\mathcal{D}$ on $p_0,p_1,\dots,p_{f+1}$ to the uniform distribution on $p(0),p(b_1),\dots, p(b_{f})$. In more detail, for *any* $z_0,\dots,z_{f} \in \mathbb{F}_p^{f+1}$ the uniform distrubtion implies $\Pr_{ \mathcal{D} } [\bigwedge p_i=z_i] = \| \mathbb{F}_p \|^{-(f+1)}$. From the bijection of $\phi$ we get that for *any* $y_0,\dots, y_{f} \in \mathbb{F}_p^f$ we have that there must exists unique $z_0,\dots,z_{f} \in \mathbb{F}_p^f$ such that
+Since $\phi$ is a bijection, it maps the uniform distribution $\mathcal{D}$ on $p_0,p_1,\dots,p_{f+1}$ to the uniform distribution on $p(0),p(b_1),\dots, p(b_{f})$. In more detail, for *any* $z_0,\dots,z_{f} \in \mathbb{F}_{p}^{f+1}$ the uniform distrubtion implies $\Pr_{ \mathcal{D} } [\bigwedge p_i=z_i] = \| \mathbb{F}_{p} \|^{-(f+1)}$. From the bijection of $\phi$ we get that for *any* $y_0,\dots, y_{f} \in \mathbb{F}_{p}^{f+1}$ we have that there must exists unique $z_0,\dots,z_{f} \in \mathbb{F}_{p}^{f+1}$ such that
 $\Pr_{\mathcal{D}}[\bigwedge p(i)=y_i] = \Pr_{\mathcal{D}}[\bigwedge \phi^{-1}(p(0),\dots,p(f))_i=z_i] = \|\mathbb{F}_p\|^{-(f+1)}$.
 
 
