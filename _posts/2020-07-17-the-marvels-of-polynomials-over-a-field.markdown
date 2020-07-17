@@ -84,7 +84,7 @@ A significantly more general result about polynomials over a field views them as
 **Acknowledgment.** Thanks to [Alin](https://research.vmware.com/researchers/alin-tomescu) for helpful feedback on this post.
 
 
-Please leave comments on [Twitter](...).
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1283904819019886592).
 
 
 
