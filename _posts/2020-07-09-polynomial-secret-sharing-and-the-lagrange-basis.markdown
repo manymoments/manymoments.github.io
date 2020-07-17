@@ -103,7 +103,13 @@ for $Z=\{ z_1,\dots,z_{f+1}\}$.
 **Proof.** To show that $\phi : \mathbb{F}_p^{f+1} \mapsto \mathbb{F}_p^{f+1}$ is [bijective](https://en.wikipedia.org/wiki/Bijection), it is enough to show that $\phi$'s domain and [image](https://en.wikipedia.org/wiki/Image_(mathematics)) are of the same size and that $\phi$ is [injective](https://en.wikipedia.org/wiki/Injective_function).
 
 
-Since $\phi$ takes as input degree-at-most-$f$ polynomials with coefficients over $\mathbb{F}\_p$, there are exactly $\|\mathbb{F\_p}\|^{f+1} = p^{f+1}$ such polynomials.
+Since $\phi$ takes as input degree-at-most-$f$ polynomials with coefficients over $\mathbb{F}\_
+
+
+
+
+
+p$, there are exactly $\|\mathbb{F\_p}\|^{f+1} = p^{f+1}$ such polynomials.
 In other words, $\phi$'s domain is $\mathbb{F}\_p^{f+1}$.
 Also, since its image is the set of all possible $f+1$ evaluations $(p(z_1),\dots,p(z_{f+1}))$, with each evaluation being an element of $\mathbb{F}\_p$, it follows that $\phi$'s image is exactly $\mathbb{F}\_p^{f+1}$.
 Thus, $\phi$'s domain is of the same size as its image.
@@ -151,8 +157,8 @@ Consider the set $Z=\{0\} \cup B$ where $B=\{b_1,\dots,b_f\}$ is the set of part
 **Claim:** $\phi$ maps the uniform distribution $\mathcal{D}$ on $p_0,p_1,\dots,p_{f+1}$ to the uniform distribution on $p(0),p(b_1),\dots, p(b_{f})$.
 
 
-**Proof:** For *any* $z_0,\dots,z_{f} \in \mathbb{F}_{p}^{f+1}$ the uniform distrubtion implies $\Pr_{ \mathcal{D} } [\bigwedge p_i=z_i] = \| \mathbb{F}_{p} \|^{-(f+1)}$. From the bijection of $\phi$ we get that for *any* $y_0,\dots, y_{f} \in \mathbb{F}_{p}^{f+1}$ we have that there must exists unique $z_0,\dots,z_{f} \in \mathbb{F}_{p}^{f+1}$ such that
-$\Pr_{\mathcal{D}}[\bigwedge p(i)=y_i] = \Pr_{\mathcal{D}}[\bigwedge \phi^{-1}(p(0),\dots,p(f))_i=z_i] = \|\mathbb{F}_p\|^{-(f+1)}$.
+**Proof:** Fix *any* $z_0,\dots,z_{f} \in \mathbb{F}\_{p}^{f+1}$. The uniform distrubtion implies $\Pr_{ \mathcal{D} } [\bigwedge p_i=z_i] = \| \mathbb{F}\_{p} \|^{-(f+1)}$. From the bijection of $\phi$ we get that for *any* $y_0,\dots, y_{f} \in \mathbb{F}\_{p}^{f+1}$ we have that there must exists unique $z_0,\dots,z_{f} \in \mathbb{F}\_{p}^{f+1}$ such that
+$\Pr_{\mathcal{D}}[\bigwedge p(i)=y_i] = \Pr_{\mathcal{D}}[\bigwedge \phi^{-1}(p(0),\dots,p(f))_i=z_i] = \|\mathbb{F}\_p\|^{-(f+1)}$.
 
 
 Observe that, since $0 \in Z$, the first input of $\phi$ is $p_0$ and the first output of $\phi$ is $p(0)=p_0$, so they match.
