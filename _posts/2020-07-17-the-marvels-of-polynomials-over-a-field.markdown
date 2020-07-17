@@ -28,7 +28,7 @@ We say that $a \in K$ is a *zero* of $p \in K[X]$ if $p(a)=0$ and say that $p$ h
 For example, consider the polynomial $p=2X-4$. It is clearly a polynomial of degree one and we all know that, over the rational field $K=\mathbb{Q}$, it has just one zero (at $2$).  Now, consider that same polynomial over the finite field $K=\mathbb{Z}_7$, which are just the integers modulo 7: i.e., $\\{0,1,2,\dots,6\\}$.
 Then, a quick check shows that $2$ is still the only zero of $p$. In other words, the equation $2X=4 \pmod 7$ has exactly one solution: $2$.
 
-Note that if instead of a field $K=\mathbb{Z}\_7$ we chose a _ring_ $K=\mathbb{Z}_{12}$, then the equation $2X=4 \pmod {12}$ would have 2 (!) solutions: $2$ (because $2\times 2 - 4 = 0$ and $8$ (because $2\times 8 - 4 = 16 - 4 = 12$, which is equal to 0 modulo 12). In other words, $p$ has more zeros (two) than its degree (one)!
+Note that if instead of a field $K=\mathbb{Z}\_7$ we chose a _ring_ $K=\mathbb{Z}_{12}$, then the equation $2X=4 \pmod {12}$ would have 2 (!) solutions: $2$ (because $2\times 2 - 4 = 0$) and $8$ (because $2\times 8 - 4 = 16 - 4 = 12$, which is equal to 0 modulo 12). In other words, $p$ has more zeros (two) than its degree (one)!
 
 **Proof of the Theorem:**
 Not surprisingly, the proof will be via induction on $d$. 
