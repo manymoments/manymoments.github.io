@@ -161,12 +161,11 @@ Consider the set $Z=\{0\} \cup B$ where $B=\{b_1,\dots,b_f\}$ is the set of part
 $\Pr_{\mathcal{D}}[\bigwedge p(i)=y_i] = \Pr_{\mathcal{D}}[\bigwedge \phi^{-1}(p(0),\dots,p(f))_i=z_i] = 1/ \|\mathbb{F}\_p\|^{f+1}$.
 
 
-Observe that, since $0 \in Z$, the first input of $\phi$ is $p_0$ and the first output of $\phi$ is $p(0)=p_0$, so they match.
+Observe that, since $0 \in Z$, the first output of $\phi$ is $p(0)=p_0$, so the first input of $\phi$ ($p_0$) matches the first output of $\phi$ ($p(0)$).
 
+From the above observation, we immediately get that for any *fixed* $s=p_0$, $\phi$ must map the uniform distribution on $p_1,\dots,p_{f+1}$ to the uniform distribution on $p(b_1),\dots,p(b_{f})$.
 
-From the above observation, we immediately get that for any *fixed* $p_0$, $\phi$ must map the uniform distribution on $p_1,\dots,p_{f+1}$ to the uniform distribution on $p(b_1),\dots,p(b_{f})$.
-
-Since, for any input $s$, the Dealer uses the uniform distribution to pick the coefficients $p_1,\dots,p_{f+1}$, then for any input $s$ the *view* of the adversary $p(b_1),\dots,p(b_f)$ is also uniformly distributed!
+Since, for any input $s=p_0$, the Dealer uses the uniform distribution to pick the coefficients $p_1,\dots,p_{f+1}$, then for any input $s$ the *view* of the adversary $p(b_1),\dots,p(b_f)$ is also uniformly distributed!
 
 In what sense does this mean that the adversary learns nothing about the secret $s=p(0)=p_0$? In the sense that, no matter what the secret is, the *distribution of the view* of the adversary is the same and is independent of the actual secret.
 
