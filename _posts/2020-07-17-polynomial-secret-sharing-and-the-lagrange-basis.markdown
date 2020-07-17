@@ -191,4 +191,4 @@ In other words, anything the adversary could learn by observing the distribution
 
 
 
-Please leave comments on [Twitter](...).
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1284267077587677184?s=20).
