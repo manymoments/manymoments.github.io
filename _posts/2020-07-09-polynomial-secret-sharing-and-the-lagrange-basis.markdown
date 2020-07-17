@@ -125,11 +125,13 @@ We can now use our new insights to prove the secret sharing properties.
 
 Since the adversary is passive, all we need to do is show that indeed all parties will output $s$. Recall that the Reconstruct protocol outputs:
 
-$$p(0)=\sum_{1\leq i \leq f+1} \lambda_i p_i$$ where
+$$p(0)=\sum_{1\leq i \leq f+1} \lambda_i p_i$$
 
-$$\lambda_i = \frac{\prod_{z \in \{1,
-\dots,f+1\} \setminus \{i\}} z}{\prod_{z \in \{1,
-\dots,f+1\} \setminus \{i\}} (z-i)}$$
+where
+
+$$\lambda_i = \frac{\prod_{j \in \{1,
+\dots,f+1\} \setminus \{i\}} j}{\prod_{j \in \{1,
+\dots,f+1\} \setminus \{i\}} (j-i)}$$
 
 
 The proof follows directly from the fact that  $p(X)=\sum_{1\leq i \leq f+1} L_i(X) p(i)$ and so $p(0)= \sum_{1\leq i \leq f+1} L_i(0) p(i) = \sum_{1\leq i \leq f+1} \lambda_i p_i$ = p(0)=s.
