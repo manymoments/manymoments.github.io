@@ -77,7 +77,7 @@ We can then *extend* this function $\mathcal{L}_z(x)$ to a function $L_z : \math
 $$L_z(X)= \frac{\prod_{j \in Z \setminus \{z\}} (X-j)}{\prod_{j \in Z \setminus \{z\}} (z-j)}$$
 
 
-Take a moment to verify the equality on all $x\in Z$. This seemingly simple idea of [extedning](http://people.cs.georgetown.edu/jthaler/IPsandextensions.pdf) a function from $X \mapsto \{0,1\}$ to a low degree polynomial is a very powerful tool! It and its multi-variable generalization are the basis of [many](https://pdfs.semanticscholar.org/a87d/3febd2e02c41a9b0a4e423089b6677eaef3b.pdf) [results](https://eccc.weizmann.ac.il/report/2017/108/download/) in computer science. 
+Take a moment to verify the equality on all $x\in Z$. This seemingly simple idea of [extedning](http://people.cs.georgetown.edu/jthaler/IPsandextensions.pdf) a function from $Z \mapsto \{0,1\}$ to a low degree polynomial is a very powerful tool! It and its multi-variable generalization are the basis of [many](https://pdfs.semanticscholar.org/a87d/3febd2e02c41a9b0a4e423089b6677eaef3b.pdf) [results](https://eccc.weizmann.ac.il/report/2017/108/download/) in computer science. 
 
 We can now claim that, for *any* degree $f$ polynomial $p$, we have:
 $$p(X)=\sum_{z \in Z} L_z(X) p(z)$$
