@@ -10,7 +10,7 @@ author: Kartik Nayak, Ittai Abraham
 
 We continue our series of posts on [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) (SMR). In this post, we move from consensus under [crash failures](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) to consensus under [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). We still keep the [synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) assumption.
 
-Let's begin with a quick overview of what we have learned from previous posts:
+Let's begin with a quick overview of what we covered in previous posts:
 
 1. [Upper bound](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/): We can tolerate up to $n-1$ crash failures.
 
@@ -28,7 +28,6 @@ For completeness, we repeat the primary-backup pseudocode below. Assume $n$ repl
     
     state = init
     log = []
-    lock = null
     view = 0
     while true:
     
@@ -43,7 +42,6 @@ For completeness, we repeat the primary-backup pseudocode below. Assume $n$ repl
        on receiving cmd from replica[view]:
           log.append(cmd)
           state, output = apply(cmd, state)
-          lock = cmd
     
        // heartbeat from primary
        if no client message for some predetermined time t (and view == j):
@@ -76,15 +74,12 @@ Here's how we deal with the second problem. When the faulty primary hears from a
     log = []     // the log of committed commands
     view = 0     // view number that indicates the current Primary
     acks = []
-    lock = none
     seq-no = 0
     
     while true:
        // as a primary
        on receiving cmd from a client library (and view == j):
-          if lock == none: // if not currently processing a cmd 
-             send ("propose", cmd, seq-no) to all replicas
-             lock = cmd
+          send ("propose", cmd, seq-no) to all replicas
     
        on receiving ("vote", cmd, seq-no') from a backup replica r:
           if seq-no == seq-no':
@@ -94,22 +89,19 @@ Here's how we deal with the second problem. When the faulty primary hears from a
                 state, output = apply(cmd, state)
                 send output to the client library
                 send ("notify", cmd, seq-no) to all replicas
-                lock = none
                 seq-no = seq-no + 1
       
        // as a backup
        on receiving ("propose", cmd, seq-no') from replica[view] or ("propose-forward", cmd, seq-no') from some replica:
-          if seq-no' == seq-no and lock == none: // if the replica is at the same sequence number and has not already voted for this command
+          if seq-no' == seq-no: // if the replica is at the same sequence number and has not already voted for this command
              send ("vote", cmd, seq-no) to replica[view]
              send ("propose-forward", cmd, seq-no) to all replicas // forward the command to all replicas
-             lock = cmd
     
        on receiving ("notify", cmd, seq-no') or ("notify-forward", cmd, seq-no') from any replica:
           if seq-no' == seq-no:
              log.append(cmd)
              state, output = apply(cmd, state)
              send ("notify-forward", cmd, seq-no) to all replicas
-             lock = none
              seq-no = seq-no + 1
     
        // Heartbeat from primary
@@ -118,17 +110,16 @@ Here's how we deal with the second problem. When the faulty primary hears from a
 
 In the steady state protocol, the primary receives commands from the client. If the primary is not currently processing a command, it sends the command to every replica through ("propose", cmd, seq-no) message. The sequence number seq-no keeps track of the ordering of messages. It also marks itself as processing the current command.
 
-A backup replica, on receiving a ("propose", cmd, seq-no) from the current primary, or a forwarded proposal, if it has not already voted for this seq-no, sends a ("vote", cmd, seq-no) message back to the primary. To keep all backup replicas in sync, it forwards the leader proposal to all other replicas. It also locks on this command -- the lock will be used in case a view-change happens before this command is executed.
+A backup replica, on receiving a ("propose", cmd, seq-no) from the current primary, or a forwarded proposal, if it has not already voted for this seq-no, sends a ("vote", cmd, seq-no) message back to the primary. To keep all backup replicas in sync, it forwards the leader proposal to all other replicas. 
 
-If the primary receives votes from a majority of replicas, the primary can add the command to the log, execute it, and send an output to the client. It also notifies the backup replicas about the commit, who can then add the command to their logs and execute it. To keep all backup replicas in sync, backups also forward the notify message. The backups then relinquish their locks and update their sequence numbers.
+If the primary receives votes from a majority of replicas, the primary can add the command to the log, execute it, and send an output to the client. It also notifies the backup replicas about the commit, who can then add the command to their logs and execute it. To keep all backup replicas in sync, backups also forward the notify message. 
 
 The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
 
-The key observation here is the following: *the primary commits only after ensuring that a majority of replicas are locked on the command. At least one of these replicas is non-faulty, and hence, if a view-change happens, the next primary is informed about the committed command.* This observation is key to obtaining safety.
+The key observation here is the following: if a non0fualty replica commits and the new primary starts the new view after $\Delta$ time, then by that time all replicas will have received the forwarded notify message.
 
-**View-change protocol:** What does a new leader need to learn in case of a view-change? The next seq-no to be processed and whether there is an outstanding command (stored in the lock variable).
-
-Observe that in the steady state, commands are processed one at a time. Thus, there is at most one outstanding command. Moreover, since we keep all non-faulty replicas in sync (by forwarding proposals and commit notifications), if the new leader is non-faulty, it already knows the current seq-no and whether there is an outstanding command. However, the new leader may not know whether it is faulty,  and hence, needs to execute the view-change process to learn the next seq-no and the lock. We now describe the view-change protocol:
+**View-change protocol:** The observation above simple that to maintain safety, a replica should wait for $2\Delta$ before starting a new view.
+We now describe the view-change protocol:
 
        // blame the current leader
        on missing "heartbeat" or a proposal from replica[view] in the last t + $\Delta$ time units:
@@ -144,7 +135,7 @@ Observe that in the steady state, commands are processed one at a time. Thus, th
        on receiving ("view-change", view') from replica[view'+1] or ("view-change-forward", view') from any replica (and view' >= view):
           send ("view-change-forward", view') to all replicas
           stop participating in this view
-          wait for $2\Delta$ time units to hear about any locks or notifications   
+          wait for $2\Delta$ time units to hear about any notifications   
           send ("status", view', lock, seq-no) to replica[view'+1]
           set view = view' + 1, transition to steady state
        
