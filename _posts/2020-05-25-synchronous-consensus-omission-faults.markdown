@@ -16,13 +16,13 @@ Let's begin with a quick overview of what we covered in previous posts:
 
 2. [Lower bound](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/): The best we can hope for is to tolerate less than $n/2$ omission failures.
 
-We first go over the upper bound for crash failures. Then see what goes wrong when the failures are omission and how we can fix the protocol.
+We will recall the upper bound for crash failures. Then see what goes wrong when the failures are omission and how we can fix the protocol.
 
 ### Primary-Backup for $n$ Replicas Under Crash Faults
 
-Recall that in the crash model, the primary behaves exactly like an ideal state machine until it crashes. If it does crash, the backup takes over the execution to continue serving the clients. To provide the clients with an interface of a single non-faulty server, the primary sends client commands to all backups before updating the state machine and responding to the client. The backups passively replicate all the commands sent by the primary. In case the primary fails, which is detected by the absence of a "heartbeat", the next designated backup replica $j$ invokes a ("view change", $j$) to all replicas along with the last command sent by the primary in view $j-1$. It then becomes the primary.
+In the crash model, the primary behaves as an ideal state machine until it crashes. If it does crash, the backup takes over the execution to continue serving the clients. To provide the clients with an interface of a single non-faulty server, the primary sends client commands to all backups before updating the state machine and responding to the client. The backups passively replicate all the commands sent by the primary. In case the primary fails, which is detected by the absence of a "heartbeat", the next designated backup replica $j$ invokes a ("view change", $j$) to all replicas along with the last command sent by the primary in view $j-1$. It then becomes the primary.
 
-For completeness, we repeat the primary-backup pseudocode below. Assume $n$ replicas with identifiers ${0,1,2,\\dots,n-1}$.
+For completeness, we repeat the primary-backup pseudocode below for $n$ replicas with identifiers ${0,1,2,\\dots,n-1}$.
 
     // Replica j
     
@@ -54,19 +54,20 @@ For completeness, we repeat the primary-backup pseudocode below. Assume $n$ repl
              send ("view change", j) to all client libraries
              send resend to all replicas (in order)
 
-Can we use the above protocol under omission failures? No! Here is where the protocol fails:
+Can we use the above protocol under omission failures? ... No! Here is where the protocol fails:
 
-1. In the above protocol, the primary sends the command `cmd` to all backup replicas and then immediately executes the state machine (executing `apply(cmd, state)`) and responds to the client library. Under omission failures, it may so happen that the primary is faulty and no replica has received `cmd`. If all the messages of the primary are blocked subsequently, then there will not be any backup replicating the command sent by it.
+1. In the above protocol, the primary sends the command `cmd` to all backup replicas and then immediately executes the state machine (executing `apply(cmd, state)`) and responds to the client library. Under omission failures, a faulty primary may omit all messages to the replicas, then send a message to the client, then crash. So just one client receives 'cmd', but is no backup replicating the command!
 
 2. When a backup needs to invoke a view-change to become the new primary, it may not know the last command that was executed. Simply maintaining a "lock" variable consisting of the last command does not suffice since the last few commands may not have been received by a backup replica.
 
-To deal with the first problem, how can a primary know if its message was sent to a sufficient number of replicas? By waiting to hear an acknowledgment! But even if the primary is non-faulty and sends a message to all replicas, how many acknowledgments can it wait for without losing liveness? Clearly, it cannot wait for more than $n-f$! Hence, in our protocol, the primary waits for a majority of acknowledgments.
+To deal with the first problem, how can a primary know if its message was sent to a sufficient number of replicas? ... By waiting to hear an acknowledgment! But even if the primary is non-faulty and sends a message to all replicas, how many acknowledgments can it wait for without losing liveness? ... Clearly, it cannot wait for more than $n-f$! Hence, in our protocol, the primary waits for a majority of acknowledgments before it commits a command.
 
-Here's how we deal with the second problem. When the faulty primary hears from a majority of replicas, it can so happen that for a given command cmd1, its request is only sent to one non-faulty replica, say replica $r_1$, and all other faulty replicas. For the next command cmd2, its request arrives at a different non-faulty replica, say replica $r_2$, and all other faulty replicas. Since replica $r_2$ does not know of the existence of cmd1, to ensure that all non-faulty replicas have an identical log, we need to be careful about how replica $r_2$ responds to the primary. Observe that this concern arises only when we want to achieve consensus on multiple commands, and not for consensus on a single command. Our solution addresses this concern by keeping all non-faulty replicas in sync: if a non-faulty replica receives a message from the leader, it forwards this message to all other replicas. This ensures that, even if the primary is faulty, if its message reaches some non-faulty replica, then all non-faulty replicas know about it. Thus, we still have the invariant that there is at most one outstanding command stored in the "lock" variable.
+Here's how we deal with the second problem. We want to guarantee that if some non-faulty replica decides on a command, then all non-faulty replicas will decide on the same command within $\Delta$ time. In the synchronous model this is simple: just notify your decision via broadcast.
+
 
 ## Primary-Backup for $n$ Replicas Under Omission Faults
 
-**Steady-state protocol.** We now explain the steady-state protocol tolerating omission failures under a fixed primary; we will later discuss the view-change process.
+**Steady-state protocol.** We now detail the steady-state protocol tolerating omission failures under a fixed primary; we later discuss the view-change protocol.
 
     // Replica j
     
@@ -113,17 +114,21 @@ In the steady state protocol, the primary receives commands from the client. It 
 
 A backup replica, on receiving a ("propose", cmd, seq-no) from the current primary,  if it has not already voted for this seq-no, sends a ("vote", cmd, seq-no) message back to the primary. 
 
-If the primary receives votes from a majority of replicas, the primary can add the command to the log, execute it, and send an output to the client. It also notifies the backup replicas about the commit, who can then add the command to their logs and execute it. To keep all backup replicas in sync, backups also forward the notify message. 
+If the primary receives *votes* from a majority of replicas, the primary can add the command to the log, execute it, and send an output to the client. It also *notifies* the backup replicas about the commit, who can then add the command to their logs and execute it. To keep all backup replicas in sync, backups also *forward* the notify message. 
 
 The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
 
-The key observation here is the following: if a non-faulty replica decides and adds a command to the log, and the new primary starts the new view after $\Delta$ time, then by that time all replicas will have received the forwarded notify message and will also add this command to their log.
 
 
 
-ITTAI:HERE
+**View-change protocol:**
 
-**View-change protocol:** The observation above implies that to maintain safety, a replica should wait for $2\Delta$ before starting a new view (we will explain why 2 below). Let's describe the view-change protocol:
+The key challenge is the following: what if a non-faulty replica decides and adds a command to its log, and immediately after that the new primary sends a different command for the same seq-no. The notify-forward message will arrive too late!
+
+The solution is to make sure that the new primary starts the new view at least $\Delta$ time after any replica decides and adds a command to its log. By that time all replicas will have received the forwarded notify message and will also add this command to their log.
+
+
+There is a small twist: the observation above implies that to maintain safety, a replica must wait for $2\Delta$ before starting a new view (we will explain why 2 below). Let's describe the view-change protocol:
 
        // blame the current leader
        on missing "heartbeat" or a proposal from replica[view] in the last t + $\Delta$ time units:
@@ -140,10 +145,10 @@ ITTAI:HERE
           send ("view-change-forward", view') to all replicas
           stop participating in this view
           wait for $2\Delta$ time units to hear about any notifications   
-          send ("status", view', lock, seq-no) to replica[view'+1]
+          If you hear a notification then send it to replica[view'+1]
           set view = view' + 1, transition to steady state
        
-       // new primary: proposes the highest-view-lock
+       // new primary: proposes the notify
        on receiving ("status", view', lock, seq-no) from f+1 distinct replicas (and view' == j):
           highest-lock, seq-no = pick the (lock, seq-no) pair with the highest seq-no
           if highest-lock != none:
