@@ -39,22 +39,23 @@ Obviously, since $F$ is deterministic the result $z$ is the correct intersection
 
 ### What if Steve cheats?
 
-Steve can send a wrong value $z$ different from the intersection cardinality.
+Steve can send a value $z$ different from the intersection cardinality.
 To prevent that, Steve can prove to Alice and Bob that $z=|A\cap B|$. The proof is broken to two parts:
-1. Steve proves that $z \leq |A cup B|$. Namely, that $z$ is a lower bound on the union of $A$ and $B$. This is equivalent to that $z$ being an upper bound on the intersection of $A$ and $B$, i.e. $z \geq |A \cap B|$.
-2. Steve proves that $z \leq |A cap B|$.
+1. Steve proves that $z \leq |A cup B|$. Namely, that $z$ is a _lower bound on the union_ of $A$ and $B$. This is equivalent to $z$ being an _upper bound on the intersection_ of $A$ and $B$, i.e. $z \geq |A \cap B|$.
+2. Steve proves that $z \leq |A \cap B|$.
 
 With the two proofs, Alice and Bob are convinced that $z \geq |A \cap B|$ and $z \leq |A \cap B|$ and therefore it follows that $z = |A \cap B|$.
 
+Before describing the proofs, we briefly cover the necessary details about two secret sharing schemes.
 
 ## Two secret sharing schemes
 Before jumping to the proofs let’s recall two types of cryptographic secret sharing schemes: Shamir Secret Sharing and Additive Secret Sharing:
 
 In [Shamir Secret Sharing](https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing) a dealer with a secret $s \in \mathbb{F}$, where $\mathbb{F}$ is a finite field, picks a polynomial $p(\cdot)$ of degree $d$. That is, the polynomial $p(x)=p_0 + p_1x+ p_2x^2+\ldots + p_dx^d$ such that $p_1,\ldots,p_d$ are chosen uniformly from the field and $p_0=s$. Then, the dealer can produce many shares of $s$ (up to $|\mathbb{F}|-1$ distinct shares) such that the point $(e, p(e))$ is a share, for some $e \in \mathbb{F}$.
 Obviously, if someone can get $d+1$ distinct shares, it can [interpolate](https://en.wikipedia.org/wiki/Lagrange_polynomial) the polynomial $p(\dot)$ and find the secret by evaluating $s=p(0)$.
-On the other hand, if someone obtains only $d$ or less shares then it learns nothing about the secret (that is, given the shares obtained, and given two possible secrets $s_1$ and $s_2$, the probability that $p(0)=s_1$ equals the probability that $p(0)=s_2$). The proof mechanism described below relies on this fact.
+On the other hand, if someone obtains only $d$ or less shares then it learns nothing about the secret (that is, given the shares obtained, for every pair $s_1$ and $s_2$, the probability that $p(0)=s_1$ equals the probability that $p(0)=s_2$). This type of secret sharing is sufficient for the first proof.
 
-In [Additive Secret Sharing](https://en.wikipedia.org/wiki/Secret_sharing#Trivial_secret_sharing) a dealer with a secret $s \in \mathbb{F}$ wants to break $s$ to $N$ pieces $s_1,\ldots, s_N$ such that $s=s_1+\ldots,s_N$ (where addition is taken over the field $\mathbb{F}$. The first $N-1$ pieces are chosen uniformly from the field and the last piece is computed by $s_N=s-(s_1+\ldots+s_{N-1})$. Each of the $N$ pieces is a share.
+In [Additive Secret Sharing](https://en.wikipedia.org/wiki/Secret_sharing#Trivial_secret_sharing) a dealer with a secret $s \in \mathbb{F}$ wants to break $s$ to $N$ pieces $s_1,\ldots, s_N$ such that $s=s_1+\ldots,s_N$ (where addition is taken over the field $\mathbb{F})$. The first $N-1$ pieces are chosen uniformly from the field and the last piece is computed by $s_N=s-(s_1+\ldots+s_{N-1})$. Each of the $N$ pieces is a share.
 Obviously, if someone has less than $N$ shares it learns nothing about $s$ because these are just random values from the field. But one who gets all $N$ shares can clearly obtain $s$ by summing up all of them. In the second proof below Alice and Bob will use Additive Secret Sharing with $N=2$ such that both Alice and Bob know the secret, they produce the two shares only for items that are in the intersection, so Steve would be able to get two shares of a secret exactly $|A \cap B|$ number of times.
 
 
