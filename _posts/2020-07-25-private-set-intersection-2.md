@@ -1,20 +1,19 @@
 ---
+layout: post
 title: 'Private Set Intersection #2'
-date: 2020-07-25 20:00:00 -07:00
+date: 'Sun Jul 26 2020 06:00:00 GMT+0300 (Israel Daylight Time)'
 published: false
 tags:
-- cryptography
-- private-set-intersection
-layout: post
+  - cryptography
+  - private-set-intersection
 author: Avishay Yanai
 ---
-
 In the [first post on Private Set Intersection](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/), I presented the problem of Private Set Intersection, its applications and a simple protocol, of [[KMRS14]](https://fc14.ifca.ai/papers/fc14_submission_52.pdf), that allows Alice and Bob learn the intersection of their sets with the aid of an untrusted third party Steve who is assumed to not collude with Alice or Bob.
 
 The main challenge in that protocol was to make sure that the 3rd party, Steve, does not cheat.
 In this post I will present another, more recent protocol, proposed by Phi Hung Le, Samuel Ranellucci and Dov Gordon [[LRG19]](https://eprint.iacr.org/2019/1338.pdf). They tackle the challenge from a different angle, which is somewhat more elegant, but could be quite expensive in some cases.
 
-In the following I will briefly re-iterate over the problem statement and the simple protocol that works when the parties are assumed to be semi-honest. For a detailed introduction to the field and more intuition please read the [first post](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/).
+In the following I will briefly re-iterate over the problem statement and the simple protocol that works when the parties are assumed to be semi-honest. Then I'll move to the description of detecting a cheater Steve according to [[LRG19]](https://eprint.iacr.org/2019/1338.pdf). For a detailed introduction to the field and more intuition please read the [first post](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/).
 
 ## The problem
 Recall the problem of Private Set Intersection:
