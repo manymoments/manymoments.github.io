@@ -1,14 +1,13 @@
 ---
+layout: post
 title: 'Private Set Intersection #2'
-date: 2020-07-25 10:00:00 -07:00
+date: 'Sat Jul 25 2020 20:00:00 GMT+0300 (Israel Daylight Time)'
 published: false
 tags:
-- cryptography
-- private-set-intersection
-layout: post
+  - cryptography
+  - private-set-intersection
 author: Avishay Yanai
 ---
-
 In the [first post on Private Set Intersection](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/), I presented the problem of Private Set Intersection, its applications and a simple protocol, of [[KMRS14]](https://fc14.ifca.ai/papers/fc14_submission_52.pdf), that allows Alice and Bob learn the intersection of their sets with the aid of an untrusted third party Steve who is assumed to not collude with Alice or Bob.
 
 The main challenge in that protocol was to make sure that the 3rd party, Steve, does not cheat.
@@ -107,7 +106,7 @@ Suppose that the above step went through, how can Alice and Bob be sure that the
 ## Limitation of the protocol
 
 Suppose that $n=m$.
-The two proofs described above would be very expensive computationally when the sizes of the sets, $n$, is very large (i.e. one million items). This is because in the proofs Alice and Bob have to evaluate a polynomial of degree $z$ or $z’=2n-z$ for $n$ times in order to produce the shares needed to be sent to Steve. This task would cost them $O(n log^2 n)$ using a DFT-based algorithm for batch evaluation [link Moenk and B].
+The two proofs described above would be very expensive computationally when the sizes of the sets, $n$, is very large (i.e. one million items). This is because in the proofs Alice and Bob have to evaluate a polynomial of degree $z$ or $z’=2n-z$ for $n$ times in order to produce the shares needed to be sent to Steve. This task would cost them $O(n log^2 n)$ using a [DFT-based algorithm for batch evaluation](https://github.com/AvishayYanay/FastPolynomial).
 
 We stress that the usual way to tackle such problems is to map the items into bins before running the protocol and then running the protocol for each bin separately and leverage the fact that each bin contains much less items. That is, Alice and Bob choose a hash function $H$,  then Alice maps an item $a\in A$ to bin number $H(a)$ and Bob maps an item $b\in B$ to bin number $H(b)$. If Alice and Bob has the same item then this item would be mapped to the same bin by both of them, meaning that we can run the above protocol per bin rather than over all the items.
 
