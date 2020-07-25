@@ -64,7 +64,7 @@ Obviously, if someone has less than $N$ shares it learns nothing about $s$ becau
 Instead of proving that $z$ is an upper bound on the intersection, Steve proves that $z’=n+m-z$ is a  lower bound on the union. 
 The following is happening after the simple protocol described above (i.e. Steve already notified Alice and Bob about the intersection $z$ he found).
 
-7. Alice and Bob choose a secret value, $s$, from the field and also choose a random polynomial $p(\cdot)$ of degree $z’$ by which they will produce Shamir shares. That is, $p(x)=s+p_1x+\ldots + p_{z’}x^{z’}$.
+7. Alice and Bob choose a secret value, $s$, from the field and also choose a random polynomial $p(\cdot)$ of degree $z’-1$ by which they will produce Shamir shares. That is, $p(x)=s+p_1x+\ldots + p_{z’-1}x^{z’-1}$.
 
 8. Recall that  $A’=(a’_1,\ldots,a’_n)$ is the set that Alice sent in step 4 above, Alice now sends to Steve $n$ shares: the point $(a’_i, p(a’_i))$ for every $a’_i \in A’$. Call this set of points $V$.
 
@@ -72,9 +72,10 @@ The following is happening after the simple protocol described above (i.e. Steve
 
 The goal of Steve in the proof is to convince Alice and Bob that there are at least $z’$ values in the union of $A$ and $B$, which is equivalent to having at least $z’$ distinct shares of the secret $s$ sent to Steve from Alice and Bob together. And if there are $z’$ distinct shares of $s$ it means that Steve can find $s$ (by polynomial interpolation), so Steve concludes the proof by sending $s$ to Alice and Bob. Formally:
 
-10. Steve uses the points in $V \cup W$ to interpolate a $z’$ degree polynomial $p(\cdot)$ and evaluate $s=p(0)$. Steve sends $s$ to Alice and Bob.
+10. Steve uses the points in $V \cup W$ to interpolate a $z’-1$ degree polynomial $p(\cdot)$ and evaluate $s=p(0)$. Steve sends $s$ to Alice and Bob.
 
-By now, Alice and Bob should be convinced that the size of the union $A \cup B$ is at least $z’$, meaning that the size of the intersection $A\cap B$ is at most $z=n+m-z’$. 
+By now, Alice and Bob should be convinced that the size of the union $A \cup B$ is at least $z’$, meaning that the size of the intersection $A\cap B$ is at most $z=n+m-z’$.
+Otherwise, if the size of the union was less than $z'$ then Steve could not obtain $z'$ distinct points on $p$.
 
 With only this proof, it is possible for Steve to cheat and claim that the intersection is larger, i.e. $z+c$ instead of $z$, or equivalently claim that the lower bound on the union is smaller, i.e. $z’-c$ instead of $z’$. Note that Steve has enough points for doing so (that is, more than $z’-c$ points for interpolating $p$, in fact, it has $z’$ points). In order to force Steve to not cheat, by which to set $c=0$, Alice and Bob wait to his second proof.
 
