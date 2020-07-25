@@ -1,11 +1,12 @@
 ---
-title: Private Set Intersection
-date: 2020-03-29 01:00:00 -07:00
-tags:
-- cryptography
-- private-set-intersection
 layout: post
+title: Private Set Intersection
+date: 'Sun Mar 29 2020 11:00:00 GMT+0300 (Israel Daylight Time)'
+tags:
+  - cryptography
+  - private-set-intersection
 author: Avishay Yanai
+published: true
 ---
 
 Private Set Intersection (PSI) is a problem within the broader field of [secure computation](https://en.wikipedia.org/wiki/Secure_multi-party_computation).
@@ -139,4 +140,4 @@ To solve the first case, Alice and Bob agree on a set of $s$ values $E=\{e_1,\ld
 ## Polynomial-based proof (based on [[LRG19]](https://eprint.iacr.org/2019/1338.pdf))
 Phi Hung Le, Samuel Ranellucci and Dov Gordon proposed a different approach for solving the above cheating potential by Steve without the need for redunduncy. In their solution, Steve sends back to Alice and Bob the intersection $\hat A\cap \hat B$ as described above. In addition, if $\|\hat A\cap \hat B\|=k$, then Steve also proves to Alice and Bob that (1) there are at least $2n-k$ values in the union $A\cup B$ (which implies there are at most $k$ values in the intersection) and that (2) there are at least $k$ values in the intersection. Since the intersection and union sizes complete each other to a sum of $2n$, these two proofs are sufficient for convincing Alice and Bob that Steve does not cheat.
 
-Let's save the description to the polynomial-based proofs to the next post :)
+For more details see [the next post](https://decentralizedthoughts.github.io/2020-07-26-private-set-intersection-2/) in the series.
