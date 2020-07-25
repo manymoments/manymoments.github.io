@@ -1,13 +1,13 @@
 ---
-title: 'Private Set Intersection #2'
-date: 2020-07-25 20:00:00 -07:00
-tags:
-- cryptography
-- private-set-intersection
 layout: post
+title: 'Private Set Intersection #2'
+date: 'Sun Jul 26 2020 06:00:00 GMT+0300 (Israel Daylight Time)'
+tags:
+  - cryptography
+  - private-set-intersection
 author: Avishay Yanai
+published: true
 ---
-
 In the [first post on Private Set Intersection](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/), I presented the problem of Private Set Intersection, its applications and a simple protocol, of [[KMRS14]](https://fc14.ifca.ai/papers/fc14_submission_52.pdf), that allows Alice and Bob learn the intersection of their sets with the aid of an untrusted third party Steve who is assumed to not collude with Alice or Bob.
 
 The main challenge in that protocol was to make sure that the 3rd party, Steve, does not cheat.
@@ -51,11 +51,11 @@ Before describing the proofs, we briefly cover the necessary details about two s
 ## Two secret sharing schemes
 Before jumping to the proofs let’s recall two types of cryptographic secret sharing schemes: Shamir Secret Sharing and Additive Secret Sharing:
 
-In [Shamir Secret Sharing](https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing) a dealer with a secret $s \in \mathbb{F}$, where $\mathbb{F}$ is a finite field, picks a polynomial $p(\cdot)$ of degree $d$. That is, the polynomial $p(x)=p_0 + p_1x+ p_2x^2+\ldots + p_dx^d$ such that $p_1,\ldots,p_d$ are chosen uniformly from the field and $p_0=s$. Then, the dealer can produce many shares of $s$ (up to $\|\mathbb{F}\|-1$ distinct shares) such that the point $(e, p(e))$ is a share, for some $e \in \mathbb{F}$.
+-In [Shamir Secret Sharing](https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing) a dealer with a secret $s \in \mathbb{F}$, where $\mathbb{F}$ is a finite field, picks a polynomial $p(\cdot)$ of degree $d$. That is, the polynomial $p(x)=p_0 + p_1x+ p_2x^2+\ldots + p_dx^d$ such that $p_1,\ldots,p_d$ are chosen uniformly from the field and $p_0=s$. Then, the dealer can produce many shares of $s$ (up to $\|\mathbb{F}\|-1$ distinct shares) such that the point $(e, p(e))$ is a share, for some $e \in \mathbb{F}$.
 Obviously, if someone can get $d+1$ distinct shares, it can [interpolate](https://en.wikipedia.org/wiki/Lagrange_polynomial) the polynomial $p(\dot)$ and find the secret by evaluating $s=p(0)$.
 On the other hand, if someone obtains only $d$ or less shares then it learns nothing about the secret (that is, given the shares obtained, for every pair $s_1$ and $s_2$, the probability that $p(0)=s_1$ equals the probability that $p(0)=s_2$). This type of secret sharing is sufficient for the first proof.
 
-In [Additive Secret Sharing](https://en.wikipedia.org/wiki/Secret_sharing#Trivial_secret_sharing) a dealer with a secret $s \in \mathbb{F}$ wants to break $s$ to $N$ pieces $s_1,\ldots, s_N$ such that $s=s_1+\ldots,s_N$ (where addition is taken over the field $\mathbb{F})$. The first $N-1$ pieces are chosen uniformly from the field and the last piece is computed by $s_N=s-(s_1+\ldots+s_{N-1})$. Each of the $N$ pieces is a share.
+-In [Additive Secret Sharing](https://en.wikipedia.org/wiki/Secret_sharing#Trivial_secret_sharing) a dealer with a secret $s \in \mathbb{F}$ wants to break $s$ to $N$ pieces $s_1,\ldots, s_N$ such that $s=s_1+\ldots,s_N$ (where addition is taken over the field $\mathbb{F})$. The first $N-1$ pieces are chosen uniformly from the field and the last piece is computed by $s_N=s-(s_1+\ldots+s_{N-1})$. Each of the $N$ pieces is a share.
 Obviously, if someone has less than $N$ shares it learns nothing about $s$ because these are just random values from the field. But one who gets all $N$ shares can clearly obtain $s$ by summing up all of them. In the second proof below Alice and Bob will use Additive Secret Sharing with $N=2$ such that both Alice and Bob know the secret, they produce the two shares only for items that are in the intersection, so Steve would be able to get two shares of a secret exactly $\|A \cap B\|$ number of times.
 
 
