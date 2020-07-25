@@ -79,7 +79,7 @@ Otherwise, if the size of the union was less than $z'$ then Steve could not obta
 
 With only this proof, it is possible for Steve to cheat and claim that the intersection is larger, i.e. $z+c$ instead of $z$, or equivalently claim that the lower bound on the union is smaller, i.e. $z’-c$ instead of $z’$. Note that Steve has enough points for doing so (that is, more than $z’-c$ points for interpolating $p$, in fact, it has $z’$ points). In order to force Steve to not cheat, by which to set $c=0$, Alice and Bob wait to his second proof.
 
-Note that I omit from the description above the measures taken by Bob to ensure that Alice and Bob do not cheat by sending wrong shares (points) in $V$ and $W$. Without such a precaution, a corrupt Alice, for instance, could learn whether Bob has a specific item, which is not allowed (Alice and Bob should learn only the cardinality and nothing else).
+Note that I omit from the description above the measures taken by Steve to ensure that Alice and Bob do not cheat by sending wrong shares (points) in $V$ and $W$. Without such a precaution, a corrupt Alice, for instance, could learn whether Bob has a specific item, which is not allowed (Alice and Bob should learn only the cardinality and nothing else).
 
 ## Second proof: $z\leq |A \cap B|$
 
