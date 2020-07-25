@@ -1,6 +1,6 @@
 ---
 layout: post
-published: false
+published: true
 title: 'Private Set Intersection #2'
 tags:
   - cryptography
