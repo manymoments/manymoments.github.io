@@ -70,7 +70,7 @@ The following is happening after the simple protocol described above (i.e. Steve
 
 9. Recall that  $B’=(b’_1,\ldots,b’_m)$ is the set that Bob sent in step 5 above, Bob now sends to Steve $m$ shares: the point $(b’_i, p(b’_i))$ for every $b’_i \in B’$. Call this set of points $W$.
 
-The goal of Steve in the proof is to convince Alice and Bob that there are at least $z’$ values in the union of $A$ and $B$, which is equivalent to having at least $z’$ distinct shares of the secret $s$ sent to Steve from Alice and Bob together. And if there are $z’$ distinct shares of $s$ it means that Steve can find $s$ (as explained above), so Steve concludes the proof by sending $s$ to Alice and Bob. Formally:
+The goal of Steve in the proof is to convince Alice and Bob that there are at least $z’$ values in the union of $A$ and $B$, which is equivalent to having at least $z’$ distinct shares of the secret $s$ sent to Steve from Alice and Bob together. And if there are $z’$ distinct shares of $s$ it means that Steve can find $s$ (by polynomial interpolation), so Steve concludes the proof by sending $s$ to Alice and Bob. Formally:
 
 10. Steve uses the points in $V \cup W$ to interpolate a $z’$ degree polynomial $p(\cdot)$ and evaluate $s=p(0)$. Steve sends $s$ to Alice and Bob.
 
