@@ -1,13 +1,13 @@
 ---
-title: 'Private Set Intersection #2'
-date: 2020-07-25 00:00:00 -07:00
-tags:
-- cryptography
-- private-set-intersection
 layout: post
+title: 'Private Set Intersection #2'
+date: 'Sat Jul 25 2020 10:00:00 GMT+0300 (Israel Daylight Time)'
+tags:
+  - cryptography
+  - private-set-intersection
 author: Avishay Yanai
+published: true
 ---
-
 In the [first post on Private Set Intersection](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/), I presented the problem of Private Set Intersection, its applications and a simple protocol, of [[KMRS14]](https://fc14.ifca.ai/papers/fc14_submission_52.pdf), that allows Alice and Bob learn the intersection of their sets with the aid of an untrusted third party Steve who is assumed to not collude with Alice or Bob.
 
 The main challenge in that protocol was to make sure that the 3rd party, Steve, does not cheat.
@@ -27,39 +27,39 @@ Let's begin with a slightly different goal, in which Alice and Bob are not inter
 In addition, let’s relax the setting a bit and suppose that Alice and Bob do not want Steve to learn their items but they _do_ trust him to return the correct result $|A\cap B|$.
 The protocol would go as follows:
 
-1. Alice has $A=(a_1,\ldots,a_n)$ and Bob has $B=(b_1,\ldots,b_m)$.
+1. Alice has $A={a_1,\ldots,a_n}$ and Bob has $B={b_1,\ldots,b_m}$.
 2. All agree on a PRF $F$.
 3. Alice and Bob agree on a secret key $k$ (which remains secret from Steve).
-4. Alice sends $A’=\{a’_1,\ldots,a’_n\}$ to Steve where $a’_i=F(k,a_i)$.
-5. Bob sends $B’=\{b’_1,\ldots, b’_m\}$ to Steve where $b’_i=F(k,b_i)$.
-6. Steve computes $z=|A’ \cap B’|$ and sends $z$ to Alice and Bob.
+4. Alice sends $A’={a’_1,\ldots,a’_n}$ to Steve where $a’_i=F(k,a_i)$.
+5. Bob sends $B’={b’_1,\ldots, b’_m}$ to Steve where $b’_i=F(k,b_i)$.
+6. Steve computes $z=\|A’ \cap B’\|$ and sends $z$ to Alice and Bob.
 
-Obviously, since $F$ is deterministic the result $z$ is the correct intersection cardinality, i.e. $|A\cap B| = |A’ \cap B’|$. The privacy of Alice and Bob is preserved since Steve does not know the secret key $k$ and therefore he cannot distinguish $a’_i$’s and $b’_i$’s from random.
+Obviously, since $F$ is deterministic the result $z$ is the correct intersection cardinality, i.e. $\|A\cap B\| = \|A’ \cap B’\|$. The privacy of Alice and Bob is preserved since Steve does not know the secret key $k$ and therefore he cannot distinguish $a’_i$’s and $b’_i$’s from random.
 
 
 ### What if Steve cheats?
 
 Steve can send a value $z$ different from the intersection cardinality.
-To prevent that, Steve can prove to Alice and Bob that $z=|A\cap B|$. The proof is broken to two parts:
-1. Steve proves that $z \leq |A cup B|$. Namely, that $z$ is a _lower bound on the union_ of $A$ and $B$. This is equivalent to $z$ being an _upper bound on the intersection_ of $A$ and $B$, i.e. $z \geq |A \cap B|$.
-2. Steve proves that $z \leq |A \cap B|$.
+To prevent that, Steve can prove to Alice and Bob that $z=\|A\cap B\|$. The proof is broken to two parts:
+1. Steve proves that $z \leq \|A cup B\|$. Namely, that $z$ is a _lower bound on the union_ of $A$ and $B$. This is equivalent to $z$ being an _upper bound on the intersection_ of $A$ and $B$, i.e. $z \geq \|A \cap B\|$.
+2. Steve proves that $z \leq \|A \cap B\|$.
 
-With the two proofs, Alice and Bob are convinced that $z \geq |A \cap B|$ and $z \leq |A \cap B|$ and therefore it follows that $z = |A \cap B|$.
+With the two proofs, Alice and Bob are convinced that $z \geq \|A \cap B\|$ and $z \leq \|A \cap B\|$ and therefore it follows that $z = \|A \cap B\|$.
 
 Before describing the proofs, we briefly cover the necessary details about two secret sharing schemes.
 
 ## Two secret sharing schemes
 Before jumping to the proofs let’s recall two types of cryptographic secret sharing schemes: Shamir Secret Sharing and Additive Secret Sharing:
 
-In [Shamir Secret Sharing](https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing) a dealer with a secret $s \in \mathbb{F}$, where $\mathbb{F}$ is a finite field, picks a polynomial $p(\cdot)$ of degree $d$. That is, the polynomial $p(x)=p_0 + p_1x+ p_2x^2+\ldots + p_dx^d$ such that $p_1,\ldots,p_d$ are chosen uniformly from the field and $p_0=s$. Then, the dealer can produce many shares of $s$ (up to $|\mathbb{F}|-1$ distinct shares) such that the point $(e, p(e))$ is a share, for some $e \in \mathbb{F}$.
+In [Shamir Secret Sharing](https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing) a dealer with a secret $s \in \mathbb{F}$, where $\mathbb{F}$ is a finite field, picks a polynomial $p(\cdot)$ of degree $d$. That is, the polynomial $p(x)=p_0 + p_1x+ p_2x^2+\ldots + p_dx^d$ such that $p_1,\ldots,p_d$ are chosen uniformly from the field and $p_0=s$. Then, the dealer can produce many shares of $s$ (up to $\|\mathbb{F}\|-1$ distinct shares) such that the point $(e, p(e))$ is a share, for some $e \in \mathbb{F}$.
 Obviously, if someone can get $d+1$ distinct shares, it can [interpolate](https://en.wikipedia.org/wiki/Lagrange_polynomial) the polynomial $p(\dot)$ and find the secret by evaluating $s=p(0)$.
 On the other hand, if someone obtains only $d$ or less shares then it learns nothing about the secret (that is, given the shares obtained, for every pair $s_1$ and $s_2$, the probability that $p(0)=s_1$ equals the probability that $p(0)=s_2$). This type of secret sharing is sufficient for the first proof.
 
 In [Additive Secret Sharing](https://en.wikipedia.org/wiki/Secret_sharing#Trivial_secret_sharing) a dealer with a secret $s \in \mathbb{F}$ wants to break $s$ to $N$ pieces $s_1,\ldots, s_N$ such that $s=s_1+\ldots,s_N$ (where addition is taken over the field $\mathbb{F})$. The first $N-1$ pieces are chosen uniformly from the field and the last piece is computed by $s_N=s-(s_1+\ldots+s_{N-1})$. Each of the $N$ pieces is a share.
-Obviously, if someone has less than $N$ shares it learns nothing about $s$ because these are just random values from the field. But one who gets all $N$ shares can clearly obtain $s$ by summing up all of them. In the second proof below Alice and Bob will use Additive Secret Sharing with $N=2$ such that both Alice and Bob know the secret, they produce the two shares only for items that are in the intersection, so Steve would be able to get two shares of a secret exactly $|A \cap B|$ number of times.
+Obviously, if someone has less than $N$ shares it learns nothing about $s$ because these are just random values from the field. But one who gets all $N$ shares can clearly obtain $s$ by summing up all of them. In the second proof below Alice and Bob will use Additive Secret Sharing with $N=2$ such that both Alice and Bob know the secret, they produce the two shares only for items that are in the intersection, so Steve would be able to get two shares of a secret exactly $\|A \cap B\|$ number of times.
 
 
-## First proof: $z\geq |A \cap B|$
+## First proof: $z\geq \|A \cap B\|$
 
 Instead of proving that $z$ is an upper bound on the intersection, Steve proves that $z’=n+m-z$ is a  lower bound on the union. 
 The following is happening after the simple protocol described above (i.e. Steve already notified Alice and Bob about the intersection $z$ he found).
@@ -81,9 +81,9 @@ With only this proof, it is possible for Steve to cheat and claim that the inter
 
 Note that I omit from the description above the measures taken by Steve to ensure that Alice and Bob do not cheat by sending wrong shares (points) in $V$ and $W$. Without such a precaution, a corrupt Alice, for instance, could learn whether Bob has a specific item, which is not allowed (Alice and Bob should learn only the cardinality and nothing else).
 
-## Second proof: $z\leq |A \cap B|$
+## Second proof: $z\leq \|A \cap B\|$
 
-This proof works almost the same as the first one with a simple twist. Let’s first realize why using the proof described above in order to prove $z\leq |A \cap B|$ is problematic. In such a proof Alice and Bob agree on a secret $s$ and on a degree $z-1$ polynomial $p(x)=s+p_1x+\ldots p_{z-1}x^{z-1}$ and send Steve the shares $V$ and $W$ as before. Now, it is clear that Bob has enough points in order to interpolate $p$ and find the secret $s=p(0)$, because the degree $z-1$ equals or smaller than $n$ and Steve has at least $n$ distinct shares of $s$ (given from Alice in the set $V$). Therefore, finding the secret $s$ in this case would not convince Alice or Bob that the intersection cardinality is indeed $z$. It could be smaller.
+This proof works almost the same as the first one with a simple twist. Let’s first realize why using the proof described above in order to prove $z\leq \|A \cap B\|$ is problematic. In such a proof Alice and Bob agree on a secret $s$ and on a degree $z-1$ polynomial $p(x)=s+p_1x+\ldots p_{z-1}x^{z-1}$ and send Steve the shares $V$ and $W$ as before. Now, it is clear that Bob has enough points in order to interpolate $p$ and find the secret $s=p(0)$, because the degree $z-1$ equals or smaller than $n$ and Steve has at least $n$ distinct shares of $s$ (given from Alice in the set $V$). Therefore, finding the secret $s$ in this case would not convince Alice or Bob that the intersection cardinality is indeed $z$. It could be smaller.
 So how can we design a proof system in which Steve could find the secret $s=p(0)$ only if the intersection cardinality is indeed $z$?
 
 The idea is to send Steve shares of shares!
@@ -93,7 +93,7 @@ So let’s say that $q=a_i=b_j$, then Alice and Bob send to Steve the value $q�
 
 For any other item $a$ of Alice which is not in the intersection, Steve will have the point $(a’, r_a)$ from Alice, but not the point $(a’, p(a’)\oplus r_a)$ from Bob, therefore, it could not obtain the point $p(a’)$ so it does not help him interpolating the polynomial $p$.
 
-From the above, it follows that Steve will have at most $|A\cap B|$ values for which it can obtain points on the polynomial $p$ which would be sufficient to interpolate $p$ and learn the secret $s$. So if Steve cheats and claims that $z$ is larger than $|A\cap B|$, it will not be able to find enough points on $p$ and so could not find $s$.
+From the above, it follows that Steve will have at most $\|A\cap B\|$ values for which it can obtain points on the polynomial $p$ which would be sufficient to interpolate $p$ and learn the secret $s$. So if Steve cheats and claims that $z$ is larger than $\|A\cap B\|$, it will not be able to find enough points on $p$ and so could not find $s$.
 
 
 ## How to output the intersection itself? (and not only the cardinality)
@@ -102,7 +102,7 @@ In the above we were interested with finding the _cardinality_ of the two sets, 
 
 It is easier to Steve to convince Alice and Bob that the intersection has at least $z$ items by simply send them the set $C’=A’ \cap B’$. Now Alice and Bob compute $q=F^{-1}(k, q’)$ for every $q\in C’$ and verify that $q\in A$ and $q\in B$, if it is not then they raise a flag which means that someone cheats (either the one who raised the flag or Steve, we do not know) and the protocol abort.
 
-Suppose that the above step went through, then Alice and Bob are convinced that there are at least $|C'|$ values in the intersection, but how can they be sure that there are no more items? That is, how can they be convinced that Steve did not omit anything from $A'\cap B'$? 
+Suppose that the above step went through, then Alice and Bob are convinced that there are at least $\|C'\|$ values in the intersection, but how can they be sure that there are no more items? That is, how can they be convinced that Steve did not omit anything from $A'\cap B'$? 
 In [KMRS14] (see previous post) this was proven by adding dummy items to $A$ and $B$. In [LRG19], however, the parties simply follow the first proof described above, which completes the protocol.
 
 
