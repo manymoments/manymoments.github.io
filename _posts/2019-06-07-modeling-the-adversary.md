@@ -24,7 +24,7 @@ In addition to the size of the threshold ($n>f$, $n>2f$, or $n>3f$), there are 4
 ### 1. Type of corruption
 The next critical aspect is what type of corruption the adversary can inflict on the $f$ parties is can corrupt. There are four classic adversaries: Passive, Crash, Omission, and Byzantine.
 
-*Passive*: a passively corrupted party must follow the protocol just like an honest party, but it allows the adversary to learn information.   
+*Passive*: a passively corrupted party must follow the protocol just like an honest party, but it allows the adversary to learn information. A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.org/2011/136.pdf) or [Semi-Honest](http://www.wisdom.weizmann.ac.il/~oded/foc-vol2.html)) does not deviate from the protocol but can learn all possible information from its _view_: i.e., the messages received by parties it controls.
 
 *Crash*: once the party is corrupted, it stops sending and receiving all messages.
 
@@ -48,7 +48,7 @@ The visibility is the power of the adversary to see the messages and the states 
 1. *Full information*: here we assume the adversary sees the internal state of _all_ parties and the content of _all_ message sent. This often limits the protocol designer. See for example: [Feige's](www.wisdom.weizmann.ac.il/~feige/Others/leader.ps) selection protocols, or  [Ben-Or et al's](https://people.csail.mit.edu/vinodv/BA.pdf) Byzantine agreement. 
 2. *Private channels*: in this model, we assume the adversary cannot see the internal state of honest parties and cannot see the internal content of messages between honest parties. The adversary does know when a message is being sent and depending on the communication model can decide to delay it by any value that is allowed by the communication model.
 
-For models that are round-based, another distinction about visibility is when does the adversary see the messages for a given round. In the *rushing adversary model*, the adversary is allowed to see all the messages sent to parties it controls in round $i$ before it sends its round $i$ messages. In the *non-rushing adversary model*, the adversary must commit to the round $i$ messages it sends before it receives any round $i$ messages from non-faulty parties.
+For models that are round-based, another distinction is *visibility*. When does the adversary see the messages sent to parties it controls? In the *rushing adversary model*, the adversary is allowed to see all the messages sent to parties it controls in round $i$ *before* it needs to decide what messages to send in its round $i$ messages. In the *non-rushing adversary model*, the adversary must commit to the round $i$ messages it sends before it receives any round $i$ messages from non-faulty parties.
 
 ### 4. Adaptivity 
 Adaptivity is the ability of the adversary to corrupt dynamically based on information the adversary learns during the execution. There are three basic variants: static, adaptive, and mobile. The adaptive model has several sub-variant, we will cover here only the simplest one.
