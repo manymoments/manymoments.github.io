@@ -98,17 +98,18 @@ From the above, it follows that Steve will have at most $|A\cap B|$ values for w
 
 ## How to output the intersection itself? (and not only the cardinality)
 
-In the above we were dealing with finding the cardinality of the two sets, but what if Alice and Bob do actually want to know the intersection itself?
+In the above we were interested with finding the _cardinality_ of the two sets, but what if Alice and Bob do actually want to know the _intersection itself_?
 
 It is easier to Steve to convince Alice and Bob that the intersection has at least $z$ items by simply send them the set $C’=A’ \cap B’$. Now Alice and Bob compute $q=F^{-1}(k, q’)$ for every $q\in C’$ and verify that $q\in A$ and $q\in B$, if it is not then they raise a flag which means that someone cheats (either the one who raised the flag or Steve, we do not know) and the protocol abort.
 
-Suppose that the above step went through, how can Alice and Bob be sure that there are no more items in the intersection that Steve omitted from $C’$? In [KMRS14] (see previous post) this was proven by adding dummy items to $A$ and $B$. In [LRG19], however, they simply instruct Steve to prove that $z\geq |A \cap B|$, exactly as in the first proof described above.
+Suppose that the above step went through, then Alice and Bob are convinced that there are at least $|C'|$ values in the intersection, but how can they be sure that there are no more items? That is, how can they be convinced that Steve did not omit anything from $A'\cap B'$? 
+In [KMRS14] (see previous post) this was proven by adding dummy items to $A$ and $B$. In [LRG19], however, the parties simply follow the first proof described above, which completes the protocol.
 
 
 ## Limitation of the protocol
 
 Suppose that $n=m$.
-The two proofs described above would be very expensive computationally when the sizes of the sets, $n$, is very large (i.e. one million items). This is because in the proofs Alice and Bob have to evaluate a polynomial of degree $z$ or $z’=2n-z$ for $n$ times in order to produce the shares needed to be sent to Steve. This task would cost them $O(n log^2 n)$ using a [DFT-based algorithm for batch evaluation](https://github.com/AvishayYanay/FastPolynomial).
+The two proofs described above would be computationally expensive when the sizes of the sets, $n$, is very large (i.e. one million items). This is because in the proofs Alice and Bob have to evaluate a polynomial of degree $z$ or $z’=2n-z$ for $n$ times in order to produce the shares needed to be sent to Steve. This task would cost them $O(n log^2 n)$ using a [DFT-based algorithm for batch evaluation](https://github.com/AvishayYanay/FastPolynomial).
 
 We stress that the usual way to tackle such problems is to map the items into bins before running the protocol and then running the protocol for each bin separately and leverage the fact that each bin contains much less items. That is, Alice and Bob choose a hash function $H$,  then Alice maps an item $a\in A$ to bin number $H(a)$ and Bob maps an item $b\in B$ to bin number $H(b)$. If Alice and Bob has the same item then this item would be mapped to the same bin by both of them, meaning that we can run the above protocol per bin rather than over all the items.
 
