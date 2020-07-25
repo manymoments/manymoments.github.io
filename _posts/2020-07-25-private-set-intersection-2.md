@@ -1,13 +1,13 @@
 ---
-title: 'Private Set Intersection #2'
-date: 2020-07-25 20:00:00 -07:00
-tags:
-- cryptography
-- private-set-intersection
 layout: post
+title: 'Private Set Intersection #2'
+date: 'Sat Jul 25 2020 20:00:00 GMT+0300 (Israel Daylight Time)'
+tags:
+  - cryptography
+  - private-set-intersection
 author: Avishay Yanai
+published: true
 ---
-
 In the [first post on Private Set Intersection](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/), I presented the problem of Private Set Intersection, its applications and a simple protocol, of [[KMRS14]](https://fc14.ifca.ai/papers/fc14_submission_52.pdf), that allows Alice and Bob learn the intersection of their sets with the aid of an untrusted third party Steve who is assumed to not collude with Alice or Bob.
 
 The main challenge in that protocol was to make sure that the 3rd party, Steve, does not cheat.
@@ -64,15 +64,15 @@ Obviously, if someone has less than $N$ shares it learns nothing about $s$ becau
 Instead of proving that $z$ is an upper bound on the intersection, Steve proves that $z’=n+m-z$ is a  lower bound on the union. 
 The following is happening after the simple protocol described above (i.e. Steve already notified Alice and Bob about the intersection $z$ he found).
 
- 7. Alice and Bob choose a secret value, $s$, from the field and also choose a random polynomial $p(\cdot)$ of degree $z’-1$ by which they will produce Shamir shares. That is, $p(x)=s+p_1x+\ldots + p_{z’-1}x^{z’-1}$.
+ 7) Alice and Bob choose a secret value, $s$, from the field and also choose a random polynomial $p(\cdot)$ of degree $z’-1$ by which they will produce Shamir shares. That is, $p(x)=s+p_1x+\ldots + p_{z’-1}x^{z’-1}$.
 
- 8. Recall that  $A’=(a’_1,\ldots,a’_n)$ is the set that Alice sent in step 4 above, Alice now sends to Steve $n$ shares: the point $(a’_i, p(a’_i))$ for every $a’_i \in A’$. Call this set of points $V$.
+ 8) Recall that  $A’=(a’_1,\ldots,a’_n)$ is the set that Alice sent in step 4 above, Alice now sends to Steve $n$ shares: the point $(a’_i, p(a’_i))$ for every $a’_i \in A’$. Call this set of points $V$.
 
- 9. Recall that  $B’=(b’_1,\ldots,b’_m)$ is the set that Bob sent in step 5 above, Bob now sends to Steve $m$ shares: the point $(b’_i, p(b’_i))$ for every $b’_i \in B’$. Call this set of points $W$.
+ 9) Recall that  $B’=(b’_1,\ldots,b’_m)$ is the set that Bob sent in step 5 above, Bob now sends to Steve $m$ shares: the point $(b’_i, p(b’_i))$ for every $b’_i \in B’$. Call this set of points $W$.
 
 The goal of Steve in the proof is to convince Alice and Bob that there are at least $z’$ values in the union of $A$ and $B$, which is equivalent to having at least $z’$ distinct shares of the secret $s$ sent to Steve from Alice and Bob together. And if there are $z’$ distinct shares of $s$ it means that Steve can find $s$ (by polynomial interpolation), so Steve concludes the proof by sending $s$ to Alice and Bob. Formally:
 
- 10. Steve uses the points in $V \cup W$ to interpolate a $z’-1$ degree polynomial $p(\cdot)$ and evaluate $s=p(0)$. Steve sends $s$ to Alice and Bob.
+ 10) Steve uses the points in $V \cup W$ to interpolate a $z’-1$ degree polynomial $p(\cdot)$ and evaluate $s=p(0)$. Steve sends $s$ to Alice and Bob.
 
 By now, Alice and Bob should be convinced that the size of the union $A \cup B$ is at least $z’$, meaning that the size of the intersection $A\cap B$ is at most $z=n+m-z’$.
 Otherwise, if the size of the union was less than $z'$ then Steve could not obtain $z'$ distinct points on $p$.
