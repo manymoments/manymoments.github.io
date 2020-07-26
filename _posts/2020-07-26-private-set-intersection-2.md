@@ -1,11 +1,12 @@
 ---
-title: 'Private Set Intersection #2'
-date: 2020-07-26 06:00:00 -07:00
-tags:
-- cryptography
-- private-set-intersection
-author: Avishay Yanai
 layout: post
+title: 'Private Set Intersection #2'
+date: 'Sun Jul 26 2020 16:00:00 GMT+0300 (Israel Daylight Time)'
+tags:
+  - cryptography
+  - private-set-intersection
+author: Avishay Yanai
+published: true
 ---
 
 In the [first post on Private Set Intersection](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/), I presented the problem of Private Set Intersection, its applications and the simple protocol of [[KMRS14]](https://fc14.ifca.ai/papers/fc14_submission_52.pdf), that allows Alice and Bob to learn the intersection of their sets with the aid of an untrusted third party Steve who is assumed to not collude with Alice or with Bob.
@@ -19,6 +20,8 @@ I will now re-iterate the problem statement and then present a simple protocol t
 Recall the problem of Private Set Intersection:
 There are two friends Alice and Bob. Alice has a set of items $A=(a_1,\ldots, a_n)$ and Bob has a set of items $B=(b_1,\ldots,b_m)$.
 They wish to learn the intersection $A\cap B$ such that Alice will not learn anything about items $b’\in B$ that are not in the intersection (and same for Bob). To do that, they are willing to use the service of a 3rd party Steve, but they do not trust him to follow the protocol faithfully. So they have to verify whatever Steve claims. If any deviation from the protocol is detected (by either of the parties) then the protocol aborts.
+
+We note that the sets sizes $n$ and $m$ are public, so there is no effort to hide them in the protocol.
 
 
 ## A simple protocol
