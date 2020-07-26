@@ -1,12 +1,11 @@
 ---
-layout: post
 title: 'Private Set Intersection #2'
-date: 'Sun Jul 26 2020 16:00:00 GMT+0300 (Israel Daylight Time)'
+date: 2020-07-26 16:00:00 -07:00
 tags:
-  - cryptography
-  - private-set-intersection
+- cryptography
+- private-set-intersection
+layout: post
 author: Avishay Yanai
-published: true
 ---
 
 In the [first post on Private Set Intersection](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/), I presented the problem of Private Set Intersection, its applications and the simple protocol of [[KMRS14]](https://fc14.ifca.ai/papers/fc14_submission_52.pdf), that allows Alice and Bob to learn the intersection of their sets with the aid of an untrusted third party Steve who is assumed to not collude with Alice or with Bob.
