@@ -53,9 +53,9 @@ _Super-importantly_, if you ever give him $x$ again, he'll give you that same $y
 How does he do it?
 
 When he gets your input $x$, he initially ignores it!
-Then, he flips a coin 256 times, getting a sequence of 256 random bits (i.e., ones and zeros), denoted by $y=\langle y_1, y_2, \dots, y_{256}\rangle$.
+Then, he flips 256 coins, getting a sequence of 256 random bits (i.e., ones and zeros), denoted by $y=\langle y_1, y_2, \dots, y_{256}\rangle$.
 Next, he forever remembers that your input $x$ maps to output $y$ by writing down $(x,y)$ in his magic scroll.
-This way, if you ever give this "guy in the sky" the same input $x$, he will give you back the same input $y$ (rather than flip new coins and give you a new random 256-bit sequence).
+This way, if you ever give this "guy in the sky" the same input $x$, he will give you back the same output $y$ (rather than flip new coins and give you a new random 256-bit output $y'\ne y$).
 
 **That's it!**
 The simplest way you can think of a hash function is as a "guy in the sky" who flips coins for each input you give him, remembering what coins he got for every input you gave him, just in case you give him that input again.
@@ -91,14 +91,13 @@ Kthxbye, end of post!
 <!--(at least given our current theoretical understanding of what is computable using a Turing Machine).-->
 Just kidding.
 Fortunately, in practice, we can circumvent this impossibility in a few ways.
-
 For example, in some applications, we settle for hash functions whose outputs are not random but have other useful properties that are implied by the random oracle model.
-One such property is _collision-resistance_, which says it is infeasible to find two inputs $x\ne x'$ such that their outputs $y$ and $y'$ are equal.
+One such property is **collision-resistance**, which says it is infeasible to find two inputs $x\ne x'$ such that their outputs $y$ and $y'$ are equal.
 (We'll touch upon this later.)
 In other applications, cryptographers simply "hope" that replacing the idealized random oracle with a concrete hash function like SHA256 will not lead to security breaks in practice.
 
 {: .box-warning}
-There is reason to be skeptical of such hope.
+**Note:** There is reason to be skeptical of such hope.
 We know that, for certain cryptosystems proven secure with a random oracle, replacing the random oracle with _any_ concrete hash function makes them insecure[^CGH98].
 
 ## Hash functions as mathematical functions
@@ -109,21 +108,24 @@ We've established that a hash function can be thought of as a random oracle that
 Formally, we can define a hash function as a [mathematical function](https://en.wikipedia.org/wiki/Function_(mathematics)) $$H : \{0,1\}^* \mapsto \{0,1\}^{256}$$.
 We use $H(x) = y$ to denote that $y$ is the output of $H$ on input $x$.
 
+<!-- TODO: I am not sure what "maps each input to a random, uniform 256-bit output" means when the input space is of infinite size (e.g., {0,1}^*) -->
+
 ### Collision-resistance and the pigeonhole principle
 
 This definition brings one limitation of hash functions into light, which is worth discussing now.
 
 Note that a hash function maps the set of all arbitrarily-sized binary strings (which is of infinite size) to the set of binary strings of length 256 (which is of size $2^{256}$).
 For the mathematically-inclined, the ["pigeonhole principle"](https://en.wikipedia.org/wiki/Pigeonhole_principle) immediately tells us that, as a consequence, there must exist two inputs $x\ne x'$ such that $H(x)=H(x')$.
+Such a pair $(x,x')$ is called a **collision** and can be disastrous in many applications of hash functions, as we'll discuss later.
 
 {: .box-note}
-For the less mathematically-inclined, it's like we have an infinite amount of puppies and $2^{256}$ people who want to pet them. This tells us that, if all puppies are to be petted by someone, then someone has to pet more than one puppy!
+_For the less mathematically-inclined:_ It's as if we have an infinite amount of puppies and $2^{256}$ people who want to pet them. This tells us that, if all puppies are to be petted by someone, then someone has to pet more than one puppy!
 In other words, there will be two puppies $x$ and $x'$ that are petted by the same person $y$[^bliss]$^,$[^ppp].
 
 Restated formally, because the _domain_ $$\{0,1\}^*$$ of $H$ is larger than the _range_ $$\{0,1\}^{256}$$ of $H$, there must exist two inputs $x\ne x'$ that map to the same output $y=H(x)=H(x')$.
-Such a pair $(x,x')$ is called a **collision** and can be disastrous in many applications of hash functions, as we'll discuss later.
 
 Fortunately, in the random oracle model, one can show that finding such a collision is infeasible, requiring on average $2^{128}$ hash function invocations, which is an astronomical number that is outside the realm of practicality.
+(We'll describe this collision-finding algorithm, which is called the _birthday attack_, in another post.)
 Even better, as cryptographers, we know how to construct **collision-resistant** hash functions from hard computational problems such as _computing discrete logarithms_.
 
 <!-- **TODO:** Cite birthday attack or write post about it -->
@@ -141,44 +143,74 @@ q-SBDH holds => q-SDH holds => DL holds
 -->
 
 Did you ever notice how sometimes websites display a hash next to a file after you click the download button?
+For example, this is what you see if you try to download Apache OpenOffice:
 
 <img src="/uploads/download-hash.png" width="720" />
 
-In the picture above, there are links to the SHA256 and SHA512 hashes for the file the user is about to download (i.e., Apache OpenOffice).
+The website has links to the SHA256 and SHA512 hashes for the OpenOffice installer file $f$ being downloaded.
 A careful user will download the file $f$, hash it to compute $h=H(f)$ and check if the $h$ they got is the same as the one on the website.
 Then, they will be convinced their download has not been maliciously modified by an attacker, who could've replaced $f$ with $f'$ by controlling the network.
 
 {: .box-warning}
-For this to work, we assume that the user can correctly download the hash of $f$.
-So in a sense, we are turning the problem of downloading $f$ correctly into the problem of obtaining $h$ correctly and then verifying a possibly corrupted $f$ against $h$.
+**Important:** For this to work, we assume that the user can correctly download the hash of $f$!
+So, in a sense, we are replacing the problem of downloading $f$ correctly with the problem of obtaining $h$ correctly.
+Once $h$ is obtained correctly, the user can verify the larger file $f$ against $h$.
 
-The adversary has a file $f$, its hash $H(f)$ and wants to find a different file $f'\ne f$ such that $H(f')=H(f)$.
-If we think of $H$ as a random oracle, what can the adversary do?
+#### Why the adversary can't replace $f$ with a different file $f'$
+
+The adversary's goal is to trick the user, who has the hash $h$, and give him a different file $f'\ne f$ such that $H(f')=H(f)$.
+Let's see why he can't do this.
+
+If we think of $H$ as a random oracle, what can the adversary do to find such an $f'$?
 The adversary can only query $H$ at whatever points he might think will return $H(f)$.
 But since the random oracle $H$ returns random coin flips for whatever input the adversary provides, this means the adversary has no particular strategy other than brute-force for finding an $f'$ with $H(f')=H(f)$.
 With a little probability theory, one can show that the adversary has to query $H$ around $2^{256}$ times to actually find such an $f'$.
-Since this is outside the realm of practicality, we consider the scheme to be secure.
+Since this is outside the realm of practicality, our file downloading scheme is considered secure!
+
+{: .box-note}
+**Remark:** In the attack above, the attacker is trying to find a collision $f'$ w.r.t. a particular _fixed_ file $f$.
+However, depending on the application, the attacker might have more "freedom."
+Specifically, the attacker could try and find _any_ collision $(f,f')$ in the hash function.
+This would take him a smaller, but still astronomical, amount of time: $2^{128}$ rather than $2^{256}$ hash function invocations.
+If the attacker is successful, he could trick users who have the same $h$ into downloading different files.
+(As an exercise, try and think of application scenarios where that might be problematic!)
 
 ### Proof of work
 
 Suppose you want to convince me you've done some amount of computational work.
-You can leverage the random oracle nature of hash functions to do so!
-Note that if I send you a random value $r$, and you give me back $y=H(r)$, I can check that you computed $H(r)$ correctly by recomputing it myself.
-But it seems like in order to check that you've computed $n$ hashes, I have to re-compute those $n$ hashes myself.
-While this protocol could be thought of as a "proof-of-work," it's not very efficient for me to check you've done the work.
-Can I do better?
+Specifically, let's assume you want to convince me you've computed roughly $n$ hashes by calling $H$ on $n$ different inputs.
+Such a protocol is called a **proof of work** and you can leverage the random oracle nature of hash functions to implement it!
 
-Since $H$ can be viewed as a random oracle, we know that computing $H(r)$ for some input $r$ is like flipping 256 random coins.
+Note that if I send you a random value $r$, and you give me back $y=H(r)$, I can check that you computed $H(r)$ correctly by recomputing it myself.
+But it seems like in order to check that you've computed $n$ hashes, I have to give you $n$ different $r$'s and re-compute the $n$ hashes you computed too.
+While this protocol could be thought of as a "proof-of-work," it's not very efficient for me to check that you've done the work.
+Can I verify your work faster?
+
+Since $H$ can be viewed as a random oracle, we know that every $H(r)$ is obtained by flipping 256 random coins.
 For the mathematically-inclined, we also know that, if we want the first $k$ coins flips to be all "heads", then we have to flip these 256 random coins around $2^k$ times.
 For the less mathematically-inclined, if you have 1 in 3 chances to win a teddy bear in a game, you kind of know that if you play around 3 times you're very likely to win.
-Similarly, there are 1 in $2^k$ chances for the first $k$ coins (out of all 256) to be "heads", which is why you have to flip the coins around $2^k$ times.
+Similarly, there are 1 in $2^k$ chances for the first $k$ coins to be all "heads", which is why you have to flip the coins around $2^k$ times.
 
 So, it takes $2^k$ tries to get 256 random coins where the first $k$ coins all heads.
-That's like saying it takes around $2^k$ hash computations to get a hash whose first $k$ bits are equal to zero.
-In other words, say I give you a random value $r$ and you give me a pair $\langle i, h_i = H(i \mid r)\rangle$ where $h_i$ has the first $k$ bits all set to zero.
+That's like saying it takes around $2^k$ hash computations to get a hash whose first $k$ bits are equal to zero!
+
+In other words, say I give you a random value $r$ and you give me a pair $\langle i, h_i = H(i \mid r)\rangle$, where $h_i$ has the first $k$ bits all set to zero and $|$ denotes concatenation.
 Then, I can easily check that $h_i = H(i \mid r)$ using only _one_ hash computation and I'll be pretty sure that it took you around $2^k$ hash computations to find such an $i$.
 I say "pretty sure" because it's also possible you got very lucky and the first $i$ you picked happened to give you an $H(i \mid r)$ with the first $k$ bits zero.
 (But the probability of that happening is pretty low, around $1/2^k$.)
+
+#### Why you can't easily trick me when you haven't done the work
+
+Your goal, as the adversary, is to find an $i$ such that $$h_i = H(i \mid r)$$ has $k$ leading zeros, but you want to do so while computing much fewer than $2^k$ hashes.
+
+Once again, since $H$ is a random oracle, your only strategy is to simply query $H$ at inputs of the form $$i\mid r$$.
+Each query gives you an output $h_i$ whose probability of having $k$ leading zeros is $1/2^k$.
+As a result, to ensure you get such an $h_i$ you have to "try" computing different $h_i$'s around $2^k$ times.
+
+{: .box-note}
+Why is the probability of a hash having $k$ leading zeros equal to $1/2^k$? 
+Because $H$ is a random oracle and each bit of the output has probability $1/2$ of being a zero and $1/2$ of being a one!
+As a consequence, the probability that you get $k$ consecutive zeros is $\underbrace{1/2 \cdot 1/2 \cdot \cdots \cdot 1/2}_{k\ \text{times}}=(1/2)^k = 1/2^k$.
 
 ### Commitments
 
