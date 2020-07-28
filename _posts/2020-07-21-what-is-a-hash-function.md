@@ -18,7 +18,6 @@ The goal of this article is to:
 
 1. Give you a very simple mental model for how hash functions work
 2. Give you several applications of hash functions
-3. Leave you with an intuitive understanding of what a hash function _does_ and _what it is useful for_.
 
 The goal of this article is **NOT** to explain to you how a concrete hash function like SHA256 works.
 Teaching you the internals of SHA256 (or any other hash function) would be like teaching a new driver how the engine of a car works before teaching them how to drive it: most people would get bored fast and lose interest.
@@ -26,7 +25,7 @@ Teaching you the internals of SHA256 (or any other hash function) would be like 
 Finally, this post is in no way a formal treatment of hash functions and their many interesting properties.
 At the same time, this does not oversimplify hash functions either.
 Our hope is that, by the end of the post, you'll be curious enough to dig deeper into hash functions yourself.
-(As a starting point, use the references at the end of this post.)
+(As a starting point, use the references at the end of this post[^BR93]$^,$[^KL15]$^,$[^KM15]$^,$[^RS04]$^,$[^CGH98].)
 
 ## A hash function is a "guy in the sky," flipping coins
 
@@ -212,7 +211,74 @@ Why is the probability of a hash having $k$ leading zeros equal to $1/2^k$?
 Because $H$ is a random oracle and each bit of the output has probability $1/2$ of being a zero and $1/2$ of being a one!
 As a consequence, the probability that you get $k$ consecutive zeros is $\underbrace{1/2 \cdot 1/2 \cdot \cdots \cdot 1/2}_{k\ \text{times}}=(1/2)^k = 1/2^k$.
 
-### Commitments
+### Commitments and coin flipping
+
+Suppose you and your friend are trying to decide whether you should go to the beach or not.
+You want to swim, so you say "beach!" but your friend is not too excited about the hot summer days, so they say "no beach!"
+Obviously, one thing you could do is end the friendship immediately.
+But as a middle ground, you propose flipping a coin to decide!
+Unfortunately, your friend is far away, so you have to do this remotely.
+How might you two do this without any shenanigans?
+
+If you flip the coin and tell the outcome to your friend, you might as well lie and tell them the outcome was "beach!"
+However, your friend is smart and they wouldn't believe you.
+Similarly, why would you believe them if they flipped a coin and told you the outcome?
+
+#### Flip your coin and lock it away!
+
+One possible solution is for both of you to flip your own coin and then combine your two coins (somehow) into a flipped coin that is _"fair"_: each coin side has $1/2$ chance of occurring.
+As an (impractical) example, you could flip your own coin, write the result on a piece of paper and put it in a _locked box_.
+Your friend would do the same using their own coin and _locked box_.
+Think of the locked box as a _commitment_: it hides the outcome of the coin flip while binding you to it, since you can't change your mind about it once you've given the locked box to your friend.
+To reveal your coin flip, you would give your friend the key to the box.
+They would do the same for you.
+(We simplify and assume both of you always give each other the keys!)
+
+Now, both of you will have two coin flip outcomes, which you can combine to simulate a "joint" coin flip as follows.
+If both coins are "heads" or "tails", the joint coin is "heads" or "tails," respectively.
+If one of the coin is "tails" but the other is "head", the joint coin is "tails."
+This "joint" coin will be "fair" as long as one of you flipped their coins fairly.
+
+#### Committing to your coin flips 
+
+The remaining question is how can we build such a **commitment scheme** that **hides** the coin flip and **binds** you to it.
+Note that if we simply hash the coin outcome as, say, $$h = H(\text{"heads"})$$ and let $h$ be the commitment, then this is **not** hiding.
+Specifically, if you give your friend the hash $h$, they can easily check if $h$ is equal to $H(\text{"heads"})$ or to $H(\text{"tails"})$, so they will know your coin flip.
+On the other hand, $h$ is binding since, once you've given $h = H(\text{"heads"})$ to your friend, you cannot later pretend that $h = H(\text{"tails"})$, since the probability of that happening is $1/2^{256}$.
+
+The next observation is we can get hiding by hashing as $h=H(\text{"heads"}\mid r)$ rather than as $h=H(\text{"heads"})$, where $r$ is a random 256-bit string.
+Now, your friend cannot easily check if $h$ is the hash of "heads" or "tails" because they do not know $r$.
+So this scheme hides the coin!
+Furthermore, this scheme remains binding since, to break binding, you would have to find $r_1, r_2$ such that $H(\text{"heads"}\mid r_1) = H(\text{"tails"} \mid r_2)$, which would be a collision in the hash function.
+Fortunately, we know collisions can be found with probability $1/2^{128}$.
+
+{: .box-note}
+The fact that such collisions exist (but are infeasible to find) also hints that the scheme is hiding.
+In other words, existence of collisions implies you can reveal a different coin flip and randomness that has the same hash $h$.
+Therefore, $h$ cannot leak anything about the hashed input.
+
+## Conclusion
+
+I promised this post would teach you two things.
+
+### A very simple mental model for how hash functions work
+
+A hash function is a _random oracle_: it takes an arbitrarily-sized input $x$, flips 256 coins $y=\langle y_1, y_2, \dots, y_{256}\rangle$, "remembers" $x\mapsto y$, and from now on always returns $y$ (i.e., 256 bits) on input $x$.
+
+### Applications of hash functions
+
+_Download integrity:_ Users can verify the integrity of a file downloaded over an insecure channel against the file's hash, which the user is assumed to have (somehow) obtained correctly.
+
+_Proof-of-work:_ You can convince me you've computed around $2^k$ hashes by giving me a number $i$ and a hash $h_i = H(i \mid r)$ with $k$ leading zeros, where $r$ is a random 256-bit string I gave you first.
+
+_Commitments:_ You can compute a commitment $h = H(m\mid r)$ to a message $m$ using some randomness $r$ you generated.
+Anybody who receives the commitment $h$ does not learn anything about $m$ until you reveal $r$ to them.
+On the other hand, you cannot reveal a different $m'\ne m$, so you have bound yourself to $m$ by giving $h$ away.
+This is the equivalent of a _digital lock box_ that stores the message $m$ while hiding it until you choose to open the box.
+A key application of commitments are coin-flipping protocols (with some caveats).
+
+**What is next?**
+Next, we hope to give you a formal model of hash functions, introduce you to Merkle hash trees and then reduce Merkle hash tree security to the collision-resistance of hash-functions.
 
 ## References
 
@@ -225,5 +291,3 @@ As a consequence, the probability that you get $k$ consecutive zeros is $\underb
 [^Merkle87]: **A Digital Signature Based on a Conventional Encryption Function**, by Merkle, Ralph C., *in CRYPTO '87*, 1988
 [^ppp]: Henceforth, everybody shall stop using the Pigenhole Principle and adopt this more modern Puppy Petting Principle, which has the advantage of both filling your heart with joy and your mind with mathematics.
 [^RS04]: **Cryptographic Hash-Function Basics: Definitions, Implications and Separations for Preimage Resistance, Second-Preimage Resistance, and Collision Resistance**, by Phillip Rogaway and Thomas Shrimpton, *in Cryptology ePrint Archive, Report 2004/035*, 2004, [[URL]](https://eprint.iacr.org/2004/035)
-[^SRP]: **Secure Remote Password protocol**, by Wikipedia contributors, [[URL]](https://en.wikipedia.org/wiki/Secure_Remote_Password_protocol)
-[^ECSplus15]: **The Pythia PRF Service**, by Adam Everspaugh and Rahul Chatterjee and Samuel Scott and Ari Juels and Thomas Ristenpart, *in Cryptology ePrint Archive, Report 2015/644*, 2015, [[URL]](https://eprint.iacr.org/2015/644)
