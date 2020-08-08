@@ -1,5 +1,5 @@
 ---
-title: What is a Hash Function?
+title: What is a Cryptographic Hash Function?
 date: 2020-07-21 10:05:00 -07:00
 published: false
 tags:
@@ -13,23 +13,34 @@ tags:
 author: Alin Tomescu
 ---
 
-If you ever tried to understand Bitcoin as a beginner, you've probably banged your head against the wall trying to understand what is a **(cryptographic) hash function**?
-The goal of this article is to:
+If you ever tried to understand Bitcoin, you've probably banged your head against the wall trying to understand what is a **cryptographic hash function**?
+The goal of this post is to:
 
-1. Give you a very simple mental model for how hash functions work
-2. Give you several applications of hash functions
+1. Give you a very simple mental model for how hash functions work, called the _random oracle model_
+2. Give you three key applications of hash functions:
+    - Downloading files over the internet
+    - The proof-of-work at the core of Bitcoin
+    - Commitments and coin flipping
 
-The goal of this article is **NOT** to explain to you how a concrete hash function like SHA256 works.
-Teaching you the internals of SHA256 (or any other hash function) would be like teaching a new driver how the engine of a car works before teaching them how to drive it: most people would get bored fast and lose interest.
+We'll refer to cryptographic hash functions simply as "hash functions" in this post.
+
+## What this post is NOT
+
+This post will **NOT** explain to you how a concrete hash function like SHA256 works.
+Explaining the internals of SHA256 (or any other hash function) would be like explaining to a new driver how the engine of a car works before teaching them how to drive it: most people would get bored fast and lose interest.
+
+Also, this post will **NOT** explain to you how Bitcoin works, nor how its proof-of-work consensus works!
+Instead, we'll explain the proof-of-work scheme itself, which is a core component of Bitcoin and its consensus algorithm.
+(For that, you could go [here](/2019-11-29-Analysis-Nakamoto/).)
 
 Finally, this post is in no way a formal treatment of hash functions and their many interesting properties.
-At the same time, this does not oversimplify hash functions either.
+At the same time, this post tries not to oversimplify hash functions either.
 Our hope is that, by the end of the post, you'll be curious enough to dig deeper into hash functions yourself.
-(As a starting point, use the references at the end of this post[^BR93]$^,$[^KL15]$^,$[^KM15]$^,$[^RS04]$^,$[^CGH98].)
+(As a starting point, use the references at the end[^BR93]$^,$[^KL15]$^,$[^KM15]$^,$[^RS04]$^,$[^CGH98].)
 
 ## A hash function is a "guy in the sky," flipping coins
 
-My favorite analogy for how a hash function works is the **"guy in the sky"** analogy, as illustrated below.
+My favorite analogy for how a hash function works is the **"guy in the sky"** analogy[^gal], as illustrated below.
 
 ![guy-in-the-sky](/uploads/guy-in-the-sky.png)
 
@@ -62,7 +73,7 @@ Since inputs are arbitrarily-sized and outputs are fixed-size, a hash function e
 However, the key insight you should keep in mind is that this "compression" is done by picking the output randomly, which has many interesting implications!
 (Well, the devil is in the details, but for now this intuition is good enough.)
 
-## A hash function is "random oracle"
+## A hash function is a "random oracle"
 
 Now, let's take a step away from mythical creatures in the sky and a step closer towards formalizing hash functions.
 
@@ -146,14 +157,28 @@ For example, this is what you see if you try to download Apache OpenOffice:
 
 <img src="/uploads/download-hash.png" width="720" />
 
-The website has links to the SHA256 and SHA512 hashes for the OpenOffice installer file $f$ being downloaded.
-A careful user will download the file $f$, hash it to compute $h=H(f)$ and check if the $h$ they got is the same as the one on the website.
-Then, they will be convinced their download has not been maliciously modified by an attacker, who could've replaced $f$ with $f'$ by controlling the network.
+What is this all about?
+It's about preventing attackers from modifying the files you're downloading!
 
-{: .box-warning}
-**Important:** For this to work, we assume that the user can correctly download the hash of $f$!
-So, in a sense, we are replacing the problem of downloading $f$ correctly with the problem of obtaining $h$ correctly.
-Once $h$ is obtained correctly, the user can verify the larger file $f$ against $h$.
+The Apache OpenOffice installer is a large, frequently-downloaded file.
+As a result, instead of being hosted on the Apache website itself, it might be hosted on external, _insecure_ FTP or HTTP servers (which might be cheaper and/or faster to download from).
+However, since FTP and HTTP channels are not secure, this means that when a user downloads the file, an attacker might maliciously modify it!
+For example, he might replace the file with a virus.
+
+To deal with such attacks, the _secure_ Apache website allows the user to first download the hash $h$ of the OpenOffice installer file $f$.
+In other words, the user can correctly obtain $h=H(f)$.
+Note that the attacker cannot maliciously modify the hash $h$, since the Apache website uses HTTPS.
+This way, the user is guaranteed to have the correct hash $h$ of the installer $f$ they are trying to download.
+
+Next, the user can download the installer file $f$ over the insecure FTP or HTTP channel.
+However, the attacker might replace $f$ with $f'$ by tampering with the channel.
+Fortunately, the user can easily check that $H(f') \ne h$, so they can detect the attack.
+
+But what if the user downloads $f'$ with $H(f') = h$?
+In other words, can the attacker come up with a file $f'\ne f$ but with $H(f') = H(f) = h$?
+This would trick the user into downloading the wrong file $f'$!
+The short answer is "no:" since the hash function is collision resistant, the user can be certain that $f' = f$, so he downloaded the file he intended to.
+We explain why below.
 
 #### Why the adversary can't replace $f$ with a different file $f'$
 
@@ -163,6 +188,7 @@ Let's see why he can't do this.
 If we think of $H$ as a random oracle, what can the adversary do to find such an $f'$?
 The adversary can only query $H$ at whatever points he might think will return $H(f)$.
 But since the random oracle $H$ returns random coin flips for whatever input the adversary provides, this means the adversary has no particular strategy other than brute-force for finding an $f'$ with $H(f')=H(f)$.
+
 With a little probability theory, one can show that the adversary has to query $H$ around $2^{256}$ times to actually find such an $f'$.
 Since this is outside the realm of practicality, our file downloading scheme is considered secure!
 
@@ -177,26 +203,40 @@ If the attacker is successful, he could trick users who have the same $h$ into d
 ### Proof of work
 
 Suppose you want to convince me you've done some amount of computational work.
-Specifically, let's assume you want to convince me you've computed roughly $n$ hashes by calling $H$ on $n$ different inputs.
+Specifically, let's assume you want to convince me you've computed roughly $n$ _different_ hashes by calling $H$ on $n$ _different_ inputs.
 Such a protocol is called a **proof of work** and you can leverage the random oracle nature of hash functions to implement it!
+
+#### An inefficient protocol
 
 Note that if I send you a random value $r$, and you give me back $y=H(r)$, I can check that you computed $H(r)$ correctly by recomputing it myself.
 But it seems like in order to check that you've computed $n$ hashes, I have to give you $n$ different $r$'s and re-compute the $n$ hashes you computed too.
 While this protocol could be thought of as a "proof-of-work," it's not very efficient for me to check that you've done the work.
 Can I verify your work faster?
 
-Since $H$ can be viewed as a random oracle, we know that every $H(r)$ is obtained by flipping 256 random coins.
-For the mathematically-inclined, we also know that, if we want the first $k$ coins flips to be all "heads", then we have to flip these 256 random coins around $2^k$ times.
-For the less mathematically-inclined, if you have 1 in 3 chances to win a teddy bear in a game, you kind of know that if you play around 3 times you're very likely to win.
-Similarly, there are 1 in $2^k$ chances for the first $k$ coins to be all "heads", which is why you have to flip the coins around $2^k$ times.
+#### An efficient, probabilistic protocol
 
-So, it takes $2^k$ tries to get 256 random coins where the first $k$ coins all heads.
-That's like saying it takes around $2^k$ hash computations to get a hash whose first $k$ bits are equal to zero!
+Let's come up with a more efficient protocol for convincing me you've computed _roughly_ $n=2^k$ different hashes.
+Here $k$ can be very large (e.g., $k=60$), since my goal is to really make sure you take a long time to compute these $n=2^k=2^{60}$ hashes.
+This protocol is _probabilistic_ in the sense that, with very small probability, you might trick me into thinking you've computed $n$ hashes when in fact you've computed much fewer.
+(In contrast, in the inefficient protocol, I was always certain you computed _exactly_ $n$ different hashes.)
+The probabilistic nature is not a big deal in certain applications (e.g., Bitcoin), so we accept it.
 
-In other words, say I give you a random value $r$ and you give me a pair $\langle i, h_i = H(i \mid r)\rangle$, where $h_i$ has the first $k$ bits all set to zero and $|$ denotes concatenation.
-Then, I can easily check that $h_i = H(i \mid r)$ using only _one_ hash computation and I'll be pretty sure that it took you around $2^k$ hash computations to find such an $i$.
-I say "pretty sure" because it's also possible you got very lucky and the first $i$ you picked happened to give you an $H(i \mid r)$ with the first $k$ bits zero.
-(But the probability of that happening is pretty low, around $1/2^k$.)
+First, some intuition!
+
+Since $H$ can be viewed as a random oracle, we know that a hash $H(r)$ is obtained by flipping 256 random coins.
+For the mathematically-inclined, we also know that, if we want the first $k=60$ coins flips to be all "heads", then we have to flip these 256 random coins around $2^{60}$ times.
+For the less mathematically-inclined, if you have 1 in 3 chances to win a teddy bear in a game, you kind of know that if you play around 3 times you're likely to win.
+Similarly, there are 1 in $2^{60}$ chances for the first $k=60$ coins to be all "heads", which is why you have to flip the coins around $2^{60}$ times.
+
+So, it takes $2^{60}$ tries to get 256 random coins where the first $60$ coins all heads.
+That's like saying it takes around $2^{60}$ hash computations to get a hash whose first $60$ bits are equal to zero!
+
+That's starting to look like a proof of work!
+
+In other words, say I give you a random value $r$ and you give me a pair $\langle i, h_i = H(i \mid r)\rangle$, where $h_i$ has the first $k=60$ bits all set to zero and $|$ denotes concatenation.
+Then, I can easily check that $h_i = H(i \mid r)$ using only _one_ hash computation and I'll be pretty sure that it took you around $n=2^k=2^{60}$ hash computations to find such an $i$.
+I say "pretty sure" because it's also possible you got very lucky and the first $i$ you picked happened to give you an $H(i \mid r)$ with the first $k=60$ bits zero.
+(But the probability of that happening is pretty low, around $1/2^{60}$.)
 
 #### Why you can't easily trick me when you haven't done the work
 
@@ -259,7 +299,7 @@ Therefore, $h$ cannot leak anything about the hashed input.
 
 ## Conclusion
 
-I promised this post would teach you two things.
+I promised this post would give you two things.
 
 ### A very simple mental model for how hash functions work
 
@@ -286,6 +326,7 @@ Next, we hope to give you a formal model of hash functions, introduce you to Mer
 [^BR93]: **Random Oracles Are Practical: A Paradigm for Designing Efficient Protocols**, by Bellare, Mihir and Rogaway, Phillip, *in Proceedings of the 1st ACM Conference on Computer and Communications Security*, 1993, [[URL]](https://doi.org/10.1145/168588.168596)
 [^CGH98]: **The Random Oracle Methodology, Revisited**, by Ran Canetti, Oded Goldreich, Shai Halevi, *in Cryptology ePrint Archive, Report 1998/011*, 1998, [[URL]](https://eprint.iacr.org/1998/011)
 [^CLRS09]: **Introduction to Algorithms, Third Edition**, by Cormen, Thomas H. and Leiserson, Charles E. and Rivest, Ronald L. and Stein, Clifford, 2009
+[^gal]: Obviously, this could've been a "gal in the sky" or a "person in the sky," but "guy in the sky" rhymes better!
 [^KL15]: **Introduction to Modern Cryptography**, by Jonathan Katz and Yehuda Lindell, 2007
 [^KM15]: **The Random Oracle Model: A Twenty-Year Retrospective**, by Neal Koblitz and Alfred Menezes, *in Cryptology ePrint Archive, Report 2015/140*, 2015, [[URL]](https://eprint.iacr.org/2015/140)
 [^Merkle87]: **A Digital Signature Based on a Conventional Encryption Function**, by Merkle, Ralph C., *in CRYPTO '87*, 1988
