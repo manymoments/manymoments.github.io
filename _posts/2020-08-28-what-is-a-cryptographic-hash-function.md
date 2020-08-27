@@ -131,7 +131,7 @@ Such a pair $(x,x')$ is called a **collision** and can be disastrous in many app
 _For the less mathematically-inclined:_ It's as if we have an infinite amount of puppies and $2^{256}$ people who want to pet them. This tells us that, if all puppies are to be petted by someone, then someone has to pet more than one puppy!
 In other words, there will be two puppies $x$ and $x'$ that are petted by the same person $y$[^bliss]$^,$[^ppp].
 
-Restated formally, because the _domain_ $$\{0,1\}^*$$ of $H$ is larger than the _range_ $$\{0,1\}^{256}$$ of $H$, there must exist two inputs $x\ne x'$ that map to the same output $y=H(x)=H(x')$.
+Restated formally, because the _domain_ $\\{0,1\\}^\*$ of $H$ is larger than the _range_ $\\{0,1\\}^{256}$ of $H$, there must exist two inputs $x\ne x'$ that map to the same output $y=H(x)=H(x')$.
 
 Fortunately, in the random oracle model, one can show that finding such a collision is infeasible, requiring on average $2^{128}$ hash function invocations, which is an astronomical number that is outside the realm of practicality.
 (We'll describe this collision-finding algorithm, which is called the _birthday attack_, in another post.)
@@ -239,9 +239,9 @@ I say "pretty sure" because it's also possible you got very lucky and the first 
 
 #### Why you can't easily trick me when you haven't done the work
 
-Your goal, as the adversary, is to find an $i$ such that $$h_i = H(i \mid r)$$ has $k$ leading zeros, but you want to do so while computing much fewer than $2^k$ hashes.
+Your goal, as the adversary, is to find an $i$ such that $h_i = H(i \mid r)$ has $k$ leading zeros, but you want to do so while computing much fewer than $2^k$ hashes.
 
-Once again, since $H$ is a random oracle, your only strategy is to simply query $H$ at inputs of the form $$i\mid r$$.
+Once again, since $H$ is a random oracle, your only strategy is to simply query $H$ at inputs of the form $i\mid r$.
 Each query gives you an output $h_i$ whose probability of having $k$ leading zeros is $1/2^k$.
 As a result, to ensure you get such an $h_i$ you have to "try" computing different $h_i$'s around $2^k$ times (for those who are into probability theory, this *around* is essentially *concentration of measure*).
 
@@ -281,7 +281,7 @@ This "joint" coin will be "fair" as long as one of you flipped their coins fairl
 #### Committing to your coin flips
 
 The remaining question is how can we build such a **commitment scheme** that **hides** the coin flip and **binds** you to it.
-Note that if we simply hash the coin outcome as, say, $$h = H(\text{"heads"})$$ and let $h$ be the commitment, then this is **not** hiding.
+Note that if we simply hash the coin outcome as, say, $h = H(\text{"heads"})$ and let $h$ be the commitment, then this is **not** hiding.
 Specifically, if you give your friend the hash $h$, they can easily check if $h$ is equal to $H(\text{"heads"})$ or to $H(\text{"tails"})$, so they will know your coin flip.
 On the other hand, $h$ is binding since, once you've given $h = H(\text{"heads"})$ to your friend, you cannot later pretend that $h = H(\text{"tails"})$, since the probability of that happening is $1/2^{256}$.
 
