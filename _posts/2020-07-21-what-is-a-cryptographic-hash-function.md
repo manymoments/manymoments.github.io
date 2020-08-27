@@ -244,10 +244,10 @@ Your goal, as the adversary, is to find an $i$ such that $$h_i = H(i \mid r)$$ h
 
 Once again, since $H$ is a random oracle, your only strategy is to simply query $H$ at inputs of the form $$i\mid r$$.
 Each query gives you an output $h_i$ whose probability of having $k$ leading zeros is $1/2^k$.
-As a result, to ensure you get such an $h_i$ you have to "try" computing different $h_i$'s around $2^k$ times.
+As a result, to ensure you get such an $h_i$ you have to "try" computing different $h_i$'s around $2^k$ times (for those who are into probability theory, this *around* is essentially *concentration of measure*).
 
 {: .box-note}
-Why is the probability of a hash having $k$ leading zeros equal to $1/2^k$? 
+Why is the probability of a hash having $k$ leading zeros equal to $1/2^k$?
 Because $H$ is a random oracle and each bit of the output has probability $1/2$ of being a zero and $1/2$ of being a one!
 As a consequence, the probability that you get $k$ consecutive zeros is $\underbrace{1/2 \cdot 1/2 \cdot \cdots \cdot 1/2}_{k\ \text{times}}=(1/2)^k = 1/2^k$.
 
@@ -279,7 +279,7 @@ If both coins are "heads" or "tails", the joint coin is "heads" or "tails," resp
 If one of the coin is "tails" but the other is "head", the joint coin is "tails."
 This "joint" coin will be "fair" as long as one of you flipped their coins fairly.
 
-#### Committing to your coin flips 
+#### Committing to your coin flips
 
 The remaining question is how can we build such a **commitment scheme** that **hides** the coin flip and **binds** you to it.
 Note that if we simply hash the coin outcome as, say, $$h = H(\text{"heads"})$$ and let $h$ be the commitment, then this is **not** hiding.
