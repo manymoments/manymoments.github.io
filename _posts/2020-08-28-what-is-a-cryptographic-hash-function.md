@@ -319,6 +319,8 @@ A key application of commitments are coin-flipping protocols (with some caveats)
 **What is next?**
 Next, we hope to give you a formal model of hash functions, introduce you to Merkle hash trees and then reduce Merkle hash tree security to the collision-resistance of hash-functions.
 
+**Acknowledgment.** We would like to thank Ittai Abraham for his help on this post! 
+
 ## References
 
 [^bliss]: In fact, each person will pet an infinite amount of puppies, which incidentally is the most blissful thing I can imagine right now!
