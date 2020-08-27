@@ -1,5 +1,6 @@
 ---
 title: What is a Cryptographic Hash Function?
+#date: 2020-08-28 00:00:00 -11:00
 date: 2020-08-28 10:05:00 -07:00
 tags:
 - cryptography
@@ -111,10 +112,10 @@ We know that, for certain cryptosystems proven secure with a random oracle, repl
 
 ## Hash functions as mathematical functions
 
-We've established that a hash function can be thought of as a random oracle that, given some input $$x\in \{0,1\}^*$$ (i.e., an arbitrarily-sized sequence of bits) returns a "random," fixed-size input $$y\in \{0,1\}^{256}$$ (i.e., 256 bits) and will always return that same $y$ given that same $x$ as input.
+We've established that a hash function can be thought of as a random oracle that, given some input $x\in \\{0,1\\}^*$ (i.e., an arbitrarily-sized sequence of bits) returns a "random," fixed-size input $y\in \\{0,1\\}^{256}$ (i.e., 256 bits) and will always return that same $y$ given that same $x$ as input.
 (We assume the output size is 256 bits. We'll explain later why.)
 
-Formally, we can define a hash function as a [mathematical function](https://en.wikipedia.org/wiki/Function_(mathematics)) $$H : \{0,1\}^* \mapsto \{0,1\}^{256}$$.
+Formally, we can define a hash function as a [mathematical function](https://en.wikipedia.org/wiki/Function_(mathematics)) $H : \\{0,1\\}^\* \mapsto \\{0,1\\}^{256}$.
 We use $H(x) = y$ to denote that $y$ is the output of $H$ on input $x$.
 
 <!-- TODO: I am not sure what "maps each input to a random, uniform 256-bit output" means when the input space is of infinite size (e.g., {0,1}^*) -->
