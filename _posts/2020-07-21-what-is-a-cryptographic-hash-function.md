@@ -1,7 +1,7 @@
 ---
 title: What is a Cryptographic Hash Function?
-date: 2020-07-21 10:05:00 -07:00
-published: false
+date: 2020-08-28 10:05:00 -07:00
+published: true
 tags:
 - cryptography
 - hashing
