@@ -1,7 +1,8 @@
 ---
 title: Synchronous Consensus under Omission Faults
-date: 2020-05-25 03:10:00 -07:00
+date: 2020-09-05 03:10:00 -07:00
 published: false
+
 tags:
 - dist101
 - SMR
@@ -16,37 +17,40 @@ Let's begin with a quick overview of what we covered in previous posts:
 
 2. [Lower bound](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/): The best we can hope for is to tolerate less than $n/2$ omission failures.
 
-We will recall the upper bound for crash failures. Then see what goes wrong when the failures are omission and how we can fix the protocol.
 
-### Primary-Backup for $n$ Replicas Under Crash Faults
+
+
+
+
+### Recap: Primary-Backup for $n$ Replicas Under Crash Faults
 
 In the crash model, the primary behaves as an ideal state machine until it crashes. If it does crash, the backup takes over the execution to continue serving the clients. To provide the clients with an interface of a single non-faulty server, the primary sends client commands to all backups before updating the state machine and responding to the client. The backups passively replicate all the commands sent by the primary. In case the primary fails, which is detected by the absence of a "heartbeat", the next designated backup replica $j$ invokes a ("view change", $j$) to all replicas along with the last command sent by the primary in view $j-1$. It then becomes the primary.
 
 For completeness, we repeat the primary-backup pseudocode below for $n$ replicas with identifiers ${0,1,2,\\dots,n-1}$.
 
     // Replica j
-    
+
     state = init
     log = []
     view = 0
     while true:
-    
+
        // as a primary
        on receiving cmd from a client library (and view == j):
           send cmd to all replicas
           log.append(cmd)
           state, output = apply(cmd, state)
           send output to the client library
-          
+
        // as a backup
        on receiving cmd from replica[view]:
           log.append(cmd)
           state, output = apply(cmd, state)
-    
+
        // heartbeat from primary
        if no client message for some predetermined time t (and view == j):
           send ("heartbeat", j) to all replicas (in order)
-    
+
        // view change
        on missing "heartbeat" or cmd from replica[view] in the last t + $\Delta$ time units:
           view = view + 1
@@ -54,70 +58,82 @@ For completeness, we repeat the primary-backup pseudocode below for $n$ replicas
              send ("view change", j) to all client libraries
              send resend to all replicas (in order)
 
-Can we use the above protocol under omission failures? ... No! Here is where the protocol fails:
+Can we use the above protocol under omission failures? ... unfortunately not! This is due to a big difference between crash and omission failures. With crash failures you know who is faulty: if a message does not arrive you know the sender has crashed. With omission failures, you don't know if a missed message is due to a faulty  sender or faulty receiver. So a replica may be faulty without knowing its faulty.
 
-1. In the above protocol, the primary sends the command `cmd` to all backup replicas and then immediately executes the state machine (executing `apply(cmd, state)`) and responds to the client library. Under omission failures, a faulty primary may omit all messages to the replicas, then send a message to the client, then crash. So just one client receives 'cmd', but is no backup replicating the command!
+With  omission failures, a faulty primary may omit messages to the replicas, then send a message to the client, then crash. So a client receives 'cmd', but there is no backup replicating the command. So how can you commit safely?
 
-2. When a backup needs to invoke a view-change to become the new primary, it may not know the last command that was executed. Simply maintaining a "lock" variable consisting of the last command does not suffice since the last few commands may not have been received by a backup replica.
+## The two choices for safety
 
-To deal with the first problem, how can a primary know if its message was sent to a sufficient number of replicas? ... By waiting to hear an acknowledgment! But even if the primary is non-faulty and sends a message to all replicas, how many acknowledgments can it wait for without losing liveness? ... Clearly, it cannot wait for more than $n-f$! Hence, in our protocol, the primary waits for a majority of acknowledgments before it commits a command.
+There are two different ways to solve this problem:
+1. The *lock-commit* (asynchrony) approach: **before** you commit to $x$, make sure that at least $n-ff$ non-faulty replicas received a lock on $x$. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee to hear from at least one party locked on $x$. We will cover the lock-commit approach in the next post - it the the core idea behind [Paxos]()!
 
-Here's how we deal with the second problem. We want to guarantee that if some non-faulty replica decides on a command, then all non-faulty replicas will decide on the same command within $\Delta$ time. In the synchronous model this is simple: just notify your decision via broadcast.
+2. The *commit-notify* (synchrony) approach: **after** you commit to $x$, send to all a notify of $x$. Make sure the view change waits sufficient time for the notify echo to arrive. Since any later view change will hear from $n-f$ parties, then quorum intersection will be guarantee to hear from at least one party that heard the notify of $x$.
 
 
-## Primary-Backup for $n$ Replicas Under Omission Faults
+A clear advantage of the commit-notify approach is that the commit happens one round earlier!
+Note that the second path also comes with several disadvantages:
+1. Safety depends on synchrony. This is similar to [Dolev-Strong]().
+2. Safety is only guaranteed for non-faulty replicas: A replica may commit and then crash before any notify message is sent.
 
-**Steady-state protocol.** We now detail the steady-state protocol tolerating omission failures under a fixed primary; we later discuss the view-change protocol.
+
+
+## commit-notify in the steady state:
+
+**Steady-state protocol.** We  detail the steady-state protocol tolerating omission failures under a fixed primary; we later discuss the view-change protocol.
 
     // Replica j
-    
+
     state = init // the state of the state machine
     log = []     // the log of committed commands
     view = 0     // view number that indicates the current Primary
     acks = []
     seq-no = 0
-    
+
     while true:
-       // as a primary
+       // as a primary receiving from client
        on receiving cmd from a client library (and view == j):
           if acks[seq-no] == 0 // seq-no is available
              send ("propose", cmd, seq-no) to all replicas
              acks[seq-no] = acks[seq-no] + 1
-    
-       on receiving ("vote", cmd, seq-no') from a backup replica r:
-          if seq-no == seq-no':
-             acks[seq-no] = acks[seq-no] + 1
-             if acks[seq-no] > n/2:
+
+       // as a backup replica
+       on receiving ("propose", cmd, seq-no') from replica[view] from the primary replica[view]:
+          if seq-no' == seq-no: // if the replica is at the same sequence number
+          send ("notify", cmd, seq-no) to all replicas
+          log.append(cmd)
+          state, output = apply(cmd, state)
+          send output to the client library
+          seq-no = seq-no + 1
+
+
+          on receiving ("notify", cmd, seq-no') or ("notify-forward", cmd, seq-no') from any replica:
+             if seq-no' == seq-no:
                 log.append(cmd)
                 state, output = apply(cmd, state)
-                send output to the client library
-                send ("notify", cmd, seq-no) to all replicas
+                send ("notify-forward", cmd, seq-no) to all replicas
                 seq-no = seq-no + 1
-      
-       // as a backup
-       on receiving ("propose", cmd, seq-no') from replica[view] from the primary replica[view]:
-          if seq-no' == seq-no: // if the replica is at the same sequence number and has not already voted for this command
-             send ("vote", cmd, seq-no) to replica[view]
-             
-       on receiving ("notify", cmd, seq-no') or ("notify-forward", cmd, seq-no') from any replica:
-          if seq-no' == seq-no:
-             log.append(cmd)
-             state, output = apply(cmd, state)
-             send ("notify-forward", cmd, seq-no) to all replicas
-             seq-no = seq-no + 1
-    
+
+
+
        // Heartbeat from primary
        if no client message for some predetermined time t (and view == j):
           send ("heartbeat", j) to all replicas (in order)
 
 In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("propose", cmd, seq-no) message. The sequence number seq-no keeps track of the ordering of messages. It also marks itself as processing the current command.
 
-A backup replica, on receiving a ("propose", cmd, seq-no) from the current primary,  if it has not already voted for this seq-no, sends a ("vote", cmd, seq-no) message back to the primary. 
+A backup replica, on receiving a ("propose", cmd, seq-no) from the current primary, ....
 
-If the primary receives *votes* from a majority of replicas, the primary can add the command to the log, execute it, and send an output to the client. It also *notifies* the backup replicas about the commit, who can then add the command to their logs and execute it. To keep all backup replicas in sync, backups also *forward* the notify message. 
+It also *notifies* the backup replicas about the commit, who can then add the command to their logs and execute it. To keep all backup replicas in sync, backups also *forward* the notify message.
+
+
 
 The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
 
+
+
+
+
+## commit-notify, changing view with synchrony:
 
 
 
@@ -133,13 +149,13 @@ There is a small twist: the observation above implies that to maintain safety, a
        // blame the current leader
        on missing "heartbeat" or a proposal from replica[view] in the last t + $\Delta$ time units:
           send ("no heartbeat", view) to replica[view + 1]
-    
+
        // new primary
        on receiving ("no heartbeat", view) from f+1 replicas (and view == j-1):
           send ("view-change", view) to all replicas
           send ("view-change", view) to all client libraries
           stop participating in this view; set view = view + 1
-    
+
        // as a backup
        on receiving ("view-change", view') from replica[view'+1] or ("view-change-forward", view') from any replica (and view' >= view):
           send ("view-change-forward", view') to all replicas
@@ -147,24 +163,35 @@ There is a small twist: the observation above implies that to maintain safety, a
           wait for $2\Delta$ time units to hear about any notifications   
           If you hear a notification then send it to replica[view'+1]
           set view = view' + 1, transition to steady state
-       
+
        // new primary: proposes the notify
+       //ITTI NEED TO UPDATE THIS
        on receiving ("status", view', lock, seq-no) from f+1 distinct replicas (and view' == j):
           highest-lock, seq-no = pick the (lock, seq-no) pair with the highest seq-no
           if highest-lock != none:
             send ("propose", highest-lock, seq-no) to all replicas (in order)
-            lock = highest-lock
           transition to steady state
+
+
+
+
+
+
+
 
 The view-change protocol works as follows. If a replica does not receive a heartbeat from the primary for a sufficient amount of time, it sends a "no heartbeat" message to the primary of the next view. The new primary, on receiving "no heartbeat" messages from a majority of replicas, initiates a view change by sending a "view-change" message. It stops participating in this view.
 
-On receiving a "view-change" message, every replica first forwards the view-change message to every other replica. In order to stay in sync with other non-faulty replicas who may not have received a view-change message at the same time and may be making progress, it waits for some time (turns out $2\\Delta$ time suffices) to update its locks or notifications. It then stops participating in the view, and sends its status consisting of the highest seq-no and an outstanding command (lock), if there is one, to the next leader. It then transitions to the steady state.
+On receiving a "view-change" message, every replica first forwards the view-change message to every other replica. In order to stay in sync with other non-faulty replicas who may not have received a view-change message at the same time and may be making progress, it waits for some time (turns out $2\\Delta$ time suffices)
+
+//ITTAI UPDATE THIS
+
+to update its locks or notifications. It then stops participating in the view, and sends its status consisting of the highest seq-no and an outstanding command (lock), if there is one, to the next leader. It then transitions to the steady state.
 
 The next primary, on obtaining the status message from a majority of replicas (including itself), picks the lock corresponding to the highest sequence number. Recall that there can be at most one outstanding command at any time, and this command, if it exists, is the lock corresponding to the highest seq-no. Thus, the next primary proposes this command, if it exists, to all replicas and then transitions to the steady state.
 
 Let us review some important aspects of this protocol:
 
-* **Safety:** If a primary commits a value, a majority of the replicas will lock on this value. In fact, in our protocol, since non-faulty replicas are always in sync, all non-faulty replicas lock on this value before they end their view. Since the primary in the next view receives a status from a majority of replicas, if the command is not executed in the previous view, the new primary will obtain this lock. Observe that a lock at a higher sequence number does not exist. This is because replicas only process commands one at a time, and none of the non-faulty replicas will vote for a subsequent command until the locked command is executed.
+* **Safety:** ...
 
 * **Liveness:** KARTIK: IS THERE A LIVENESS CONCERN WITH AN OMISSION FAULT GOING ONE AHEAD OF ALL HONEST REPLICAS? e.g., ALL HONEST REPLICAS ARE LOCKED AT SEQ-NO 10. The faulty primary notifies a faulty replica of a commit and this message is received by the next leader in the status message. The next leader assumes that this command has been committed and does not re-propose.
 
