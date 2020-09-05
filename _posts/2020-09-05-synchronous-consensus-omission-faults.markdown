@@ -1,6 +1,11 @@
 ---
-title: Synchronous Consensus Omission Faults
-date: 2020-09-05 00:00:00 -07:00
+title: Commit-Notify: Synchronous Consensus under Omission Faults
+date: 2020-09-05 03:10:00 -07:00
+published: false
+tags:
+- dist101
+- SMR
+author: Kartik Nayak, Ittai Abraham
 ---
 
 We continue our series of posts on [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) (SMR). In this post, we move from consensus under [crash failures](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) to consensus under [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). We still keep the [synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) assumption.
