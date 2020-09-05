@@ -1,5 +1,5 @@
 ---
-title: Synchronous Consensus under Omission Faults
+title: Commit-Notify: Synchronous Consensus under Omission Faults
 date: 2020-09-05 03:10:00 -07:00
 published: false
 tags:
