@@ -64,9 +64,9 @@ With  omission failures, a faulty primary may omit messages to the replicas, the
 ## The two choices for safety
 
 There are two different ways to solve this problem:
-1. The *lock-commit* (asynchrony) approach: **before** you commit to $x$, make sure that at least $n-ff$ non-faulty replicas received a lock on $x$. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee to hear from at least one party locked on $x$. We will cover the lock-commit approach in the next post - it the the core idea behind [Paxos]()!
+1. The *lock-commit* (asynchrony) approach: **before** you commit to $x$, make sure that at least $n-f$ non-faulty replicas received a lock on $x$. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee to hear from at least one party locked on $x$. We will cover the lock-commit approach in the next post - it is the core idea behind [Paxos]()!
 
-2. The *commit-notify* (synchrony) approach: **after** you commit to $x$, send to all a notify of $x$. Make sure the view change waits sufficient time for the notify echo to arrive. Since any later view change will hear from $n-f$ parties, then quorum intersection will be guarantee to hear from at least one party that heard the notify of $x$.
+2. The *commit-notify* (synchrony) approach: **after** you commit to $x$, send to all a notify of $x$. Make sure the view change waits sufficient time for the notify echo to arrive. Since any later view change will hear from $n-f$ parties, then quorum intersection will be guaranteed to hear from at least one party that heard the notify of $x$.
 
 
 A clear advantage of the commit-notify approach is that the commit happens one round earlier!
@@ -78,7 +78,7 @@ Note that the second path also comes with several disadvantages:
 
 ## commit-notify in the steady state:
 
-**Steady-state protocol.** We  detail the steady-state protocol tolerating omission failures under a fixed primary; we later discuss the view-change protocol.
+We  detail the steady-state protocol tolerating omission failures under a fixed primary; we later discuss the view-change protocol.
 
     // Replica j
 
@@ -92,27 +92,19 @@ Note that the second path also comes with several disadvantages:
        // as a primary receiving from client
        on receiving cmd from a client library (and view == j):
           if acks[seq-no] == 0 // seq-no is available
-             send ("propose", cmd, seq-no) to all replicas
-             acks[seq-no] = acks[seq-no] + 1
+            send ("propose", cmd, seq-no) to all replicas
+            acks[seq-no] = acks[seq-no] + 1
 
        // as a backup replica
-       on receiving ("propose", cmd, seq-no') from replica[view] from the primary replica[view]:
+       on receiving ("propose", cmd, seq-no') from the primary replica[view] or ("notify", cmd, seq-no') from any replica:
           if seq-no' == seq-no: // if the replica is at the same sequence number
-          send ("notify", cmd, seq-no) to all replicas
-          log.append(cmd)
-          state, output = apply(cmd, state)
-          send output to the client library
-          seq-no = seq-no + 1
-
-
-          on receiving ("notify", cmd, seq-no') or ("notify-forward", cmd, seq-no') from any replica:
-             if seq-no' == seq-no:
-                log.append(cmd)
-                state, output = apply(cmd, state)
-                send ("notify-forward", cmd, seq-no) to all replicas
-                seq-no = seq-no + 1
-
-
+             // commit
+             log.append(cmd)
+             state, output = apply(cmd, state)
+             send output to the client library
+             // notify
+             send ("notify", cmd, seq-no) to all replicas
+             seq-no = seq-no + 1
 
        // Heartbeat from primary
        if no client message for some predetermined time t (and view == j):
@@ -147,32 +139,24 @@ There is a small twist: the observation above implies that to maintain safety, a
 
        // blame the current leader
        on missing "heartbeat" or a proposal from replica[view] in the last t + $\Delta$ time units:
-          send ("no heartbeat", view) to replica[view + 1]
+          send ("no heartbeat", view) to all replicas
+          
+       // as a primary or backup
+       on receiving ("no heartbeat", view) from f+1 replicas for the current view j:
+          forward the f+1 ("no heartbeat", view) messages to all replicas
+          stop participating in view j but record notify message received
+          wait for $2\Delta$ time
+          view = view + 1
+          Let cmd' and seq-no' be the command for the largest seq-no received
+          send ("status", view-1, cmd', seq-no') to replica[view]
+          send ("view-change", view-1) to all client libraries
 
        // new primary
-       on receiving ("no heartbeat", view) from f+1 replicas (and view == j-1):
-          send ("view-change", view) to all replicas
-          send ("view-change", view) to all client libraries
-          stop participating in this view; set view = view + 1
-
-       // as a backup
-       on receiving ("view-change", view') from replica[view'+1] or ("view-change-forward", view') from any replica (and view' >= view):
-          send ("view-change-forward", view') to all replicas
-          stop participating in this view
-          wait for $2\Delta$ time units to hear about any notifications   
-          If you hear a notification then send it to replica[view'+1]
-          set view = view' + 1, transition to steady state
-
-       // new primary: proposes the notify
-       //ITTI NEED TO UPDATE THIS
-       on receiving ("status", view', lock, seq-no) from f+1 distinct replicas (and view' == j):
-          highest-lock, seq-no = pick the (lock, seq-no) pair with the highest seq-no
-          if highest-lock != none:
-            send ("propose", highest-lock, seq-no) to all replicas (in order)
+       on receiving ("status", view', cmd', seq-no') from f+1 distinct replicas (and view' == j):
+          cmd, seq-no = pick the (cmd', seq-no') pair with the highest seq-no
+          send ("view-change", view') to all client libraries
+          send ("propose", cmd, seq-no) to all replicas (in order)
           transition to steady state
-
-
-
 
 
 
