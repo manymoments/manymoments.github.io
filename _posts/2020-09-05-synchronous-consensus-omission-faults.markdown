@@ -90,13 +90,13 @@ We  detail the steady-state protocol tolerating omission failures under a fixed 
 
     while true:
        // as a primary receiving from client
-       on receiving cmd from a client library (and view == j):
+       on receiving cmd from a client library:
           if acks[seq-no] == 0 // seq-no is available
-            send ("propose", cmd, seq-no) to all replicas
-            acks[seq-no] = acks[seq-no] + 1
+             send ("propose", cmd, seq-no) to all replicas
+             acks[seq-no] = acks[seq-no] + 1
 
        // as a backup replica
-       on receiving ("propose", cmd, seq-no') from the primary replica[view] or ("notify", cmd, seq-no') from any replica:
+       on receiving ("propose", cmd, seq-no') from the primary replica or ("notify", cmd, seq-no') from any replica:
           if seq-no' == seq-no: // if the replica is at the same sequence number
              // commit
              log.append(cmd)
@@ -142,9 +142,9 @@ There is a small twist: the observation above implies that to maintain safety, a
           send ("no heartbeat", view) to all replicas
           
        // as a primary or backup
-       on receiving ("no heartbeat", view) from f+1 replicas for the current view j:
+       on receiving ("no heartbeat", view) from f+1 replicas for the current view:
           forward the f+1 ("no heartbeat", view) messages to all replicas
-          stop participating in view j but record notify message received
+          stop participating in this view but record notify message received
           wait for $2\Delta$ time
           view = view + 1
           Let cmd' and seq-no' be the command for the largest seq-no received
@@ -152,9 +152,8 @@ There is a small twist: the observation above implies that to maintain safety, a
           send ("view-change", view-1) to all client libraries
 
        // new primary
-       on receiving ("status", view', cmd', seq-no') from f+1 distinct replicas (and view' == j):
+       on receiving ("status", view', cmd', seq-no') from f+1 distinct replicas:
           cmd, seq-no = pick the (cmd', seq-no') pair with the highest seq-no
-          send ("view-change", view') to all client libraries
           send ("propose", cmd, seq-no) to all replicas (in order)
           transition to steady state
 
