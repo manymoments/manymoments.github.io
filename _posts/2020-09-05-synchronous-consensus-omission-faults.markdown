@@ -96,8 +96,9 @@ We  detail the steady-state protocol tolerating omission failures under a fixed 
              acks[seq-no] = acks[seq-no] + 1
 
        // as a backup replica
-       on receiving ("propose", cmd, seq-no') from the primary replica or ("notify", cmd, seq-no') from any replica:
+       on receiving ("propose", cmd, seq-no') from any replica:
           if seq-no' == seq-no: // if the replica is at the same sequence number
+             send ("propose", cmd, seq-no) to all replicas
              // commit
              log.append(cmd)
              state, output = apply(cmd, state)
@@ -105,6 +106,11 @@ We  detail the steady-state protocol tolerating omission failures under a fixed 
              // notify
              send ("notify", cmd, seq-no) to all replicas
              seq-no = seq-no + 1
+       
+       on receiving ("notify", cmd, seq-no) from any replica:
+          // store the highest seq-no and cmd
+          if seq-no > highest-seq-no:
+             highest-cmd, highest-seq-no = cmd, seq-no
 
        // Heartbeat from primary
        if no client message for some predetermined time t (and view == j):
