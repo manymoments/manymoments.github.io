@@ -85,20 +85,19 @@ We  detail the steady-state protocol tolerating omission failures under a fixed 
     state = init // the state of the state machine
     log = []     // the log of committed commands
     view = 0     // view number that indicates the current Primary
-    acks = []
     seq-no = 0
+    highest-seq-no = 0
+    highest-cmd = null
 
     while true:
        // as a primary receiving from client
        on receiving cmd from a client library:
-          if acks[seq-no] == 0 // seq-no is available
-             send ("propose", cmd, seq-no) to all replicas
-             acks[seq-no] = acks[seq-no] + 1
+          send ("propose", cmd, seq-no) to all replicas
 
-       // as a backup replica
+       // as a primary or backup replica
        on receiving ("propose", cmd, seq-no') from any replica:
           if seq-no' == seq-no: // if the replica is at the same sequence number
-             send ("propose", cmd, seq-no) to all replicas
+             send ("propose", cmd, seq-no) to all replicas (if it has not been sent earlier)
              // commit
              log.append(cmd)
              state, output = apply(cmd, state)
@@ -107,6 +106,7 @@ We  detail the steady-state protocol tolerating omission failures under a fixed 
              send ("notify", cmd, seq-no) to all replicas
              seq-no = seq-no + 1
        
+       // as a primary or backup replica
        on receiving ("notify", cmd, seq-no) from any replica:
           // store the highest seq-no and cmd
           if seq-no > highest-seq-no:
@@ -116,17 +116,11 @@ We  detail the steady-state protocol tolerating omission failures under a fixed 
        if no client message for some predetermined time t (and view == j):
           send ("heartbeat", j) to all replicas (in order)
 
-In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("propose", cmd, seq-no) message. The sequence number seq-no keeps track of the ordering of messages. It also marks itself as processing the current command.
+In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("propose", cmd, seq-no) message. The sequence number seq-no keeps track of the ordering of messages. On receiving a ("propose", cmd, seq-no') message, a replica does the following. It checks if the cmd is at the next sequence number that it expects a command from. This ensures that it does not process the same cmd/seq-no multiple times. If it is the expected seq-no, it (i) forwards the proposal to all replicas and then (ii) performs the commit-notify step. If the backup replica $r$ is non-faulty, proposal forwarding ensures that all honest replicas receive the proposal, *even if* the primary is omission faulty. The commit-notify step ensures that if $r$ commits, all non-faulty replicas are notified within $\Delta$ time. On receiving a ("notify", cmd, seq-no) message, every replica maintains the (cmd, seq-no) pair for the highest-seq-no ever received. The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
 
-A backup replica, on receiving a ("propose", cmd, seq-no) from the current primary, ....
-
-It also *notifies* the backup replicas about the commit, who can then add the command to their logs and execute it. To keep all backup replicas in sync, backups also *forward* the notify message.
-
-
-
-The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
-
-
+We make two important observations here:
+1. If a non-faulty replica commits a cmd at seq-no at time $t$, then any non-faulty replicas that has not quit the current view will commit within time $t+\Delta$: this is simply because it will receive the forwarded proposal by time $t+\Delta$.
+2. If a non-faulty replica $r$ commits a cmd at seq-no at time $t$, then for all non-faulty replicas $r'$, either they will have committed cmd at seq-no before entering the next view or (highest-cmd, highest-seq-no) = (cmd, seq-no). If $r'$ does not quit view by time $t+\Delta$, then it will commit cmd (follows from the previous observation). For the other part, observe that $r'$ could not have quit view before time $t-\Delta$, otherwise replica $r$ would then have quit view before time $t$ and not committed cmd. Thus, $r'$ has quit view at time $> t-\Delta$ and entered the next view at time $> t+\Delta$. This time is sufficient for $r'$ to receive the notification from $r$. Moreover, since we assume that the client sends the next command after the previous one has been committed, any honest replica will not have committed a command with a higher sequence number in this view. Thus, $r'$ will have (highest-cmd, highest-seq-no) = (cmd, seq-no) before entering the next view.
 
 
 
