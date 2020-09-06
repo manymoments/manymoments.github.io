@@ -149,18 +149,19 @@ There is a small twist: the observation above implies that to maintain safety, a
           
        // as a primary or backup
        on receiving ("no heartbeat", view) from f+1 replicas for the current view:
+          // make other replicas quit view and wait to be notified of their commits
           forward the f+1 ("no heartbeat", view) messages to all replicas
-          stop participating in this view but record notify message received
-          wait for $2\Delta$ time
+          stop participating in this view except for acting on notify message received for $2\Delta$ time
+          // switch to new view and send status to new leader
           view = view + 1
-          Let cmd' and seq-no' be the command for the largest seq-no received
-          send ("status", view-1, cmd', seq-no') to replica[view]
+          send ("status", view, highest-cmd, highest-seq-no) to replica[view]
           send ("view-change", view-1) to all client libraries
+          // backups transition to steady state
 
        // new primary
-       on receiving ("status", view', cmd', seq-no') from f+1 distinct replicas:
-          cmd, seq-no = pick the (cmd', seq-no') pair with the highest seq-no
-          send ("propose", cmd, seq-no) to all replicas (in order)
+       on receiving ("status", view', highest-cmd, highest-seq-no) from f+1 distinct replicas:
+          pick the (highest-cmd, highest-seq-no) pair with the highest seq-no
+          send ("propose", highest-cmd, highest-seq-no) to all replicas (in order)
           transition to steady state
 
 
