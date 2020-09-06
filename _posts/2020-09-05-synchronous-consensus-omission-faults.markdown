@@ -162,17 +162,7 @@ There is a small twist: the observation above implies that to maintain safety, a
 
 
 
-The view-change protocol works as follows. If a replica does not receive a heartbeat from the primary for a sufficient amount of time, it sends a "no heartbeat" message to the primary of the next view. The new primary, on receiving "no heartbeat" messages from a majority of replicas, initiates a view change by sending a "view-change" message. It stops participating in this view.
-
-On receiving a "view-change" message, every replica first forwards the view-change message to every other replica. In order to stay in sync with other non-faulty replicas who may not have received a view-change message at the same time and may be making progress, it waits for some time (turns out $2\\Delta$ time suffices)
-
-//ITTAI UPDATE THIS
-
-to update its locks or notifications. It then stops participating in the view, and sends its status consisting of the highest seq-no and an outstanding command (lock), if there is one, to the next leader. It then transitions to the steady state.
-
-The next primary, on obtaining the status message from a majority of replicas (including itself), picks the lock corresponding to the highest sequence number. Recall that there can be at most one outstanding command at any time, and this command, if it exists, is the lock corresponding to the highest seq-no. Thus, the next primary proposes this command, if it exists, to all replicas and then transitions to the steady state.
-
-Let us review some important aspects of this protocol:
+The view-change protocol works as follows. If a replica does not receive a heartbeat from the primary for a sufficient amount of time, it sends a "no heartbeat" message to all replicas. Any replica, on receiving "no heartbeat" messages from $f+1$ distinct replicas will quit view and forward this message to all other replicas. After quitting the view, the replicas wait for some time ($2\Delta$ time) to receive any notifications from the commit of a non-faulty replica (we will explain the magic $2\Delta$ number soon). After that, it enters the new view, notifies the new primary of its (highest-cmd, highest-seq-no) through a status message, notifies client libraries of the view-change and then transitions to the steady state. The new primary, on receiving a status from $f+1$ distinct replicas, picks a cmd with the highest-seq-no and proposes it to all replicas. It then transitions to the steady state.
 
 * **Safety:** ...
 
