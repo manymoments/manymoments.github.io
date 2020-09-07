@@ -12,9 +12,9 @@ We continue our series of posts on [State Machine Replication](https://decentral
 
 Let's begin with a quick overview of what we covered in previous posts:
 
-1. [Upper bound](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/): We can tolerate up to $n-1$ crash failures.
+1. [Upper bound](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/): We can tolerate up to $n-1$ *crash* failures.
 
-2. [Lower bound](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/): The best we can hope for is to tolerate less than $n/2$ omission failures.
+2. [Lower bound](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/): The best we can hope for is to tolerate less than $n/2$ *omission* failures.
 
 
 
@@ -25,7 +25,7 @@ Let's begin with a quick overview of what we covered in previous posts:
 
 In the crash model, the primary behaves as an ideal state machine until it crashes. If it does crash, the backup takes over the execution to continue serving the clients. To provide the clients with an interface of a single non-faulty server, the primary sends client commands to all backups before updating the state machine and responding to the client. The backups passively replicate all the commands sent by the primary. In case the primary fails, which is detected by the absence of a "heartbeat", the next designated backup replica $j$ invokes a ("view change", $j$) to all replicas along with the last command sent by the primary in view $j-1$. It then becomes the primary.
 
-For completeness, we repeat the primary-backup pseudocode below for $n$ replicas with identifiers ${0,1,2,\\dots,n-1}$.
+For completeness, we repeat the primary-backup pseudocode below for $n$ replicas with identifiers ${0,1,2,\dots,n-1}$.
 
     // Replica j
 
@@ -61,22 +61,22 @@ Can we use the above protocol under omission failures? ... unfortunately not! Th
 
 With  omission failures, a faulty primary may omit messages to the replicas, then send a message to the client, then crash. So a client receives 'cmd', but there is no backup replicating the command. So how can you commit safely?
 
-## The two choices for safety
+##  Two choices for safety: lock-commit vs commit-notify
 
 There are two different ways to solve this problem:
-1. The *lock-commit* (asynchrony) approach: **before** you commit to $x$, make sure that at least $n-f$ non-faulty replicas received a lock on $x$. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee to hear from at least one party locked on $x$. We will cover the lock-commit approach in the next post - it is the core idea behind [Paxos]()!
+1. The *lock-commit* (asynchrony) approach: **before** you *commit* to $x$, make sure that at least $n-f$ non-faulty replicas received a *lock* on $x$. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee to hear from at least one party locked on $x$. We will cover the lock-commit approach in the next post - it is the core idea behind [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf)!
 
-2. The *commit-notify* (synchrony) approach: **after** you commit to $x$, send to all a notify of $x$. Make sure the view change waits sufficient time for the notify echo to arrive. Since any later view change will hear from $n-f$ parties, then quorum intersection will be guaranteed to hear from at least one party that heard the notify of $x$.
+2. The *commit-notify* (synchrony) approach: **after** you *commit* to $x$, send to all a *notify* of $x$. In addition, make sure the view change waits sufficient time for the notify to arrive. Since any later view change will hear from $n-f$ parties, then quorum intersection will guaranteed to hear from at least one party that heard the notify of $x$.
 
 
 A clear advantage of the commit-notify approach is that the commit happens one round earlier!
-Note that the second path also comes with several disadvantages:
-1. Safety depends on synchrony. This is similar to [Dolev-Strong]().
+Note that commit-notify also comes with several disadvantages:
+1. Safety depends on synchrony. This is similar to [Dolev-Strong](https://decentralizedthoughts.github.io/2019-12-22-dolev-strong/).
 2. Safety is only guaranteed for non-faulty replicas: A replica may commit and then crash before any notify message is sent.
 
-*Simplifying assumption.* To simplify presentation, we assume that the client library sends the next command to be committed $\geq 2\Delta$ time after receiving commit notification for the previous command. This assumption allows the system to only have one active command that the replicas are working on.
+*Simplifying assumption.* To simplify presentation, we assume that the client library sends the next command to be committed $\geq 2\Delta$ time after receiving commit notification for the previous command. This assumption allows the system to only have one active command that the replicas are working on. In a real system the primary will use internal batching (as in [PBFT](http://www.pmg.csail.mit.edu/papers/bft-tocs.pdf)).
 
-## commit-notify in the steady state:
+## Commit-notify: in the steady state
 
 We  detail the steady-state protocol tolerating omission failures under a fixed primary; we later discuss the view-change protocol.
 
@@ -105,7 +105,7 @@ We  detail the steady-state protocol tolerating omission failures under a fixed 
              // notify
              send ("notify", cmd, seq-no) to all replicas
              seq-no = seq-no + 1
-       
+
        // as a primary or backup replica
        on receiving ("notify", cmd, seq-no) from any replica:
           // store the highest seq-no and cmd
@@ -118,22 +118,26 @@ We  detail the steady-state protocol tolerating omission failures under a fixed 
 
 In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("propose", cmd, seq-no) message. The sequence number seq-no keeps track of the ordering of messages. On receiving a ("propose", cmd, seq-no') message, a replica does the following. It checks if the cmd is at the next sequence number that it expects a command from. This ensures that it does not process the same cmd/seq-no multiple times. If it is the expected seq-no, it (i) forwards the proposal to all replicas and then (ii) performs the commit-notify step. If the backup replica $r$ is non-faulty, proposal forwarding ensures that all honest replicas receive the proposal, *even if* the primary is omission faulty. The commit-notify step ensures that if $r$ commits, all non-faulty replicas are notified within $\Delta$ time. On receiving a ("notify", cmd, seq-no) message, every replica maintains the (cmd, seq-no) pair for the highest-seq-no ever received. The primary then waits to receive the next command from the client. If it does not receive a command for a predetermined amount of time, then it sends a ("heartbeat", j) message to all replicas.
 
-We make a couple of important observation wrt the steady state protocol: 
+We make a couple of important observation wrt the steady state protocol:
 
-1. *If a non-faulty replica commits a cmd at seq-no at time $t$, then any non-faulty replicas that has not quit the current view by time $t+\Delta$ will commit within time $t+\Delta$.* This is simply because it will receive the forwarded proposal by time $t+\Delta$.
+**Claim 1:** *If a non-faulty replica commits a cmd at seq-no at time $t$, then any non-faulty replicas that has not quit the current view by time $t+\Delta$ will commit within time $t+\Delta$.*
 
-2. *If an non-fauly replica $r'$ commits a cmd at seq-no, but some non-faulty replica $r$ does not commit it at time $t$, then a new client command for seq-no + 1 will not be committed by any non-faulty replica by time $t+\Delta$ in the same view.* We will consider two cases depending on whether replica $r$ has quit view before time $t$. Suppose it has not. Then, due to the previous observation, any non-faulty $r'$ must have committed after $t-\Delta$. Due to our assumption, the client sends the next command $\geq 2\Delta$ time after receiving $f+1$ commits from the replicas. Among these $f+1$ commits, at least one of them belongs to a non-faulty replica. The client receives $f+1$ commit notifications after $t-\Delta$. Consequently, it does not send the next command before time $t+\Delta$. On the other hand, if replica $r$ has quit view before time $t$, then all non-faulty replicas will learn about the view change by $t+\Delta$ and they will not vote for a new command sent by the client in the same view.
+*Proof:* This is simply because it will receive the forwarded proposal by time $t+\Delta$.
+
+**Claim 2:** *If an non-fauly replica $r'$ commits a cmd at seq-no, but some non-faulty replica $r$ does not commit it at time $t$, then a new client command for seq-no + 1 will not be committed by any non-faulty replica by time $t+\Delta$ in the same view.*
+
+*Proof:* We will consider two cases depending on whether replica $r$ has quit view before time $t$. Suppose it has not. Then, due to the previous observation, any non-faulty $r'$ must have committed after $t-\Delta$. Due to our assumption, the client sends the next command $\geq 2\Delta$ time after receiving $f+1$ commits from the replicas. Among these $f+1$ commits, at least one of them belongs to a non-faulty replica. The client receives $f+1$ commit notifications after $t-\Delta$. Consequently, it does not send the next command before time $t+\Delta$. On the other hand, if replica $r$ has quit view before time $t$, then all non-faulty replicas will learn about the view change by $t+\Delta$ and they will not vote for a new command sent by the client in the same view.
 
 The commit-notify aspect will be clearer after we explain the view-change protocol.
 
 
 
-## commit-notify, changing view with synchrony:
+## commit-notify: changing view with synchrony
 
        // blame the current leader
        on missing "heartbeat" or a proposal from replica[view] in the last t + $\Delta$ time units:
           send ("no heartbeat", view) to all replicas
-          
+
        // as a primary or backup
        on receiving ("no heartbeat", view) from f+1 replicas for the current view:
           // make other replicas quit view and wait to be notified of their commits
@@ -159,8 +163,14 @@ The view-change protocol works as follows. If a replica does not receive a heart
 
 We make a few important observations here:
 
-1. *If a non-faulty replica quits view (or enters the next view) at time $t$, all non-faulty replicas quit view (or enter the next view) by time $< t+\Delta$.* This is simply because of forwarding of the f+1 "no heartbeat" messages, which arrive within $\Delta$ time. 
+**Cliam 3:** *If a non-faulty replica quits view (or enters the next view) at time $t$, all non-faulty replicas quit view (or enter the next view) by time $< t+\Delta$.*
 
-2. **Commit-Notify Lemma**: *If a non-faulty replica $r$ commits a cmd at seq-no at time $t$, then for all non-faulty replicas $r'$, either they will have committed cmd at seq-no before entering the next view or (highest-cmd, highest-seq-no) = (cmd, seq-no).* If $r'$ does not quit view by time $t+\Delta$, then it will commit cmd (follows from the previous observation). For the other part, observe that $r'$ could not have quit view before time $t-\Delta$, otherwise replica $r$ would then have quit view before time $t$ and not committed cmd. Thus, $r'$ has quit view at time $> t-\Delta$ and entered the next view at time $> t+\Delta$. This time is sufficient for $r'$ to receive the notification from $r$. Moreover, due to the second observation in the steady state, any non-faulty replica will not have committed a command with a higher sequence number in this view. Thus, $r'$ will have (highest-cmd, highest-seq-no) = (cmd, seq-no) before entering the next view.
+*Proof:* This is simply because of forwarding of the f+1 "no heartbeat" messages, which arrive within $\Delta$ time.
 
-3. *If a non-faulty replica commits cmd at sequence number seq-no, then a primary in the subsequent view cannot propose $cmd' \neq cmd$ at seq-no.* Based on the previous observation, all non-faulty replicas will have been notified of cmd at seq-no. Moreover, due to the second observation in the steady state, the client would not have sent a command for a higher sequence number. Thus, all non-faulty replicas will send the same (highest-cmd, highest-seq-no) pairs whereas faulty replicas cannot send a higher pair. Since, the new primary waits for f+1 distinct status messages, at least one of them will be from a non-faulty replica.
+**Commit-Notify Lemma:** *If a non-faulty replica $r$ commits a cmd at seq-no at time $t$, then for all non-faulty replicas $r'$, either they will have committed cmd at seq-no before entering the next view or (highest-cmd, highest-seq-no) = (cmd, seq-no).*
+
+*Proof:* If $r'$ does not quit view by time $t+\Delta$, then it will commit cmd (follows from the previous observation). For the other part, observe that $r'$ could not have quit view before time $t-\Delta$, otherwise replica $r$ would then have quit view before time $t$ and not committed cmd. Thus, $r'$ has quit view at time $> t-\Delta$ and entered the next view at time $> t+\Delta$. This time is sufficient for $r'$ to receive the notification from $r$. Moreover, due to the second observation in the steady state, any non-faulty replica will not have committed a command with a higher sequence number in this view. Thus, $r'$ will have (highest-cmd, highest-seq-no) = (cmd, seq-no) before entering the next view.
+
+**Claim 4:** *If a non-faulty replica commits cmd at sequence number seq-no, then a primary in the subsequent view cannot propose $cmd' \neq cmd$ at seq-no.*
+
+*Proof:* Based on the previous observation, all non-faulty replicas will have been notified of cmd at seq-no. Moreover, due to the second observation in the steady state, the client would not have sent a command for a higher sequence number. Thus, all non-faulty replicas will send the same (highest-cmd, highest-seq-no) pairs whereas faulty replicas cannot send a higher pair. Since, the new primary waits for f+1 distinct status messages, at least one of them will be from a non-faulty replica.
