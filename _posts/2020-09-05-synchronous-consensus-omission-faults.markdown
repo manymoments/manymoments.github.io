@@ -74,7 +74,7 @@ Note that the second path also comes with several disadvantages:
 1. Safety depends on synchrony. This is similar to [Dolev-Strong]().
 2. Safety is only guaranteed for non-faulty replicas: A replica may commit and then crash before any notify message is sent.
 
-
+*Simplifying assumption.* To simplify presentation, we assume that the client library sends the next command to be committed $\geq 2\Delta$ time after receiving commit notification for the previous command. This assumption allows the system to only have one active command that the replicas are working on.
 
 ## commit-notify in the steady state:
 
@@ -120,22 +120,13 @@ In the steady state protocol, the primary receives commands from the client. It 
 
 We make an important observation wrt the steady state protocol: *If a non-faulty replica commits a cmd at seq-no at time $t$, then any non-faulty replicas that has not quit the current view will commit within time $t+\Delta$.* This is simply because it will receive the forwarded proposal by time $t+\Delta$.
 
+*If some non-faulty replica $r$ has not committed a command cmd at seq-no at time $t$ but committed by any non-faulty replica $r'$, then a new client command for seq-no + 1 will not be committed by any non-faulty replica by time t.* We will consider two cases depending on whether replica $r$ has quit view before time $t$. Suppose it has not. Then, due to the previous observation, $r'$ must have committed after $t-\Delta$. Due to our assumption, the client sends the next command $\geq \Delta$ time after receiving $f+1$ commits from the replicas. Among these $f+1$ commits, at least one of them belongs to a non-faulty replica. The client receives $f+1$ commit notifications after $t-\Delta$. Consequently, it does not send the next command before time $t+\Delta$. If replica $r$ has quit view before time $t$, then all non-faulty replicas will learn about it by $t+\Delta$ and they will not vote for a new command sent by the client.
+
 The commit-notify aspect will be clearer after we explain the view-change protocol.
 
 
 
 ## commit-notify, changing view with synchrony:
-
-
-
-**View-change protocol:**
-
-The key challenge is the following: what if a non-faulty replica decides and adds a command to its log, and immediately after that the new primary sends a different command for the same seq-no. The notify-forward message will arrive too late!
-
-The solution is to make sure that the new primary starts the new view at least $\Delta$ time after any replica decides and adds a command to its log. By that time all replicas will have received the forwarded notify message and will also add this command to their log.
-
-
-There is a small twist: the observation above implies that to maintain safety, a replica must wait for $2\Delta$ before starting a new view (we will explain why 2 below). Let's describe the view-change protocol:
 
        // blame the current leader
        on missing "heartbeat" or a proposal from replica[view] in the last t + $\Delta$ time units:
@@ -168,6 +159,6 @@ We make a few important observations here:
 
 1. *If a non-faulty replica quits view (or enters the next view) at time $t$, all non-faulty replicas quit view (or enter the next view) by time $< t+\Delta$.* This is simply because of forwarding of the f+1 "no heartbeat" messages, which arrive within $\Delta$ time. 
 
-2. **Commit-Notify Lemma**: *If a non-faulty replica $r$ commits a cmd at seq-no at time $t$, then for all non-faulty replicas $r'$, either they will have committed cmd at seq-no before entering the next view or (highest-cmd, highest-seq-no) = (cmd, seq-no).* If $r'$ does not quit view by time $t+\Delta$, then it will commit cmd (follows from the previous observation). For the other part, observe that $r'$ could not have quit view before time $t-\Delta$, otherwise replica $r$ would then have quit view before time $t$ and not committed cmd. Thus, $r'$ has quit view at time $> t-\Delta$ and entered the next view at time $> t+\Delta$. This time is sufficient for $r'$ to receive the notification from $r$. Moreover, since we assume that the client sends the next command after the previous one has been committed, any honest replica will not have committed a command with a higher sequence number in this view. Thus, $r'$ will have (highest-cmd, highest-seq-no) = (cmd, seq-no) before entering the next view.
+2. **Commit-Notify Lemma**: *If a non-faulty replica $r$ commits a cmd at seq-no at time $t$, then for all non-faulty replicas $r'$, either they will have committed cmd at seq-no before entering the next view or (highest-cmd, highest-seq-no) = (cmd, seq-no).* If $r'$ does not quit view by time $t+\Delta$, then it will commit cmd (follows from the previous observation). For the other part, observe that $r'$ could not have quit view before time $t-\Delta$, otherwise replica $r$ would then have quit view before time $t$ and not committed cmd. Thus, $r'$ has quit view at time $> t-\Delta$ and entered the next view at time $> t+\Delta$. This time is sufficient for $r'$ to receive the notification from $r$. Moreover, since we assume that the client sends the next command $\geq \Delta$ time after the previous one has been committed, any non-faulty replica will not have committed a command with a higher sequence number in this view. Thus, $r'$ will have (highest-cmd, highest-seq-no) = (cmd, seq-no) before entering the next view.
 
-3. Talk about status ensuring the next leader will pick the last command again!
+3. *If a non-faulty replica commits cmd at sequence number seq-no, then a primary in the subsequent view cannot propose $cmd' \neq cmd$ at seq-no.* Based on the previous observation, all non-faulty replicas will have been notified of cmd at seq-no. Moreover, if some non-faulty replica has not committed the command, then due to 
