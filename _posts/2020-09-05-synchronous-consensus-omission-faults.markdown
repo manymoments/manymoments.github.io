@@ -1,5 +1,5 @@
 ---
-title: Commit-Notify - Synchronous Consensus under Omission Faults
+title: Commit-Notify: Synchronous Consensus under Omission Faults
 date: 2020-09-05 03:10:00 -07:00
 published: false
 tags:
@@ -74,7 +74,8 @@ Note that commit-notify also comes with several disadvantages:
 1. Safety depends on synchrony. This is similar to [Dolev-Strong](https://decentralizedthoughts.github.io/2019-12-22-dolev-strong/).
 2. Safety is only guaranteed for non-faulty replicas: A replica may commit and then crash before any notify message is sent.
 
-*Simplifying assumption.* To simplify presentation, we assume that the client library sends the next command to be committed $\geq 2\Delta$ time after receiving commit notification for the previous command. This assumption allows the system to only have one active command that the replicas are working on. In a real system the primary will use internal batching (as in [PBFT](http://www.pmg.csail.mit.edu/papers/bft-tocs.pdf)).
+**Simplifying assumption: single shot.** To simplify the presentation we will focus on just *one* decision, not a sequence of decisions. [In the next post](...) we will show how to extend this to multi-shot agreement.
+
 
 ## Commit-notify: in the steady state
 
@@ -83,7 +84,96 @@ We  detail the steady-state protocol tolerating omission failures under a fixed 
     // Replica j
 
     state = init // the state of the state machine
-    log = []     // the log of committed commands
+    log = []     // a log (of size 1) of committed commands
+    view = 0     // view number that indicates the current Primary
+    active == true // is the replica active in this view
+    my-cmd == empty // command from client
+
+    while true:
+       // as a primary receiving from client
+       on receiving cmd from a client library:
+          if a "notify" message has not been sent in this view:
+            send ("notify", cmd, view) to all replicas
+
+       // as a primary or backup replica
+       on receiving cmd from a client library and my-cmd is not empty: or
+       on receiving ("notify", cmd, view) from any replica:
+        if a "notify" message has not been sent in this view:
+          send ("notify", cmd, view) to all replicas
+          my-cmd :=  cmd
+
+          if active == true and log[0] is empty: // if the replica did not decide yet
+             // commit
+             log[0] := cmd
+             state, output = apply(cmd, state)
+             send output to the client library
+             // notify
+
+
+In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: (1) it updates its my-cmd variable; (2) if it did not send notify this view, then sends notify ; (3) if its active in the view, it commits my-cmd.
+
+The commit-notify step ensures that if $r$ commits, all non-faulty replicas are notified within $\Delta$ time:
+**Claim 1:** *If a non-faulty replica commits a cmd at time $t$, then any non-faulty replicas that is active in the current view by time $t+\Delta$ will commit within time $t+\Delta$.*
+
+*Proof:* This is simply because it will receive the forwarded notify by time $t+\Delta$.
+
+Now we need to detail the mechanism for changing views
+
+
+## commit-notify: changing view with synchrony
+
+       // blame the current leader
+       on missing a notify from replica[view] in the last t + $\Delta$ time units:
+          send ("blame", view) to all replicas
+
+       // as a primary or backup
+       on receiving ("blame", view) from f+1 replicas for the current view:
+          // make other replicas quit view and wait to be notified of their commits
+          send ("quit view", view) messages to all replicas
+          active := false
+          wait $2\Delta$ time
+          // switch to new view and send status to new leader
+          view := view + 1
+          active := true
+          send ("status", my-cmd, view) to replica[view]
+          send ("primary change", view-1) to all client libraries
+          // backups transition to steady state
+
+       // new primary
+       on receiving ("status", cmd, view) from f+1 distinct replicas and j== view:
+          pick the (highest-cmd, highest-view) pair with the highest view
+          send ("notify", highest-cmd, view) to all replicas (in order)
+
+
+
+The view-change protocol works as follows. If a replica does not receive a notify from the primary for a sufficient amount of time, it sends a "blame" message to all replicas. Any replica, on receiving "blame" messages from $f+1$ distinct replicas will quit view and forward this message to all other replicas. After quitting the view, the replicas wait for some time ($2\Delta$ time) to receive any notifications from the commit of a non-faulty replica (we will explain the magic $2\Delta$ number soon). After that, it enters the new view, notifies the new primary of its (highest-cmd, highest-view) through a status message,
+notifies client libraries of the primary change and
+then transitions to the steady state. The new primary, on receiving a status from $f+1$ distinct replicas, picks a cmd with the highest-view and proposes it to all replicas. It then transitions to the steady state.
+
+we begian by observing that view changing of non-faulty replicas are at most $\Delta$ apart:
+
+**Cliam 2:** *If a non-faulty replica quits view (or enters the next view) at time $t$, all non-faulty replicas quit view (or enter the next view) by time $< t+\Delta$.*
+
+*Proof:* This is simply because of forwarding of the "quit view" message, which arrive within $\Delta$ time.
+
+We are now ready for the key safety claim:
+
+**Commit-Notify Safety:** *If a non-faulty replica $r$ commits cmd in view $v$, then for any non-faulty replicas $r'$, for any view $v'>v$ we have that its $(highest-cmd, highest-view)$ is such that $highest-cmd==cmd$ and $highest-view \geq v$M.*
+
+*Proof:* Since $r$ is non-faulty if will sends a notify to all replicas. If $r'$ is active or passive in view $v$, then it will send a notify and update its (highest-cmd, highest-view). Why $2\Delta$: note that $r'$ must leave the view at most $\Delta$ time before $r$ commits (because otherwise $r$ would have become inactive) - but since $r'$ waits $2\Delta$ then it must hear $r$ notify before moving to view $v+1$.
+
+We have shown that all non-faulty parties entering view $v+1$ have desired property. We can now continue by induction on the views: since the primary must wait for $n-f$ responses, then it must hear from at least one non-faulty party and since it chooses the highest view, it must choose the value cmd.
+
+
+# POST TWO: Multi-Shot Commit-Notify
+
+
+
+
+    // Replica j
+
+    state = init // the state of the state machine
+    log = []     // a log (of size 1) of committed commands
     view = 0     // view number that indicates the current Primary
     seq-no = 0
     highest-seq-no = 0
