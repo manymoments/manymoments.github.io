@@ -171,7 +171,7 @@ We begin the proof by observing that view changing of non-faulty replicas are at
 
 We are now ready for the key safety claim:
 
-**Commit-Notify Safety:** *If a non-faulty replica $r$ commits cmd in view $v$, then for any non-faulty replicas $r'$, for any view $v'>v$ we have that its $(highestCmd, highestView)$ is such that $highestCmd == cmd$ and $highestView \geq v$.*
+**Commit-Notify Safety:** *If a non-faulty replica $r$ commits cmd in view $v$, then for any non-faulty replicas $r'$, for any view $v'\geq v$ we have that its $(highestCmd, highestView)$ is such that $highestCmd == cmd$ and $highestView \geq v$.*
 
 *Proof:* We will show this in two parts. First, we will show that at the end of view $v$, all non-faulty replicas $r'$ will have $mycmd == cmd$. Then, we will show that for any view $v'>v$ we have that its $(highestCmd, highestView)$ is such that $highestCmd == cmd$ and $highestView \geq v$.*
 
