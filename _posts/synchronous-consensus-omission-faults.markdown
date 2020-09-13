@@ -76,7 +76,7 @@ Note that commit-notify also comes with several disadvantages:
 **Simplifying assumption: single shot.** To simplify the presentation we will focus on just *one* decision, not a sequence of decisions. [In the next post](...) we will show how to extend this to multi-shot agreement.
 
 
-## Commit-notify: in the steady state
+## Commit-Notify: in the steady state
 
 We detail the steady-state protocol tolerating omission failures under a fixed primary; we later discuss the view-change protocol.
 
@@ -85,14 +85,16 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
     state = init // the state of the state machine
     log = []     // a log (of size 1) of committed commands
     view = 0     // view number that indicates the current Primary
+    my-cmd = null
     active == true // is the replica active in this view
 
     while true:
 
        // as a primary
        on receiving cmd from a client library and log[0] is empty: or
-       // as a backup replica
+       // as a primary or a backup replica
        on receiving ("notify", cmd, view) from any replica and log[0] is empty:
+          my-cmd = cmd
           if active == true and log[0] is empty: // if the replica did not decide yet
              // commit
              log[0] := cmd
@@ -101,7 +103,7 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
              // notify
              send ("notify", cmd, view) to all replicas
 
-In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: (1) if it's active in the view, it commits the cmd, and (2) notifies all replicas.
+In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: If it is active in the view and has not committed yet, (1) it commits the cmd, and (2) notifies all replicas. If it is not active in the view, then it just updates the my-cmd variable (useful during view-change).
 
 The commit-notify step ensures that if $r$ commits, all non-faulty replicas are notified within $\Delta$ time:
 **Claim 1:** *If a non-faulty replica commits a cmd at time $t$, then any non-faulty replicas that is active in the current view by time $t+\Delta$ will commit within time $t+\Delta$.*
@@ -111,9 +113,9 @@ The commit-notify step ensures that if $r$ commits, all non-faulty replicas are 
 Now we need to detail the mechanism for changing views
 
 
-## commit-notify: changing view with synchrony
+## Commit-Notify: changing view with synchrony
 
-       // blame the current leader
+       // blame the current primary
        on missing a notify from replica[view] in the last t + $\Delta$ time units:
           send ("blame", view) to all replicas
 
@@ -123,7 +125,7 @@ Now we need to detail the mechanism for changing views
           send ("quit view", view) messages to all replicas
           active := false
           wait $2\Delta$ time
-          // switch to new view and send status to new leader
+          // switch to new view and send status to the new primary
           view := view + 1
           active := true
           send ("status", my-cmd, view) to replica[view]
@@ -132,8 +134,9 @@ Now we need to detail the mechanism for changing views
 
        // new primary
        on receiving ("status", cmd, view) from f+1 distinct replicas and j== view:
-          pick the (highest-cmd, highest-view) pair with the highest view
+          (highest-cmd, higesht-view) := pick the (cmd, view) pair with the highest view
           send ("notify", highest-cmd, view) to all replicas (in order)
+          // transition to steady state
 
 
 
