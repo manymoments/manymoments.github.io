@@ -58,7 +58,7 @@ Can we use the above protocol under omission failures? ... unfortunately not! Th
 
 With omission failures, a faulty primary may omit messages to the replicas, then send a message to the client, then crash. So a client receives 'cmd', but there is no backup replicating the command. So how can you commit safely?
 
-##  Two choices for safety: Lock-Commit vs Commit-Notify
+### Two choices for safety: Lock-Commit vs Commit-Notify
 
 There are two different ways to solve this problem:
 1. The *Lock-Commit* (asynchrony) approach: **before** you *commit* to $x$, make sure that at least $n-f$ non-faulty replicas received a *lock* on $x$. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee to hear from at least one party locked on $x$. We will cover the lock-commit approach in a later post - it is the core idea behind [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf)!
@@ -74,7 +74,7 @@ Note that Commit-Notify also comes with several disadvantages:
 **Simplifying assumption: single shot.** To simplify the presentation we will focus on just *one* decision, not a sequence of decisions. [In the next post](...) we will show how to extend this to multi-shot agreement.
 
 
-## Commit-Notify: in the steady state
+### Commit-Notify: in the steady state
 
 We detail the steady-state protocol tolerating omission failures under a fixed primary; we later discuss the view-change protocol.
 
@@ -106,10 +106,7 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
 
 In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: If it is active in the view and has not committed yet, (1) it commits the cmd, and (2) notifies all replicas. If it is not active in the view, then it just updates the mycmd and highestView variables to "lock" on a value that may have been committed by some other non-faulty replica (useful during view-change). 
 
-Since we have non-uniform agreement, the client needs to wait for f+1 distinct replicas.
-
-
-      If a client receives the same output from $f+1$ distinct replicas, then it commits the command with the given output.
+Since we have non-uniform agreement, the client needs to wait for f+1 distinct replicas. If a client receives the same output from $f+1$ distinct replicas, then it commits the command with the given output.
 
 The steady-state protocol ensures the following:
 
@@ -124,7 +121,7 @@ The steady-state protocol ensures the following:
 Now we need to detail the mechanism for changing views:
 
 
-## Commit-Notify: changing view with synchrony
+### Commit-Notify: changing view with synchrony
 
        // Replica j
        
@@ -179,5 +176,5 @@ Since $r$ is non-faulty it will send a notify message to all replicas. If $r$ co
 
 Since the new primary in the next view waits for a status message from $f+1 = n-f$ replicas, at least one of them will be from a non-faulty replica. Since other non-faulty replicas cannot have a mycmd with a view $> v$, the primary of view $v+1$ cannot propose a value other than $cmd$. We can now continue by induction on the views: since the primary must wait for $n-f$ responses, then it must hear from at least one non-faulty party and since it chooses the highest view, it must choose the value cmd (since it is only an omission fault).
 
-Please discuss/comment/ask on [Twitter](...).
+Please discuss/comment/ask on [Twitter](https://twitter.com/kartik1507/status/1305245177603330050).
 
