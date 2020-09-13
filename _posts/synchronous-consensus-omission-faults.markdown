@@ -70,7 +70,7 @@ There are two different ways to solve this problem:
 
 A clear advantage of the commit-notify approach is that the commit happens one round earlier!
 Note that commit-notify also comes with several disadvantages:
-1. Safety depends on synchrony. This is similar to [Dolev-Strong](https://decentralizedthoughts.github.io/2019-12-22-dolev-strong/).
+1. Safety depends on synchrony.
 2. Safety is only guaranteed for non-faulty replicas: A replica may commit and then crash before any notify message is sent.
 
 **Simplifying assumption: single shot.** To simplify the presentation we will focus on just *one* decision, not a sequence of decisions. [In the next post](...) we will show how to extend this to multi-shot agreement.
@@ -92,7 +92,7 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
     while true:
 
        // as a primary
-       on receiving cmd from a client library and log[0] is empty: or
+       on receiving cmd from a client library and log[0] is empty and view == j: or
        // as a primary or a backup replica
        on receiving ("notify", cmd, view) from any replica and log[0] is empty:
           (my-cmd, highest-view) = (cmd, view) // update (my-cmd, highest-view) since some other replica may have committed
@@ -121,6 +121,8 @@ Now we need to detail the mechanism for changing views:
 
 ## Commit-Notify: changing view with synchrony
 
+       // Replica j
+       
        // blame the current primary
        on missing a notify from replica[view] in the last t + $\Delta$ time units:
           send ("blame", view) to all replicas
@@ -139,9 +141,10 @@ Now we need to detail the mechanism for changing views:
           active := true // backups transition to steady state
 
        // new primary
-       on receiving ("status", cmd, view) from f+1 distinct replicas:
+       on receiving ("status", cmd, view) from f+1 distinct replicas and view == j:
           (highest-cmd, higesht-view) := pick the (cmd, view) pair with the highest highest-view
-          send ("notify", highest-cmd, view) to all replicas
+          if my-cmd != null:
+             send ("notify", highest-cmd, view) to all replicas
           // transition to steady state
 
 
