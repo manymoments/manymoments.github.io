@@ -56,14 +56,14 @@ For completeness, we repeat the primary-backup pseudocode below for $n$ replicas
              send ("view change", j) to all client libraries
              send resend to all replicas (in order)
 
-Can we use the above protocol under omission failures? ... unfortunately not! This is due to a big difference between crash and omission failures. With crash failures you know who is faulty: if a message does not arrive you know the sender has crashed. With omission failures, you don't know if a missed message is due to a faulty sender or faulty receiver. So a replica may be faulty without knowing its faulty.
+Can we use the above protocol under omission failures? ... unfortunately not! This is due to a big difference between crash and omission failures. With crash failures you know who is faulty: if a message does not arrive you know the sender has crashed. With omission failures, you don't know if a missed message is due to a faulty sender or faulty receiver. So a replica may be faulty without knowing it is faulty.
 
 With omission failures, a faulty primary may omit messages to the replicas, then send a message to the client, then crash. So a client receives 'cmd', but there is no backup replicating the command. So how can you commit safely?
 
 ##  Two choices for safety: lock-commit vs commit-notify
 
 There are two different ways to solve this problem:
-1. The *lock-commit* (asynchrony) approach: **before** you *commit* to $x$, make sure that at least $n-f$ non-faulty replicas received a *lock* on $x$. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee to hear from at least one party locked on $x$. We will cover the lock-commit approach in the next post - it is the core idea behind [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf)!
+1. The *lock-commit* (asynchrony) approach: **before** you *commit* to $x$, make sure that at least $n-f$ non-faulty replicas received a *lock* on $x$. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee to hear from at least one party locked on $x$. We will cover the lock-commit approach in a later post - it is the core idea behind [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf)!
 
 2. The *commit-notify* (synchrony) approach: **after** you *commit* to $x$, send to all a *notify* of $x$. In addition, make sure the view change waits sufficient time for the notify message to arrive. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee the new primary will hear from at least one party that heard the notify of $x$.
 
@@ -85,6 +85,7 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
     state = init // the state of the state machine
     log = []     // a log (of size 1) of committed commands
     view = 0     // view number that indicates the current Primary
+    highest-view = view
     my-cmd = null
     active == true // is the replica active in this view
 
@@ -94,8 +95,8 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
        on receiving cmd from a client library and log[0] is empty: or
        // as a primary or a backup replica
        on receiving ("notify", cmd, view) from any replica and log[0] is empty:
-          my-cmd = cmd
-          if active == true and log[0] is empty: // if the replica did not decide yet
+          my-cmd, highest-view = cmd, view // update (my-cmd, highest-view) since some other replica may have committed
+          if active == true and log[0] is empty: // if the replica did not decide yet and has not quit view
              // commit
              log[0] := cmd
              state, output = apply(cmd, state)
@@ -107,9 +108,9 @@ In the steady state protocol, the primary receives commands from the client. It 
 
 The commit-notify step ensures that if $r$ commits, all non-faulty replicas are notified within $\Delta$ time:
 
-**Claim 1:** *Two non-faulty replicas cannot commit to different values in the same view.*
+**Claim 1:** *Two non-faulty replicas cannot commit to (and be notified of) different values in the same view.*
 
-*Proof:* A primary, even if faulty, will not propose conflicting values since it is only an omission fault. Hence, non-faulty replicas cannot commit to different values in the same view.
+*Proof:* A primary, even if faulty, will not propose conflicting values since it is an omission fault. Hence, non-faulty replicas cannot commit to different values in the same view. By extension, two honest replicas cannot be notified of different values in the same view.
 
 **Claim 2:** *If a non-faulty replica commits a cmd at time $t$, then all non-faulty replicas $r'$ are notified by time $t+\Delta$. Moreover, if a replica $r'$ is still active in the view, it will commit to the same cmd.*
 
@@ -134,13 +135,13 @@ Now we need to detail the mechanism for changing views:
           // switch to new view and send status to the new primary
           view := view + 1
           active := true
-          send ("status", my-cmd, view) to replica[view]
+          send ("status", my-cmd, highest-view) to replica[view]
           send ("primary change", view-1) to all client libraries
           // backups transition to steady state
 
        // new primary
        on receiving ("status", cmd, view) from f+1 distinct replicas and view == j:
-          (highest-cmd, higesht-view) := pick the (cmd, view) pair with the highest view
+          (highest-cmd, higesht-view) := pick the (cmd, view) pair with the highest highest-view
           send ("notify", highest-cmd, view) to all replicas
           // transition to steady state
 
