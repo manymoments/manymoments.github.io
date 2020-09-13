@@ -86,27 +86,22 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
     log = []     // a log (of size 1) of committed commands
     view = 0     // view number that indicates the current Primary
     active == true // is the replica active in this view
-    my-cmd == empty // command from client
 
     while true:
 
        // as a primary
-       on receiving cmd from a client library and my-cmd is empty: or
+       on receiving cmd from a client library and log[0] is empty: or
        // as a backup replica
-       on receiving ("notify", cmd, view) from any replica and my-cmd is empty:
-          if a "notify" message has not been sent in this view:
-             send ("notify", cmd, view) to all replicas
-             my-cmd :=  cmd
-
+       on receiving ("notify", cmd, view) from any replica and log[0] is empty:
           if active == true and log[0] is empty: // if the replica did not decide yet
              // commit
              log[0] := cmd
              state, output = apply(cmd, state)
              send output to the client library
              // notify
+             send ("notify", cmd, view) to all replicas
 
-
-In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: (1) it updates its my-cmd variable; (2) if it did not send notify this view, then sends notify ; (3) if it's active in the view, it commits my-cmd.
+In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: (1) if it's active in the view, it commits the cmd, and (2) notifies all replicas.
 
 The commit-notify step ensures that if $r$ commits, all non-faulty replicas are notified within $\Delta$ time:
 **Claim 1:** *If a non-faulty replica commits a cmd at time $t$, then any non-faulty replicas that is active in the current view by time $t+\Delta$ will commit within time $t+\Delta$.*
