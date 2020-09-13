@@ -34,6 +34,9 @@ For lower bounds it's often beneficial to define an even easier problem of _agre
 **(weak validity):** if all nodes are honest and all have the same input value $v$ then $v$ must be the decision value.
 
 
+### Uniform vs. non-uniform agreement
+In addition to the properties above, we can place an additional requirement on what values faulty nodes can commit -- this is especially relevant when faulty nodes are either crash or omission faults. If the faulty nodes do not commit to a different value from the honest nodes, then we call the agreement property *uniform agreement*. Otherwise, it is a *non-uniform agreement*. The difference will be relevant in a [state machine replication](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) setting since this determines the "number of replica responses" the client needs to wait for.
+
 ## The Broadcast Problem
 Here we assume a designated node, often called the leader (or dealer) that has some input $v$. A protocol that solves Broadcast must have the following properties.
 
