@@ -173,7 +173,7 @@ We are now ready for the key safety claim:
 
 **Commit-Notify Safety:** *If a non-faulty replica $r$ commits cmd in view $v$, then for any non-faulty replicas $r'$, for any view $v'>v$ we have that its $(highestCmd, highestView)$ is such that $highestCmd == cmd$ and $highestView \geq v$.*
 
-    *Proof:* We will show this in two parts. First, we will show that at the end of view $v$, all non-faulty replicas $r'$ will have $mycmd == cmd$. Then, we will show that for any view $v'>v$ we have that its $(highestCmd, highestView)$ is such that $highestCmd == cmd$ and $highestView \geq v$.*
+*Proof:* We will show this in two parts. First, we will show that at the end of view $v$, all non-faulty replicas $r'$ will have $mycmd == cmd$. Then, we will show that for any view $v'>v$ we have that its $(highestCmd, highestView)$ is such that $highestCmd == cmd$ and $highestView \geq v$.*
 
 Since $r$ is non-faulty it will send a notify message to all replicas. If $r$ commits at time $t$, then observe that all other non-faulty replicas must have been in view $v$ until time $t-\Delta$. Otherwise, by Claim 3, $r$ would have quit view by time $t$ and not committed cmd (since active == false). This also implies that no honest replica enters the next view before time $t+\Delta$ (due to the $2\Delta$ wait during view-change). This time suffices for all non-faulty replicas to receive $r$'s notification. Moreover, due to Claim 1, there can be no other value that can be notified. Hence, all non-faulty replicas must store $mycmd == cmd$ and send that in their status message. 
 
