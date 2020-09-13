@@ -13,6 +13,7 @@ A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.o
 
 
 
+
 A *secret sharing scheme* is composed of two protocols: *Share* and *Reconstruct*.
 These protocols are distributed: they are run by the $n$ parties, jointly.
 The Dealer has a *secret* $s$, which is given as _input_ to the Share protocol.
