@@ -106,6 +106,7 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
 In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: If it is active in the view and has not committed yet, (1) it commits the cmd, and (2) notifies all replicas. If it is not active in the view, then it just updates the my-cmd variable (useful during view-change).
 
 The commit-notify step ensures that if $r$ commits, all non-faulty replicas are notified within $\Delta$ time:
+
 **Claim 1:** *Two non-faulty replicas cannot commit to different values in the same view.*
 
 *Proof:* A primary, even if faulty, will not propose conflicting values since it is only an omission fault. Hence, non-faulty replicas cannot commit to different values in the same view.
@@ -145,23 +146,23 @@ Now we need to detail the mechanism for changing views:
 
 
 
-The view-change protocol works as follows. If a replica does not receive a notify from the primary for a sufficient amount of time, it sends a "blame" message to all replicas. Any replica, on receiving "blame" messages from $f+1$ distinct replicas will quit view and forward this message to all other replicas. After quitting the view, the replicas wait for some time ($2\Delta$ time) to receive any notifications from the commit of a non-faulty replica (we will explain the magic $2\Delta$ number soon). After that, it enters the new view, notifies the new primary of its (highest-cmd, highest-view) through a status message,
-notifies client libraries of the primary change, and
-then transitions to the steady state. The new primary, on receiving a status from $f+1$ distinct replicas, picks a cmd with the highest-view and proposes it to all replicas. It then transitions to the steady state.
+The view-change protocol works as follows. If a replica does not receive a notify from the primary for a sufficient amount of time, it sends a "blame" message to all replicas. Any replica, on receiving "blame" messages from $f+1$ distinct replicas will quit view and forward this message to all other replicas. After quitting the view, the replicas wait for some time ($2\Delta$ time) to receive any notifications from the commit of a non-faulty replica (we will explain the magic $2\Delta$ number soon). After that, it enters the new view, notifies the new primary of its my-cmd value through a status message, notifies client libraries of the primary change, and then transitions to the steady state. The new primary, on receiving a status from $f+1$ distinct replicas, picks a cmd with the highest-view and notifies it to all replicas. It then transitions to the steady state.
 
 We begin the proof by observing that view changing of non-faulty replicas are at most $\Delta$ apart:
 
-**Cliam 2:** *If a non-faulty replica quits view (or enters the next view) at time $t$, all non-faulty replicas quit view (or enter the next view) by time $< t+\Delta$.*
+**Claim 3:** *If a non-faulty replica quits view (or enters the next view) at time $t$, all non-faulty replicas quit view (or enter the next view) by time $< t+\Delta$.*
 
 *Proof:* This is simply because of the forwarding of the "quit view" message, which arrives within $\Delta$ time.
 
 We are now ready for the key safety claim:
 
-**Commit-Notify Safety:** *If a non-faulty replica $r$ commits cmd in view $v$, then for any non-faulty replicas $r'$, for any view $v'>v$ we have that its $(highest-cmd, highest-view)$ is such that $highest-cmd==cmd$ and $highest-view \geq v$M.*
+**Commit-Notify Safety:** *If a non-faulty replica $r$ commits cmd in view $v$, then for any non-faulty replicas $r'$, for any view $v'>v$ we have that its $(highest-cmd, highest-view)$ is such that $highest-cmd == cmd$ and $highest-view \geq v$.*
 
-*Proof:* Since $r$ is non-faulty if will sends a notify message to all replicas. If $r'$ is active or passive in view $v$, then it will send a notify and update its (highest-cmd, highest-view). Why $2\Delta$: note that $r'$ must leave the view at most $\Delta$ time before $r$ commits (because otherwise $r$ would have become inactive) - but since $r'$ waits $2\Delta$ then it must hear $r$ notify before moving to view $v+1$.
+*Proof:* We will show this in two parts. First, we will show that at the end of view $v$, all non-faulty replicas $r'$ will have $my-cmd == cmd$. Then, we will show that for any view $v'>v$ we have that its $(highest-cmd, highest-view)$ is such that $highest-cmd == cmd$ and $highest-view \geq v$.*
 
-We have shown that all non-faulty parties entering view $v+1$ have desired property. We can now continue by induction on the views: since the primary must wait for $n-f$ responses, then it must hear from at least one non-faulty party and since it chooses the highest view, it must choose the value cmd.
+Since $r$ is non-faulty it will send a notify message to all replicas. If $r$ commits at time $t$, then observe that all other non-faulty replicas must have been in view $v$ until time $t-\Delta$. Otherwise, by Claim 3, $r$ would have quit view by time $t$ and not committed cmd (since active == false). This also implies that no honest replica enters the next view before time $t+\Delta$ (due to the $2\Delta$ wait during view-change). This time suffices for all non-faulty replicas to receive $r$'s notification. Moreover, due to Claim 1, there can be no other value that can be notified, all non-faulty replicas must store $my-cmd == cmd$ and send that in their status message. 
+
+Since the new primary in the next view waits for a status message from $f+1$ replicas, at least one of them will be from a non-faulty replica. Since other non-faulty replicas cannot have a my-cmd with a view $> v$, the primary of view $v+1$ cannot propose a value other than $cmd$. We can now continue by induction on the views: since the primary must wait for $n-f$ responses, then it must hear from at least one non-faulty party and since it chooses the highest view, it must choose the value cmd.
 
 
 # POST TWO: Multi-Shot Commit-Notify
