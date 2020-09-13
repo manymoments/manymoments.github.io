@@ -181,3 +181,6 @@ We are now ready for the key safety claim:
 Since $r$ is non-faulty it will send a notify message to all replicas. If $r$ commits at time $t$, then observe that all other non-faulty replicas must have been in view $v$ until time $t-\Delta$. Otherwise, by Claim 3, $r$ would have quit view by time $t$ and not committed cmd (since active == false). This also implies that no honest replica enters the next view before time $t+\Delta$ (due to the $2\Delta$ wait during view-change). This time suffices for all non-faulty replicas to receive $r$'s notification. Moreover, due to Claim 1, there can be no other value that can be notified. Hence, all non-faulty replicas must store $my-cmd == cmd$ and send that in their status message. 
 
 Since the new primary in the next view waits for a status message from $f+1 = n-f$ replicas, at least one of them will be from a non-faulty replica. Since other non-faulty replicas cannot have a my-cmd with a view $> v$, the primary of view $v+1$ cannot propose a value other than $cmd$. We can now continue by induction on the views: since the primary must wait for $n-f$ responses, then it must hear from at least one non-faulty party and since it chooses the highest view, it must choose the value cmd (since it is only an omission fault).
+
+Please discuss/comment/ask on [Twitter](...).
+
