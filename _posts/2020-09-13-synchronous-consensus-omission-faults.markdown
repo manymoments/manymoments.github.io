@@ -1,5 +1,6 @@
 ---
-title: Synchronous Consensus Omission Faults
+title: 'Commit-Notify: Synchronous Consensus with Omission Faults'
+date: 2020-09-13 12:09:00 -07:00
 published: false
 author:
 - Kartik Nayak
@@ -60,16 +61,16 @@ Can we use the above protocol under omission failures? ... unfortunately not! Th
 
 With omission failures, a faulty primary may omit messages to the replicas, then send a message to the client, then crash. So a client receives 'cmd', but there is no backup replicating the command. So how can you commit safely?
 
-##  Two choices for safety: lock-commit vs commit-notify
+##  Two choices for safety: Lock-Commit vs Commit-Notify
 
 There are two different ways to solve this problem:
-1. The *lock-commit* (asynchrony) approach: **before** you *commit* to $x$, make sure that at least $n-f$ non-faulty replicas received a *lock* on $x$. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee to hear from at least one party locked on $x$. We will cover the lock-commit approach in a later post - it is the core idea behind [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf)!
+1. The *Lock-Commit* (asynchrony) approach: **before** you *commit* to $x$, make sure that at least $n-f$ non-faulty replicas received a *lock* on $x$. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee to hear from at least one party locked on $x$. We will cover the lock-commit approach in a later post - it is the core idea behind [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf)!
 
-2. The *commit-notify* (synchrony) approach: **after** you *commit* to $x$, send to all a *notify* of $x$. In addition, make sure the view change waits sufficient time for the notify message to arrive. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee the new primary will hear from at least one party that heard the notify of $x$.
+2. The *Commit-Notify* (synchrony) approach: **after** you *commit* to $x$, send to all a *notify* of $x$. In addition, make sure the view change waits sufficient time for the notify message to arrive. Since any later view change will hear from $n-f$ parties, then quorum intersection will guarantee the new primary will hear from at least one party that heard the notify of $x$.
 
 
-A clear advantage of the commit-notify approach is that the commit happens one round earlier!
-Note that commit-notify also comes with several disadvantages:
+A clear advantage of the Commit-Notify approach is that the commit happens one round earlier!
+Note that Commit-Notify also comes with several disadvantages:
 1. Safety depends on synchrony.
 2. Safety is only guaranteed for non-faulty replicas: A replica may commit and then crash before any notify message is sent.
 
@@ -104,7 +105,12 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
              // notify
              send ("notify", cmd, view) to all replicas
 
-In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: If it is active in the view and has not committed yet, (1) it commits the cmd, and (2) notifies all replicas. If it is not active in the view, then it just updates the my-cmd and highest-view variables to "lock" on a value that may have been committed by some other non-faulty replica (useful during view-change). If the client receives an output from from $f+1$ distinct replicas, then it commits the message.
+In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: If it is active in the view and has not committed yet, (1) it commits the cmd, and (2) notifies all replicas. If it is not active in the view, then it just updates the my-cmd and highest-view variables to "lock" on a value that may have been committed by some other non-faulty replica (useful during view-change). 
+
+Since we have non-uniform agreement, the client needs to wait for f+1 distinct replicas.
+
+
+      If a client receives the same output from $f+1$ distinct replicas, then it commits the command with the given output.
 
 The steady-state protocol ensures the following:
 
@@ -143,16 +149,16 @@ Now we need to detail the mechanism for changing views:
 
        // new primary
        on receiving ("status", cmd, view) from f+1 distinct replicas and view == j:
-          (highest-cmd, higesht-view) = pick the (cmd, view) pair with the highest highest-view
+          (my-cmd, highest-view) = pick the (cmd, view) pair with the highest highest-view
           if my-cmd != null:
-             send ("notify", highest-cmd, view) to all replicas
+             send ("notify", my-cmd, view) to all replicas
           // transition to steady state
 
 
 
 The view-change protocol works as follows. If a replica does not receive a notify from the primary for a sufficient amount of time, it sends a "blame" message to all replicas. Any replica, on receiving "blame" messages from $f+1$ distinct replicas will quit view and forward this message to all other replicas. 
 
-After quitting the view, the replicas wait for some time ($2\Delta$ time) to receive any notifications from the commit of a non-faulty replica (we will explain the magic $2\Delta$ number soon). After that, it enters the new view, notifies the new primary of its my-cmd value through a status message, notifies client libraries of the primary change, and then transitions to the steady state. The new primary, on receiving a status from $f+1$ distinct replicas, picks a cmd with the highest-view and notifies it to all replicas. It then transitions to the steady state.
+After quitting the view, the replicas wait for some time ($2\Delta$ time) to receive any notifications from the commit of a non-faulty replica (we will explain the magic $2\Delta$ number soon). After that, it enters the new view, notifies the new primary of its my-cmd value through a status message, notifies client libraries of the primary change, and then transitions to the steady state. The new primary, on receiving a status from $f+1$ distinct replicas, picks a cmd with the highest-view and notifies it to all replicas. If all the cmd are empty then the new primary is free to choose any client cmd. It then transitions to the steady state.
 
 We begin the proof by observing that view changing of non-faulty replicas are at most $\Delta$ apart:
 
