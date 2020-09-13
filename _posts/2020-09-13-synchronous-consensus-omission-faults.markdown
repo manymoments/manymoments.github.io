@@ -83,8 +83,8 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
     state = init // the state of the state machine
     log = []     // a log (of size 1) of committed commands
     view = 0     // view number that indicates the current Primary
-    highest-view = view
-    my-cmd = null
+    highestView = view
+    mycmd = null
     active = true // is the replica active in this view
 
     while true:
@@ -93,8 +93,8 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
        on receiving cmd from client library and log[0] is empty and view == j: or
        // as a primary or a backup replica
        on receiving ("notify", cmd, view) from any replica and log[0] is empty:
-          // update (my-cmd, highest-view) since some replica may have committed
-          (my-cmd, highest-view) = (cmd, view) 
+          // update (mycmd, highestView) since some replica may have committed
+          (mycmd, highestView) = (cmd, view) 
           // if the replica did not decide yet and has not quit view
           if active == true and log[0] is empty: 
              // commit
@@ -104,7 +104,7 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
              // notify
              send ("notify", cmd, view) to all replicas
 
-In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: If it is active in the view and has not committed yet, (1) it commits the cmd, and (2) notifies all replicas. If it is not active in the view, then it just updates the my-cmd and highest-view variables to "lock" on a value that may have been committed by some other non-faulty replica (useful during view-change). 
+In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: If it is active in the view and has not committed yet, (1) it commits the cmd, and (2) notifies all replicas. If it is not active in the view, then it just updates the mycmd and highestView variables to "lock" on a value that may have been committed by some other non-faulty replica (useful during view-change). 
 
 Since we have non-uniform agreement, the client needs to wait for f+1 distinct replicas.
 
@@ -140,10 +140,10 @@ Now we need to detail the mechanism for changing views:
           active = false
           // wait to be notified of commits by other replicas
           wait $2\Delta$ time 
-          // set my-cmd to cmd with highest view herd (including yourself)
-          (my-cmd, highest-view) = (cmd, view) pair with the highest view herd
+          // set mycmd to cmd with highest view heard (including yourself)
+          (mycmd, highestView) = (cmd, view) pair with the highest view herd
           // switch to new view and send status to the new primary
-          send ("status", my-cmd, highest-view) to replica[view]
+          send ("status", mycmd, highestView) to replica[view]
           send ("primary change", view) to all client libraries
           view = view + 1
           // backups transition to steady state
@@ -151,17 +151,17 @@ Now we need to detail the mechanism for changing views:
 
        // new primary
        on receiving ("status", cmd, view) from f+1 distinct replicas and view == j:
-          // set my-cmd to cmd with highest view herd (including yourself)
-          (my-cmd, highest-view) = (cmd, view) pair with the highest view herd
-          if my-cmd != null:
-             send ("notify", my-cmd, view) to all replicas
+          // set mycmd to cmd with highest view herd (including yourself)
+          (mycmd, highestView) = (cmd, view) pair with the highest view herd
+          if mycmd != null:
+             send ("notify", mycmd, view) to all replicas
           // transition to steady state
 
 
 
 The view-change protocol works as follows. If a replica does not receive a notify from the primary for a sufficient amount of time, it sends a "blame" message to all replicas. Any replica, on receiving "blame" messages from $f+1$ distinct replicas will quit view and forward this message to all other replicas. 
 
-After quitting the view, the replicas wait for some time ($2\Delta$ time) to receive any notifications from the commit of a non-faulty replica (we will explain the magic $2\Delta$ number soon). After that, it enters the new view, notifies the new primary of its my-cmd value through a status message, notifies client libraries of the primary change, and then transitions to the steady state. The new primary, on receiving a status from $f+1$ distinct replicas, picks a cmd with the highest-view and notifies it to all replicas. If all the cmd are empty then the new primary is free to choose any client cmd. It then transitions to the steady state.
+After quitting the view, the replicas wait for some time ($2\Delta$ time) to receive any notifications from the commit of a non-faulty replica (we will explain the magic $2\Delta$ number soon). After that, it enters the new view, notifies the new primary of its mycmd value through a status message, notifies client libraries of the primary change, and then transitions to the steady state. The new primary, on receiving a status from $f+1$ distinct replicas, picks a cmd with the highestView and notifies it to all replicas. If all the cmd are empty then the new primary is free to choose any client cmd. It then transitions to the steady state.
 
 We begin the proof by observing that view changing of non-faulty replicas are at most $\Delta$ apart:
 
@@ -171,13 +171,13 @@ We begin the proof by observing that view changing of non-faulty replicas are at
 
 We are now ready for the key safety claim:
 
-**Commit-Notify Safety:** *If a non-faulty replica $r$ commits cmd in view $v$, then for any non-faulty replicas $r'$, for any view $v'>v$ we have that its $(highest-cmd, highest-view)$ is such that $highest-cmd == cmd$ and $highest-view \geq v$.*
+**Commit-Notify Safety:** *If a non-faulty replica $r$ commits cmd in view $v$, then for any non-faulty replicas $r'$, for any view $v'>v$ we have that its $(highestCmd, highestView)$ is such that $highestCmd == cmd$ and $highestView \geq v$.*
 
-*Proof:* We will show this in two parts. First, we will show that at the end of view $v$, all non-faulty replicas $r'$ will have $my-cmd == cmd$. Then, we will show that for any view $v'>v$ we have that its $(highest-cmd, highest-view)$ is such that $highest-cmd == cmd$ and $highest-view \geq v$.*
+    *Proof:* We will show this in two parts. First, we will show that at the end of view $v$, all non-faulty replicas $r'$ will have $mycmd == cmd$. Then, we will show that for any view $v'>v$ we have that its $(highestCmd, highestView)$ is such that $highestCmd == cmd$ and $highestView \geq v$.*
 
-Since $r$ is non-faulty it will send a notify message to all replicas. If $r$ commits at time $t$, then observe that all other non-faulty replicas must have been in view $v$ until time $t-\Delta$. Otherwise, by Claim 3, $r$ would have quit view by time $t$ and not committed cmd (since active == false). This also implies that no honest replica enters the next view before time $t+\Delta$ (due to the $2\Delta$ wait during view-change). This time suffices for all non-faulty replicas to receive $r$'s notification. Moreover, due to Claim 1, there can be no other value that can be notified. Hence, all non-faulty replicas must store $my-cmd == cmd$ and send that in their status message. 
+Since $r$ is non-faulty it will send a notify message to all replicas. If $r$ commits at time $t$, then observe that all other non-faulty replicas must have been in view $v$ until time $t-\Delta$. Otherwise, by Claim 3, $r$ would have quit view by time $t$ and not committed cmd (since active == false). This also implies that no honest replica enters the next view before time $t+\Delta$ (due to the $2\Delta$ wait during view-change). This time suffices for all non-faulty replicas to receive $r$'s notification. Moreover, due to Claim 1, there can be no other value that can be notified. Hence, all non-faulty replicas must store $mycmd == cmd$ and send that in their status message. 
 
-Since the new primary in the next view waits for a status message from $f+1 = n-f$ replicas, at least one of them will be from a non-faulty replica. Since other non-faulty replicas cannot have a my-cmd with a view $> v$, the primary of view $v+1$ cannot propose a value other than $cmd$. We can now continue by induction on the views: since the primary must wait for $n-f$ responses, then it must hear from at least one non-faulty party and since it chooses the highest view, it must choose the value cmd (since it is only an omission fault).
+Since the new primary in the next view waits for a status message from $f+1 = n-f$ replicas, at least one of them will be from a non-faulty replica. Since other non-faulty replicas cannot have a mycmd with a view $> v$, the primary of view $v+1$ cannot propose a value other than $cmd$. We can now continue by induction on the views: since the primary must wait for $n-f$ responses, then it must hear from at least one non-faulty party and since it chooses the highest view, it must choose the value cmd (since it is only an omission fault).
 
 Please discuss/comment/ask on [Twitter](...).
 
