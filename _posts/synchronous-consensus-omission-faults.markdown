@@ -87,7 +87,7 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
     view = 0     // view number that indicates the current Primary
     highest-view = view
     my-cmd = null
-    active == true // is the replica active in this view
+    active = true // is the replica active in this view
 
     while true:
 
@@ -98,7 +98,7 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
           (my-cmd, highest-view) = (cmd, view) // update (my-cmd, highest-view) since some other replica may have committed
           if active == true and log[0] is empty: // if the replica did not decide yet and has not quit view
              // commit
-             log[0] := cmd
+             log[0] = cmd
              state, output = apply(cmd, state)
              send output to the client library
              // notify
@@ -131,18 +131,18 @@ Now we need to detail the mechanism for changing views:
        on receiving ("blame", view) from f+1 replicas for the current view:
           // make other replicas quit view 
           send ("quit view", view) messages to all replicas
-          active := false
+          active = false
           
           // switch to new view and send status to the new primary
           wait $2\Delta$ time // wait to be notified of commits by other replicas
           send ("status", my-cmd, highest-view) to replica[view]
           send ("primary change", view) to all client libraries
-          view := view + 1
-          active := true // backups transition to steady state
+          view = view + 1
+          active = true // backups transition to steady state
 
        // new primary
        on receiving ("status", cmd, view) from f+1 distinct replicas and view == j:
-          (highest-cmd, higesht-view) := pick the (cmd, view) pair with the highest highest-view
+          (highest-cmd, higesht-view) = pick the (cmd, view) pair with the highest highest-view
           if my-cmd != null:
              send ("notify", highest-cmd, view) to all replicas
           // transition to steady state
