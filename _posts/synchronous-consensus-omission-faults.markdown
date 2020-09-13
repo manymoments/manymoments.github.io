@@ -92,14 +92,13 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
        // as a primary receiving from a client
        on receiving cmd from a client library:
           if a "notify" message has not been sent in this view:
-            send ("notify", cmd, view) to all replicas
+             send ("notify", cmd, view) to all replicas
 
        // as a primary or backup replica
-       on receiving cmd from a client library and my-cmd is not empty: or
-       on receiving ("notify", cmd, view) from any replica:
-        if a "notify" message has not been sent in this view:
-          send ("notify", cmd, view) to all replicas
-          my-cmd :=  cmd
+       on receiving ("notify", cmd, view) from any replica and my-cmd is empty:
+          if a "notify" message has not been sent in this view:
+             send ("notify", cmd, view) to all replicas
+             my-cmd :=  cmd
 
           if active == true and log[0] is empty: // if the replica did not decide yet
              // commit
