@@ -95,7 +95,7 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
        on receiving cmd from a client library and log[0] is empty: or
        // as a primary or a backup replica
        on receiving ("notify", cmd, view) from any replica and log[0] is empty:
-          my-cmd, highest-view = cmd, view // update (my-cmd, highest-view) since some other replica may have committed
+          (my-cmd, highest-view) = (cmd, view) // update (my-cmd, highest-view) since some other replica may have committed
           if active == true and log[0] is empty: // if the replica did not decide yet and has not quit view
              // commit
              log[0] := cmd
@@ -104,17 +104,17 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
              // notify
              send ("notify", cmd, view) to all replicas
 
-In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: If it is active in the view and has not committed yet, (1) it commits the cmd, and (2) notifies all replicas. If it is not active in the view, then it just updates the my-cmd variable (useful during view-change).
+In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: If it is active in the view and has not committed yet, (1) it commits the cmd, and (2) notifies all replicas. If it is not active in the view, then it just updates the my-cmd and highest-view variables to "lock" on a value that may have been committed by some other non-faulty replica (useful during view-change).
 
-The commit-notify step ensures that if $r$ commits, all non-faulty replicas are notified within $\Delta$ time:
+The steady-state protocol ensures the following:
 
 **Claim 1:** *Two non-faulty replicas cannot commit to (and be notified of) different values in the same view.*
 
 *Proof:* A primary, even if faulty, will not propose conflicting values since it is an omission fault. Hence, non-faulty replicas cannot commit to different values in the same view. By extension, two honest replicas cannot be notified of different values in the same view.
 
-**Claim 2:** *If a non-faulty replica commits a cmd at time $t$, then all non-faulty replicas $r'$ are notified by time $t+\Delta$. Moreover, if a replica $r'$ is still active in the view, it will commit to the same cmd.*
+**Claim 2:** *If a non-faulty replica commits a cmd at time $t$, then all non-faulty replicas $r'$ are notified by time $t+\Delta$. Moreover, if a replica $r'$ is still active in the view and has not committed to a value, it will commit to the same cmd.*
 
-*Proof:* The first statement follows from synchrony assumption. For the second statement, observe that a different value could not have been committed (due to Claim 1) and hence $r'$ will commit the same cmd if it is active in the view.
+*Proof:* The first statement follows from synchrony assumption. For the second statement, observe that a different value could not have been committed (due to Claim 1) and hence $r'$ will commit the same cmd if it is active in the view and has not committed a value.
 
 Now we need to detail the mechanism for changing views:
 
@@ -127,20 +127,19 @@ Now we need to detail the mechanism for changing views:
 
        // as a primary or backup
        on receiving ("blame", view) from f+1 replicas for the current view:
-          // make other replicas quit view and wait to be notified of their commits
+          // make other replicas quit view 
           send ("quit view", view) messages to all replicas
           active := false
           
-          wait $2\Delta$ time
           // switch to new view and send status to the new primary
-          view := view + 1
-          active := true
+          wait $2\Delta$ time // wait to be notified of commits by other replicas
           send ("status", my-cmd, highest-view) to replica[view]
-          send ("primary change", view-1) to all client libraries
-          // backups transition to steady state
+          send ("primary change", view) to all client libraries
+          view := view + 1
+          active := true // backups transition to steady state
 
        // new primary
-       on receiving ("status", cmd, view) from f+1 distinct replicas and view == j:
+       on receiving ("status", cmd, view) from f+1 distinct replicas:
           (highest-cmd, higesht-view) := pick the (cmd, view) pair with the highest highest-view
           send ("notify", highest-cmd, view) to all replicas
           // transition to steady state
