@@ -104,7 +104,7 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
              // notify
              send ("notify", cmd, view) to all replicas
 
-In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: If it is active in the view and has not committed yet, (1) it commits the cmd, and (2) notifies all replicas. If it is not active in the view, then it just updates the my-cmd and highest-view variables to "lock" on a value that may have been committed by some other non-faulty replica (useful during view-change).
+In the steady state protocol, the primary receives commands from the client. It sends the command to every replica through ("notify", cmd, view) message. On receiving a ("notify", cmd, view) message, a replica does the following: If it is active in the view and has not committed yet, (1) it commits the cmd, and (2) notifies all replicas. If it is not active in the view, then it just updates the my-cmd and highest-view variables to "lock" on a value that may have been committed by some other non-faulty replica (useful during view-change). If the client receives an output from from $f+1$ distinct replicas, then it commits the message.
 
 The steady-state protocol ensures the following:
 
@@ -135,6 +135,7 @@ Now we need to detail the mechanism for changing views:
           
           // switch to new view and send status to the new primary
           wait $2\Delta$ time // wait to be notified of commits by other replicas
+          Update (my-cmd, highest-view) to the (cmd, highest-view) pair from the notify messages and its own (my-cmd, highest-view) pair
           send ("status", my-cmd, highest-view) to replica[view]
           send ("primary change", view) to all client libraries
           view = view + 1
