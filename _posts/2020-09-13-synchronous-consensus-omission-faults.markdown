@@ -1,5 +1,5 @@
 ---
-title: 'Commit-Notify: Synchronous Consensus with Omission Faults'
+title: 'Using the Commit-Notify Paradigm for Synchronous Consensus with Omission Faults'
 date: 2020-09-13 12:09:00 -07:00
 published: false
 author:
@@ -72,7 +72,7 @@ There are two different ways to solve this problem:
 A clear advantage of the Commit-Notify approach is that the commit happens one round earlier!
 Note that Commit-Notify also comes with several disadvantages:
 1. Safety depends on synchrony.
-2. Safety is only guaranteed for non-faulty replicas: A replica may commit and then crash before any notify message is sent.
+2. Safety is only guaranteed for non-faulty replicas (non-uniform agreement): A replica may commit and then crash before any notify message is sent.
 
 **Simplifying assumption: single shot.** To simplify the presentation we will focus on just *one* decision, not a sequence of decisions. [In the next post](...) we will show how to extend this to multi-shot agreement.
 
