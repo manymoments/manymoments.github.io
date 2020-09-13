@@ -11,7 +11,7 @@ We all broadly understand "consensus" as the notion of different parties agreein
 > In modern parliaments, the passing of decrees is hindered by disagreement among legislators
 > -- <cite> Leslie Lamport, [Part-Time Parliament](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) </cite>
 
-Let us begin with the simplest consensus problem: agreement.
+Let us begin with the simplest consensus problem: *agreement*.
 
 
 ## The Agreement Problem
@@ -27,7 +27,7 @@ In this problem, we assume a set of $n$ nodes where each node $i$ has some input
 
 Obviously, Agreement is easily solvable if all nodes are honest and the system is synchronous. To make the problem non-trivial we need to fix the communication model [synchrony, asynchrony or partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/) and then fix the [threshold of the adversary](https://ittaiab.github.io/2019-06-17-the-threshold-adversary/) and other details about the [power](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) of the adversary.
 
-In the _binary agreement problem_, we assume the set of possible inputs $V$ contains just two values: 0 and 1.
+In the *binary agreement* problem, we assume the set of possible inputs $V$ contains just two values: 0 and 1.
 
 For lower bounds it's often beneficial to define an even easier problem of _agreement  with weak validity_ where we replace validity with:
 
@@ -35,7 +35,9 @@ For lower bounds it's often beneficial to define an even easier problem of _agre
 
 
 ### Uniform vs. non-uniform agreement
-In addition to the properties above, we can place an additional requirement on what values faulty nodes can commit -- this is especially relevant when faulty nodes are either crash or omission faults. If the faulty nodes do not commit to a different value from the honest nodes, then we call the agreement property *uniform agreement*. Otherwise, it is a *non-uniform agreement*. The difference will be relevant in a [state machine replication](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) setting since this determines the "number of replica responses" the client needs to wait for.
+When the adversary is omission or crash, then the *(agreement)* property above is called *non-uniform agreement*. We can also have a stronger *(uniform agreement)* property where no two (even faulty) nodes *decide* on different values. This is called *uniform agreement*.
+
+For example, the difference will be relevant in a [state machine replication](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) setting with ommission faults. For another example, see [this later post](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/).
 
 ## The Broadcast Problem
 Here we assume a designated node, often called the leader (or dealer) that has some input $v$. A protocol that solves Broadcast must have the following properties.
