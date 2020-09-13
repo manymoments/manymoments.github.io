@@ -1,7 +1,7 @@
 ---
 title: Using the Commit-Notify Paradigm for Synchronous Consensus with Omission Faults
 date: 2020-09-13 12:09:00 -07:00
-published: false
+published: true
 author:
 - Kartik Nayak
 - Ittai Abraham
