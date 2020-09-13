@@ -93,11 +93,13 @@ We detail the steady-state protocol tolerating omission failures under a fixed p
     while true:
 
        // as a primary
-       on receiving cmd from a client library and log[0] is empty and view == j: or
+       on receiving cmd from client library and log[0] is empty and view == j: or
        // as a primary or a backup replica
        on receiving ("notify", cmd, view) from any replica and log[0] is empty:
-          (my-cmd, highest-view) = (cmd, view) // update (my-cmd, highest-view) since some other replica may have committed
-          if active == true and log[0] is empty: // if the replica did not decide yet and has not quit view
+          // update (my-cmd, highest-view) since some replica may have committed
+          (my-cmd, highest-view) = (cmd, view) 
+          // if the replica did not decide yet and has not quit view
+          if active == true and log[0] is empty: 
              // commit
              log[0] = cmd
              state, output = apply(cmd, state)
@@ -130,26 +132,30 @@ Now we need to detail the mechanism for changing views:
        // Replica j
        
        // blame the current primary
-       on missing a notify from replica[view] in the last t + $\Delta$ time units:
+       on missing a notify from replica[view] in last t + $\Delta$ time units:
           send ("blame", view) to all replicas
 
        // as a primary or backup
-       on receiving ("blame", view) from f+1 replicas for the current view:
+       on receiving ("blame", view) from f+1 replicas for this view:
           // make other replicas quit view 
           send ("quit view", view) messages to all replicas
+          // stop committing in this view
           active = false
-          
+          // wait to be notified of commits by other replicas
+          wait $2\Delta$ time 
+          // set my-cmd to cmd with highest view herd (including yourself)
+          (my-cmd, highest-view) = (cmd, view) pair with the highest view herd
           // switch to new view and send status to the new primary
-          wait $2\Delta$ time // wait to be notified of commits by other replicas
-          Update (my-cmd, highest-view) to the (cmd, highest-view) pair from the notify messages and its own (my-cmd, highest-view) pair
           send ("status", my-cmd, highest-view) to replica[view]
           send ("primary change", view) to all client libraries
           view = view + 1
-          active = true // backups transition to steady state
+          // backups transition to steady state
+          active = true 
 
        // new primary
        on receiving ("status", cmd, view) from f+1 distinct replicas and view == j:
-          (my-cmd, highest-view) = pick the (cmd, view) pair with the highest highest-view
+          // set my-cmd to cmd with highest view herd (including yourself)
+          (my-cmd, highest-view) = (cmd, view) pair with the highest view herd
           if my-cmd != null:
              send ("notify", my-cmd, view) to all replicas
           // transition to steady state
