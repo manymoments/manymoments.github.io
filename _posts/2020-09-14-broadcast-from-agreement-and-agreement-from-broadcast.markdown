@@ -6,7 +6,7 @@ tags:
 author: Ittai Abraham
 ---
 
-In short this post, we highlight the connection between Broadcast and Agreement in the synchronous model. 
+In this post, we highlight the connection between Broadcast and Agreement in the synchronous model. 
 > Broadcast and Agreement: How can you implement one from the other?
 
 In our basic post we defined [Agreement and Broadcast](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/):
