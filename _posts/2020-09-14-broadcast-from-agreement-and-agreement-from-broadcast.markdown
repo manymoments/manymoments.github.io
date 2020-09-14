@@ -8,7 +8,8 @@ author: Ittai Abraham
 ---
 
 In short this post, we discuss the connection between Broadcast and Agreement in the synchronous model. 
-> How can you implement one from the other?
+> Broadcast and Agreement: How can you implement one from the other?
+
 In our basic post for defining [agreement and boradcast](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) we defined Agreement and Broadcast:
 
 ## Agreement
