@@ -58,7 +58,7 @@ Here we need to assume $f<n/2$. Suppose you have black-box access to a Broadcast
 **Discussion:** for this reduction we needed to run $n$ instances of Broadcast to get one Agreement. This means that any lower bound for Agreement about $x$ messages and/or $y$ rounds, implies a matching lower bound of at least $x/n$ messages and/or $y$ rounds for agreement.
 
 ### Scratch your Brains!
-**Exercise 1:** can you extend this reduction to the asynchronous model?
+**Exercise 1:** Can you extend the above reductions to the asynchronous model?
 
 **Exercise 2:** A different definition for consensus is that of interactive consistency (IC) first defined by Lamport, Shostak, and Pease. In this definition, each party $i$ has an input $v_i$. Each party $j$ commits an n-tuple $(v_1^{j}, v^j_2, \ldots, v^j_n)$. The definition requires the following properties to hold:
 
