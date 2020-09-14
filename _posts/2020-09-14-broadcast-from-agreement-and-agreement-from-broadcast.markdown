@@ -9,7 +9,7 @@ author: Ittai Abraham
 In this post, we highlight the connection between Broadcast and Agreement in the synchronous model. 
 > Broadcast and Agreement: How can you implement one from the other?
 
-In our basic post we defined [Agreement and Broadcast](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/):
+Recall that in an earlier post, we defined [Agreement and Broadcast](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) as:
 
 ## Agreement
 A set of $n$ nodes where each node $i$ has some input $v_i$. A protocol that solves Agreement must have the following properties.
@@ -38,11 +38,11 @@ Suppose you have access to a black-box Agreement protocol $A$ and you want to im
 
 
 
-**Claim:** the protocol above implements Broadcast
+**Claim:** The protocol above implements Broadcast.
 
-**Proof:** *Termination:* is immediate from the termination of $A$. *Validity:* follows from the validity of $A$: if the leader is honest, then all honest will start $A$ with the leader value $v$ and hence will decide $v$. *Agreement:* immediately from the agreement property of $A$.
+**Proof:** *Termination* is immediate from the termination of $A$. *Validity* follows from the validity of $A$: if the leader is honest, then all honest will start $A$ with the leader value $v$ and hence will decide $v$. *Agreement* immediately from the agreement property of $A$.
 
-**Discussion:** note that all we needed for the reduction is to add $n$ messages and one additional round. This means that any lower bound for Broadcast about $x$ messages and/or $y$ rounds, implies a matching lower bound of at least $x-n$ messages and/or $y-1$ rounds for agreement!
+**Discussion:** Note that all we needed for the reduction is to add $n$ messages and one additional round. This means that any lower bound for Broadcast about $x$ messages and/or $y$ rounds, implies a matching lower bound of at least $x-n$ messages and/or $y-1$ rounds for agreement!
 
 ## Agreement from Broadcast
 
@@ -50,12 +50,12 @@ Here we need to assume $f<n/2$. Suppose you have black-box access to a Broadcast
 1. Each party $i$ Broadcasts its input value $v_i$.
 2. Once all the broadcasts complete, output the majority value (break ties deterministically and choose a default value if all values are empty)
 
-**Claim:** the protocol above implements Agreement for $f<n/2$
+**Claim:** The protocol above implements Agreement for $f<n/2$.
 
-**Proof:** *Termination:* follows from the termination of $B$, note that we need all broadcasts to terminate (this can affect the costs if the termination is a random variable). *Validity:* follows from the validity of $B$ and the fact that $f<n/2$: if all honest have the same input $v$, then $v$ will be the majority value since the honest are a strict majority. *Agreement:* follows from the agreement property of $B$ and the deterministic nature of the reduction.
+**Proof:** *Termination* follows from the termination of $B$, note that we need all broadcasts to terminate (this can affect the costs if the termination is a random variable). *Validity* follows from the validity of $B$ and the fact that $f<n/2$: if all honest have the same input $v$, then $v$ will be the majority value since the honest are a strict majority. *Agreement* follows from the agreement property of $B$ and the deterministic nature of the reduction.
 
 
-**Discussion:** for this reduction we needed to run $n$ instances of Broadcast to get one Agreement. This means that any lower bound for Agreement about $x$ messages and/or $y$ rounds, implies a matching lower bound of at least $x/n$ messages and/or $y$ rounds for agreement.
+**Discussion:** For this reduction we needed to run $n$ instances of Broadcast to get one Agreement. This means that any lower bound for Agreement about $x$ messages and/or $y$ rounds, implies a matching lower bound of at least $x/n$ messages and/or $y$ rounds for agreement.
 
 ### Scratch your Brains!
 **Exercise 1:** Can you extend the above reductions to the asynchronous model?
@@ -68,7 +68,7 @@ Here we need to assume $f<n/2$. Suppose you have black-box access to a Broadcast
 
 **(termination)**: All honest nodes must eventually *decide* on a set of values and terminate.
 
-Can you perform a similar reduction to obtain IC using (i) Agreement and (ii) Broadcast and vice-versa.
+Can you perform a similar reduction to obtain IC using (i) Agreement and (ii) Broadcast, and vice-versa.
 
 Please discuss/comment/ask on [Twitter]().
 
