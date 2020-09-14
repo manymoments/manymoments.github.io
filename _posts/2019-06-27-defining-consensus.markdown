@@ -25,7 +25,7 @@ In this problem, we assume a set of $n$ nodes where each node $i$ has some input
 
 
 
-Obviously, Agreement is easily solvable if all nodes are honest and the system is synchronous. To make the problem non-trivial we need to fix the communication model [synchrony, asynchrony or partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/) and then fix the [threshold of the adversary](https://ittaiab.github.io/2019-06-17-the-threshold-adversary/) and other details about the [power](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) of the adversary.
+Obviously, Agreement is easily solvable if all nodes are honest and the system is synchronous. To make the problem non-trivial we need to fix the communication model [synchrony, asynchrony, or partial synchrony](https://ittaiab.github.io/2019-06-01-2019-5-31-models/) and then fix the [threshold of the adversary](https://ittaiab.github.io/2019-06-17-the-threshold-adversary/) and other details about the [power](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) of the adversary.
 
 In the *binary agreement* problem, we assume the set of possible inputs $V$ contains just two values: 0 and 1.
 
@@ -37,7 +37,7 @@ For lower bounds it's often beneficial to define an even easier problem of _agre
 ### Uniform vs. non-uniform agreement
 When the adversary is omission or crash, then the *(agreement)* property above is called *non-uniform agreement*. We can also have a stronger *(uniform agreement)* property where no two (even faulty) nodes *decide* on different values. This is called *uniform agreement*.
 
-For example, the difference will be relevant in a [state machine replication](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) setting with ommission faults. For another example, see [this later post](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/).
+For example, the difference will be relevant in a [state machine replication](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) setting with omission faults. For another example, see [this later post](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/).
 
 ## The Broadcast Problem
 Here we assume a designated node, often called the leader (or dealer) that has some input $v$. A protocol that solves Broadcast must have the following properties.
