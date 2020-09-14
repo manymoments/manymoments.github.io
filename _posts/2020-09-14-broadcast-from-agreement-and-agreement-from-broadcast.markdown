@@ -1,16 +1,15 @@
 ---
 title: Broadcast from Agreement and Agreement from Broadcast
 date: 2020-09-14 07:07:00 -07:00
-published: false
 tags:
 - dist101
 author: Ittai Abraham
 ---
 
-In short this post, we discuss the connection between Broadcast and Agreement in the synchronous model. 
+In short this post, we highlight the connection between Broadcast and Agreement in the synchronous model. 
 > Broadcast and Agreement: How can you implement one from the other?
 
-In our basic post for defining [agreement and boradcast](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) we defined Agreement and Broadcast:
+In our basic post we defined [Agreement and Broadcast](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/):
 
 ## Agreement
 A set of $n$ nodes where each node $i$ has some input $v_i$. A protocol that solves Agreement must have the following properties.
@@ -32,7 +31,7 @@ Here we assume a designated node, often called the leader (or dealer) that has s
 
 ## Broadcast from Agreement
 
-Suppose you have a black-box Agreement protocol $A$ and you want to implement Broadcast. 
+Suppose you have access to a black-box Agreement protocol $A$ and you want to implement Broadcast:
 1. In the first round, the leader sends its input $v$ to all.
 2. In the second round, each party starts the Agreement protocol $A$ with the input being the value it received by the end of round 1 from the leader (or some default non-value if no value is heard).
 
@@ -45,7 +44,6 @@ Suppose you have a black-box Agreement protocol $A$ and you want to implement Br
 ## Agreement from Broadcast
 
 Here we need to assume $f<n/2$. Suppose you have black-box access to a Broadcast protocol and you want to implement Agreement:
-
 1. Each party $i$ Broadcasts its input value $v_i$.
 2. Once all the broadcasts complete, choose the majority value (break ties deterministically and choose a default value if all values are empty)
 
