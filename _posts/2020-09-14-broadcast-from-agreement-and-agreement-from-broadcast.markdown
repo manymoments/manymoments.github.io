@@ -36,8 +36,9 @@ Suppose you have access to a black-box Agreement protocol $A$ and you want to im
 2. In the second round, each party starts the Agreement protocol $A$ with the input being the value it received by the end of round 1 from the leader (or some default non-value if no value is heard).
 3. The output of the Broadcast is the output of $A$.
 
+---
 ![B from A](/uploads/B from A.jpg)
-
+---
 
 **Claim:** The protocol above implements Broadcast.
 
@@ -49,7 +50,12 @@ Suppose you have access to a black-box Agreement protocol $A$ and you want to im
 
 Here we need to assume $f<n/2$. Suppose you have black-box access to a Broadcast protocol and you want to implement Agreement:
 1. Each party $i$ Broadcasts its input value $v_i$.
-2. Once all the broadcasts complete, output the majority value (break ties deterministically and choose a default value if all values are empty)
+2. Once all the broadcasts complete, output the majority value (break ties deterministically and choose a default value if all values are empty).
+
+
+---
+![A from B](/uploads/A from B.jpg)
+---
 
 **Claim:** The protocol above implements Agreement for $f<n/2$.
 
