@@ -36,6 +36,7 @@ Suppose you have access to a black-box Agreement protocol $A$ and you want to im
 2. In the second round, each party starts the Agreement protocol $A$ with the input being the value it received by the end of round 1 from the leader (or some default non-value if no value is heard).
 3. The output of the Broadcast is the output of $A$.
 
+![B from A](/uploads/B from A.jpg)
 
 
 **Claim:** The protocol above implements Broadcast.
