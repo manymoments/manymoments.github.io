@@ -9,7 +9,7 @@ author: Ittai Abraham, Kartik Nayak
 In this post, we highlight the connection between Broadcast and Agreement in the synchronous model. 
 > Broadcast and Agreement: How can you implement one from the other?
 
-Recall that in an earlier post, we defined [Agreement and Broadcast](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) as:
+We defined Agreement and Broadcast [in a previous post](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/), here is a recap:
 
 ## Agreement
 A set of $n$ nodes where each node $i$ has some input $v_i$. A protocol that solves Agreement must have the following properties.
