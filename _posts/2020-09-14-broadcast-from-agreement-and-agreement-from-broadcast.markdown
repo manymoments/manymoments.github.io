@@ -3,7 +3,7 @@ title: Broadcast from Agreement and Agreement from Broadcast
 date: 2020-09-14 07:07:00 -07:00
 tags:
 - dist101
-author: Ittai Abraham
+author: Ittai Abraham, Kartik Nayak
 ---
 
 In this post, we highlight the connection between Broadcast and Agreement in the synchronous model. 
