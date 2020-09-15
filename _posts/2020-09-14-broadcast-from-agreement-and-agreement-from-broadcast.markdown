@@ -81,5 +81,5 @@ Here we need to assume $f<n/2$. Suppose you have black-box access to a Broadcast
 
 Can you perform a similar reduction to obtain IC using (i) Agreement and (ii) Broadcast, and vice-versa.
 
-Please discuss/comment/ask on [Twitter]().
+Please discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1305799509390381059?s=20). 
 
