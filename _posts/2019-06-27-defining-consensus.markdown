@@ -49,5 +49,5 @@ Here we assume a designated node, often called the leader (or dealer) that has s
 **(termination):** all honest nodes must eventually *decide* on a value in $V$ and terminate.
 
 
-Observe that the two problems are deeply connected. A nice exercise is to try to solve Broadcast given Agreement. Another good exercise is to try to solve Agreement given Broadcast.
+Observe that the two problems are [deeply connected](https://decentralizedthoughts.github.io/2020-09-14-broadcast-from-agreement-and-agreement-from-broadcast/). A nice exercise is to try to solve Broadcast given Agreement. Another good exercise is to try to solve Agreement given Broadcast.
 
