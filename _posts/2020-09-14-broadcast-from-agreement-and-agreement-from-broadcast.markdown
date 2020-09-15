@@ -37,7 +37,9 @@ Suppose you have access to a black-box Agreement protocol $A$ and you want to im
 3. The output of the Broadcast is the output of $A$.
 
 ---
+
 ![B from A](/uploads/B from A.jpg)
+
 ---
 
 **Claim:** The protocol above implements Broadcast.
@@ -54,7 +56,9 @@ Here we need to assume $f<n/2$. Suppose you have black-box access to a Broadcast
 
 
 ---
+
 ![A from B](/uploads/A from B.jpg)
+
 ---
 
 **Claim:** The protocol above implements Agreement for $f<n/2$.
