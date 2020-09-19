@@ -7,7 +7,7 @@ author: Ittai Abraham
 
 In this series of posts, we explore what can be done in the Asynchronous model. This model seems challenging because the adversary can delay messages by any bounded time. By the end of this series, you will see that almost everything that can be done in synchrony can be obtained in asynchrony.
 
-We begin with [Bracha's Reliable Broadcast from 1987](https://core.ac.uk/download/pdf/82523202.pdf). This is one of the most important build blocks for [Byzantine Fault Tolerant](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) protocols in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this standard setting there are $n$ parties, where one of them is designated as the leader. The [threshold adversary](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/) can control at most $f<n/3$ parties. The leader has some input value $v$ and a party that terminates needs to output a single value.
+We begin with [Bracha's Reliable Broadcast from 1987](https://core.ac.uk/download/pdf/82523202.pdf). This is one of the most important build blocks for [Byzantine Fault Tolerant](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) protocols in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this standard setting there are $n$ parties, where one of them is designated as the leader. The malicious [threshold adversary](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/) can control at most $f<n/3$ parties. The leader has some input value $v$ and a party that terminates needs to output a single value.
 
 
 
