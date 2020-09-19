@@ -306,7 +306,7 @@ What if we want to prove $T_1 \subseteq T_2$ given their accumulators $a_1$ and 
 One application of this is **batching** membership proofs: i.e., compute a _single_, _constant-sized_ membership proof for multiple elements.
 This can be done by just setting $T_1$ to be the set of those elements.
 
-Subset proofs are based on the observation that if $T_1 \subseteq T_2$, then $\alpha_1$ divdes $\alpha_2$, where $\alpha_1$ and $\alpha_2$ are the accumulator polynomials of $T_1$ and $T_2$.
+Subset proofs are based on the observation that if $T_1 \subseteq T_2$, then $\alpha_1$ divides $\alpha_2$, where $\alpha_1$ and $\alpha_2$ are the accumulator polynomials of $T_1$ and $T_2$.
 
 {: .box-note}
 **Example:** If $T_1=\\{1,3\\}$ and $T_2=\\{1,3,4,10\\}$, then clearly $\alpha_1(X)=(X-1)(X-3)$ divides $\alpha_2(X)=(X-1)(X-3)(X-4)(X-10)$ and the quotient is $q(X)=(X-4)(X-10)$.
