@@ -7,7 +7,7 @@ tags:
 author: Ittai Abraham
 ---
 
-Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://ittaiab.github.io/2019-05-31-2019-5-31-models/)), we then need some way to limit the power of the adversary. 
+Once we fix the communication model (synchrony, asynchrony, or partial synchrony see [here](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/)), we then need some way to limit the power of the adversary. 
 
 
 > Power tends to corrupt, and absolute power corrupts absolutely.
