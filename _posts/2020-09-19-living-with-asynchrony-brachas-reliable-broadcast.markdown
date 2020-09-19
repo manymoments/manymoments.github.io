@@ -30,7 +30,11 @@ The high level idea:
 
 The pseudo-code is simple:
 
-       // Party j
+
+       // leader with input v
+       send <v> to all parties
+
+       // Party j (including the leader)
        echo = true
        vote = true
        
