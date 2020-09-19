@@ -7,12 +7,12 @@ author: Ittai Abraham
 
 In this series of posts, we explore what can be done in the Asynchronous model. This model seems challenging because the adversary can delay messages by any bounded time. By the end of this series, you will see that almost everything that can be done in synchrony can be obtained in asynchrony.
 
-We begin with [Bracha's Reliable Broadcast from 1987](https://core.ac.uk/download/pdf/82523202.pdf). This is one of the most important build blocks for [Byzantine Fault Tolerant](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) protocols in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this standard setting there are $n$ parties, where one of them is designated as the leader. The malicious [threshold adversary](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/) can control at most $f<n/3$ parties. The leader has some input value $v$ and a party that terminates needs to output a single value.
+We begin with [Bracha's Reliable Broadcast from 1987](https://core.ac.uk/download/pdf/82523202.pdf). This is one of the most important build blocks for [Byzantine Fault Tolerant](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) protocols in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this standard setting there are $n$ parties, where one of them is designated as the *leader*. The malicious [threshold adversary](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/) can control at most $f<n/3$ parties. The leader has some *input value* $v$ and a party that *terminates* needs to *output* a value.
 
 
 
 ## Reliable Broadcast Properties
-There are just two simple properties: 
+There are just two properties: 
 
 1. If the leader is non-faulty then eventually all non-faulty parties will output the leader's input.
 
@@ -22,13 +22,13 @@ Since this protocol is supposed to work in the asynchronous model, both these pr
 
 ## Reliable Broadcast
 
-The high level idea is simple:
+The high level idea:
 
 1. First, we force the leader to send just one value: we do this by requiring each party to *echo* just one message and wait for $n-f$ echo messages before *voting* for it. Since any two sets of $n-f$ must intersect by at least $f+1$ parties, it cannot be that two different non-faulty parties vote for different values.
 
 2. Second, we make sure that if a non-faulty *delivers* a value then all non-faulty will. We do this by requiring a party to send just one vote after seeing either $n-f$ echo messages *or* after seeing $f+1$ votes. So if any party sees $n-f$ votes then all non-faulty will see $n-2f \geq f+1$ votes.
 
-The pseudo-code is also simple:
+The pseudo-code is simple:
 
        // Party j
        echo = true
