@@ -1,7 +1,9 @@
 ---
 title: 'Living with Asynchrony: Bracha''s Reliable Broadcast'
 date: 2020-09-19 06:05:00 -07:00
-published: false
+tags:
+- dist101
+- asynchrony
 author: Ittai Abraham
 ---
 
