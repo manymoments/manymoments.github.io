@@ -80,6 +80,11 @@ Bracha used Reliable Broadcast to improve Ben-Or's [Asynchonrus Byzanitne Agreem
 Reliable broadcast requires sending $O(n^2)$ messages that contain the value $v$.  In the next post of this series, we will see what we can improve if we allow using collision-resistant hash functions. 
 
 
+Cristian Cachin as [excellent course notes](https://dcl.epfl.ch/site/_media/education/sdc_byzconsensus.pdf) on Byzantine Broadcasts and Randomized Consensus including Bracha's Reliable broadcast.
+
+
+
+
 
 ### Scratch your Brains!
 
