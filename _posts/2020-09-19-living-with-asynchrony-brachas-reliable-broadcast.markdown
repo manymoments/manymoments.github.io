@@ -104,8 +104,8 @@ Prove correctness (or provide a counterexample) of the following optimization th
            deliver v
 
 
-**Acknowledgment.** We would like to thank Kartik Nayak for his help on this post! 
+**Acknowledgment.** We would like to thank Kartik Nayak for his help with this post! 
 
 
-Please answer/discuss/comment/ask on [Twitter](). 
+Please answer/discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1307772031954546697?s=20). 
 
