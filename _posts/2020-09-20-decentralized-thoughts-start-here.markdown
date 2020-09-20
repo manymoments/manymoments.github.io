@@ -10,7 +10,7 @@ Start with the definition of [Consensus and Agreement](https://decentralizedthou
 [power of the adversary](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).
 Finally, many protocols need a [trusted setup phase](https://decentralizedthoughts.github.io/2019-07-18-setup-assumptions/).
 
-You can learn more about (Partial Synchrony)[https://decentralizedthoughts.github.io/2019-09-13-flavours-of-partial-synchrony/] and about different [flavours of Broadcast](https://decentralizedthoughts.github.io/2019-10-22-flavours-of-broadcast/).
+You can learn more about [Partial Synchrony](https://decentralizedthoughts.github.io/2019-09-13-flavours-of-partial-synchrony/) and about different [flavours of Broadcast](https://decentralizedthoughts.github.io/2019-10-22-flavours-of-broadcast/).
 
 # State Machine Replication
 
