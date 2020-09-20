@@ -7,7 +7,7 @@ tags:
 author: Ittai Abraham
 ---
 
-In this series of posts, we explore what can be done in the Asynchronous model. This model seems challenging because the adversary can delay messages by any bounded time. By the end of this series, you will see that almost everything that can be done in synchrony can be obtained in asynchrony.
+In this series of posts, we explore what can be done in the Asynchronous model. This model seems challenging because the adversary can delay messages by any bounded time. By the end of this series, you will see that [almost](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) everything that can be done in synchrony can be obtained in asynchrony.
 
 We begin with [Bracha's Reliable Broadcast from 1987](https://core.ac.uk/download/pdf/82523202.pdf). This is one of the most important build blocks for [Byzantine Fault Tolerant](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) protocols in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this standard setting there are $n$ parties, where one of them is designated as the *leader*. The malicious [threshold adversary](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/) can control at most $f<n/3$ parties. The leader has some *input value* $v$ and a party that *terminates* needs to *output* a value.
 
@@ -16,11 +16,11 @@ We begin with [Bracha's Reliable Broadcast from 1987](https://core.ac.uk/downloa
 ## Reliable Broadcast Properties
 There are just two properties: 
 
-1. If the leader is non-faulty then eventually all non-faulty parties will output the leader's input.
+**(validity)**: If the leader is non-faulty then eventually all non-faulty parties will output the leader's input.
 
-2. If some non-faulty party outputs a value then eventually all non-faulty parties will output the same value.
+**(agreement)**: If some non-faulty party outputs a value then eventually all non-faulty parties will output the same value.
 
-Since this protocol is supposed to work in the asynchronous model, both these properties use the term *eventually*. This term is often used in asynchrony to indicate that no matter what the adversary does and for how long it delays messages, some event will after a bounded number of message processing at each party.
+Since this protocol is supposed to work in the asynchronous model, both these properties use the term *eventually*. This term is often used in asynchrony to indicate that no matter what the adversary does and for how long it delays messages, some event will occur after a bounded number of message processing at each party (assuming a bounded threshold adversary).
 
 ## Reliable Broadcast
 
@@ -45,33 +45,33 @@ The pseudo-code is simple:
              send <echo, v> to all parties
              echo = false
 
-       on receiving <echo, v> from n-f unique parties:
+       on receiving <echo, v> from n-f distinct parties:
           if vote == true:
              send <vote, v> to all parties
              vote = false
 
-       on receiving <vote, v> from f+1 unique parties:
+       on receiving <vote, v> from f+1 distinct parties:
            if vote == true:
              send <vote, v> to all parties
              vote = false
 
-       on receiving <vote, v> from n-f unique parties:
+       on receiving <vote, v> from n-f distinct parties:
            deliver v
 
 ### Analysis
 
-**Claim 1:**: If the leader is honest and sends <v> to all parties then all non-faulty will eventually deliver <v>.
+**Claim 1 (validity):**: If the leader is honest and sends <v> to all parties then all non-faulty will eventually deliver <v>.
 
 *Proof:* All non-faulty will eventually send <echo,v>, so eventually all non-fualty will receive $n-f$ echoes for $v$ and at most $f$ echos for other values. Hence all non-fualty will eventually send <vote, v>, so eventually all non-fualty will receive $n-f$ votes for $v$ and at most $f$ votes for other values.
 
 **Claim 2:**: No two non-faulty will send conflicting votes.
 
-*Proof:* Consider the first vote for $v$ and the first vote for $v' \neq v$ by two non-faulty parties $a$ and $b$. Since these are the first, party $a$ must have seen a set $A$ of $n-f$ echos for $v$ and party $b$ must have seen a set $B$ of $n-f$ echoes for $v' \neq v$ (since they are the first, they could not have voted due to seeing $f+1$ votes). Observe that $\|A \cap B\| \geq f+1$, this implies that there must be at least $f+1$ parties that sent an echo to both of them, which implies that at least one non-faulty party sent two votes for different values, which contradicts the code.
+*Proof:* Seeking a contradiction, consider the first vote for $v$ and the first vote for $v' \neq v$ by two non-faulty parties $a$ and $b$. Since these are the first, party $a$ must have seen a set $A$ of $n-f$ echos for $v$ and party $b$ must have seen a set $B$ of $n-f$ echoes for $v' \neq v$ (since they are the first, they could not have voted due to seeing $f+1$ votes). Observe that since $|A|=|B|=n-f$ then $\|A \cap B\| \geq f+1$ (this is the famous "quorum intersection" property).  This implies that there must be at least $f+1$ parties that sent an echo to both of them, which implies that at least one non-faulty party sent two votes for different values, which contradicts the code.
  
 
-**Claim 3:**: If a non-faulty delivers $v$, then all non-faulty will eventually deliver $v$.
+**Claim 3 (agreement):**: If a non-faulty delivers $v$, then all non-faulty will eventually deliver $v$.
 
-*Proof:* From the previous claim, we know that all non-faulty that vote, will vote for the same value. So if a non-faulty delivers, it has seen $n-f$ unique votes, of which at least $n-2f \geq f+1$ came from non-faulty parties. So all non-faulty parties will either vote $v$ due to seeing $n-f$ echoes or eventually due to seeing the votes from these $f+1$ non-faulty parties. Note that a non-faulty will never vote for $v' \neq v$ because from claim 2, there will not be $n-f$ echos for $v'$ and there will not be $f+1$ votes for $v'$.
+*Proof:* From the previous claim, we know that all non-faulty that vote, will vote for the same value. So if a non-faulty delivers, it has seen $n-f$ distinct votes, of which at least $n-2f \geq f+1$ came from non-faulty parties. So all non-faulty parties will either vote $v$ due to seeing $n-f$ echoes or eventually due to seeing the votes from these $f+1$ non-faulty parties. Note that a non-faulty will never vote for $v' \neq v$ because from claim 2, there will not be $n-f$ echos for $v'$ and there will not be $f+1$ votes for $v'$.
 
 ### Notes
 
@@ -90,15 +90,16 @@ Prove correctness (or provide a counterexample) of the following optimization th
              send <echo, v> to all parties
              echo = false
 
-        on receiving <echo, v> from f+1 unique parties:
+        on receiving <echo, v> from f+1 distinct parties:
            if echo == true:
              send <echo, v> to all parties
              vote = false
 
-        on receiving <echo, v> from n-f unique parties:
+        on receiving <echo, v> from n-f distinct parties:
            deliver v
 
 
+**Acknowledgment.** We would like to thank Kartik Nayak for his help on this post! 
 
 
 Please answer/discuss/comment/ask on [Twitter](). 
