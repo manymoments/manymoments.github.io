@@ -60,7 +60,7 @@ The pseudo-code is simple:
 
 ### Analysis
 
-**Claim 1 (validity):**: If the leader is honest and sends <v> to all parties then all non-faulty will eventually deliver <v>.
+**Claim 1 (validity)**: If the leader is honest and sends <v> to all parties then all non-faulty will eventually deliver <v>.
 
 *Proof:* All non-faulty will eventually send <echo,v>, so eventually all non-fualty will receive $n-f$ echoes for $v$ and at most $f$ echos for other values. Hence all non-fualty will eventually send <vote, v>, so eventually all non-fualty will receive $n-f$ votes for $v$ and at most $f$ votes for other values.
 
@@ -69,7 +69,7 @@ The pseudo-code is simple:
 *Proof:* Seeking a contradiction, consider the first vote for $v$ and the first vote for $v' \neq v$ by two non-faulty parties $a$ and $b$. Since these are the first, party $a$ must have seen a set $A$ of $n-f$ echos for $v$ and party $b$ must have seen a set $B$ of $n-f$ echoes for $v' \neq v$ (since they are the first, they could not have voted due to seeing $f+1$ votes). Observe that since $\|A\|=\|B\|=n-f$ then $\|A \cap B\| \geq f+1$ (this is the famous "quorum intersection" property).  This implies that there must be at least $f+1$ parties that sent an echo to both of them, which implies that at least one non-faulty party sent two votes for different values, which contradicts the code.
  
 
-**Claim 3 (agreement):**: If a non-faulty delivers $v$, then all non-faulty will eventually deliver $v$.
+**Claim 3 (agreement)**: If a non-faulty delivers $v$, then all non-faulty will eventually deliver $v$.
 
 *Proof:* From the previous claim, we know that all non-faulty that vote, will vote for the same value. So if a non-faulty delivers, it has seen $n-f$ distinct votes, of which at least $n-2f \geq f+1$ came from non-faulty parties. So all non-faulty parties will either vote $v$ due to seeing $n-f$ echoes or eventually due to seeing the votes from these $f+1$ non-faulty parties. Note that a non-faulty will never vote for $v' \neq v$ because from claim 2, there will not be $n-f$ echos for $v'$ and there will not be $f+1$ votes for $v'$.
 
