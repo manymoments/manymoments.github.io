@@ -41,7 +41,7 @@ We start with a [simple SMR for crash failures](https://decentralizedthoughts.gi
 - [Security analysis of Nakamoto Consensus](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/)
 
 
-- [explanation of Selfish Mining](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/). 
+- [Blockchain Selfish Mining](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/). 
 
 - [Payment Channels](https://decentralizedthoughts.github.io/2019-10-25-payment-channels-are-just-a-two-person-bfs-smr-systems/)
 
