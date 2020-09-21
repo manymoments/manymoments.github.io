@@ -25,8 +25,7 @@ We start with a [simple SMR for crash failures](https://decentralizedthoughts.gi
 
 - [Byzantine Consensus in Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) requires $f<n/3$.
 
-- [Byzantine Consensus with no PKI]
-(https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) (when the adversary can simulate) requires $f<n/3$.
+- [Byzantine Consensus with no PKI](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) (when the adversary can simulate) requires $f<n/3$.
 
 - [Consensus often needs a quadratic number of messages](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/).
 
@@ -39,7 +38,7 @@ We start with a [simple SMR for crash failures](https://decentralizedthoughts.gi
 
 - [Setup assumptions in Bitcoin and Ethereum](https://decentralizedthoughts.github.io/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/) and the notion of [checkpointing a blockchain](https://decentralizedthoughts.github.io/2019-09-13-dont-trust-checkpoint/). 
 
-- [Security analysis of Nakamoto Consensus] (https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/)
+- [Security analysis of Nakamoto Consensus](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/)
 
 
 - [explanation of Selfish Mining](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/). 
@@ -51,7 +50,7 @@ We start with a [simple SMR for crash failures](https://decentralizedthoughts.gi
 The basics: [Cryptographic hash function](https://decentralizedthoughts.github.io/2020-08-28-what-is-a-cryptographic-hash-function/), [Polynomials over a finite field](https://decentralizedthoughts.github.io/2020-07-17-the-marvels-of-polynomials-over-a-field/), [Polinomial secret sharing](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/).
 
 
-[Bilinear Accumulators] (https://decentralizedthoughts.github.io/2020-04-02-bilinear-accumulators-for-cryptocurrency/) and [range proofs](https://decentralizedthoughts.github.io/2020-03-03-range-proofs-from-polynomial-commitments-reexplained/).
+[Bilinear Accumulators](https://decentralizedthoughts.github.io/2020-04-02-bilinear-accumulators-for-cryptocurrency/) and [range proofs](https://decentralizedthoughts.github.io/2020-03-03-range-proofs-from-polynomial-commitments-reexplained/).
 
 Private set intersection: [part 1](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/) and [part 2](https://decentralizedthoughts.github.io/2020-07-26-private-set-intersection-2/)
 
@@ -59,7 +58,7 @@ Private set intersection: [part 1](https://decentralizedthoughts.github.io/2020-
 
 - [What is the difference between PBFT, Tendermint, SBFT and HotStuff ?](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/)
 
-- [survey of Authenticated Synchronous BFT](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/)
+- [Modern Authenticated Synchronous BFT protocols](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/)
 
 - [Sync HotStuff](https://decentralizedthoughts.github.io/2019-11-12-Sync-HotStuff/)
 
@@ -67,6 +66,6 @@ Private set intersection: [part 1](https://decentralizedthoughts.github.io/2020-
 
 - [Optimal Optimistic Responsivness](https://decentralizedthoughts.github.io/2020-06-12-optimal-optimistic-responsiveness/)
 
-- Encrypted Blockchain Databases [part 1](https://decentralizedthoughts.github.io/2020-07-10-encrypted-blockchain-databases-part-i/) and [part 2] (https://decentralizedthoughts.github.io/2020-07-10-encrypted-blockchain-databases-part-ii/).
+- Encrypted Blockchain Databases [part 1](https://decentralizedthoughts.github.io/2020-07-10-encrypted-blockchain-databases-part-i/) and [part 2](https://decentralizedthoughts.github.io/2020-07-10-encrypted-blockchain-databases-part-ii/).
 
 - [Asynchronous Fault Tolerant Computation with Optimal Resilience](https://decentralizedthoughts.github.io/2020-07-15-asynchronous-fault-tolerant-computation-with-optimal-resilience/)
