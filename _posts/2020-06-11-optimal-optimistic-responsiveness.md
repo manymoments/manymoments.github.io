@@ -6,6 +6,7 @@ tags:
 - SMR
 - research
 author: Nibesh Shrestha, Kartik Nayak
+redirect_from: "/2020-06-12-optimal-optimistic-responsiveness/"
 ---
 
 [Synchronous consensus protocols](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/) tolerating Byzantine failures 
