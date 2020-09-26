@@ -20,6 +20,21 @@ In an SMR system, global commit $\preccurlyeq$ local commit $\preccurlyeq$ check
 
 Learning is useful not only to the clients but also some replicas so that they can *catch up*. Who do they learn from, and how do they know that they have learned the right command? To answer this question, let us discuss something more basic: do all replicas always commit the same value? At some level, yes, this is called consensus, isn't it? But on a closer look, we generally talk only about commands committed by non-faulty replicas, and if we only speak with non-faulty replicas, then a learner will not know of a correct commit. Hence, a learner learns of a commit by communicating with sufficiently many replicas. We will separate how the process goes under different failure models and whether we have [uniform consensus](https://decentralizedthoughts.github.io/2019-06-26-defining-consensus/):
 
+**Omission failure (non-Byzantine) setting**
+
+1. If we have uniform consensus, a learner asks $f+1$ replicas. A replica that is asked returns the locally committed value it knows about. The learner simply uses the first response of a decision value. 
+
+2. If we have non-uniform consensus, a learner asks $2f+1$ replicas, and waits for at least $f+1$ replicas to send the same locally committed value.  
+
+**Byzantine failure setting**
+
+1. If the local commit has a verifiable certificate, then again its enough to ask $f+1$ replicas and use the first response.
+
+2. If local commits do not carry a certificate, then like the non-uniform case above, a learner asks $2f+1$ replicas and waits for at least $f+1$ replicas to send the same local commit. This is what PBFT does.
+
+----------
+
+
 A [state machine replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) system needs to do roughly three things (in a fault-tolerant manner): (1) decide on commands; (2) learn about previously decided commands; (3) execute decided commands. In this post, we provide an overview of the *learning* part of SMR. Most of the ideas of this post appear in [PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf) and are extended here to the case where digital signatures are used.
 
 Let's start by saying that *learning* decisions in distributed computing has many manifestations. Sometimes learning is simply called *reading*, and sometimes its referred to as *state transfer*. We will explain these keywords below.
