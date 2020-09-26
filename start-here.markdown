@@ -11,11 +11,14 @@ Finally, many protocols need a [trusted setup phase](https://decentralizedthough
 
 You can learn more about [Partial Synchrony](https://decentralizedthoughts.github.io/2019-09-13-flavours-of-partial-synchrony/) and about different [relaxations of Broadcast](https://decentralizedthoughts.github.io/2019-10-22-flavours-of-broadcast/).
 
+One of the classic protocols of distributed computing is the [Dolev-Strong Authenticated Broadcast protocol](https://decentralizedthoughts.github.io/2019-12-22-dolev-strong/).
+
 # State Machine Replication
 
 We begin by defining [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) (SMR) and talk about different degrees of [SMR fault tolerance](https://decentralizedthoughts.github.io/2019-10-25-flavours-of-state-machine-replication/). The scalability and performance of a State Machine Replication system is not just about [Consensus, but also about Data and Execution](https://decentralizedthoughts.github.io/2019-12-06-dce-the-three-scalability-bottlenecks-of-state-machine-replication/).
 
-We start with a [simple SMR for crash failures](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/). We later extend this to omission failures. [First via single shot](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/)
+We start with a [simple SMR for crash failures](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/). We later extend this to omission failures. [First via single shot](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/).
+
 
 # Lower Bounds
 
