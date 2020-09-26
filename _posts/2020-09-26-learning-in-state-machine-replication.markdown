@@ -4,7 +4,7 @@ date: 2020-09-26 02:30:00 -11:00
 published: false
 ---
 
-A State Machine Replication system needs to do roughly three things (in a fault-tolerant manner): (1) decide on commands; (2) learn about decided commands; (3) execute decided commands. In this post, we provide an overview of the *learning* part of SMR.
+A State Machine Replication system needs to do roughly three things (in a fault-tolerant manner): (1) decide on commands; (2) learn about decided commands; (3) execute decided commands. In this post, we provide an overview of the *learning* part of SMR. Most of the ideas of this post appear in [PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf) and are extended here to the case where digital signatures are used.
 
 Let's start by saying that *learning* decisions in distributed computing has many manifestations, sometimes learning is simply called *reading*, and sometimes its referred to as *state transfer*. We will explain these keywords below.
 
@@ -43,13 +43,16 @@ Clearly, it can just try to learn each slot independently but how will it learn 
 
 - In a non-uniform consensus or Byzantine failure setting without certificates, the learning party can ask $2f+1$ other replicas for the *last consecutively decide slot*. The asking party can then take the minimum value $m$ such that at least $f+1$ replicas say that their last consecutively decide slot is *at least* $m$.
 
+
+Even when certificates are used, if you want your learning (reads) to be linearizable, then in an asynchronous setting you need to read from $2f+1$ replicas and then take the certified value that appears in at least $f+1$ replicas, also see [section 5.1.3 in PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf).
+
 ## Learning with Checkpoints
 
 When a Replicated State Machine creates periodic checkpoints it allows a replica to catchup by comparing its state to the latest checkpoint and then add only the latest updates. This is similar to the restore from snapshot backup vs restore from an incremental backup.
 
 A learning replica can now (1) learn the lastest checkpoint; then (2) update to the latest checkpoint; then (3) update the decisions in the active window.
 
-Step (1) is a learning query, and step (3) is similar to the learning described in the previous section. For step (2), we can use a specialized protocol for state transfer. For example, one can use anti-entropy via a Merkle tree to learn the missing pieces of the latest checkpoint. This is how PBFT does state transfer, also see [this](https://www.usenix.org/system/files/conference/atc13/atc13-bessani.pdf). 
+Step (1) is a learning query, and step (3) is similar to the learning described in the previous section. For step (2), we can use a specialized protocol for state transfer. For example, one can use anti-entropy via a Merkle tree to learn the missing pieces of the latest checkpoint. See [section 5.3 in PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf) and also [Bessani etal](https://www.usenix.org/system/files/conference/atc13/atc13-bessani.pdf). 
 
 ## Learning complexity, optimization, and denial of service protection
 
