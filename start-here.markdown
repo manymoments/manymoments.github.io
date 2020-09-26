@@ -3,6 +3,9 @@ title: Start Here
 date: 2020-09-21 02:34:00 -11:00
 ---
 
+{: .box-note}
+this page is a dynamically changing index of all our posts, it's one more place to start reading Decentralized Thoughts
+
 # Basics, Foundations, and Classics
 
 Start with the definition of [Consensus and Agreement](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/). Then learn about the [network model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/), the [threshold adversary](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/) model, and the
