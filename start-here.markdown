@@ -52,18 +52,25 @@ We start with a [simple SMR for crash failures](https://decentralizedthoughts.gi
 
 # Cryptography
 
-The basics: [Cryptographic hash function](https://decentralizedthoughts.github.io/2020-08-28-what-is-a-cryptographic-hash-function/), [Polynomials over a finite field](https://decentralizedthoughts.github.io/2020-07-17-the-marvels-of-polynomials-over-a-field/), [Polinomial secret sharing](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/).
+The basics:
 
+- [Cryptographic hash function](https://decentralizedthoughts.github.io/2020-08-28-what-is-a-cryptographic-hash-function/)
 
-[Bilinear Accumulators](https://decentralizedthoughts.github.io/2020-04-02-bilinear-accumulators-for-cryptocurrency/) and [range proofs](https://decentralizedthoughts.github.io/2020-03-03-range-proofs-from-polynomial-commitments-reexplained/).
+- [Polynomials over a finite field](https://decentralizedthoughts.github.io/2020-07-17-the-marvels-of-polynomials-over-a-field/)
 
-Private set intersection: [part 1](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/) and [part 2](https://decentralizedthoughts.github.io/2020-07-26-private-set-intersection-2/)
+- [Polinomial secret sharing](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/).
+
+More advanced:
+
+- [Bilinear Accumulators](https://decentralizedthoughts.github.io/2020-04-02-bilinear-accumulators-for-cryptocurrency/) and [range proofs](https://decentralizedthoughts.github.io/2020-03-03-range-proofs-from-polynomial-commitments-reexplained/).
+
+- Private set intersection: [part 1](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/) and [part 2](https://decentralizedthoughts.github.io/2020-07-26-private-set-intersection-2/)
 
 # Research
 
 - [What is the difference between PBFT, Tendermint, SBFT and HotStuff ?](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/)
 
-- [Modern Authenticated Synchronous BFT protocols](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/)
+- [Survay of modern Authenticated Synchronous BFT protocols](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/)
 
 - [Sync HotStuff](https://decentralizedthoughts.github.io/2019-11-12-Sync-HotStuff/)
 
