@@ -4,13 +4,13 @@ date: 2020-09-26 02:30:00 -11:00
 published: false
 ---
 
-A State Machine Replication system needs to do roughly three things (in a fault-tolerant manner): (1) decide on commands; (2) learn about decided commands; (3) execute decided commands. In this post, we provide an overview of the *learning* part of SMR. Most of the ideas of this post appear in [PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf) and are extended here to the case where digital signatures are used.
+A State Machine Replication system needs to do roughly three things (in a fault-tolerant manner): (1) decide on commands; (2) learn about previously decided commands; (3) execute decided commands. In this post, we provide an overview of the *learning* part of SMR. Most of the ideas of this post appear in [PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf) and are extended here to the case where digital signatures are used.
 
-Let's start by saying that *learning* decisions in distributed computing has many manifestations, sometimes learning is simply called *reading*, and sometimes its referred to as *state transfer*. We will explain these keywords below.
+Let's start by saying that *learning* decisions in distributed computing has many manifestations. Sometimes learning is simply called *reading*, and sometimes its referred to as *state transfer*. We will explain these keywords below.
 
 ## Learning in a single-shot consensus system
 
-In many situations, a non-faulty replica may have missed the decision. So the consensus algorithm already agreed on a value. Now a replica simply wants to *read* or *learn* the decision value. How can it do this?
+In many situations, a non-faulty replica may have missed the decision and wants to catch up and learn the decision. The consensus algorithm already agreed on a value. Now a replica simply wants to *read* or *learn* the decision value. How can it do this?
 
 - In the Omission failure (non-Byzantine) setting:
 
