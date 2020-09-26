@@ -68,7 +68,7 @@ More advanced:
 
 # Research
 
-- [What is the difference between PBFT, Tendermint, SBFT and HotStuff ?](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/)
+- [What is the difference between PBFT, Tendermint, SBFT, and HotStuff ?](https://decentralizedthoughts.github.io/2019-06-23-what-is-the-difference-between/)
 
 - [Survay of modern Authenticated Synchronous BFT protocols](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/)
 
