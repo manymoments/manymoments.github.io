@@ -30,16 +30,16 @@ We start with a [simple SMR for crash failures](https://decentralizedthoughts.gi
 
 - [Byzantine Consensus in Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) requires $f<n/3$.
 
-- [Byzantine Consensus with no PKI](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) (when the adversary can simulate) requires $f<n/3$.
+- [Byzantine Consensus with no PKI](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) (or more generally when the adversary can simulate) requires $f<n/3$.
 
 - [Consensus often needs a quadratic number of messages](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/).
 
 
-- Consensus is challenging because [some initial state must be uncommitted](https://decentralizedthoughts.github.io/2019-12-15-consensus-model-for-FLP/) and this imples [executions with at least $f+1$ rounds in synchrony](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) and [non-terminating executions in asynchrony](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/).
+- Consensus is challenging because [some initial state must be uncommitted](https://decentralizedthoughts.github.io/2019-12-15-consensus-model-for-FLP/) and this imples [executions with at least $f+1$ rounds in Synchrony](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) and [non-terminating executions in Asynchrony](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/) (the FLP impossibility).
 
 # Blockchains
 
-- [The first blockchain (or how to timestamp)](https://decentralizedthoughts.github.io/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/).
+- [The first blockchain (or how to timestamp a digital document)](https://decentralizedthoughts.github.io/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/).
 
 - [Setup assumptions in Bitcoin and Ethereum](https://decentralizedthoughts.github.io/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/) and the notion of [checkpointing a blockchain](https://decentralizedthoughts.github.io/2019-09-13-dont-trust-checkpoint/). 
 
