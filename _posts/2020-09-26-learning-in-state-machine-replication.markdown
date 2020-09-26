@@ -14,9 +14,9 @@ In many situations, a non-faulty replica may have missed the decision. So the co
 
 - In the Omission failure (non-Byzantine) setting:
 
-1 If we have uniform consensus, it's enough to ask $f+1$ replicas. A replica that is asked returns the decision value it knows about. The asking replica simply uses the first response of a decision value. 
+1. If we have uniform consensus, it's enough to ask $f+1$ replicas. A replica that is asked returns the decision value it knows about. The asking replica simply uses the first response of a decision value. 
 
-2 If we have non-uniform consensus, then ask $2f+1$ replicas and wait for at least $f+1$ replica to send the same decision value.  
+2. If we have non-uniform consensus, then ask $2f+1$ replicas and wait for at least $f+1$ replica to send the same decision value.  
 
 - In the Byzantine failure setting:
 
