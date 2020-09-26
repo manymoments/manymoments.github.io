@@ -49,7 +49,7 @@ When a Replicated State Machine creates periodic checkpoints it allows a replica
 
 A learning replica can now (1) learn the lastest checkpoint; then (2) update to the latest checkpoint; then (3) update the decisions in the active window.
 
-Step (1) is a learning query, and step (3) is similar to the learning described in the previous section. For step (2), we can use a specialized protocol for state transfer. For example, one can use anti-entropy via a Merkle tree to learn the missing pieces of the latest checkpoint. This is how PBFT does state transfer. 
+Step (1) is a learning query, and step (3) is similar to the learning described in the previous section. For step (2), we can use a specialized protocol for state transfer. For example, one can use anti-entropy via a Merkle tree to learn the missing pieces of the latest checkpoint. This is how PBFT does state transfer, also see [this](https://www.usenix.org/system/files/conference/atc13/atc13-bessani.pdf). 
 
 ## Learning complexity, optimization, and denial of service protection
 
