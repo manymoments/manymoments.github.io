@@ -43,7 +43,7 @@ Clearly, it can just try to learn each slot independently but how will it learn 
 
 - In a non-uniform consensus or Byzantine failure setting without certificates, the learning party can ask $2f+1$ other replicas for the *last consecutively decide slot*. The asking party can then take the minimum value $m$ such that at least $f+1$ replicas say that their last consecutively decide slot is *at least* $m$.
 
-## learning with checkpoints
+## Learning with Checkpoints
 
 When a Replicated State Machine creates periodic checkpoints it allows a replica to catchup by comparing its state to the latest checkpoint and then add only the latest updates. This is similar to the restore from snapshot backup vs restore from an incremental backup.
 
@@ -57,7 +57,7 @@ In a naive of learning, each faulty replica can ask each non-faulty replica for 
 
 1. Instead of asking the decision from $f+1$ replicas, the asking replica can ask the decision from one replica and ask the [cryptographic hash](https://decentralizedthoughts.github.io/2020-08-28-what-is-a-cryptographic-hash-function/) of the decision from the remaining $f$ replicas. Modeling the size of the hash as a word, this reduces the total word complexity to $O(n^2 + n M)$.
 
-2. Instead of sending the decision, we can use [error correction codes](https://users.ece.cmu.edu/~jwylie/pubs/CMU-PDL-03-104.pdf) to split the decision value to $O(m/n)$ shares. Each non-faulty party will send its share to all parties. So the total word complexity is just $O(M/n) times $O(n)$ which is $O(M)$ (where the leading constant is at least 3).
+2. Instead of sending the decision, we can use [error correction codes](https://users.ece.cmu.edu/~jwylie/pubs/CMU-PDL-03-104.pdf) to split the decision value to $O(m/n)$ shares. Each non-faulty party will send its share to all parties. So the total word complexity is just $O(M/n)$ times $O(n^2)$ which is $O(n M)$ (where the leading constant is at least 3).
 
 
 
