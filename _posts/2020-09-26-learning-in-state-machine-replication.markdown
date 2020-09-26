@@ -4,7 +4,23 @@ date: 2020-09-26 02:30:00 -11:00
 published: false
 ---
 
-A State Machine Replication system needs to do roughly three things (in a fault-tolerant manner): (1) decide on commands; (2) learn about previously decided commands; (3) execute decided commands. In this post, we provide an overview of the *learning* part of SMR. Most of the ideas of this post appear in [PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf) and are extended here to the case where digital signatures are used.
+A [state machine replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) system requires the server replicas in the system to agree on a sequence of commands and execute them. The *learners* then learn about the result of the sequence of commits. We will elaborate on the notion of learning in this post. Most of the ideas of this post appear in [PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf) and are extended here to the case where digital signatures are used.
+
+Before understanding the learning process, let us understand the different states that the system and individual replicas can be in when committing a single command:
+
+1. **Global commit.** This is a state of the system where all replicas have *globally* reached consensus on a command $cmd$ *even if none of the replicas know about it*. Eventually, when the system executes for a sufficiently long time, then all replicas will eventually commit $cmd$ and the learners will learn about this commit.
+
+2. **Local commit.** This is a state of the system from the perspective of an individual replica, and is a usual notion of a replica committing a command that we refer to.
+
+3. **Checkpointed commit.** This is a state of the system from the perspective of an individual replica, and is the point in time at which a replica knows that sufficiently many replicas have locally committed a command.
+
+In an SMR system, global commit $\preccurlyeq$ local commit $\preccurlyeq$ checkpointed commit. For instance, in [Bracha Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/), if each of $n-f$ replicas receive a vote from $f+1$ distinct parties, then all replicas have globally committed on the value even though none of them have committed (delivered) it yet. A replica locally commits when it receives $n-f$ such votes. As another example, consider the [Commit-Notify](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) paradigm that we discussed for synchronous consensus under omission faults. In this case, a global commit happens the first time some non-faulty replica locally commits. We have not discussed the notion of checkpointed commits in our earlier posts and hence, the examples do not talk about them. In each of the above three system states, at some level, "consensus" has already been achieved so far as the fault threshold is respected.
+
+## Learning in a single-shot consensus system
+
+Learning is useful not only to the clients but also some replicas so that they can *catch up*. Who do they learn from, and how do they know that they have learned the right command? To answer this question, let us discuss something more basic: do all replicas always commit the same value? At some level, yes, this is called consensus, isn't it? But on a closer look, we generally talk only about commands committed by non-faulty replicas, and if we only speak with non-faulty replicas, then a learner will not know of a correct commit. Hence, a learner learns of a commit by communicating with sufficiently many replicas. We will separate how the process goes under different failure models and whether we have [uniform consensus](https://decentralizedthoughts.github.io/2019-06-26-defining-consensus/):
+
+A [state machine replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) system needs to do roughly three things (in a fault-tolerant manner): (1) decide on commands; (2) learn about previously decided commands; (3) execute decided commands. In this post, we provide an overview of the *learning* part of SMR. Most of the ideas of this post appear in [PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf) and are extended here to the case where digital signatures are used.
 
 Let's start by saying that *learning* decisions in distributed computing has many manifestations. Sometimes learning is simply called *reading*, and sometimes its referred to as *state transfer*. We will explain these keywords below.
 
