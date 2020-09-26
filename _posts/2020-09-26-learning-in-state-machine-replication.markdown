@@ -55,9 +55,9 @@ Step (1) is a learning query, and step (3) is similar to the learning described 
 
 In a naive of learning, each faulty replica can ask each non-faulty replica for the missing decision. This would lead to a  $O(n^2 M)$ total word complexity for a decision of length $M$. Let's cover two important optimizations:
 
-1. Instead of asking the decision from $f+1$ replicas, the asking replica can ask the decision from one replica and ask the [cryptographic hash](https://decentralizedthoughts.github.io/2020-08-28-what-is-a-cryptographic-hash-function/) of the decision from the remaining $f$ replicas. Modeling the size of the hash as a word, this reduces the total word complexity to $O(n^2 + n M)$.
+1. Instead of asking the decision from $f+1$ replicas, the asking replica can ask the decision from one replica and ask the [cryptographic hash](https://decentralizedthoughts.github.io/2020-08-28-what-is-a-cryptographic-hash-function/) of the decision from the remaining $f$ replicas. Modeling the size of the hash as a word, this reduces the total word complexity to $O(n^2 + n M)$. The problem with this approach is that a malicious asker can ask for the decision value from more than one replica. So the worst-case word complexity could again reach $O(n^2 M)$.
 
-2. Instead of sending the decision, we can use [error correction codes](https://users.ece.cmu.edu/~jwylie/pubs/CMU-PDL-03-104.pdf) to split the decision value to $O(m/n)$ shares. Each non-faulty party will send its share to all parties. So the total word complexity is just $O(M/n)$ times $O(n^2)$ which is $O(n M)$ (where the leading constant is at least 3).
+2. To solve the denial of service attack, instead of sending the decision, we can use [error correction codes](https://users.ece.cmu.edu/~jwylie/pubs/CMU-PDL-03-104.pdf) to split the decision value to $O(m/n)$ shares. Each non-faulty party will send its share to all parties. So the total word complexity is just $O(M/n)$ times $O(n^2)$ which is $O(n M)$ (where the leading constant is at least 3).
 
 
 
