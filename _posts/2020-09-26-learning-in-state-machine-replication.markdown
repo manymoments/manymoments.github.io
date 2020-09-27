@@ -20,7 +20,7 @@ In an SMR system, global commit $\preccurlyeq$ local commit $\preccurlyeq$ check
 
 Learning is useful not only to the clients but also some replicas so that they can *catch up*. Who do they learn from, and how do they know that they have learned the right command? To answer this question, let us discuss something more basic: do all replicas always commit the same value? At some level, yes, this is called consensus, isn't it? But on a closer look, we generally talk only about commands committed by non-faulty replicas, and if we only speak with non-faulty replicas, then a learner will not know of a correct commit. Hence, a learner learns of a commit by communicating with sufficiently many replicas. We will separate how the process goes under different failure models and whether we have [uniform consensus](https://decentralizedthoughts.github.io/2019-06-26-defining-consensus/):
 
-**Omission failure (non-Byzantine) setting**
+**Omission failure setting**
 
 1. If we have uniform consensus, a learner asks $f+1$ replicas. A replica that is asked returns the locally committed value it knows about. The learner simply uses the first response of a decision value. 
 
@@ -31,6 +31,19 @@ Learning is useful not only to the clients but also some replicas so that they c
 1. If the local commit has a verifiable certificate, then again its enough to ask $f+1$ replicas and use the first response.
 
 2. If local commits do not carry a certificate, then like the non-uniform case above, a learner asks $2f+1$ replicas and waits for at least $f+1$ replicas to send the same local commit. This is what PBFT does.
+
+## Learning in a multi-shot consensus system
+
+An SMR system makes a *sequence* $cmd_1, cmd_2, cmd_3, \ldots$ of decisions. In such a multi-shot consensus protocol, we will call the $i$th decision in the sequence: *slot $i$*. In the basic version of such systems, the decision for slot $i+1$ is done only after the decision for slot $i$. More generally, there is often some active window $x$, such that the decision for slot $i+x$ can only be made after the decision for slot $i$ is done. For now let us assume that each replica maintains the latest $l$ such that the first $l$ slots are decided, but slot $l+1$ is not. If a replica wants to catch up and *learn* about on all the decided slots, what should it do?
+
+Clearly, it can just try to learn each slot independently but how will it learn which slots are decided and which are not?
+
+- In a uniform consensus setting or a Byzantine failure setting with commit certificates, the learning replica can ask $f+1$ other replicas for the *last consecutively decide slots*. The asking replica can then take the minimum value $m$ out of the $f+1$ responses. It can know for sure that decisions from 1 to $m$ have been decided by enough replicas and learning will succeed.
+
+- In a non-uniform consensus or Byzantine failure setting without certificates, the learning replica can ask $2f+1$ other replicas for the *last consecutively decide slots*. The asking replica can then take the minimum value $m$ such that at least $f+1$ replicas say that their last consecutively decide slot is *at least* $m$.
+
+
+Even when certificates are used, if you want your learning (reads) to be linearizable, then in an asynchronous setting you need to read from $2f+1$ replicas and then take the certified value that appears in at least $f+1$ replicas, also see [section 5.1.3 in PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf).
 
 ----------
 
