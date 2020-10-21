@@ -1,6 +1,6 @@
 ---
 title: Byzantine Agreement is Impossible for $n \leq 3 f$ if the Adversary can Simulate
-date: 2019-08-02 23:55:00 -11:00
+date: 2019-08-01 20:55:00 -11:00
 tags:
 - dist101
 - lowerbound
