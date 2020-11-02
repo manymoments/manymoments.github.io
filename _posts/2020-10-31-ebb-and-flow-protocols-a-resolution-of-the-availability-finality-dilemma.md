@@ -1,6 +1,6 @@
 ---
-title: 'Resolving the Availability-Finality Dilemma'
-date: 2020-10-31 22:16:00 -07:00
+title: Resolving the Availability-Finality Dilemma
+date: 2020-10-31 18:16:00 -11:00
 tags:
 - blockchain101
 - SMR
