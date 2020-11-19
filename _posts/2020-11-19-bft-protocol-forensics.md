@@ -7,7 +7,6 @@ tags:
 author: Kartik Nayak, Gerui Wang, Peiyao Sheng
 ---
 
-
 An important property satisfied by any [Byzantine fault tolerant consensus protocol](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) is agreement, which requires non-faulty replicas to not decide on conflicting values. Depending on the [network model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/), typical consensus protocols tolerate only a [fraction of Byzantine replicas](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/). In particular, under partial synchrony or asynchrony, no consensus protocol with $n$ replicas [can tolerate more than $n/3$ Byzantine faults](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/). If the number of Byzantine replicas exceed this number, the protocols do not provide safety (or liveness).
 
 In a recent work called [BFT Protocol Forensics](https://arxiv.org/pdf/2010.06785.pdf), we focus on "the day after": events after $\geq n/3$ Byzantine replicas have successfully mounted a safety attack. Specifically, we focus on **providing forensic support to identify the replicas that acted maliciously**. Any protocol with strong forensic support should ideally meet three goals:
