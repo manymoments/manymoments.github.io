@@ -83,3 +83,5 @@ More advanced:
 - [Asynchronous Fault-Tolerant Computation with Optimal Resilience](https://decentralizedthoughts.github.io/2020-07-15-asynchronous-fault-tolerant-computation-with-optimal-resilience/)
 
 - [Resolving the Availability-Finality Dilemma](https://decentralizedthoughts.github.io/2020-10-31-ebb-and-flow-protocols-a-resolution-of-the-availability-finality-dilemma/)
+
+- [BFT Protocol Forensics](https://decentralizedthoughts.github.io/2020-11-19-bft-protocol-forensics/)
