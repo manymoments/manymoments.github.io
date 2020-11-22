@@ -61,7 +61,8 @@ For each $i \in \{0,1\}$, let $\pi_i$ be the prefix of $\tau_i$ that does not co
 Since they both start from a common configuration $c$, let $G$ be the least common ansenstor configuration of $\pi_0,\pi_1$ and assume without loss of generality that $G\xrightarrow{e=(p,m)} G'$ is such that $G'$ is 1-committed. 
 
 
-Now examine the sub-sequence $G=Y_1\dots,Y_k=C_0$ of $\pi_0$ from $G$ to $C_0$, since $G'$ is 1-committed and $C'_0$ is 0-commiteed then there must exist two adjacent  configurations on this subsequence $Y,Y'$ that that $Z$ is 1-committed and $Z'$ is 0-committed.
+Now examine the sub-sequence $G=Y_1\dots,Y_k=C_0$ of $\pi_0$ from $G$ to $C_0$, since $G'$ is 1-committed and $C'_0$ is 0-commiteed then we can apply the [discrete version of the intermediate value theorem](https://en.wikipedia.org/wiki/Sperner%27s_lemma#One-dimensional_case). Hence
+there must exist two adjacent  configurations on this subsequence $Y,Y'$ that that $Z$ is 1-committed and $Z'$ is 0-committed.
 
 
 3. Let $Y,Y'$ be these two adjacent configurations. There are two cases to consider about $e=(p,m)$ and $e'=(p',m')$:
