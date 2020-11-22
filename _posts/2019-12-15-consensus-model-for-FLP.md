@@ -1,6 +1,6 @@
 ---
 title: Consensus Lower Bounds via Uncommitted Configurations
-date: 2019-12-15 09:03:00 -08:00
+date: 2019-12-15 06:03:00 -11:00
 tags:
 - dist101
 - lowerbound
@@ -37,9 +37,9 @@ We say that a protocol $\mathcal{P}$ solves *agreement against $t$ crash failure
 
 
 
-Given, $\mathcal{P}$, a *configuration* of a system is just the state of all the parties and the set of all pending, undelivered messages.
+Given, a protocol $\mathcal{P}$, a *configuration* of a system is just the state of all the parties and the set of all pending, undelivered messages. More formally, a configuration $C$ is a vector of state machines and a set $C_M$ of pending messages. We say that $e\in C_M$ is a pending message and $e=(m,p)$ if the configuration $C$ has a pending message $m$ sent to a party $p$ that party $p$ did not receive yet.
 
-The goal of $\mathcal{P}$ is to reach a configuration where all non-faulty parties decide. The *magic moment* of any consensus protocol is when a protocol reaches a *committed configuration*. This is a configuration where no matter what the adversary does, the eventual decision value is already *fixed*. Note that event of a system when its configuration becomes committed is an event that is only externally observable. There is no local indication of this event and this can happen much before any party can actually decide!
+The goal of a protocol $\mathcal{P}$ is to reach a configuration where all non-faulty parties decide, despite the adversary's control of the asynchrony and ability to corrupt parties. The *magic moment* of any consensus protocol is when a protocol reaches a *committed configuration*. This is a configuration where no matter what the adversary does from this point onwards, the eventual decision value is already *fixed*. Note that event of a system when its configuration becomes committed is an event that is only externally observable. There is no local indication of this event and this can happen much before any party actually decides!
 
 
 We choose to use new names to these definitions, which we feel provide a more intuitive and modern viewpoint. The classical names are *bivalent configuration* for uncommitted configuration and *univalent configuration* for committed configuration.
@@ -47,11 +47,14 @@ We choose to use new names to these definitions, which we feel provide a more in
 
 The following formal definitions are crucial:
 
-1. We write **$C \rightarrow C'$**: If in configuration $C$ there is an undelivered message $e$ (or all undelivered messages $E$ in the synchronous model) such that configuration $C$ changes to configuration $C'$ by delivering $e$ (or delivering all $E$ in the synchronous model).
+1. We write **$C \rightarrow C'$**: If in configuration $C$ there is a pending message $e$ (or all undelivered messages $E$ in the synchronous model) such that configuration $C$ changes to configuration $C'$ by delivering $e$ (or delivering all $E$ in the synchronous model). 
+When a pending message $e=(m,p)$ is *delivered*, then party $p$ receives message $m$ and locally processes it fully according to $\mathcal{P}$. Since the system is asynchronous, the full local processing will assume that all timers expire (for example, if $\mathpcal{P}$ instructs $p$ to wait for 2 hours, then we wait for this timer to expire).
+So the difference between $C$ and $C'$ is: (1) in the state of party $p$ after fully completing the processing of $e$; and (2) in the sent of pending messages of $C'$, $e$ is removed, and may contain new messages that are sent by $p$ to other parties due to the processing of $m$. 
+
 2. We write **$C \rightsquigarrow C'$**: If there exists a sequence $C = C_1 \rightarrow C_2 \rightarrow \dots \rightarrow C_k=C'$ ($\rightsquigarrow$ is the [transitive closure](https://en.wikipedia.org/wiki/Transitive_closure) of $\rightarrow$).
 3. **$C$ is a *deciding* configuration**:  if all non-faulty parties have decided in $C$. We say that $C$ is  *1-deciding* if the common decision value is 1, and similarly that $C$ is *0-deciding* if the decision is 0.
 
-    Note that its very easy to check if a configuration is deciding - just look at the local state of each non-faulty party.
+    Note that it's easy to check if a configuration is deciding - just look at the local state of each non-faulty party.
 
 4. **$C$ is an *uncommitted* configuration**:  if it has a future 0-deciding configuration and a future 1-deciding configuration. There exists $C \rightsquigarrow D_0$ and $C \rightsquigarrow D_1$ such that $D_0$ is 0-deciding  and $D_1$ is 1-deciding.
 
@@ -63,7 +66,7 @@ The following formal definitions are crucial:
 
     Said differently, a *committed configuration* is a configuration where the adversary has no control over the decision value. When a configuration is committed to $v$, no matter what the adversary does, the decision value will eventually be $v$.
 
-    Note that there is no simple way to know if a configuration is committed or uncommitted. In particular there is no local indication in the configuration, and it may well be that no party knows that the configuration is committed.
+    Note that there is no simple way to know if a configuration is committed or uncommitted. In particular, there is no local indication in the configuration, and it may well be that no party knows that the configuration is committed.
 
 
 
@@ -90,7 +93,7 @@ A recurring  **proof pattern** for showing the existence of an uncommitted confi
 2. Define two initial configurations as *$i$-adjacent* if the initial value of all parties other than party $i$ are the same. Consider the sequence (or path) of $n+1$ adjacent initial configurations: $(1,\dots,1),(0,1,\dots,1),(0,0,1\dots,1),\dots,(0,\dots,0)$. Clearly, the leftmost is 1-committed and the rightmost is 0-committed. Obviously, there must be some party $i$ such that the two $i$-adjacent configurations $C,C'$ are 0-committed and 1-committed, respectively.
 3. Now consider in both worlds $C$ and $C'$ the case where party $i$ crashes right at the start of the protocol. These two worlds are indistinguishable for all non-faulty parties, which, therefore, must decide the same value. This is a contradiction.
 
-This proves that any protocol $\mathcal{P}$ must have some initial uncommitted configuration. The next two posts will use the existence of an initial uncommitted  configuration and extend it to more rounds!
+This proves that any protocol $\mathcal{P}$ must have some initial uncommitted configuration. The next two posts will use the existence of an initial uncommitted configuration and extend it to more rounds!
 
 
 **Proof by example for n=3**:
