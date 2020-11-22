@@ -42,19 +42,21 @@ Start with Lemma 1, to begin with, an uncommitted configuration. Repeat Lemma 2 
 
 Recall the **proof pattern** for showing the existence of an *uncommitted configuration*:
 1. Proof by *contradiction*: assume all configurations are either 1-committed or 0-committed.
-2. Find a *local structure*: two adjacent configurations $C$ and $C'$ such that $C$ is 1-committed and $C_0$ is 0-committed.
-3. Reach a contradiction due to an indistinguishability argument between the two adjacent configurations, $C$ and $C'$ using the adversary's ability to crash one party.
+2. Find a *local structure*: two adjacent configurations $X$ and $X'$ such that $X$ is 1-committed and $X_0$ is 0-committed.
+3. Reach a contradiction due to an indistinguishability argument between the two adjacent configurations, $X$ and $X'$ using the adversary's ability to crash one party.
 
 
 **Proof of Lemma 2** follows this pattern exactly:
-1. The contradiction of the statement of Lemma 2 is that: for all $C'$, such that  $C \rightsquigarrow C'$, let  $C' \xrightarrow{e=(p,m)} C''$, then either $C''$ is 1-committed or $C''$ is 0-committed ($C''$ is not uncommitted).
-2. Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{e'=(p',m')} X'$ and $e'$ is a pending message in $X$.
+The *contradiction* of the statement of Lemma 2 is that: for all $C'$, such that  $C \rightsquigarrow C'$, let  $C' \xrightarrow{e=(p,m)} C''$, then either $C''$ is 1-committed or $C''$ is 0-committed ($C''$ is not uncommitted).
 
-    *Claim*: there must exist two adjacent configurations $Y \xrightarrow{e'} Y'$ and a pending message $e'=(p',m')$ in $Y$ such that:
+
+Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{e'=(p',m')} X'$ and $e'$ is a pending message in $X$.
+
+**Claim**: there must exist two adjacent configurations $Y \xrightarrow{e'} Y'$ and a pending message $e'=(p',m')$ in $Y$ such that:
     1. $C \rightsquigarrow Y \xrightarrow{e} Z$ and Z is 1-committed.
     2. $C \rightsquigarrow Y \xrightarrow{e'} Y' \xrightarrow{e} Z'$ and $Z'$ is 0-committed.
 
-    *Proof*: Since $C$ is an uncommitted configuration, there must exist two sequences $\tau_0$ and $\tau_1$ such that $C \stackrel{\tau_0}{\rightsquigarrow}  D_0 \xrightarrow{e=(p,m)} D'_0$ and $C \stackrel{\tau_1}{\rightsquigarrow}  D_1 \xrightarrow{e=(p,m)} D'_1$, where $D'_0$ is 0-committed and $D'_1$ is 1-committed. 
+**Proof of claim**: Since $C$ is an uncommitted configuration, there must exist two sequences $\tau_0$ and $\tau_1$ such that $C \stackrel{\tau_0}{\rightsquigarrow}  D_0 \xrightarrow{e=(p,m)} D'_0$ and $C \stackrel{\tau_1}{\rightsquigarrow}  D_1 \xrightarrow{e=(p,m)} D'_1$, where $D'_0$ is 0-committed and $D'_1$ is 1-committed. 
 
 For each $i \in \{0,1\}$, let $\pi_i$ be the prefix of $\tau_i$ that does not contain $e$. Let  $C \stackrel{\pi_0}{\rightsquigarrow}  C_0 \xrightarrow{e=(p,m)} C'_0$ and $C \stackrel{\pi_1}{\rightsquigarrow}  C_1 \xrightarrow{e=(p,m)} C'_1$. It follows from the assumption that $C'_0,C'_1$ must be committed and from $\tau_0,\tau_1$ that $C'_0$ is 0-committed and $C'_1$ is 1-committed.
 
@@ -64,15 +66,16 @@ Since they both start from a common configuration $c$, let $G$ be the least comm
 Now examine the sub-sequence $G=Y_1\dots,Y_k=C_0$ of $\pi_0$ from $G$ to $C_0$, since $G'$ is 1-committed and $C'_0$ is 0-commiteed then we can apply the [discrete version of the intermediate value theorem](https://en.wikipedia.org/wiki/Sperner%27s_lemma#One-dimensional_case). Hence
 there must exist two adjacent  configurations on this subsequence $Y,Y'$ that that $Z$ is 1-committed and $Z'$ is 0-committed.
 
+**Proof of Lemma 2 given the claim**
 
-3. Let $Y,Y'$ be these two adjacent configurations. There are two cases to consider about $e=(p,m)$ and $e'=(p',m')$:
+Let $Y,Y'$ be these two adjacent configurations. There are two cases to consider about $e=(p,m)$ and $e'=(p',m')$:
 
-    3.1. Case 1 (trivial case): $p \neq p'$. This implies that processing $e$ and then $e'$ will lead to a different outcome than processing $e'$ and only then $e$. But since $e,e'$ reach different parties there is no way to distinguish these two worlds.
+1. Case 1 (trivial case): $p \neq p'$. This implies that processing $e$ and then $e'$ will lead to a different outcome than processing $e'$ and only then $e$. But since $e,e'$ reach different parties there is no way to distinguish these two worlds.
 
     Formally $Y \xrightarrow{e=(p,m)} Z$ is 1-committed and so  $Y \xrightarrow{e=(p,m)} Z \xrightarrow{e'=(p',m')} Z''$ is  1-committed. But $Y \xrightarrow{e'=(p',m')} Y' \xrightarrow{e=(p,m)} Z'$ is 0-committed. This is a contradiction because $Z''$ and $Z'$ have exactly the same configuration and pending messages.
 
 
-    3.2. Case 2:  $p=p'$. This implies that the committed value must change between the world where $p$ receives $m$ before it receives $m'$ relative to the world where $p$ receives $m'$ before it receives $m$! But what if $p$ crashes? These two worlds will be indistinguishable to the rest of the parties! Moreover, $p$ does not need to crash; it can just be slow!
+2. Case 2:  $p=p'$. This implies that the committed value must change between the world where $p$ receives $m$ before it receives $m'$ relative to the world where $p$ receives $m'$ before it receives $m$! But what if $p$ crashes? These two worlds will be indistinguishable to the rest of the parties! Moreover, $p$ does not need to crash; it can just be slow!
 
     Formally, consider some execution where party $p$ crashes at $Y$.  So there must be some $Y \stackrel{\sigma}{\rightsquigarrow} D$ where $D$ is a deciding configuration and $\sigma$ does not contain party $p$. But if party $p$ was just slow then $Y \stackrel{\sigma}{\rightsquigarrow} D \xrightarrow{e} D'$ must be a configuration where all parties other than $p$ have decided.
 
