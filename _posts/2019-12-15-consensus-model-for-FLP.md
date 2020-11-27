@@ -48,7 +48,7 @@ We choose to use new names to these definitions, which we feel provide a more in
 The following formal definitions are crucial:
 
 1. We write **$C \rightarrow C'$**: If in configuration $C$ there is a pending message $e$ (or all undelivered messages $E$ in the synchronous model) such that configuration $C$ changes to configuration $C'$ by delivering $e$ (or delivering all $E$ in the synchronous model). 
-When a pending message $e=(m,p)$ is *delivered*, then party $p$ receives message $m$ and locally processes it fully according to $\mathcal{P}$. Since the system is asynchronous, the full local processing will assume that all timers expire (for example, if $\mathpcal{P}$ instructs $p$ to wait for 2 hours, then we wait for this timer to expire).
+When a pending message $e=(m,p)$ is *delivered*, then party $p$ receives message $m$ and locally processes it fully according to $\mathcal{P}$. Since the system is asynchronous, the full local processing will assume that all timers expire (for example, if $\mathcal{P}$ instructs $p$ to wait for 2 hours, then we wait for this timer to expire).
 So the difference between $C$ and $C'$ is: (1) in the state of party $p$ after fully completing the processing of $e$; and (2) in the sent of pending messages of $C'$, $e$ is removed, and may contain new messages that are sent by $p$ to other parties due to the processing of $m$. 
 
 2. We write **$C \rightsquigarrow C'$**: If there exists a sequence $C = C_1 \rightarrow C_2 \rightarrow \dots \rightarrow C_k=C'$ ($\rightsquigarrow$ is the [transitive closure](https://en.wikipedia.org/wiki/Transitive_closure) of $\rightarrow$).
