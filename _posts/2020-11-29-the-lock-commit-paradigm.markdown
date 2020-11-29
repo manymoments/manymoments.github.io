@@ -1,0 +1,94 @@
+---
+title: The Lock-Commit Paradigm
+date: 2020-11-29 02:02:00 -11:00
+published: false
+---
+
+In this post, we explore the Lock-Commit paradigm for consensus protocols. This approach is probably the most celebrated and widely used technique for reaching consensus.
+
+We exemplify this paradigm by showing a single shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that can tolerate an adversary that can inflict $k$ [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures and $t$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures.
+
+Previous related posts:
+1. In synchrony, for non-uniform consensus,  [this post] (https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) shows we can tolerate $k<n$ *crash* failures and [this post](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) shows we can tolerate $t<n/2$ *ommission* failures.
+
+2. [This post](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) has a lower bound that shows we cannot tolerate $2t\geq n$ omission failures. It's a good exercise to extend this lower bound to show we cannot tolerate $k+2t \geq n$ for $k$ crash failures and $t$ omission failures.
+
+## Lock-Commit
+The idea behind the Lock-Commit paradigm is simple: the risk in consensus is that you decide but due to failures your decision will no be heard. In particular, a new primary may emerge that does not hear about your decision. The solution is to do two things:
+
+1. Amplify your decision before you take it. Make sure there is a **quorum** of parties that herd you are plan to decide. We say the parties in this set are locked on your value.
+2. Listen carefully and adopt a value even if you just see just a lock for it. A new Primary must read from a **quorum** and choose the most recent lock value it sees.
+
+This simple idea is very powerful and carries over to many settings:
+1. Since it's based on *quorum intersection*, this mechanism does not rely on any synchrony!
+
+2. This approach guarantees non-uniform consensus. In essence, you don't commit before you have proof that the system is [committed](https://decentralizedthoughts.github.io/2019-12-15-consensus-model-for-FLP/).
+
+3. This paradigm can be extended to tolerate malicious adversaries. For $n>2f$ by using [signatures and synchrony](https://decentralizedthoughts.github.io/2019-11-10-authenticated-synchronous-bft/). For $n>3f$ by using Byzantine Quorums that intersect by at least $f+1$ parties.
+
+
+## Lock-Commit for omission failures
+
+    // Replica j
+
+    state = init // the state of the state machine
+    log = []     // a log (of size 1) of committed commands
+    view = 0     // view number that indicates the current Primary
+    lockcmd = null
+    lock = 0
+    highestView = view
+    mycmd = null
+    active = true // is the replica active in this view
+
+    while true:
+
+       // as a primary
+       on receiving first cmd from client and j == 0 and view == 0:
+            send ("propose", cmd, view) to all replicas
+       on receiving ("lock", cmd, view) from n-f distinct replicas and view == j:
+             // commit
+             log[0] = cmd
+             state, output = apply(cmd, state)
+             send output to the client library
+             send ("commit", cmd) to all replicas
+       // as a a backup replica
+       on receiving ("commit", cmd):
+             log[0] = cmd
+             state, output = apply(cmd, state)
+
+       // as a backup replica in the same view
+       on receiving ("propose", cmd, v) and v==view:
+          lock = v
+          lockcmd = cmd
+          send ("lock", cmd, v) to the primary j
+
+What do the next primaries propose? they must read from a qurum and use the vaue with the highest view number
+
+
+       // send your highest lock
+       on setting view = i:
+            send ("highest lock", lockcmd, lock) to replica i
+       // as the primary
+       on receiving ("highest lock", c, v) from n-f distinct replicas and view == j:
+            if all values are null (from view 0):
+                 mycmd = any value heard from the clinets
+            otherwise:
+                 mycmd = value with the highest view heard
+            send ("propose", mycmd, view) to all replicas
+
+When does a replica move from one view to another? When it see that the current primary is not making progress:
+
+      on setting view = i:
+            start timer(i)
+      on timer(i) expiring and log[0] = null and and view == i
+            send ("blame", i) to all replicas
+      on receiving ("blame", i) and view == i
+            send ("blame", i) to all replicas
+      on receiving ("blame", i) from n-f distinct replicas and view == i:
+            // this will trigger a timer and a "highest lock message"
+            view = view +1
+         
+
+            
+
+
