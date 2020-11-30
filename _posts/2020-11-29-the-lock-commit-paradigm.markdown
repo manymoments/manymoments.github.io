@@ -38,7 +38,6 @@ This simple idea is very powerful and carries over to many settings:
     lock = 0
     highestView = view
     mycmd = null
-    active = true // is the replica active in this view
 
     while true:
 
@@ -62,14 +61,14 @@ This simple idea is very powerful and carries over to many settings:
           lockcmd = cmd
           send ("lock", cmd, v) to the primary j
 
-What do the next primaries propose? they must read from a qurum and use the vaue with the highest view number
+What do the next primaries propose? they must read from a quorum and use the value with the highest view number
 
 
        // send your highest lock
        on setting view = i:
-            send ("highest lock", lockcmd, lock) to replica i
+            send ("highest lock", lockcmd, lock, i) to replica i
        // as the primary
-       on receiving ("highest lock", c, v) from n-f distinct replicas and view == j:
+       on receiving ("highest lock", c, v, j) from n-f distinct replicas and view == j:
             if all values are null (from view 0):
                  mycmd = any value heard from the clinets
             otherwise:
@@ -80,15 +79,27 @@ When does a replica move from one view to another? When it see that the current 
 
       on setting view = i:
             start timer(i)
-      on timer(i) expiring and log[0] = null and and view == i
+      on timer(i) expiring and log[0] == null and and view == i
             send ("blame", i) to all replicas
       on receiving ("blame", i) and view == i
             send ("blame", i) to all replicas
-      on receiving ("blame", i) from n-f distinct replicas and view == i:
+      on receiving ("blame", i) from n-f distinct replicas and view <= i:
             // this will trigger a timer and a "highest lock message"
-            view = view +1
+            view = i +1
          
 
-            
 
+### Argument for Safety
+**Cliam:** let $v^*$ be the first view were a party commits to value $cmd$ then no primary will propose $cmd' \neq cmd$ at any view $v'\geq v^*$
+
+            
+*Proof:* by induction on $v' \geq v^*$. For $v'=v^*$ this follows since the primary sends just one "propose" value per view. Assume the hypothesis holds for $v'$ and consider the view change of primary $v'+1$.
+
+Let $W$ be the $n-f$ parties that set $lock = v^*$ and sent $("lock", cmd, v^*)$ to the primary $v^*$ in view $v^*$.
+
+Let $R$ be the $n-f$ parties that party $v'+1$ received their $("highest lock", lockcmd, lock, v'+1)$ for view $v'+1$.
+
+Since $W \cap R \neq \emptyset$ then the primary of $v'+1$ must hear from a member of $R$ and from the induction hypothesis we know that its lock is at least $v^*$ and its value must be $cmd$. In addition, from the induction hypothesis, we know that no other member of $W$ can have a lock for a value that is at least $v^'$ with a value $cmd' \neq cmd$
+
+### Argument for Livness
 
