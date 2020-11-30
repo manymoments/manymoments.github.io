@@ -9,15 +9,15 @@ author: Ittai Abraham
 
 In this post, we explore the Lock-Commit paradigm for consensus protocols. This approach is probably the most celebrated and widely used technique for reaching consensus in a safe manner.
 
-We exemplify this paradigm by showing a single shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that can $t$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures.
+We exemplify this paradigm by showing a single shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that can $f$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures given $2f<n$.
 
-In the follow up post we will extend this paradigm to a multi-shot protocol that can tolerate both $t$ omission failures and $k$ [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures.
+In the follow up post we will extend this paradigm to a multi-shot protocol that can tolerate both $f$ omission failures and $k$ [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures given $k\+2f<n$.
 
 Previous related posts:
 
 1. In synchrony, for non-uniform consensus,  [this post](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) shows we can tolerate $k<n$ *crash* failures and [this post](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) shows we can tolerate $t<n/2$ *omission* failures.
 
-2. [This post](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) has a lower bound that shows we cannot tolerate $2t\\geq n$ omission failures. It's a good exercise to extend this lower bound to show we cannot tolerate $k\+2t \\geq n$ for $k$ crash failures and $t$ omission failures.
+2. [This post](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) has a lower bound that shows we cannot tolerate $2f\\geq n$ omission failures. It's a good exercise to extend this lower bound to show we cannot tolerate $k\+ft \\geq n$ for $k$ crash failures and $f$ omission failures.
 
 ## Lock-Commit
 
