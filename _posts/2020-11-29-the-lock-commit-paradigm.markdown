@@ -2,6 +2,9 @@
 title: The Lock-Commit Paradigm
 date: 2020-11-29 02:02:00 -11:00
 published: false
+tags:
+- dist101
+author: Ittai Abraham
 ---
 
 In this post, we explore the Lock-Commit paradigm for consensus protocols. This approach is probably the most celebrated and widely used technique for reaching consensus in a safe manner.
