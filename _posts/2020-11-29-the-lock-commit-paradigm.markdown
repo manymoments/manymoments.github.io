@@ -82,7 +82,7 @@ When does a replica move from one view to another? When it see that the current 
             // this will trigger a timer and a "highest lock message"
             send ("view change", i+1) to all replicas (including self)
 
-Note that the view change trigger protocol can be simplified and also altered to have a linear communication optimistic path. We will discuss these options in a later post.
+Note that the view change trigger protocol can be simplified and also altered to have a linear communication optimistic path. We could for example, simply trigger a view change after each 6 message delays. This more elaborate option will give us flexibility in  later posts.
 
 What do the next primaries propose? they must read from a quorum and use the value with the highest view number. This is the **view change** protocol:
 
@@ -121,6 +121,6 @@ Hence during the view change of view $v'\+1$, the value with the maximum view in
 
 *Proof:*
 
-Observe that in any view $<v$, either some non-fualty commits and hence all non-fualty commit and terminate one round later; or otherwise, all non-fualty do not commit, and hence will send a "blame" and later a "view change".
+Observe that in any view $<v$, either some non-faulty commits and hence all non-faulty commit and terminate one round later; or otherwise, all non-faulty do not commit, and hence will send a "blame" and hence all non-faulty will send  a "view change".
 
-If some non-faulty parties have not decided before entering view $v$ then in view $v$ the non-faulty primary will gather $n-f$ distinct "lock" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v)$ expires. Hence even of all faulty send a "blame" message there will not be a "view change" message.
+If some non-faulty parties have not decided before entering view $v$ then all non-faulty will enter view $v$ within one message delay. In view $v$ the non-faulty primary will gather $n-f$ distinct "lock" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v)$ expires (assuming the timer is larger than 6 message delays). Hence even of all faulty send a "blame" message there will not be a "view change" message.
