@@ -29,6 +29,7 @@ This simple idea is very powerful and carries over to many settings:
 
 ## Lock-Commit for omission failures
 
+
     // Replica j
 
     state = init // the state of the state machine
@@ -54,39 +55,40 @@ This simple idea is very powerful and carries over to many settings:
        on receiving ("commit", cmd):
              log[0] = cmd
              state, output = apply(cmd, state)
-
+             send ("commit",cmd) to all replicas
+             termiante
        // as a backup replica in the same view
        on receiving ("propose", cmd, v) and v==view:
           lock = v
           lockcmd = cmd
           send ("lock", cmd, v) to the primary j
 
-What do the next primaries propose? they must read from a quorum and use the value with the highest view number
+What do the next primaries propose? they must read from a quorum and use the value with the highest view number. This is the **view change** protocol:
 
 
        // send your highest lock
-       on setting view = i:
+       on receiving ("view chage", i) and view <i:
+            view = i
+            start timer(i)
             send ("highest lock", lockcmd, lock, i) to replica i
        // as the primary
        on receiving ("highest lock", c, v, j) from n-f distinct replicas and view == j:
             if all values are null (from view 0):
-                 mycmd = any value heard from the clinets
+                 mycmd = any value heard from the clients
             otherwise:
                  mycmd = value with the highest view heard
             send ("propose", mycmd, view) to all replicas
 
-When does a replica move from one view to another? When it see that the current primary is not making progress:
+When does a replica move from one view to another? When it see that the current primary is not making progress. This is the **view change trigger** protocol:
 
-      on setting view = i:
-            start timer(i)
-      on timer(i) expiring and log[0] == null and and view == i
+      on timer(i) expiring and log[0] == null and view == i; or
+      on receiving ("blame", i) from f+1 distinct replicas
             send ("blame", i) to all replicas
-      on receiving ("blame", i) and view == i
-            send ("blame", i) to all replicas
-      on receiving ("blame", i) from n-f distinct replicas and view <= i:
+      on receiving ("blame", i) from n-f distinct and view <= i:
             // this will trigger a timer and a "highest lock message"
-            view = i +1
+            send ("view chage", i+1) to all replicas (including self)
          
+Note that the view change trigger protocol can be altered to have a linear communication optimistic path.
 
 
 ### Argument for Safety
@@ -104,7 +106,10 @@ Since $W \cap R \neq \emptyset$ then the primary of $v'+1$ must hear from a memb
 Hence during the view change of view $v'+1$, the value with the maximum view in $W$ must be $cmd$ with a view $\geq v$.
 
 ### Argument for Livness
-**Claim:** let $v$ be the first view with a non-faulty primary, then all non-faulty parties will commit by the end of view $v$
+**Claim:** let $v$ be the first view with a non-faulty primary, then all non-faulty parties will commit by the end of view $v$.
 
-*Proof:* if some non-faulty parties have not decided before entering view $v$ then in view $v$ the non-faulty primary will gather $n-f$ distinct "lock" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v)$ expires.
+*Proof:* 
 
+Observe that in any view $<v$, either some non-fualty commits and hence all non-fualty commit and terminate one round later; or otherwise, all non-fualty do not commit, and hence will send a "blame" and later a "view change".
+
+If some non-faulty parties have not decided before entering view $v$ then in view $v$ the non-faulty primary will gather $n-f$ distinct "lock" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v)$ expires. Hence even of all faulty send a "blame" message there will not be a "view change" message.
