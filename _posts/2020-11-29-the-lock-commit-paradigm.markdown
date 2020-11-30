@@ -93,7 +93,7 @@ When does a replica move from one view to another? When it see that the current 
 **Cliam:** let $v$ be the first view were a party commits to value $cmd$ then no primary will propose $cmd' \neq cmd$ at any view $v'\geq v$
 
             
-*Proof:* by induction on $v' \geq v$. For $v'=v$ this follows since the primary sends just one "propose" value per view. Assume the hypothesis holds for $v'$ and consider the view change of primary $v'+1$.
+*Proof:* by induction on $v' \geq v$. For $v'=v$ this follows since the primary sends just one "propose" value per view. Assume the hypothesis holds for all view $\leq v'$ and consider the view change of primary $v'+1$.
 
 Let $W$ be the $n-f$ parties that set $lock = v$ and sent $("lock", cmd, v)$ to the primary $v$ in view $v$.
 
