@@ -4,20 +4,25 @@ date: 2020-11-29 02:02:00 -11:00
 published: false
 ---
 
-In this post, we explore the Lock-Commit paradigm for consensus protocols. This approach is probably the most celebrated and widely used technique for reaching consensus.
+In this post, we explore the Lock-Commit paradigm for consensus protocols. This approach is probably the most celebrated and widely used technique for reaching consensus in a safe manner.
 
-We exemplify this paradigm by showing a single shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that can tolerate an adversary that can inflict $k$ [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures and $t$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures.
+We exemplify this paradigm by showing a single shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that can $t$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures.
 
+In the follow up post we will extend this paradigm to a multi-shot protocol that can tolerate both $t$ omission failures and $k$ [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures. 
+
+ 
 Previous related posts:
 1. In synchrony, for non-uniform consensus,  [this post](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) shows we can tolerate $k<n$ *crash* failures and [this post](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) shows we can tolerate $t<n/2$ *ommission* failures.
 
 2. [This post](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) has a lower bound that shows we cannot tolerate $2t\geq n$ omission failures. It's a good exercise to extend this lower bound to show we cannot tolerate $k+2t \geq n$ for $k$ crash failures and $t$ omission failures.
 
 ## Lock-Commit
-The idea behind the Lock-Commit paradigm is simple: the risk in consensus is that you decide but due to failures your decision will no be heard. In particular, a new primary may emerge that does not hear about your decision. The solution is to do two things:
+The idea behind the Lock-Commit paradigm is simple: the safety risk in consensus is that you decide but due to failures your decision will no be heard. In particular, a new primary may emerge that does not hear about your decision. The solution is to do two things:
 
-1. Amplify your decision before you take it. Make sure there is a **quorum** of parties that herd you are plan to decide. We say the parties in this set are locked on your value.
+1. Amplify your decision before you take it. Make sure there is a **quorum** of parties that herd you are plan to decide. We say the parties in this set are *locked* on your value.
 2. Listen carefully and adopt a value even if you just see just a lock for it. A new Primary must read from a **quorum** and choose the most recent lock value it sees.
+
+This approach works because of the simple fact that any two quorum sets must have a non-empty intersection. In this post we will use quorums that consist of $n-f=f+1$ parties.
 
 This simple idea is very powerful and carries over to many settings:
 1. Since it's based on *quorum intersection*, this mechanism does not rely on any synchrony!
