@@ -102,4 +102,7 @@ Let $R$ be the $n-f$ parties that party $v'+1$ received their $("highest lock", 
 Since $W \cap R \neq \emptyset$ then the primary of $v'+1$ must hear from a member of $R$ and from the induction hypothesis we know that its lock is at least $v^*$ and its value must be $cmd$. In addition, from the induction hypothesis, we know that no other member of $W$ can have a lock for a value that is at least $v^'$ with a value $cmd' \neq cmd$
 
 ### Argument for Livness
+**Claim:** let $v^*$ be the first view with a non-faulty primary, then all non-faulty parties will commit by the end of view $v^*$
+
+*Proof:* if some non-faulty parties have not decided before entering view $v^*$ then in view $v^*$ the non-faulty primary will gather $n-f$ distinct "lock" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v^*)$ expires.
 
