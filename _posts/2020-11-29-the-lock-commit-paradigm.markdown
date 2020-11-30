@@ -99,7 +99,9 @@ Let $W$ be the $n-f$ parties that set $lock = v$ and sent $("lock", cmd, v)$ to 
 
 Let $R$ be the $n-f$ parties that party $v'+1$ received their $("highest lock", lockcmd, lock, v'+1)$ for view $v'+1$.
 
-Since $W \cap R \neq \emptyset$ then the primary of $v'+1$ must hear from a member of $R$ and from the induction hypothesis we know that its lock is at least $v$ and its value must be $cmd$. In addition, from the induction hypothesis, we know that no other member of $W$ can have a lock for a value that is at least $v$ with a value $cmd' \neq cmd$
+Since $W \cap R \neq \emptyset$ then the primary of $v'+1$ must hear from a member of $R$ and from the induction hypothesis we know that this member's lock is at least $v$ and its value must be $cmd$. In addition, from the induction hypothesis, we know that no other member of $W$ can have a lock for a value that is at least $v$ with a value $cmd' \neq cmd$.
+
+Hence during the view change of view $v'+1$, the value with the maximum view in $W$ must be $cmd$ with a view $\geq v$.
 
 ### Argument for Livness
 **Claim:** let $v$ be the first view with a non-faulty primary, then all non-faulty parties will commit by the end of view $v$
