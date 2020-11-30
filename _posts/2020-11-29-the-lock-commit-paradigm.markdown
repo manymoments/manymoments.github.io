@@ -90,19 +90,19 @@ When does a replica move from one view to another? When it see that the current 
 
 
 ### Argument for Safety
-**Cliam:** let $v^*$ be the first view were a party commits to value $cmd$ then no primary will propose $cmd' \neq cmd$ at any view $v'\geq v^*$
+**Cliam:** let $v*$ be the first view were a party commits to value $cmd$ then no primary will propose $cmd' \neq cmd$ at any view $v'\geq v*$
 
             
-*Proof:* by induction on $v' \geq v^*$. For $v'=v^*$ this follows since the primary sends just one "propose" value per view. Assume the hypothesis holds for $v'$ and consider the view change of primary $v'+1$.
+*Proof:* by induction on $v' \geq v*$. For $v'=v*$ this follows since the primary sends just one "propose" value per view. Assume the hypothesis holds for $v'$ and consider the view change of primary $v'+1$.
 
-Let $W$ be the $n-f$ parties that set $lock = v^*$ and sent $("lock", cmd, v^*)$ to the primary $v^*$ in view $v^*$.
+Let $W$ be the $n-f$ parties that set $lock = v*$ and sent $("lock", cmd, v*)$ to the primary $v*$ in view $v*$.
 
 Let $R$ be the $n-f$ parties that party $v'+1$ received their $("highest lock", lockcmd, lock, v'+1)$ for view $v'+1$.
 
-Since $W \cap R \neq \emptyset$ then the primary of $v'+1$ must hear from a member of $R$ and from the induction hypothesis we know that its lock is at least $v^*$ and its value must be $cmd$. In addition, from the induction hypothesis, we know that no other member of $W$ can have a lock for a value that is at least $v^'$ with a value $cmd' \neq cmd$
+Since $W \cap R \neq \emptyset$ then the primary of $v'+1$ must hear from a member of $R$ and from the induction hypothesis we know that its lock is at least $v*$ and its value must be $cmd$. In addition, from the induction hypothesis, we know that no other member of $W$ can have a lock for a value that is at least $v*$ with a value $cmd' \neq cmd$
 
 ### Argument for Livness
-**Claim:** let $v^*$ be the first view with a non-faulty primary, then all non-faulty parties will commit by the end of view $v^*$
+**Claim:** let $v*$ be the first view with a non-faulty primary, then all non-faulty parties will commit by the end of view $v*$
 
-*Proof:* if some non-faulty parties have not decided before entering view $v^*$ then in view $v^*$ the non-faulty primary will gather $n-f$ distinct "lock" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v^*)$ expires.
+*Proof:* if some non-faulty parties have not decided before entering view $v*$ then in view $v*$ the non-faulty primary will gather $n-f$ distinct "lock" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v*)$ expires.
 
