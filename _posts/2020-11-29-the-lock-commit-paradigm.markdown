@@ -39,19 +39,20 @@ This simple idea is very powerful and carries over to many settings:
 
 ## Lock-Commit for omission failures
 
-    // Replica j
+    // pseudocode for Replica j
     
     state = init // the state of the state machine
     log = []     // a log (of size 1) of committed commands
-    view = 0     // view number that indicates the current Primary
+    view = 1     // view number that indicates the current Primary
     lockcmd = null
-    lock = 0
-    highestView = view
+    lock = 0     // the highest view a propose was heard
     mycmd = null
+    start timer(1) // start timer for first view
+    
     
     while true:
     
-       // as a primary
+       // as a primary (you are replica j)
        on receiving first cmd from client and j == 0 and view == 0:
             send ("propose", cmd, view) to all replicas
        on receiving ("lock", cmd, view) from n-f distinct replicas and view == j:
@@ -72,21 +73,6 @@ This simple idea is very powerful and carries over to many settings:
           lockcmd = cmd
           send ("lock", cmd, v) to the primary j
 
-What do the next primaries propose? they must read from a quorum and use the value with the highest view number. This is the **view change** protocol:
-
-       // send your highest lock
-       on receiving ("view change", i) and view < i:
-            view = i
-            start timer(i)
-            send ("highest lock", lockcmd, lock, i) to replica i
-       // as the primary
-       on receiving ("highest lock", c, v, j) from n-f distinct replicas and view == j:
-            if all values are null (from view 0):
-                 mycmd = any value heard from the clients
-            otherwise:
-                 mycmd = value with the highest view heard
-            send ("propose", mycmd, view) to all replicas
-
 When does a replica move from one view to another? When it see that the current primary is not making progress. This is the **view change trigger** protocol:
 
       on timer(i) expiring and log[0] == null and view == i; or
@@ -96,13 +82,30 @@ When does a replica move from one view to another? When it see that the current 
             // this will trigger a timer and a "highest lock message"
             send ("view change", i+1) to all replicas (including self)
 
-Note that the view change trigger protocol can be altered to have a linear communication optimistic path.
+Note that the view change trigger protocol can be simplified and also altered to have a linear communication optimistic path. We will discuss these options in a later post.
+
+What do the next primaries propose? they must read from a quorum and use the value with the highest view number. This is the **view change** protocol:
+
+       // send your highest lock
+       on receiving ("view change", v) and view < v:
+            view = v
+            start timer(v)
+            send ("highest lock", lockcmd, lock, v) to replica v
+       // as the primary (you are replica j)
+       on receiving ("highest lock", c, v, j) from n-f distinct replicas and view == j:
+            if all heard values are null (all heard views are 0):
+                 mycmd = any value heard from the clients
+            otherwise:
+                 mycmd = value with the highest view heard
+            send ("propose", mycmd, view) to all replicas
 
 ### Argument for Safety
 
 **Claim:** let $v$ be the first view were a party commits to value $cmd$ then no primary will propose $cmd' \\neq cmd$ at any view $v'\\geq v$
 
-*Proof:* by induction on $v' \\geq v$. For $v'=v$ this follows since the primary sends just one "propose" value per view. Assume the hypothesis holds for all view $\\leq v'$ and consider the view change of primary $v'\+1$.
+*Proof:* 
+
+By induction on $v' \\geq v$. For $v'=v$ this follows since the primary sends just one "propose" value per view. Assume the hypothesis holds for all view $\\leq v'$ and consider the view change of primary $v'\+1$.
 
 Let $W$ be the $n-f$ parties that set $lock = v$ and sent $("lock", cmd, v)$ to the primary $v$ in view $v$.
 
