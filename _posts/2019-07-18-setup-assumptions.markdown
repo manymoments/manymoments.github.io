@@ -1,6 +1,6 @@
 ---
 title: The Trusted Setup Phase
-date: 2019-07-18 23:29:00 -07:00
+date: 2019-07-18 19:29:00 -11:00
 tags:
 - dist101
 - models

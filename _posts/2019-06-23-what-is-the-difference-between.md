@@ -1,6 +1,6 @@
 ---
 title: What is the difference between PBFT, Tendermint, SBFT and HotStuff ?
-date: 2019-06-23 00:00:00 -07:00
+date: 2019-06-22 20:00:00 -11:00
 tags:
 - research
 layout: post
