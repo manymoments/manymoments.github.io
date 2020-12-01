@@ -104,7 +104,7 @@ Randomization is a central tool in the design of protocols for distributed compu
 More on randomness and these two protocols in later posts.
 
 ## Acknowledgments
-Special thanks to [Dahlia Malkhi](https://dahliamalkhi.wordpress.com/cv/), [Benny Pinkas](http://www.pinkas.net/) and [Alin Tomescu](http://people.csail.mit.edu/alinush/) for reviewing a draft and sending insightful comments.
+Special thanks to [Dahlia Malkhi](https://dahliamalkhi.wordpress.com/cv/), [Benny Pinkas](http://www.pinkas.net/) and [Alin Tomescu](http://twitter.com/alinush407) for reviewing a draft and sending insightful comments.
 
 ### Please leave comments on [Twitter](https://twitter.com/ittaia/status/1142845764164554754?s=20)!!
 

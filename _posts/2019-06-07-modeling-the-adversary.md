@@ -59,4 +59,8 @@ Adaptivity is the ability of the adversary to corrupt dynamically based on infor
 
 3. *Mobile*: the adversary can decide dynamically who to corrupt and who to un-corrupt.  The total number of corrupted parties at any given time is at most $f$, but over time the set of corrupted parties may change. It is often required that there is a *gap* between the time the adversary corrupts one party and the time it is allowed to corrupt another. This model was introduced by [Ostrovsky and Yung](https://web.cs.ucla.edu/~rafail/PUBLIC/05.pdf) and exemplified by [proactive secret sharing](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.40.8922&rep=rep1&type=pdf).
 
+## Acknowledgments
+
+Special thanks to [Alin Tomescu](http://twitter.com/alinush407) for reviewing this post.
+
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1141481767121170434?s=20)
