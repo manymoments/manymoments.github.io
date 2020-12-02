@@ -90,6 +90,7 @@ What do the next primaries propose? to be safe, they must read from a quorum and
        // send your highest lock
        on receiving ("view change", v) and view < v:
              view = v
+             // start timer for 8*(max message delay)
              start timer(v)
              send ("highest lock", lockcmd, lock, v) to replica v
        // as the primary (you are replica j and view is j)
@@ -128,7 +129,7 @@ Observe that in any view $<v$, either some non-faulty commits and hence all non-
 
 Observe that this argument that the timers will explore and all start the next view within one message delay requires synchrony.
 
-If some non-faulty parties have not decided before entering view $v$ then all non-faulty will enter view $v$ within one message delay. In view $v$ the non-faulty primary will gather $n-f$ distinct "lock" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v)$ expires (assuming the timer is larger than 8 message delays and using the fact that they all started their timer with a gap of at most one message delay). Hence even if all faulty parties send a "blame" message there will not be enough "blame" messages to form a "view change" message.
+If some non-faulty parties have not decided before entering view $v$ then all non-faulty will enter view $v$ within one message delay. In view $v$, the non-faulty primary will gather $n-f$ distinct "lock" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v)$ expires (assuming the timer is larger than 8 message delays and using the fact that they all started their timer with a gap of at most one message delay). Hence even if all faulty parties send a "blame" message there will not be enough "blame" messages to form a "view change" message.
 
 Again observe the use of synchrony.
 
