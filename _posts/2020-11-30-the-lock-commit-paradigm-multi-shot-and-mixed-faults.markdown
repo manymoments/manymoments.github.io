@@ -4,7 +4,7 @@ date: 2020-11-30 03:01:00 -11:00
 published: false
 ---
 
-In this follow up post, show a multi-shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that can $f$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures given $2f<n$ and then extend to one that  tolerate both $f$ omission failures and $k$ [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures given $k\+2f<n$.
+In this follow up post, we show a multi-shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that can $f$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures given $2f<n$ and then extend to one that  tolerate both $f$ omission failures and $k$ [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures given $k\+2f<n$.
 
 ## Multi-shot Lock-Commit
 
@@ -80,7 +80,7 @@ The **view change** protocol is modified so the new primary learns about command
 
 When you have both $t$ omission failures and $k$ crash failures the primary needs to guarantee that all non-crashed replicas receive a  "propose" message and lock. Just waiting for $n-(k-t)$ "lock" messages is not safe because it may be that the primary is omission faulty and these $n-(k-t)=t\+1$ parties all crash. The primary does not know if its omission faulty!
 
-Instead, the primary asks the replicas to "help" spread the propose. Each helper sends the propose to everyone and then sends a "help done". This way, the primary can wait for $n-(k\+t)$ parties to acknowledge "help done" and know that at least one of the helpers was non-omission  faulty!
+Instead, the primary asks the replicas to "help" spread the "propose" message. Each helper sends the "propose" to everyone and then sends a "help done". This way, the primary can wait for $n-(k\+t)$ parties to acknowledge "help done" and know that at least one of the helpers was non-omission faulty!
 
     // pseudocode for Replica j
     
@@ -140,12 +140,12 @@ Hence during the view change of view $v'\+1$, the value with the maximum view in
 
 ### Argument for Liveness
 
-For liveness we need to modify the blame threshold to $t\+1$ and view change threshold to $n-(t\+k)$.
+For liveness, we need to modify the blame threshold to $t\+1$ and view change threshold to $n-(t\+k)$.
 
 **Claim:** let $v$ be the first view with a non-faulty primary, then all non-faulty parties will commit by the end of view $v$.
 
 *Proof:*
 
-Observe that in any view $<v$, either some non-faulty commits and hence all non-faulty commit and terminate one round later; or otherwise, all non-faulty do not commit, and hence will send a "blame" and hence all non-faulty will send  a "view change".
+Observe that in any view $<v$, either some non-faulty commits and hence all non-faulty commit and terminate one round later; or otherwise, all non-faulty do not commit, and hence will send a "blame" and hence all non-faulty will send a "view change".
 
 If some non-faulty parties have not decided before entering view $v$ then all non-faulty will enter view $v$ within one message delay. In view $v$ the non-faulty primary will gather $n-(t\+k)$ distinct "help done" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v)$ expires (assuming the timer is larger than 6 message delays). Hence even of all omission faulty send a "blame" message there will not be a "view change" message.
