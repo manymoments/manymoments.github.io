@@ -56,6 +56,8 @@ In contrast, for accumulators, the PPs will typically consist of the description
 ## Bilinear accumulators
 
 <!-- TODO: some refresher on polynomials? or note about assumptions on reader knowledge -->
+Bilinear accumulators make heavy use of [polynomials](https://alinush.github.io/2020/03/16/polynomials-for-crypto.html), which we assume knowledge of below.
+They can also be regarded as a direct application of the [Kate-Zaverucha-Goldberg (KZG) polynomial commitment scheme](https://alinush.github.io/2020/05/06/kzg-polynomial-commitments.html), which we do **not** assume knowledge of below.
 
 ### Setting up an accumulator scheme
 
@@ -111,9 +113,9 @@ Also, note that the $a_i$'s are elements of $\mathbb{Z}_p$ and $\alpha$ has degr
 Second, the **digest** or **accumulator** of $T$ is set to $a=g^{\alpha(\tau)}$, computed as:
 
 \begin{align\*}
-    a &= \prod_{i=0}^n \left(g^{\tau^i}\right)^{a_i}\\\
-      &= \prod_{i=0}^n g^{a_i \tau^i}\\\
-      &= g^{\sum_{i=0}^n {a_i \tau^i}}\\\
+    a &= \prod_{i=0}^n \left(g^{\tau^i}\right)^{a_i}\\\\\
+      &= \prod_{i=0}^n g^{a_i \tau^i}\\\\\
+      &= g^{\sum_{i=0}^n {a_i \tau^i}}\\\\\
       &= g^{\alpha(\tau)}
 \end{align\*}
 
@@ -214,10 +216,10 @@ To verify $e_i$ is accumulated, we'll use the bilinear map $e$ to check that:
 
 Note that this is equivalent to checking that:
 \begin{align\*}
-    e(g^{\alpha(\tau)}, g) &\stackrel{?}{=} e(g^{q(\tau)}, g^{\tau -e_i}) \Leftrightarrow \\\
-    e(g,g)^{\alpha(\tau)} &\stackrel{?}{=} e(g^{q(\tau)}, g^{\tau -e_i}) \\\
-    e(g,g)^{\alpha(\tau)} &\stackrel{?}{=} e(g,g)^{q(\tau)(\tau -e_i)} \\\
-    \alpha(\tau) &\stackrel{?}{=} q(\tau)(\tau -e_i) \\\
+    e(g^{\alpha(\tau)}, g) &\stackrel{?}{=} e(g^{q(\tau)}, g^{\tau -e_i}) \Leftrightarrow \\\\\
+    e(g,g)^{\alpha(\tau)} &\stackrel{?}{=} e(g^{q(\tau)}, g^{\tau -e_i}) \\\\\
+    e(g,g)^{\alpha(\tau)} &\stackrel{?}{=} e(g,g)^{q(\tau)(\tau -e_i)} \\\\\
+    \alpha(\tau) &\stackrel{?}{=} q(\tau)(\tau -e_i) \\\\\
 \end{align\*}
 
 In other words, we are verifying that the $\alpha(X) = q(X)(X-e_i)$ equation holds *only for* $X=\tau$ rather than for all $X$.
@@ -240,11 +242,11 @@ $$\pi'_i = a \cdot \pi_i^{e_{n+1}-e_i}$$
 To see why this works, note that:
 
 \begin{align\*}
-\pi'\_i &= a \cdot \pi_i^{e_{n+1}-e_i}\\\
-       &= g^{\prod_{j\in[n]} (\tau - e_j)} \cdot \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau-e_j)}\right)^{-(e_{n+1}+e_i)}\\\
-       &= \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau - e_j)}\right)^{(\tau - e_i)} \cdot \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau-e_j)}\right)^{(-e_{n+1}+e_i)}\\\
-       &= \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau - e_j)}\right)^{(\tau - e_i) + (-e_{n+1}+e_i)}\\\
-       &= \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau - e_j)}\right)^{(\tau - e_{n+1})}\\\
+\pi'\_i &= a \cdot \pi_i^{e_{n+1}-e_i}\\\\\
+       &= g^{\prod_{j\in[n]} (\tau - e_j)} \cdot \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau-e_j)}\right)^{-(e_{n+1}+e_i)}\\\\\
+       &= \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau - e_j)}\right)^{(\tau - e_i)} \cdot \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau-e_j)}\right)^{(-e_{n+1}+e_i)}\\\\\
+       &= \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau - e_j)}\right)^{(\tau - e_i) + (-e_{n+1}+e_i)}\\\\\
+       &= \left(g^{\prod_{j\in[n]\setminus\\{i\\}} (\tau - e_j)}\right)^{(\tau - e_{n+1})}\\\\\
        &= g^{\prod_{j\in[n+1]\setminus\\{i\\}} (\tau - e_j)}
 \end{align\*}
 
@@ -285,10 +287,10 @@ The proof verification remains largely the same:
 
 Note that this is equivalent to checking that:
 \begin{align\*}
-    e(g^{\alpha(\tau)}, g) &\stackrel{?}{=} e(g^{q(\tau)}, g^{\tau -\hat{e}})e(g,g)^y \Leftrightarrow \\\
-    e(g,g)^{\alpha(\tau)} &\stackrel{?}{=} e(g^{q(\tau)}, g^{\tau -\hat{e}})e(g,g)^y \\\
-    e(g,g)^{\alpha(\tau)} &\stackrel{?}{=} e(g,g)^{q(\tau)(\tau -\hat{e})}e(g,g)^y \\\
-    e(g,g)^{\alpha(\tau)} &\stackrel{?}{=} e(g,g)^{q(\tau)(\tau -\hat{e}) + y} \\\
+    e(g^{\alpha(\tau)}, g) &\stackrel{?}{=} e(g^{q(\tau)}, g^{\tau -\hat{e}})e(g,g)^y \Leftrightarrow \\\\\
+    e(g,g)^{\alpha(\tau)} &\stackrel{?}{=} e(g^{q(\tau)}, g^{\tau -\hat{e}})e(g,g)^y \\\\\
+    e(g,g)^{\alpha(\tau)} &\stackrel{?}{=} e(g,g)^{q(\tau)(\tau -\hat{e})}e(g,g)^y \\\\\
+    e(g,g)^{\alpha(\tau)} &\stackrel{?}{=} e(g,g)^{q(\tau)(\tau -\hat{e}) + y} \\\\\
     \alpha(\tau) &\stackrel{?}{=} q(\tau)(\tau - \hat{e}) + y
 \end{align\*}
 
@@ -315,10 +317,10 @@ The subset proof is just a commitment to the quotient $q = \alpha_2 / \alpha_1$,
 
 To verify the proof $\pi=g^{q(\tau)}$ against the two accumulators $a_1 = g^{\alpha_1(\tau)}$ and $a_2 =g^{\alpha_2(\tau)}$, the bilinear map is used as expected:
 \begin{align\*}
-    e(a_1, \pi) &\stackrel{?}{=} e(a_2, g)\Leftrightarrow\\\
-    e(g^{\alpha_1(\tau)}, g^{q(\tau)}) &\stackrel{?}{=} e(g^{\alpha_2(\tau)}, g)\Leftrightarrow\\\
-    e(g,g)^{\alpha_1(\tau) q(\tau)} &\stackrel{?}{=} e(g,g)^{\alpha_2(\tau)}\Leftrightarrow\\\
-    \alpha_1(\tau) q(\tau) &\stackrel{?}{=} \alpha_2(\tau)\Leftrightarrow\\\
+    e(a_1, \pi) &\stackrel{?}{=} e(a_2, g)\Leftrightarrow\\\\\
+    e(g^{\alpha_1(\tau)}, g^{q(\tau)}) &\stackrel{?}{=} e(g^{\alpha_2(\tau)}, g)\Leftrightarrow\\\\\
+    e(g,g)^{\alpha_1(\tau) q(\tau)} &\stackrel{?}{=} e(g,g)^{\alpha_2(\tau)}\Leftrightarrow\\\\\
+    \alpha_1(\tau) q(\tau) &\stackrel{?}{=} \alpha_2(\tau)\Leftrightarrow\\\\\
     q(\tau) &\stackrel{?}{=} \alpha_2(\tau) / \alpha_1(\tau)
 \end{align\*}
 
@@ -355,9 +357,14 @@ In our next post, we'll see how RSA accumulators can address (1) and (3), by fur
  
 If you ever need to implement bilinear accumulators in C++, I found the following libraries useful:
 
-    - Victor Shoup's [libntl](https://www.shoup.net/ntl/), for fast polynomial arithmetic like division and EEA
-    - Zcash's [libff](https://github.com/scipr-lab/libff), for fast elliptic curve groups with bilinear maps (e.g., BN254)
-    - Zcash's [libfqfft](https://github.com/scipr-lab/libfqfft), for computing FFTs in the finite field $\mathbb{F}_p$ associated with [libff](https://github.com/scipr-lab/libff)'s elliptic curve groups of order $p$
+ - Victor Shoup's [libntl](https://www.shoup.net/ntl/), for fast polynomial arithmetic like division and EEA
+ - Zcash's [libff](https://github.com/scipr-lab/libff), for fast elliptic curve groups with bilinear maps (e.g., BN254)
+ - Zcash's [libfqfft](https://github.com/scipr-lab/libfqfft), for computing FFTs in the finite field $\mathbb{F}_p$ associated with [libff](https://github.com/scipr-lab/libff)'s elliptic curve groups of order $p$
+
+You can also find my own C++ implementations, based on the libraries above, here:
+
+ - [libaad](https://github.com/alinush/libaad-ccs2019), which implements bilinear accumulators and uses them to build more complicated append-only authenticated data structures[^TBPplus19].
+ - [libpolycrypto](https://github.com/alinush/libpolycrypto), which implements KZG polynomial commitments (which bilinear accumulators are based on)
 
 ## Open problems
 
