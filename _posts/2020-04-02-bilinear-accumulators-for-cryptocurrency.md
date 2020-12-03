@@ -25,7 +25,8 @@ Their main **dis**advantages are:
 
 In this post, we'll talk about the ins and outs of **bilinear accumulators**[^Nguyen05].
 (We hope to address **RSA accumulators**[^Bd93] in a future post.)
-Bilinear accumulators can be regarded as a particular type of Kate-Zaverucha-Goldberg (KZG) polynomial commitments[^KZG10a].
+A bilinear accumulators can be regarded as a type of Kate-Zaverucha-Goldberg (KZG) polynomial commitment[^KZG10a].
+(Although it is not necessary for this post, you will find a [brief summary of KZG here](https://alinush.github.io/2020/05/06/kzg-polynomial-commitments.html).)
 
 {: .box-note}
 **Note:** We use the term **commitment** here lightly.

@@ -10,15 +10,10 @@ Intuitively, this scheme allows a $Dealer$ to *commit* to a *secret* $s$ by spli
 In the basic scheme, we will assume a [passive adversary](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) that controls [any $f$ out of the $n$ parties](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/).
 A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.org/2011/136.pdf) or [Semi-Honest](http://www.wisdom.weizmann.ac.il/~oded/foc-vol2.html)) does not deviate from the protocol but can learn all possible information from its _view_: i.e., the messages received by parties it controls. In later posts, we will extend the secret sharing scheme to [crash adversaries and malicious adversaries](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).
 
-
-
-
-
 A *secret sharing scheme* is composed of two protocols: *Share* and *Reconstruct*.
 These protocols are distributed: they are run by the $n$ parties, jointly.
 The Dealer has a *secret* $s$, which is given as _input_ to the Share protocol.
 Intuitively, if the Share protocol "succeeds", then the Reconstruct protocol will *output* that same secret $s$.
-
 
 These properties of a secret sharing scheme can be described more formally as:
 
@@ -80,8 +75,8 @@ $$L_z(X)= \frac{\prod_{j \in Z \setminus \{z\}} (X-j)}{\prod_{j \in Z \setminus 
 Take a moment to verify the equality on all $x\in Z$. This seemingly simple idea of [extending](http://people.cs.georgetown.edu/jthaler/IPsandextensions.pdf) a function from $Z \mapsto \\{0,1\\}$ to a low degree polynomial is a very powerful tool! It and its generalization to multivariate polynomials form the basis of [many](https://pdfs.semanticscholar.org/a87d/3febd2e02c41a9b0a4e423089b6677eaef3b.pdf) [results](https://eccc.weizmann.ac.il/report/2017/108/download/) in computer science. 
 
 We can now claim that, for *any* degree $f$ polynomial $p$, we have:
-$$p(X)=\sum_{z \in Z} L_z(X) p(z)$$
 
+$$p(X)=\sum_{z \in Z} L_z(X) p(z)$$
 
 Why does this equality hold?
 It's because both $p(X)$ and $\sum_{z \in Z} L_z(X) p(z)$ are degree-at-most-$f$ polynomials so their difference is also of degree-at-most-$f$ and has $f+1$ zeros, since $|Z|=f+1$.
