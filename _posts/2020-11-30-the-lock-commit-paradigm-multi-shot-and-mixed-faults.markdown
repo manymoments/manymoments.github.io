@@ -4,11 +4,12 @@ date: 2020-11-30 03:01:00 -11:00
 published: false
 ---
 
-In this follow up post, we show a multi-shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that can $f$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures given $2f<n$ and then extend to one that  tolerate both $f$ omission failures and $k$ [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures given $k\+2f<n$.
+In this follow up post, we show a multi-shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that can tolerate $f$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures, given $2f<n$.
+We then extend it to one that tolerates both $f$ omission failures and $k$ [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures given $k\+2f<n$.
 
 ## Multi-shot Lock-Commit
 
-Instead of reaching agreement on a single entry, we will have an ever growing \*\*commitLog \*\*that we will extend by **appending** commands to it.
+Instead of reaching agreement on a single entry, we will have an ever-growing **commitLog** that we will extend by **appending** commands to it.
 
 # Multi-shot Lock-Commit for omission failures
 
@@ -49,7 +50,7 @@ The main change is that this protocol never terminates, it just appends more com
              lockcmd = cmd
              send ("lock", commitLog, cmd, v) to the primary j
 
-The **view change trigger** protocol is same, but since timer(i) is restarted each time a replica appends to commitLog then this variant implements a stable leader approach where a primary can commit many entries in the log and is replaced only when there are $f\+1$ "blame" messages. An alternative approach that replaces the primary every round will be explored in later posts.
+The **view change trigger** protocol is the same but, since timer(i) is restarted each time a replica appends to commitLog, then this variant implements a stable leader approach where a primary can commit many entries in the log and is replaced only when there are $f\+1$ "blame" messages. An alternative approach that replaces the primary every round will be explored in later posts.
 
       on timer(i) expiring and view == i; or
       on receiving ("blame", i) from f+1 distinct replicas
@@ -58,7 +59,7 @@ The **view change trigger** protocol is same, but since timer(i) is restarted ea
             // this will trigger a timer and a "highest lock message"
             send ("view change", i+1) to all replicas (including self)
 
-The **view change** protocol is modified so the new primary learns about commands it has missed (this variant is different than Raft). This means that the new primary must choose the value of the highest lock that related to the largest commit log it has seen
+The **view change** protocol is modified so the new primary learns about commands it has missed (this variant is different than Raft). This means that the new primary must choose the value of the highest lock that related to the largest commitLog it has seen
 
        // send your highest lock
        on receiving ("view change", v) and view < v:
@@ -124,28 +125,30 @@ Instead, the primary asks the replicas to "help" spread the "propose" message. E
 
 ### Argument for Safety
 
-**Claim:** let $v$ be the first view were a party commits to value $cmd$ then no primary will propose $cmd' \\neq cmd$ at any view $v'\\geq v$
+**Claim:** Let $v$ be the first view where a party commits to value $cmd$.
+Then, no primary will propose $cmd' \\neq cmd$ at any view $v'\\geq v$.
 
 *Proof:*
 
-By induction on $v' \\geq v$. For $v'=v$ this follows since the primary sends just one "propose" value per view. Assume the hypothesis holds for all view $\\leq v'$ and consider the view change of primary $v'\+1$.
+By induction on $v' \\geq v$. For $v'=v$, this follows since the primary sends just one "propose" value per view. Assume the hypothesis holds for all view $\\leq v'$ and consider the view change of primary $v'\+1$.
 
 Let $W$ be the $n-f$ parties that set $lock = v$ in view $v$. Since primary $v$ had at least $t\+1$ helpers that did not crash, then at least one of them must have sent the proposal to all non-faulty parties.
 
 Let $R$ be the set of at least $n-(t\+k)$ parties that party $v'\+1$ received their $("highest lock", lockcmd, lock, v'\+1)$ for view $v'\+1$. 
 
-Since  $|N \\setminus W| \\leq t$ and $|R| \\geq t\+1$ it must be that $W \\cap R \\neq \\emptyset$. So the primary of $v'\+1$ must hear from a member of $R$ and from the induction hypothesis we know that this member's lock is at least $v$ and its value must be $cmd$. In addition, from the induction hypothesis, we know that no other member of $W$ can have a lock for a value that is at least $v$ with a value $cmd' \\neq cmd$.
+Since  $\vert N \\setminus W\vert  \\leq t$ and $\vert R\vert  \\geq t\+1$ it must be that $W \\cap R \\neq \\emptyset$. So the primary of $v'\+1$ must hear from a member of $R$ and, from the induction hypothesis, we know that this member's lock is at least $v$ and its value must be $cmd$. In addition, from the induction hypothesis, we know that no other member of $W$ can have a lock for a value that is at least $v$ with a value $cmd' \\neq cmd$.
 
-Hence during the view change of view $v'\+1$, the value with the maximum view in $W$ must be $cmd$ with a view $\\geq v$.
+Hence, during the view change of view $v'\+1$, the value with the maximum view in $W$ must be $cmd$ with a view $\\geq v$.
 
 ### Argument for Liveness
 
 For liveness, we need to modify the blame threshold to $t\+1$ and view change threshold to $n-(t\+k)$.
 
-**Claim:** let $v$ be the first view with a non-faulty primary, then all non-faulty parties will commit by the end of view $v$.
+**Claim:** Let $v$ be the first view with a non-faulty primary.
+Then, all non-faulty parties will commit by the end of view $v$.
 
 *Proof:*
 
-Observe that in any view $<v$, either some non-faulty commits and hence all non-faulty commit and terminate one round later; or otherwise, all non-faulty do not commit, and hence will send a "blame" and hence all non-faulty will send a "view change".
+Observe that in any view $<v$, either some non-faulty replica commits and hence all non-faulty replicas commit and terminate one round later; or otherwise, all non-faulty do not commit, and hence will send a "blame" and hence all non-faulty will send a "view change".
 
-If some non-faulty parties have not decided before entering view $v$ then all non-faulty will enter view $v$ within one message delay. In view $v$ the non-faulty primary will gather $n-(t\+k)$ distinct "help done" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v)$ expires (assuming the timer is larger than 6 message delays). Hence even of all omission faulty send a "blame" message there will not be a "view change" message.
+If some non-faulty parties have not decided before entering view $v$, then all non-faulty will enter view $v$ within one message delay. In view $v$, the non-faulty primary will gather $n-(t\+k)$ distinct "help done" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v)$ expires (assuming the timer is larger than 6 message delays). Hence, even if all omission faulty send a "blame" message, there will not be a "view change" message.
