@@ -97,8 +97,8 @@ The prover will send $\polycommit(g)$ to the verifier.
 Now, to prove $z$ is in range, the prover need only prove **three conditions** hold:
 
  1. $g(1) = f(1)$,
- 2. $$g(\omega^{n-1}) \in \{0,1\}$$,
- 3. $$g(X) - 2 g(X \omega) \in \{0,1\}, \forall X \in H \setminus \{\omega^{n-1}\}$$.
+ 2. $g(\omega^{n-1}) \in \\{0,1\\}$,
+ 3. $g(X) - 2 g(X \omega) \in \\{0,1\\}, \forall X \in H \setminus \\{\omega^{n-1}\\}$.
 
 As mentioned in [the original post](https://hackmd.io/@dabo/B1U4kx8XI), these three conditions are equivalent to $z$ being in range.
 Specifically:
@@ -108,7 +108,7 @@ Specifically:
  3. is equivalent to $z_i$ is a binary digit, for all $i\in [0, n-1)$  **and** $z = \sum_{i=0}^{n-1} z_i$
 
 {: .box-note}
-Note that condition 3 (i.e., $g(X) - 2 g(X \omega) \in \{0,1\}$) seems inherently difficult to prove, given just a commitment to $g(X)$.
+Note that condition 3 (i.e., $g(X) - 2 g(X \omega) \in \\{0,1\\}$) seems inherently difficult to prove, given just a commitment to $g(X)$.
 
 Next, the prover will prove the three conditions hold by proving the following polynomials evaluate to zero for all $X\in H$:
 
@@ -129,22 +129,22 @@ Note that Equations $\ref{eq:w1}$ through $\ref{eq:w3}$ are using _vanishing pol
  - e.g., $X-\omega^{n-1}$ is zero only at $X=\omega^{n-1}$ 
 
 First, let's show that:
-$$g(1) = f(1) \Leftrightarrow (g-f)\left(\frac{X^n - 1}{X-1}\right) = 0, \forall X\in H$$
+$g(1) = f(1) \Leftrightarrow (g-f)\left(\frac{X^n - 1}{X-1}\right) = 0, \forall X\in H$
 Let $h=(g-f)\left(\frac{X^n - 1}{X-1}\right)$.
 
 Let's start with the "$g(1) = f(1) \Rightarrow h(X) = 0$" direction.
-Since the vanishing polynomial $\frac{X^n - 1}{X-1}$ is zero at all $X$ in $H\setminus\{\omega^0\}$, it follows that $h(X) = 0, \forall X \in H\setminus\{\omega^{0}\}$.
+Since the vanishing polynomial $\frac{X^n - 1}{X-1}$ is zero at all $X$ in $H\setminus\\{\omega^0\\}$, it follows that $h(X) = 0, \forall X \in H\setminus\\{\omega^{0}\\}$.
 Furthermore, since $g(1) = f(1)$, it follows that $h(X)=0$ for $X=1=\omega^0$.
 Thus, $h(X) = 0$ for all $X$ in $H$.
 
-For the "$\Leftarrow$" direction, note that since $h(X) = 0, \forall X\in H$ and the vanishing polynomial is zero only for all $X\in H\setminus\{\omega^0\}$, it follows that $g(X) - f(X)$ has to be zero at $X=\omega^0$.
+For the "$\Leftarrow$" direction, note that since $h(X) = 0, \forall X\in H$ and the vanishing polynomial is zero only for all $X\in H\setminus\\{\omega^0\\}$, it follows that $g(X) - f(X)$ has to be zero at $X=\omega^0$.
 So, it follows that $g(1) = f(1)$.
 
-Second, we need to show that $$g(\omega^{n-1}) \in \{0,1\}\Leftrightarrow g \cdot (1 - g) \cdot \left(\frac{X^{n}-1}{X-\omega^{n-1}}\right) = 0, \forall X\in H$$.
+Second, we need to show that $g(\omega^{n-1}) \in \\{0,1\\}\Leftrightarrow g \cdot (1 - g) \cdot \left(\frac{X^{n}-1}{X-\omega^{n-1}}\right) = 0, \forall X\in H$.
 This follows from the same reasoning as above, except the vanishing polynomial $\frac{X^{n}-1}{X-\omega^{n-1}}$ vanishes everywhere but $\omega^{n-1}$.
 
 Third, we need to show that:
-$$g(X) - 2 g(X \omega) \in \{0,1\}, \forall X \in H \setminus \{\omega^{n-1}\} \Leftrightarrow \big[g(X) - 2 g(X \omega)\big] \cdot \big[1 - g(X) + 2 g(X \omega)\big] \cdot (X - \omega^{n-1}) = 0, \forall X \in H$$
+$g(X) - 2 g(X \omega) \in \\{0,1\\}, \forall X \in H \setminus \\{\omega^{n-1}\\} \Leftrightarrow \big[g(X) - 2 g(X \omega)\big] \cdot \big[1 - g(X) + 2 g(X \omega)\big] \cdot (X - \omega^{n-1}) = 0, \forall X \in H$
 The same reasoning applies here too, except the vanishing polynomial $X-\omega^{n-1}$ only vanishes at $X = \omega^{n-1}$.
 
 ### Back to the BFGW protocol
