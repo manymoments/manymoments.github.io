@@ -20,11 +20,11 @@ Previous related posts:
 
 ## Lock-Commit
 
-The idea behind the Lock-Commit paradigm: the safety risk in consensus is that you decide but due to failures your decision will no be heard by others. In particular, a new primary may emerge that does not hear about your decision. The Lock-Commit solution is to do two things:
+The idea behind the Lock-Commit paradigm: the safety risk in consensus is that you decide but due to failures your decision will not be heard by others. In particular, a new primary may emerge that does not hear about your decision. The Lock-Commit solution is to do two things:
 
-1. Amplify your decision before you take it. Make sure there is a **quorum** of parties that herd you are plan to decide. We say the parties in this set are *locked* on your value.
+1. Amplify your decision before you take it. Make sure there is a **quorum** of parties that heard you are planning to decide. We say the parties in this set are *locked* on your value.
 
-2. Listen carefully and adopt a value even if you just see just a lock for it. A new Primary must read from a **quorum** and choose the most recent lock value it sees.
+2. Listen carefully and adopt a value even if you see just one lock for it. A new Primary must read from a **quorum** and choose the most recent lock value it sees.
 
 This approach obtains safety because *any two quorum sets must have a non-empty intersection*. In this post, we will use quorums that consist of $n-f=f\+1$ parties.
 
@@ -36,7 +36,8 @@ This simple idea is very powerful and can be extended to many settings:
 
 3. This paradigm can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](/2019-11-10-authenticated-synchronous-bft/). For $n>3f$, by using Byzantine Quorums that intersect by at least $f\+1$ parties.
 
-Let go right away to a Lock-Commit based consensus protocol for a single slot:
+Let's go right away to a Lock-Commit based consensus protocol for a single slot:
+<!-- TODO is this uniform consensus during synchrony? -->
 
 ## Lock-Commit for omission failures
 
@@ -84,7 +85,7 @@ When does a replica move from one view to another? When it see that the current 
 
 Note that the view change trigger protocol can be simplified and also altered to have a linear communication optimistic path. Assuming synchrony, we could for example, simply trigger a view change after each 6 message delays. The more elaborate option above will give us flexibility in later posts.
 
-What do the next primaries propose? to be safe, they must read from a quorum and use the value with the highest view number. This is the **view change** protocol:
+What do the next primaries propose? To be safe, they must read from a quorum and use the value with the highest view number. This is the **view change** protocol:
 
        // send your highest lock
        on receiving ("view change", v) and view < v:
@@ -102,7 +103,8 @@ What do the next primaries propose? to be safe, they must read from a quorum and
 
 ### Argument for Safety
 
-**Claim:** let $v$ be the first view were some party commits to some value $cmd$, then no primary will propose $cmd' \\neq cmd$ at any view $v'\\geq v$.
+**Claim:** Let $v$ be the first view were some party commits to some value $cmd$.
+Then, no primary will propose $cmd' \\neq cmd$ at any view $v'\\geq v$.
 
 *Proof:*
 
@@ -120,13 +122,14 @@ Observe that this argument did not rely on synchrony.
 
 ### Argument for Liveness
 
-**Claim:** let $v$ be the first view with a non-faulty primary, then all non-faulty parties will commit by the end of view $v$.
+**Claim:** Let $v$ be the first view with a non-faulty primary. 
+Then, all non-faulty parties will commit by the end of view $v$.
 
 *Proof:*
 
 Observe that in any view $<v$, either some non-faulty commits and hence all non-faulty commit and terminate one message delay later; or otherwise, all non-faulty do not commit, and hence will send a "blame" and hence all non-faulty will send a "view change" and join the next view within one round trip.
 
-Observe that this argument that the timers will explore and all start the next view within one message delay requires synchrony.
+Observe that this argument that the timers will expire and all start the next view within one message delay requires synchrony.
 
 If some non-faulty parties have not decided before entering view $v$ then all non-faulty will enter view $v$ within one message delay. In view $v$, the non-faulty primary will gather $n-f$ distinct "lock" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v)$ expires (assuming the timer is larger than 8 message delays and using the fact that they all started their timer with a gap of at most one message delay). Hence even if all faulty parties send a "blame" message there will not be enough "blame" messages to form a "view change" message.
 
