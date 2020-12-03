@@ -1,6 +1,6 @@
 ---
 title: Bilinear Accumulators for Cryptocurrency Enthusiasts
-date: 2020-04-01 21:10:00 -11:00
+date: 2020-04-02 04:10:00 -04:00
 tags:
 - cryptography
 - accumulators

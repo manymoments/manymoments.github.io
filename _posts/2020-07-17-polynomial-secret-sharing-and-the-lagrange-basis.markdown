@@ -1,6 +1,6 @@
 ---
 title: Polynomial Secret Sharing and the Lagrange Basis
-date: 2020-07-17 11:23:00 -07:00
+date: 2020-07-17 14:23:00 -04:00
 author: Ittai Abraham, Alin Tomescu
 ---
 
