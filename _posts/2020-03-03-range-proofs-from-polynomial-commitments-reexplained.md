@@ -39,7 +39,7 @@ See [the original post](https://hackmd.io/@dabo/B1U4kx8XI) for a discussion on t
  - $\FF$ denotes polynomials in $\Fp[X]$ of degree less than $n$.
  - Assume $n$ divides $p-1$ so as to have _roots of unity_ in $\Fp$.
     + Specifically, $\exists$ a primitive root of unity $\omega \in \Fp$ of order $n$.
- - Let $$H = \{1,\omega,\omega^2,\ldots,\omega^{n-1}\}$$ denote the set of all $n$ $n$th roots of unity.
+ - Let $H = \\{1,\omega,\omega^2,\ldots,\omega^{n-1}\\}$ denote the set of all $n$ $n$th roots of unity.
  - Let $\polycommit(f)$ denote a commitment to a polynomial $f\in \FF$ using the PCS
 
 ## Requirements for PCS
@@ -68,7 +68,7 @@ In BFGW, the verifier's commitment to $z$ is done via the PCS itself, rather tha
 
 Specifically, a polynomial $f \in \FF$ is picked such that $f(1) = z$ (e.g., $f(X) = z$ is good enough) and the commitment to $z$ is just $\polycommit(f)$
 
-Let $$z_0, \ldots, z_{n-1} \in \{0,1\}$$ be the binary digits of $z$, so that $z = \sum_{i=0}^{n-1} 2^{i} \cdot z_i$.
+Let $z_0, \ldots, z_{n-1} \in \\{0,1\\}$ be the binary digits of $z$, so that $z = \sum_{i=0}^{n-1} 2^{i} \cdot z_i$.
 
 The prover "encodes" $z$ in a degree-$(n-1)$ polynomial $g \in \FF$ as follows:
 
