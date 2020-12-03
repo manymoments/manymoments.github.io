@@ -86,11 +86,7 @@ Thus, $p(X)=\sum_{z \in Z} L_z(X) p(z)$ follows from the fact that non-trivial d
 This argument shows that there is a *unique representation* of $p=(p_0,\dots,p_f)$ for the Lagrange basis induced by $Z=\\{z_1,\dots,z_{f+1}\\}$.
 Specifically, this representation is $\left(p(z_1),\dots,p(z_{f+1})\right)$.
 
-Let
-$$
-\phi(p_0,\dots,p_f) = \left(p(z_1),\dots,p(z_{f+1})\right)
-$$
-for $Z=\\{ z_1,\dots,z_{f+1}\\}$. 
+Let $\phi(p_0,\dots,p_f) = \left(p(z_1),\dots,p(z_{f+1})\right)$ for $Z=\\{ z_1,\dots,z_{f+1}\\}$. 
 
 
 **Claim:** $\phi$ is a bijective map from the set of degree-at-most-$f$ polynomials to their evaluations at the points in $Z$, where $\|Z\|=f+1$.
@@ -162,8 +158,8 @@ We want to show that, $\forall y_0,\dots, y_{f} \in \mathbb{F}\_{p}^{f+1}$:
 We can apply the isomorphism $\phi^{-1}$ inside this probability and get:
 
 \begin{align}
-   & \Pr_{\mathcal{p \sim D}}\big[(p(z_0),p(z_1),\dots,p(z_f))=(y_0,y_1,\dots,y_f)\big] =\\\ 
- = & \Pr_{\mathcal{p \sim D}}\big[\phi^{-1}(p(z_0),p(z_1),\dots,p(z_f))=\phi^{-1}(y_0,y_1,\dots,y_f)\big] =\\\
+   & \Pr_{\mathcal{p \sim D}}\big[(p(z_0),p(z_1),\dots,p(z_f))=(y_0,y_1,\dots,y_f)\big] =\\\\\ 
+ = & \Pr_{\mathcal{p \sim D}}\big[\phi^{-1}(p(z_0),p(z_1),\dots,p(z_f))=\phi^{-1}(y_0,y_1,\dots,y_f)\big] =\\\\\
  = &\Pr_{\mathcal{p \sim D}}\big[(p_0,p_1\dots,p_f)=(a_0,a_1,\dots,a_f)\big]
 \end{align}
 
