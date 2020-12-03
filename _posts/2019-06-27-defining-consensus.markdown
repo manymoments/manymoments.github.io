@@ -35,7 +35,9 @@ For lower bounds it's often beneficial to define an even easier problem of _agre
 
 
 ### Uniform vs. non-uniform agreement
-When the adversary is omission or crash, then the *(agreement)* property above is called *non-uniform agreement*. We can also have a stronger *(uniform agreement)* property where no two (even faulty) nodes *decide* on different values. This is called *uniform agreement*.
+When the adversary is omission or crash, then the *(agreement)* property above is called *non-uniform agreement*. 
+We can also have a stronger *(uniform agreement)* property where no two (even faulty) nodes *decide* on different values. 
+This is called *uniform agreement* and also assumes an omission or a crash adversary.
 
 For example, the difference will be relevant in a [state machine replication](https://ittaiab.github.io/2019-06-07-modeling-the-adversary/) setting with omission faults. For another example, see [this later post](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/).
 
