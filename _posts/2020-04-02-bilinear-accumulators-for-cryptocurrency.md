@@ -101,8 +101,8 @@ The prover can commit to or **accumulate** any set $T=\\{e_1,e_2,\dots,e_n\\}$ w
 First, the prover computes an **accumulator polynomial** $\alpha$ which has roots at all the $e_i$'s:
 
 \begin{align}
-\alpha(X) &= (X-e_1)(X-e_2)\cdots(X-e_n)\label{eq:acc-poly}\\\
-\alpha(X) &= \prod_{j\in[n]} (X-e_j)
+\alpha(X) &= (X-e_1)(X-e_2)\cdots(X-e_n)\label{eq:acc-poly}\\\\\
+          &= \prod_{j\in[n]} (X-e_j)
 \end{align}
 
 Here, "computing a polynomial" means computing its **coefficients** $(a_0, a_1, \dots, a_n)$ given its roots (i.e., the $e_i$'s) such that $\alpha(X)=\sum_{i=0}^n a_i X^i$.
