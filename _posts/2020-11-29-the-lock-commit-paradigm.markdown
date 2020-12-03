@@ -8,15 +8,15 @@ author: Ittai Abraham
 
 In this post, we explore the Lock-Commit paradigm for consensus protocols. This approach is probably the most celebrated and widely used technique for reaching consensus in a safe manner. This approach is one of the key techniques in [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf) and Lamport's [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf).
 
-We exemplify this paradigm by showing a single shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that is tolerant to $f$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures given $2f<n$.
+We exemplify this paradigm by showing a single-shot [synchronous protocol](/2019-06-01-2019-5-31-models/) for [uniform consensus](/2019-06-27-defining-consensus/) that is tolerant to $f$ [omission](/2020-09-13-synchronous-consensus-omission-faults/) failures, given $2f<n$.
 
-In a [follow up post](...) we extend this paradigm to a multi-shot protocol that can tolerate both $f$ omission failures and $k$ [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures given $k\+2f<n$.
+In a [follow-up post](...), we extend this paradigm to a multi-shot protocol that can tolerate both $f$ omission failures and $k$ [crash](/2019-06-07-modeling-the-adversary/) failures given $k\+2f<n$.
 
 Previous related posts:
 
-1. In synchrony, for non-uniform consensus,  [this post](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) shows how to tolerate $k<n$ *crash* failures. [This post](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) shows how to tolerate $t<n/2$ *omission* failures (obtaining non-uniform consensus).
+1. In synchrony, for non-uniform consensus,  [this related post](/2019-10-31-primary-backup/) shows how to tolerate $k<n$ *crash* failures. [A different post](/2020-09-13-synchronous-consensus-omission-faults/) shows how to tolerate $t<n/2$ *omission* failures (obtaining non-uniform consensus).
 
-2. [This post](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) shows a lower bound that it is impossible to tolerate $2f\\geq n$ omission failures. It's a nice exercise to extend this lower bound to show it is impossible to tolerate $k\+ft \\geq n$ for $k$ crash failures and $f$ omission failures.
+2. [This related post](/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) shows a lower bound that it is impossible to tolerate $2f\\geq n$ omission failures. It's a nice exercise to extend this lower bound to show it is impossible to tolerate $k\+ft \\geq n$ for $k$ crash failures and $f$ omission failures.
 
 ## Lock-Commit
 
@@ -32,9 +32,9 @@ This simple idea is very powerful and can be extended to many settings:
 
 1. Since it's based on *quorum intersection*, this mechanism does not rely on any synchrony for safety!
 
-2. This approach guarantees non-uniform consensus. In essence, you don't commit before you have proof that the system is [committed](https://decentralizedthoughts.github.io/2019-12-15-consensus-model-for-FLP/).
+2. This approach guarantees non-uniform consensus. In essence, you don't commit before you have proof that the system is [committed](/2019-12-15-consensus-model-for-FLP/).
 
-3. This paradigm can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](https://decentralizedthoughts.github.io/2019-11-10-authenticated-synchronous-bft/). For $n>3f$, by using Byzantine Quorums that intersect by at least $f\+1$ parties.
+3. This paradigm can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](/2019-11-10-authenticated-synchronous-bft/). For $n>3f$, by using Byzantine Quorums that intersect by at least $f\+1$ parties.
 
 Let go right away to a Lock-Commit based consensus protocol for a single slot:
 
