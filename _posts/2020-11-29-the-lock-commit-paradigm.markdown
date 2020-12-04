@@ -1,6 +1,6 @@
 ---
 title: The Lock-Commit Paradigm
-date: 2020-11-29 02:02:00 -11:00
+date: 2020-11-29 08:02:00 -05:00
 tags:
 - dist101
 author: Ittai Abraham
@@ -14,30 +14,29 @@ In a [follow-up post](...), we extend this paradigm to a multi-shot protocol tha
 
 Previous related posts:
 
-1. In synchrony, for non-uniform consensus,  [this related post](/2019-10-31-primary-backup/) shows how to tolerate $k<n$ *crash* failures. [A different post](/2020-09-13-synchronous-consensus-omission-faults/) shows how to tolerate $t<n/2$ *omission* failures (obtaining non-uniform consensus).
+1. In synchrony, for non-uniform consensus,  [this related post](/2019-10-31-primary-backup/) shows how to tolerate $k<n$ *crash* failures. [A different post](/2020-09-13-synchronous-consensus-omission-faults/) shows how to tolerate $t<n/2$ *omission* failures (recall that for ommision failures, non-uniform consensus means that faulty parties may decide on incorrect values).
 
-2. [This related post](/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) shows a lower bound that it is impossible to tolerate $2f\\geq n$ omission failures. It's a nice exercise to extend this lower bound to show it is impossible to tolerate $k\+ft \\geq n$ for $k$ crash failures and $f$ omission failures.
+2. [This related post](/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) shows that it is impossible to tolerate $2f\\geq n$ omission failures. It's a nice exercise to extend this lower bound to show it is impossible to tolerate $k\+ft \\geq n$ for $k$ crash failures and $f$ omission failures.
 
 ## Lock-Commit
 
-The idea behind the Lock-Commit paradigm: the safety risk in consensus is that you decide but due to failures your decision will not be heard by others. In particular, a new primary may emerge that does not hear about your decision. The Lock-Commit solution is to do two things:
+The idea behind the Lock-Commit paradigm: the safety risk in consensus is that you decide but due to failures your decision will not be heard by others. In particular, a new primary may emerge that does not know about your decision. The Lock-Commit paradigm solves this by doing two things:
 
-1. Amplify your decision before you take it. Make sure there is a **quorum** of parties that heard you are planning to decide. We say the parties in this set are *locked* on your value.
+1. *Amplify the value before you decide*. Make sure there is a **quorum** of parties that heard you are planning to decide. We say the parties in this set are *locked* on your value.
 
-2. Listen carefully and adopt a value even if you see just one lock for it. A new Primary must read from a **quorum** and choose the most recent lock value it sees.
+2. *Listen carefully and adopt a value even if you see just one lock for it*. A new Primary must read from a **quorum** and choose the value with the most recent lock it sees.
 
-This approach obtains safety because *any two quorum sets must have a non-empty intersection*. In this post, we will use quorums that consist of $n-f=f\+1$ parties.
+This approach obtains safety because *any two quorum sets must have a non-empty intersection and choosing the highest locked value will guarantee the most recent locked value is a safe choice*. In this post, we will use quorums that consist of $n-f=f\+1$ parties.
 
 This simple idea is very powerful and can be extended to many settings:
 
 1. Since it's based on *quorum intersection*, this mechanism does not rely on any synchrony for safety!
 
-2. This approach guarantees non-uniform consensus. In essence, you don't commit before you have proof that the system is [committed](/2019-12-15-consensus-model-for-FLP/).
+2. This approach guarantees uniform consensus (so even if you are omission faulty you have safety). In essence, you don't commit before you have proof that the system is [committed](/2019-12-15-consensus-model-for-FLP/).
 
-3. This paradigm can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](/2019-11-10-authenticated-synchronous-bft/). For $n>3f$, by using Byzantine Quorums that intersect by at least $f\+1$ parties.
+3. This paradigm can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](/2019-11-10-authenticated-synchronous-bft/); and for $n>3f$, by using Byzantine Quorums that intersect by at least $f\+1$ parties.
 
-Let's go right away to a Lock-Commit based consensus protocol for a single slot:
-<!-- TODO is this uniform consensus during synchrony? -->
+Let's go right away to a Lock-Commit based (uniform) consensus protocol tolerating $f<n/2$ omission fualts for a single slot:
 
 ## Lock-Commit for omission failures
 
@@ -85,7 +84,7 @@ When does a replica move from one view to another? When it see that the current 
 
 Note that the view change trigger protocol can be simplified and also altered to have a linear communication optimistic path. Assuming synchrony, we could for example, simply trigger a view change after each 6 message delays. The more elaborate option above will give us flexibility in later posts.
 
-What do the next primaries propose? To be safe, they must read from a quorum and use the value with the highest view number. This is the **view change** protocol:
+What do the next primaries propose? To be safe, they must read from a quorum and use the value with the highest view number. This is the essence if the **view change** protocol:
 
        // send your highest lock
        on receiving ("view change", v) and view < v:
@@ -114,7 +113,7 @@ Let $W$ be the set of $n-f$ distinct parties that set $lock = v$ and sent $("loc
 
 Let $R$ be the $n-f$ parties that party $v'\+1$ received their $("highest lock", lockcmd, lock, v'\+1)$ for view $v'\+1$.
 
-Since $W \\cap R \\neq \\emptyset$ then the primary of $v'\+1$ must hear from a member of $R$ and from the induction hypothesis we know that this member's lock is at least view $v$ and its lock value must be $cmd$. In addition, from the induction hypothesis, we know that no other member of $W$ can have a lock for a value that has a view that is at least $v$ with a value $cmd' \\neq cmd$.
+Since $W \\cap R \\neq \\emptyset$ then the primary of $v'\+1$ must hear from a member of $R$. Fix some $a \in W \\cap R$, By the definition of $R$ and from the induction hypothesis we know that for the view change to view $v'+1$,  party $a$'a lock is at least view $v$ and its lock value must remain $cmd$. In addition, from the induction hypothesis, we know that no other member of $W$ can have a lock for a value that has a view that is at least $v$ with a value $cmd' \\neq cmd$.
 
 Hence during the view change of view $v'\+1$, the value with the maximum view in $W$ must have the value $cmd$ and be with a view $\\geq v$.
 
@@ -129,7 +128,7 @@ Then, all non-faulty parties will commit by the end of view $v$.
 
 Observe that in any view $<v$, either some non-faulty commits and hence all non-faulty commit and terminate one message delay later; or otherwise, all non-faulty do not commit, and hence will send a "blame" and hence all non-faulty will send a "view change" and join the next view within one round trip.
 
-Observe that this argument that the timers will expire and all start the next view within one message delay requires synchrony.
+Observe that this argument requires synchrony: it uses the fact that the timers will expire and all start the next view within one message delay.
 
 If some non-faulty parties have not decided before entering view $v$ then all non-faulty will enter view $v$ within one message delay. In view $v$, the non-faulty primary will gather $n-f$ distinct "lock" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v)$ expires (assuming the timer is larger than 8 message delays and using the fact that they all started their timer with a gap of at most one message delay). Hence even if all faulty parties send a "blame" message there will not be enough "blame" messages to form a "view change" message.
 
