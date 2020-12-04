@@ -1,6 +1,6 @@
 ---
 title: 'The Lock-Commit Paradigm: Multi-shot and Mixed Faults'
-date: 2020-11-30 03:01:00 -11:00
+date: 2020-11-30 09:01:00 -05:00
 published: false
 ---
 
@@ -9,7 +9,7 @@ We then extend it to one that tolerates both $f$ omission failures and $k$ [cras
 
 ## Multi-shot Lock-Commit
 
-Instead of reaching agreement on a single entry, we will have an ever-growing **commitLog** that we will extend by **appending** commands to it.
+Instead of solving consensus on a single entry, we will have an ever-growing **commitLog** of decisions that we will extend by **appending** commands to it.
 
 # Multi-shot Lock-Commit for omission failures
 
@@ -24,31 +24,35 @@ The main change is that this protocol never terminates, it just appends more com
     lock = 0     // the highest view a propose was heard
     mycmd = null
     start timer(1) // start timer for first view
-    
+    start = true // should primary send propose
     
     while true:
     
        // as a primary (you are replica j)
-       on receiving first cmd from client and j == 0 and view == 0:
-            send ("propose", commitLog, cmd, view) to all replicas
+       on receiving cmd from client, view == j, start == true:
+             start = false
+             send ("propose", commitLog, cmd, view) to all replicas
        on receiving ("lock", CL, cmd, view) from n-f distinct replicas and view == j:
              // append to log
              commitLog.append(cmd)
              send ("commit", commitLog, cmd, view) to all replicas
+             start = true
        // as a replica: execute and terminate
        on receiving ("commit", CL, cmd, v):
              // learn if needed
-             if CL > commitLog then commitLog = CV
-             // append to log
-             commitLog.append(cmd)
-             restart timer(v)
+             if CL >= commitLog then
+                 commitLog = CV
+                 // append to log
+                 commitLog.append(cmd)
+                 restart timer(v)
        // as a backup replica in the same view
        on receiving ("propose", CL, cmd, v) and v==view:
              // learn if needed
-             if CL > commitLog then commitLog = CV
-             lock = v
-             lockcmd = cmd
-             send ("lock", commitLog, cmd, v) to the primary j
+             if CL >= commitLog then 
+                 commitLog = CV
+                 lock = v
+                 lockcmd = cmd
+                 send ("lock", commitLog, cmd, v) to the primary j
 
 The **view change trigger** protocol is the same but, since timer(i) is restarted each time a replica appends to commitLog, then this variant implements a stable leader approach where a primary can commit many entries in the log and is replaced only when there are $f\+1$ "blame" messages. An alternative approach that replaces the primary every round will be explored in later posts.
 
@@ -67,19 +71,21 @@ The **view change** protocol is modified so the new primary learns about command
             start timer(v)
             send ("highest lock", commitLog, lockcmd, lock, v) to replica v
        // as the primary (you are replica j)
-       on receiving ("highest lock", CL, c, v, j) from n-f distinct replicas and view == j:
+       on receiving messages M={("highest lock", CL, c, v, j)} from n-f distinct replicas and view == j:
             // learn if needed
-            if any CL > commitLog then commitLog = CV
-            Let H be the set of "highest lock" with CL == commitLog
+            Let CL be the longest CL in M
+            If CL > commitLog then commitLog = CV
+            Let H be the set of "highest lock" in M where CL == commitLog
             if all heard values in H are null (or H is empty):
                  mycmd = any value heard from the clients
             otherwise:
                  mycmd = value in H with the highest view heard
+            start = false
             send ("propose", mycmd, view) to all replicas
 
 # Multi-shot Lock-Commit tolerating mixed failures
 
-When you have both $t$ omission failures and $k$ crash failures the primary needs to guarantee that all non-crashed replicas receive a  "propose" message and lock. Just waiting for $n-(k-t)$ "lock" messages is not safe because it may be that the primary is omission faulty and these $n-(k-t)=t\+1$ parties all crash. The primary does not know if its omission faulty!
+When you have both $t$ omission failures and $k$ crash failures the primary needs to guarantee that all non-crashed replicas receive a  "propose" message and lock. Just waiting for $n-(k\+t)$ "lock" messages is not safe because it may be that the primary is omission faulty and these $n-(k\+t)=t\+1$ parties all crash. The primary does not know if its omission faulty!
 
 Instead, the primary asks the replicas to "help" spread the "propose" message. Each helper sends the "propose" to everyone and then sends a "help done". This way, the primary can wait for $n-(k\+t)$ parties to acknowledge "help done" and know that at least one of the helpers was non-omission faulty!
 
@@ -92,13 +98,15 @@ Instead, the primary asks the replicas to "help" spread the "propose" message. E
     lock = 0     // the highest view a propose was heard
     mycmd = null
     start timer(1) // start timer for first view
+    start = true // should primary send propose
     
     
     while true:
     
        // as a primary (you are replica j)
-       on receiving first cmd from client and j == 0 and view == 0:
-            send ("help", commitLog, cmd, view) to all replicas
+       on receiving cmd from client, view == j, start == true:
+             send ("help", commitLog, cmd, view) to all replicas
+             start = false
        on receiving ("help", CL, cmd, v) and v==view:
              // learn if needed
              if CL > commitLog then commitLog = CV
@@ -108,21 +116,24 @@ Instead, the primary asks the replicas to "help" spread the "propose" message. E
              // append to log
              commitLog.append(cmd)
              send ("commit", commitLog, cmd, view) to all replicas
+             start = true
        // as a replica: execute and terminate
        on receiving ("commit", CL, cmd, v):
              // learn if needed
-             if CL > commitLog then commitLog = CV
-             // append to log
-             commitLog.append(cmd)
-             restart timer(v)
+             if CL >= commitLog then
+                commitLog = CV
+                // append to log
+                commitLog.append(cmd)
+                restart timer(v)
        // as a backup replica in the same view
        on receiving ("propose", CL, cmd, v) and v==view:
              // learn if needed
-             if CL > commitLog then commitLog = CV
-             lock = v
-             lockcmd = cmd
-             send ("lock", commitLog, cmd, v) to the primary j
-
+             if CL >= commitLog then
+                commitLog = CV
+                lock = v
+                lockcmd = cmd
+                send ("lock", commitLog, cmd, v) to the primary j
+           
 ### Argument for Safety
 
 **Claim:** Let $v$ be the first view where a party commits to value $cmd$.
