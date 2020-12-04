@@ -1,6 +1,6 @@
 ---
-title: 'Raft does not Guarantee Liveness in the face of Omission Faults.'
-date: 2020-12-04 03:01:00 -11:00
+title: Raft does not Guarantee Liveness in the face of Omission Faults.
+date: 2020-12-04 09:01:00 -05:00
 published: false
 ---
 
