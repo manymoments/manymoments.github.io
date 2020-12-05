@@ -9,8 +9,8 @@ Alin is a [Postdoctoral Resesarcher](https://research.vmware.com/researchers/ali
 
 He does research in applied cryptography and, every now and then, gets a decentralized thought:
 
- - [Range proofs from polynomial commitments, re-explained](/2020-03-02-range-proofs-from-polynomial-commitments-reexplained/)
- - [Bilinear accumulators for cryptocurrency enthusiasts](/2020-04-01-bilinear-accumulators-for-cryptocurrency/)
+ - [Range proofs from polynomial commitments, re-explained](/2020-03-03-range-proofs-from-polynomial-commitments-reexplained/)
+ - [Bilinear accumulators for cryptocurrency enthusiasts](/2020-04-02-bilinear-accumulators-for-cryptocurrency/)
  - [Polynomial secret sharing and the Lagrange basis](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/)
  - [What is a cryptographic hash function?](/2020-08-28-what-is-a-cryptographic-hash-function/)
 
