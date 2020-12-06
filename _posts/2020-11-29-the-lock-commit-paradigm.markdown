@@ -110,7 +110,7 @@ The key intuition for safety is a quorum intersection argument between two quoru
 $W$: A set of replicas who sent a commit message to a replica who decides (and are hence locked on it).
 $R$: A set of replicas who send their highest locks to a primary in any higher view.
 
-If $|W \cap R| \geq 1$ (honest) replica, then the decided value is always passed on to the next leader, who will not propose a different value (due to which a different lock will not be formed). This argument thus holds for all subsequent views. The argument is formalized using induction in the following claim.
+If $\|W \cap R\| \geq 1$ (honest) replica, then the decided value is always passed on to the next leader, who will not propose a different value (due to which a different lock will not be formed). This argument thus holds for all subsequent views. The argument is formalized using induction in the following claim.
 
 **Claim:** Let $v$ be the first view were some party commits to some value $cmd$.
 Then, no primary will propose $cmd' \\neq cmd$ at any view $v'\\geq v$.
@@ -150,6 +150,6 @@ Again observe the use of synchrony.
 
 2. In this post, we do not talk about executing the commands (as required in a [state machine replication protocol](/2019-10-15-consensus-for-state-machine-replication/) as well as how clients can [learn](...) about consensus. The protocol can be easily modified to handle these aspects.
 
-3. Observe that the only requirement is that $|W \cap R| \geq 1$ (honest) replica. Thus, while we consider using quorums of size $n-f = f+1$, the sizes are flexible. This is the idea behind [Flexible Paxos](https://arxiv.org/pdf/1608.06696v1.pdf).
+3. Observe that the only requirement is that $\|W \cap R\| \geq 1$ (honest) replica. Thus, while we consider using quorums of size $n-f = f+1$, the sizes are flexible. This is the idea behind [Flexible Paxos](https://arxiv.org/pdf/1608.06696v1.pdf).
 
 Please answer/discuss/comment/ask on [Twitter](...).
