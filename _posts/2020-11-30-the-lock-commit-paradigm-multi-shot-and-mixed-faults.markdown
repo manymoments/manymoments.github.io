@@ -3,7 +3,7 @@ title: 'The Lock-Commit Paradigm: Multi-shot and Mixed Faults'
 date: 2020-11-30 09:01:00 -05:00
 tags:
 - dist101
-author: Ittai Abraham
+author: ittai abraham, Kartik Nayak
 ---
 
 In this follow up post, we show a multi-shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that can tolerate $f$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures, given $2f < n$.
@@ -150,6 +150,10 @@ Here is the pseudocode for Replica $j$:
            
 
 Note that as an optimization, we could have piggybacked the "commit" message with the next "propose" message.
+
+### Remarks
+
+Just like the previous post, we did not fully specify how the clients send commands to the replicas and we do not talk about executing the commands. We here on the consensus protocol and defer execution and clients to later posts.
 
 ### Argument for Safety
 
