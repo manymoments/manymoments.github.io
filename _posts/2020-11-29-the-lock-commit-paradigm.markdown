@@ -10,19 +10,19 @@ In this post, we explore the Lock-Commit paradigm for consensus protocols. This 
 
 We exemplify this paradigm by showing a single-shot [synchronous protocol](/2019-06-01-2019-5-31-models/) for [uniform consensus](/2019-06-27-defining-consensus/) that is tolerant to $f$ [omission](/2020-09-13-synchronous-consensus-omission-faults/) failures, given $2f<n$.
 
-In a [follow-up post](...), we extend this paradigm to a multi-shot protocol that can tolerate both $f$ omission failures and $k$ [crash](/2019-06-07-modeling-the-adversary/) failures given $k\+2f<n$.
+In a [follow-up post](/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/), we extend this paradigm to a multi-shot protocol that can tolerate both $f$ omission failures and $k$ [crash](/2019-06-07-modeling-the-adversary/) failures given $k\+2f<n$.
 
 Previous related posts:
 
-1. In synchrony, for non-uniform consensus,  [this related post](/2019-10-31-primary-backup/) shows how to tolerate $k<n$ *crash* failures. [A different post](/2020-09-13-synchronous-consensus-omission-faults/) shows how to tolerate $t<n/2$ *omission* failures (recall that for ommision failures, non-uniform consensus means that faulty parties may decide on incorrect values).
+1. In synchrony, for non-uniform consensus,  this related [post](/2019-10-31-primary-backup/) shows how to tolerate $k<n$ *crash* failures. A different [post](/2020-09-13-synchronous-consensus-omission-faults/) shows how to tolerate $t<n/2$ *omission* failures (recall that for omision failures, non-uniform consensus means that faulty parties may decide on incorrect values).
 
-2. [This related post](/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) shows that it is impossible to tolerate $2f\\geq n$ omission failures. It's a nice exercise to extend this lower bound to show it is impossible to tolerate $k\+ft \\geq n$ for $k$ crash failures and $f$ omission failures.
+2. This related [post](/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) shows that it is impossible to tolerate $2f\\geq n$ omission failures. As an exercise, you can extend this lower bound to show it is impossible to tolerate $k\+ft \\geq n$ for $k$ crash failures and $f$ omission failures.
 
 ## Lock-Commit
 
-The idea behind the Lock-Commit paradigm: the safety risk in consensus is that you decide but due to failures your decision will not be heard by others. In particular, a new primary may emerge that does not know about your decision. The Lock-Commit paradigm solves this by doing two things:
+The idea behind the Lock-Commit paradigm: the safety risk in consensus is that a decision made by a replica is not known to other replicas. In particular, a new primary may emerge that does not know about your decision. The Lock-Commit paradigm solves this by doing the following:
 
-1. *Amplify the value before you decide*. Make sure there is a **quorum** of parties that heard you are planning to decide. We say the parties in this set are *locked* on your value.
+1. *Amplify the value before you decide*. Make sure there is a **quorum** of parties know that you are planning to decide. We say the parties in this set are *locked* on your value.
 
 2. *Listen carefully and adopt a value even if you see just one lock for it*. A new Primary must read from a **quorum** and choose the value with the most recent lock it sees.
 
@@ -32,7 +32,7 @@ This simple idea is very powerful and can be extended to many settings:
 
 1. Since Commit-Lock is based on *quorum intersection*, safety does not rely on any synchrony. Indeed unlike the [Commit-Notify](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) approach, Commit-Lock can be extended to an asynchronous model.
 
-2. This approach guarantees [uniform consensus](/2019-06-27-defining-consensus/) (so even omission faulty parties decide correctly). In essence, you don't commit before you have proof that the system is [committed](/2019-12-15-consensus-model-for-FLP/).
+2. This approach guarantees [uniform consensus](/2019-06-27-defining-consensus/) (so even omission faulty parties decide correctly). In essence, you do not commit before you have proof that the system is [committed](/2019-12-15-consensus-model-for-FLP/).
 
 3. This paradigm can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](/2019-11-10-authenticated-synchronous-bft/); and for $n>3f$, by using Byzantine Quorums that intersect by at least $f\+1$ parties.
 
@@ -52,26 +52,28 @@ Let's go right away to a Lock-Commit based (uniform) consensus protocol tolerati
     
     
     while true:
-    
        // as a primary (you are replica 1 and view is 1)
        on receiving first cmd from client and j == 1 and view == 1:
              send ("propose", cmd, view) to all replicas
+       
+       // as a backup replica in the same view
+       on receiving ("propose", cmd, v) and v==view:
+             lock = v
+             lockcmd = cmd
+             send ("lock", cmd, v) to the primary j
+       
        // as a primary (you are replica j and view is j)
        on receiving ("lock", cmd, view) from n-f distinct replicas and view == j:
              // commit (after you know enough have locked)
              log[0] = cmd
              send ("commit", cmd) to all replicas
              terminate
+       
        // as a replica: commit and terminate
        on receiving ("commit", cmd):
              log[0] = cmd
              send ("commit", cmd) to all replicas
              terminate
-       // as a backup replica in the same view
-       on receiving ("propose", cmd, v) and v==view:
-             lock = v
-             lockcmd = cmd
-             send ("lock", cmd, v) to the primary j
 
 When does a replica move from one view to another? When it see that the current primary is not making progress. This is the **view change trigger** protocol:
 
@@ -89,9 +91,10 @@ What do the next primaries propose? To be safe, they must read from a quorum and
        // send your highest lock
        on receiving ("view change", v) and view < v:
              view = v
-             // start timer for 8*(max message delay)
+             // start timer for $8\Delta$
              start timer(v)
              send ("highest lock", lockcmd, lock, v) to replica v
+             
        // as the primary (you are replica j and view is j)
        on receiving ("highest lock", c, v, j) from n-f distinct replicas and view == j:
              if all heard values are null (all heard views are 0):
@@ -100,10 +103,14 @@ What do the next primaries propose? To be safe, they must read from a quorum and
                  mycmd = value with the highest view heard
              send ("propose", mycmd, view) to all replicas
 
-We did not fully specify how the clients send commands to the replicas. For simplicity can assume that clients broadcast their request to all replicas. In practice, one can add a mechanism to track the primary and resend commands to the new primary when there is a view change.
-
 
 ### Argument for Safety
+
+The key intuition for safety is a quorum intersection argument between two quorums:
+$W$: A set of replicas who sent a commit message to a replica who decides (and are hence locked on it).
+$R$: A set of replicas who send their highest locks to a primary in any higher view.
+
+If $|W \cap R| \geq 1$ (honest) replica, then the decided value is always passed on to the next leader, who will not propose a different value (due to which a different lock will not be formed). This argument thus holds for all subsequent views. The argument is formalized using induction in the following claim.
 
 **Claim:** Let $v$ be the first view were some party commits to some value $cmd$.
 Then, no primary will propose $cmd' \\neq cmd$ at any view $v'\\geq v$.
@@ -136,5 +143,13 @@ Observe that this argument requires synchrony: it uses the fact that the timers 
 If some non-faulty parties have not decided before entering view $v$ then all non-faulty will enter view $v$ within one message delay. In view $v$, the non-faulty primary will gather $n-f$ distinct "lock" messages and will send a commit message that will arrive to all non-faulty parties before their $timer(v)$ expires (assuming the timer is larger than 8 message delays and using the fact that they all started their timer with a gap of at most one message delay). Hence even if all faulty parties send a "blame" message there will not be enough "blame" messages to form a "view change" message.
 
 Again observe the use of synchrony.
+
+
+### Remarks
+1. We did not fully specify how the clients send commands to the replicas. For simplicity, we can assume that clients broadcast their request to all replicas. In practice, one can add a mechanism to track the primary and resend commands to the new primary when there is a view change.
+
+2. In this post, we do not talk about executing the commands (as required in a [state machine replication protocol](/2019-10-15-consensus-for-state-machine-replication/) as well as how clients can [learn](...) about consensus. The protocol can be easily modified to handle these aspects.
+
+3. Observe that the only requirement is that $|W \cap R| \geq 1$ (honest) replica. Thus, while we consider using quorums of size $n-f = f+1$, the sizes are flexible. This is the idea behind [Flexible Paxos](https://arxiv.org/pdf/1608.06696v1.pdf).
 
 Please answer/discuss/comment/ask on [Twitter](...).
