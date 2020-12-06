@@ -30,13 +30,13 @@ This approach obtains safety because *any two quorum sets must have a non-empty 
 
 This simple idea is very powerful and can be extended to many settings:
 
-1. Since it's based on *quorum intersection*, this mechanism does not rely on any synchrony for safety!
+1. Since Commit-Lock is based on *quorum intersection*, safety does not rely on any synchrony. Indeed unlike the [Commit-Notify](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) approach, Commit-Lock can be extended to an asynchronous model.
 
-2. This approach guarantees uniform consensus (so even if you are omission faulty you have safety). In essence, you don't commit before you have proof that the system is [committed](/2019-12-15-consensus-model-for-FLP/).
+2. This approach guarantees [uniform consensus](/2019-06-27-defining-consensus/) (so even omission faulty parties decide correctly). In essence, you don't commit before you have proof that the system is [committed](/2019-12-15-consensus-model-for-FLP/).
 
 3. This paradigm can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](/2019-11-10-authenticated-synchronous-bft/); and for $n>3f$, by using Byzantine Quorums that intersect by at least $f\+1$ parties.
 
-Let's go right away to a Lock-Commit based (uniform) consensus protocol tolerating $f<n/2$ omission fualts for a single slot:
+Let's go right away to a Lock-Commit based (uniform) consensus protocol tolerating $f<n/2$ omission faults for a single slot:
 
 ## Lock-Commit for omission failures
 
@@ -44,17 +44,17 @@ Let's go right away to a Lock-Commit based (uniform) consensus protocol tolerati
     
     state = init // the state of the state machine
     log = []     // a log (of size 1) of committed commands
-    view = 0     // view number that indicates the current Primary
+    view = 1     // view number that indicates the current Primary
     lockcmd = null
-    lock = -1     // the highest view a propose was heard
+    lock = 0     // the highest view a propose was heard
     mycmd = null
-    start timer(0) // start timer for first view
+    start timer(1) // start timer for first view
     
     
     while true:
     
-       // as a primary (you are replica 0 and view is 0)
-       on receiving first cmd from client and j == 0 and view == 0:
+       // as a primary (you are replica 1 and view is 1)
+       on receiving first cmd from client and j == 1 and view == 1:
              send ("propose", cmd, view) to all replicas
        // as a primary (you are replica j and view is j)
        on receiving ("lock", cmd, view) from n-f distinct replicas and view == j:
@@ -94,11 +94,14 @@ What do the next primaries propose? To be safe, they must read from a quorum and
              send ("highest lock", lockcmd, lock, v) to replica v
        // as the primary (you are replica j and view is j)
        on receiving ("highest lock", c, v, j) from n-f distinct replicas and view == j:
-             if all heard values are null (all heard views are -1):
+             if all heard values are null (all heard views are 0):
                  mycmd = any value heard from the clients
              otherwise:
                  mycmd = value with the highest view heard
              send ("propose", mycmd, view) to all replicas
+
+We did not fully specify how the clients send commands to the replicas. For simplicity can assume that clients broadcast their request to all replicas. In practice, one can add a mechanism to track the primary and resend commands to the new primary when there is a view change.
+
 
 ### Argument for Safety
 
