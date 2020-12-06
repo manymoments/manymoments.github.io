@@ -96,7 +96,7 @@ The **view change** protocol is modified so the new primary learns about command
             readyToPropose = false
             send ("propose", mycmd, view) to all replicas
 
-Observe that when a primary proposes a message, as well as when a replicas send their highest lock to the next primary, the entire commit log is sent in the message. This ensures that, at any time, whenever a replica is locked on value, all the previous log positions are committed. While sending the entire log each time brings in conceptual simplicity, it is expensive to send the entire log. In a future post, we will discuss how this can optimized.
+Observe that when a primary proposes a message, as well as when replicas send their highest lock to the next primary, the entire commit log is sent in the message. This ensures that, at any time, whenever a replica is locked on value, all the previous log positions are committed. While sending the entire log each time brings in conceptual simplicity, it is expensive to send the entire log. In a future post, we will discuss how this can be optimized (for example one can just send the digest of the log).
 
 # Multi-shot Lock-Commit tolerating both omission and crash failures
 
