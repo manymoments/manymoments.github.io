@@ -3,7 +3,7 @@ title: The Lock-Commit Paradigm
 date: 2020-11-29 08:02:00 -05:00
 tags:
 - dist101
-author: Ittai Abraham
+author: Ittai abraham, Kartik Nayak
 ---
 
 In this post, we explore the Lock-Commit paradigm for consensus protocols. This approach is probably the most celebrated and widely used technique for reaching consensus in a safe manner. This approach is one of the key techniques in [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf) and Lamport's [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf).
@@ -57,7 +57,7 @@ Let's go right away to a Lock-Commit based (uniform) consensus protocol tolerati
              send ("propose", cmd, view) to all replicas
        
        // as a backup replica in the same view
-       on receiving ("propose", cmd, v) and v==view:
+       on receiving ("propose", cmd, v) and v == view:
              lock = v
              lockcmd = cmd
              send ("lock", cmd, v) to the primary j
@@ -84,14 +84,14 @@ When does a replica move from one view to another? When it see that the current 
              // this will trigger a timer and a "highest lock message"
              send ("view change", i+1) to all replicas (including self)
 
-Note that the view change trigger protocol can be simplified and also altered to have a linear communication optimistic path. Assuming synchrony, we could for example, simply trigger a view change after each 6 message delays. The more elaborate option above will give us flexibility in later posts.
+Note that the view change trigger protocol can be simplified and also altered to have a linear communication optimistic path. Assuming synchrony, we could for example, simply trigger a view change after each 8 message delays. The more elaborate option above will give us flexibility in later posts.
 
 What do the next primaries propose? To be safe, they must read from a quorum and use the value with the highest view number. This is the essence if the **view change** protocol:
 
        // send your highest lock
        on receiving ("view change", v) and view < v:
              view = v
-             // start timer for $8\Delta$
+             // start timer for 8 Delta
              start timer(v)
              send ("highest lock", lockcmd, lock, v) to replica v
              
@@ -146,10 +146,10 @@ Again observe the use of synchrony.
 
 
 ### Remarks
-1. We did not fully specify how the clients send commands to the replicas. For simplicity, we can assume that clients broadcast their request to all replicas. In practice, one can add a mechanism to track the primary and resend commands to the new primary when there is a view change.
+1. We did not fully specify how the clients send commands to the replicas. For simplicity, we can assume that clients broadcast their requests to all replicas. In practice, one can add a mechanism to track the primary and resend commands to the new primary when there is a view change.
 
 2. In this post, we do not talk about executing the commands (as required in a [state machine replication protocol](/2019-10-15-consensus-for-state-machine-replication/) as well as how clients can [learn](...) about consensus. The protocol can be easily modified to handle these aspects.
 
-3. Observe that the only requirement is that $\|W \cap R\| \geq 1$ (honest) replica. Thus, while we consider using quorums of size $n-f = f+1$, the sizes are flexible. This is the idea behind [Flexible Paxos](https://arxiv.org/pdf/1608.06696v1.pdf).
+3. Observe that the only requirement is that $\|W \cap R\| \geq 1$ (honest) replica. Thus, while we consider using quorums of size $n-f = f+1$, the sizes are flexible and do not have to be symmetric. This is the idea behind [Flexible Paxos](https://arxiv.org/pdf/1608.06696v1.pdf).
 
 Please answer/discuss/comment/ask on [Twitter](...).
