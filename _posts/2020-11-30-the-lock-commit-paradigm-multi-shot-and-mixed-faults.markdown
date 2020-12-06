@@ -11,7 +11,7 @@ We then extend it to one that tolerates both $f$ omission failures and $k$ [cras
 
 ## Multi-shot Lock-Commit
 
-Instead of [solving consensus on a single entry](https://decentralizedthoughts.github.io/2020-11-29-the-lock-commit-paradigm/), we implement an ever-growing **commitLog** of decisions that is extended by **appending** commands to it.
+Instead of solving consensus on a [single command](https://decentralizedthoughts.github.io/2020-11-29-the-lock-commit-paradigm/), we implement an ever-growing **commitLog** of decisions that is extended by **appending** commands to it. Similar to the previous post, we do not talk about executing the commands as well as how clients can learn about consensus.
 
 # Multi-shot Lock-Commit for omission failures
 
@@ -37,19 +37,7 @@ Once the primary commits a command, we use the boolean *readyToPropose* to indic
        on receiving cmd from client, view == j, readyToPropose == true:
              readyToPropose = false
              send ("propose", commitLog, cmd, view) to all replicas
-       on receiving ("lock", CL, cmd, view) from n-f distinct replicas and view == j:
-             // append to log
-             commitLog.append(cmd)
-             send ("commit", commitLog, cmd, view) to all replicas
-             readyToPropose = true
-       // as a replica: execute and terminate
-       on receiving ("commit", CL, cmd, v):
-             // learn if needed
-             if CL >= commitLog then
-                 commitLog = CV
-                 // append to log
-                 commitLog.append(cmd)
-                 restart timer(v)
+             
        // as a backup replica in the same view
        on receiving ("propose", CL, cmd, v) and v==view:
              // learn if needed
@@ -59,6 +47,20 @@ Once the primary commits a command, we use the boolean *readyToPropose* to indic
                  lockcmd = cmd
                  send ("lock", commitLog, cmd, v) to the primary j
 
+       on receiving ("lock", CL, cmd, view) from n-f distinct replicas and view == j:
+             // append to log
+             commitLog.append(cmd)
+             send ("commit", commitLog, cmd, view) to all replicas
+             readyToPropose = true
+             
+       // as a replica: execute and terminate
+       on receiving ("commit", CL, cmd, v):
+             // learn if needed
+             if CL >= commitLog then
+                 commitLog = CV
+                 // append to log
+                 commitLog.append(cmd)
+                 restart timer(v)
 
 Note that as an optimization, we could have piggybacked the "commit" message with the next "propose" message.
 
@@ -78,6 +80,7 @@ The **view change** protocol is modified so the new primary learns about command
             view = v
             start timer(v)
             send ("highest lock", commitLog, lockcmd, lock, v) to replica v
+            
        // as the primary (you are replica j)
        on receiving messages M={("highest lock", CL, cmd, v, j)} from n-f distinct replicas and view == j:
             Let CL be the longest commit log in M.CL
@@ -92,6 +95,8 @@ The **view change** protocol is modified so the new primary learns about command
                  mycmd = m.cmd
             readyToPropose = false
             send ("propose", mycmd, view) to all replicas
+
+Observe that when a primary proposes a message, as well as when a replicas send their highest lock to the next primary, the entire commit log is sent in the message. This ensures that, at any time, whenever a replica is locked on value, all the previous log positions are committed. While sending the entire log each time brings in conceptual simplicity, it is expensive to send the entire log. In a future post, we will discuss how this can optimized.
 
 # Multi-shot Lock-Commit tolerating both omission and crash failures
 
