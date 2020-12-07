@@ -394,5 +394,5 @@ Many interesting problems remain open for bilinear accumulators:
 [^vG13ModernCh9]: **Newton iteration**, by von zur Gathen, Joachim and Gerhard, Jurgen, *in Modern Computer Algebra*, 2013
 [^vG13ModernCh11]: **Fast Euclidean Algorithm**, by von zur Gathen, Joachim and Gerhard, Jurgen, *in Modern Computer Algebra*, 2013
 
-<!-- TODO: Update this to our own blogpost on MHTs -->
+<!-- TODO: Update this to our own blogpost on Merkle hash trees -->
 [mht-post-link]: http://en.wikipedia.org/wiki/Merkle_Tree
