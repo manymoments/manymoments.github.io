@@ -25,7 +25,7 @@ We have three servers: server 1, server 2, and server 3. All servers are up and 
 
 To begin with, all servers are in term 1, server 3 is the leader and servers 1 and 2 are followers. All three servers have identical logs.
 
-We expect that this system would be fully available as we have a clear leader (server 3) and a follower (server 2) which are connected by perfect links. But this is not always the case. Here’s why: 
+We expect that this system would be fully available as we have a clear leader (server 3) and a follower (server 2) which are connected by perfect links. But this is not always the case. Here’s why:
 
 1. The broken link between server 1 and 3 could delay/drop the AppendEntries RPC heartbeats from server 3. Server 1’s election timeout could elapse without hearing from the leader (server 3).
 Server 1 increases its term from term 1 to term 2 and sends RequestVote RPCs to servers 2 and 3.
@@ -37,4 +37,12 @@ Server 1 increases its term from term 1 to term 2 and sends RequestVote RPCs to 
 
 Note that this case is also not specific to deployments with three servers. We can recreate the same issue with five servers by substituting server 2 with servers 2, 4, and 5. We can do the same for seven servers and so forth.
 
-We have outlined one particular issue with guaranteeing the liveness of Raft in the presence of partial network failures. This issue can be patched, for example, by having servers ignore RequestVote RPCs within the election timeout (as suggested later in the [Raft paper](https://raft.github.io/raft.pdf) as mitigation for liveness issues during reconfiguration). However, such a protocol change simply creates new liveness issues in different scenarios. Fundamentally, whilst Raft does guarantee liveness when a minority of servers have failed, **Raft does not guarantee liveness in the presence of omission faults** and thus this should be taken into consideration when deciding to depend upon the availability of Raft in production.
+We have outlined one issue with guaranteeing the liveness of Raft in the presence of partial network failures.  Fundamentally, whilst Raft does guarantee liveness when up to a minority of servers have failed, **Raft does not guarantee liveness in the presence of omission faults** and thus this should be taken into consideration when deciding to depend upon the availability of Raft in production.
+
+## Bonus: Patching
+
+This particular issue can be patched, for example, by either:
+1. requiring servers to ignore RequestVote RPCs if they have received an AppendEntries RPC from the leader within the election timeout. This was suggested later in the [Raft paper](https://raft.github.io/raft.pdf) as mitigation for liveness issues during reconfiguration, or
+2. by using PreVote, which requires potential candidates to run a trial election before incrementing their term and executing a normal election. A server only votes for a potential candidate during the trial election if it would vote for it during a normal election and importantly, if has not received an AppendEntries RPC from the leader with in the election timeout. This is described in section 9.6 of [Diego Ongaro’s thesis](https://web.stanford.edu/~ouster/cgi-bin/papers/OngaroPhD.pdf).
+
+However, such a protocol changes simply create new liveness issues in different scenarios.
