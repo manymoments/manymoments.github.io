@@ -10,13 +10,13 @@ In distributed computing, *learning* has many manifestations. Learning by client
 
 Before understanding the learning process, let us understand the different states that the system and individual replicas can be in when committing a single command:
 
-1. **[committed configuration](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/):** This is a state of the system where the decision value is set (known as a uni-valiant configuration). Recall that you may be in a committed configuration without any of the replicas knowing about it.
+1. **[Committed configuration](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/):** This is a state of the system where the decision value is set (known as a uni-valiant configuration). Recall that you may be in a committed configuration without any of the replicas knowing about it.
 
-2. **[decided configuration](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/):** This is a state of the system where all replicas have decided.
+2. **[Decided configuration](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/):** This is a state of the system where all replicas have decided.
 
 We now introduce a new type of configuration:
 
-3. **[checkpointed configuration]:** This is a configuration between being committed and being decided in which there are at least $n-f$ replicas that have decided.
+3. **[Checkpointed configuration]:** This is a configuration between being committed and being decided in which there are at least $n-f$ replicas that have decided.
 
 Conceptually, **learning** is the protocol for obtaining the decided command after the system is in a checkpointed configuration. 
 
@@ -44,7 +44,7 @@ Clearly, it can just try to learn each slot independently but how will it learn 
 - In a non-uniform consensus or Byzantine failure setting without certificates, the learning party can ask $2f+1$ other replicas for the *last (consecutively) decide slot*. The asking party can then take the minimum value $m$ such that at least $f+1$ replicas say that their last consecutively decide slot is *at least* $m$.  It can know for sure that decisions from 1 to $m$ are in a checkpointed congiguration and learning will succeed.
 
 
-Even when certificates are used, if you want your learning (reads) to be linearizable, then in an asynchronous setting you need to read from $2f+1$ replicas and take the certified value that appears in at least $f+1$ replicas, also see [section 5.1.3 in PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf).
+Even when certificates are used, if you want your learning (reads) to be linearizable, then in an asynchronous setting you need to read from $2f+1$ replicas and take the certified value that appears in at least $f+1$ replicas, also see [Section 5.1.3 in PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf).
 
 ## Learning with Checkpoints
 
