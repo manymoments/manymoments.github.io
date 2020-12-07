@@ -14,9 +14,9 @@ Before understanding the learning process, let us understand the different state
 
 2. **[Decided configuration](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/):** This is a state of the system where all replicas have decided.
 
-We now introduce a new type of configuration:
+Let's introduce a new type of configuration:
 
-3. **[Checkpointed configuration]:** This is a configuration between being committed and being decided in which there are at least $n-f$ replicas that have decided.
+3. **Checkpointed configuration:** This is a configuration between being committed and being decided in which there are at least $n-f$ replicas that have decided.
 
 Conceptually, **learning** is the protocol for obtaining the decided command after the system is in a checkpointed configuration. 
 
@@ -33,15 +33,15 @@ In many situations, a non-faulty replica or a client may have missed the decisio
 
 A State Machine Replication system makes a *sequence* $c_1,c_2,c_3,\dots$ of decisions. In such a multi-shot consensus protocol, we will call the $i$-th decision in the sequence: *slot $i$*. In the basic version of such systems, the decision for slot $i+1$ is done only after the decision for slot $i$. More generally, there is often some active window $x$, such that the decision for slot $i+x$ can only be made after the decision for slot $i$ is done. Even more generally, there may be some periodic *checkpoint* that is done every $y<x$ slots (often $y=x/2)$ and the active window is all the $x$ from the latest checkpoint (this is what PBFT does). We will expand on checkpoints in the next section.
 
-For now it's enough to assume that each replica maintains the *latest consecutive decided slot*. If this value is $l$, it means that the replica has locally decided on all slots from 1 to $l$ but slot $l+1$ has not been locally decided yet. 
+For now, it's enough to assume that each replica maintains the *latest consecutive decided slot*. If this value is $l$, it means that the replica has locally decided on all slots from 1 to $l$ but slot $l+1$ has not been locally decided yet. 
 
 If a replica or client wants to catch up and *learn* about all the decided slots, what should it do?
 
 Clearly, it can just try to learn each slot independently but how will it learn which slots are decided and which are not?
 
-- In a uniform consensus setting or a Byzantine failure setting with commit certificates, the learning party can ask $f+1$ other replicas for the *last (consecutively) decided slot*. The asking party can then take the minimum value $m$ out of the $f+1$ responses. It can know for sure that decisions from 1 to $m$ are in a checkpointed congiguration and learning will succeed.
+- In a uniform consensus setting or a Byzantine failure setting with commit certificates, the learning party can ask $f+1$ other replicas for the *last (consecutively) decided slot*. The asking party can then take the minimum value $m$ out of the $f+1$ responses. It can know for sure that decisions from 1 to $m$ are in a checkpointed configuration and learning will succeed.
 
-- In a non-uniform consensus or Byzantine failure setting without certificates, the learning party can ask $2f+1$ other replicas for the *last (consecutively) decide slot*. The asking party can then take the minimum value $m$ such that at least $f+1$ replicas say that their last consecutively decide slot is *at least* $m$.  It can know for sure that decisions from 1 to $m$ are in a checkpointed congiguration and learning will succeed.
+- In a non-uniform consensus or Byzantine failure setting without certificates, the learning party can ask $2f+1$ other replicas for the *last (consecutively) decide slot*. The asking party can then take the minimum value $m$ such that at least $f+1$ replicas say that their last consecutively decide slot is *at least* $m$.  It can know for sure that decisions from 1 to $m$ are in a checkpointed configuration and learning will succeed.
 
 
 Even when certificates are used, if you want your learning (reads) to be linearizable, then in an asynchronous setting you need to read from $2f+1$ replicas and take the certified value that appears in at least $f+1$ replicas, also see [Section 5.1.3 in PBFT](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/01/thesis-mcastro.pdf).
