@@ -4,7 +4,7 @@ date: 2020-07-11 13:37:00 -04:00
 published: false
 ---
 
-Many people have popularized the idea that succinct proofs and zero-knowledge proofs are a type of [moon math](https://medium.com/@VitalikButerin/quadratic-arithmetic-programs-from-zero-to-hero-f6d558cea649). In this post, our goal is to present a simple proof system that can provide an introduction and intuition to this space. Perhaps surprisingly, the only tool we will use is the [Theorem](first post) that non-trivial degree-at-most-$d$ polynomials over a field have at most $d$ roots.
+Many people have popularized the idea that succinct proofs and zero-knowledge proofs are a type of [moon math](https://medium.com/@VitalikButerin/quadratic-arithmetic-programs-from-zero-to-hero-f6d558cea649). In this post, our goal is to present a simple proof system that can provide an introduction and intuition to this space. Perhaps surprisingly, the only tool we will use is the [Theorem](/2020-07-17-the-marvels-of-polynomials-over-a-field) that non-trivial degree-at-most-$d$ polynomials over a field have at most $d$ roots.
 
 ### Start with Succinctness, add Zero Knowledge later
 The traditional CS educational approach typically first shows a zero-knowledge scheme related to proving [3-colorability of a graph](https://crypto.stanford.edu/cs355/18sp/lec3.pdf), or proving the existence of a [Hamiltonian cycle](https://people.eecs.berkeley.edu/~sanjamg/classes/cs294-spring16/scribes/7.pdf). Succinct proofs are often taught at a [later phase](https://crypto.stanford.edu/cs355/19sp/lec17.pdf) and in connection to the [PCP](https://en.wikipedia.org/wiki/PCP_theorem) theorem.
@@ -21,7 +21,7 @@ The Prover has an input $S=\langle s_0,\dots,s_{d-1}\rangle $ which is a vector 
 > Is $S$ the all-zero vector or not?
 
 We will assume the only way the Prover and Verifier can interact is via a special communication channel we will call the *virtual cloud*:
-1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$d$ polynomial $g(x) = \sum\_{i\in[0,d)} s\_i \prod\_{j\in[0, d), j\ne i} \frac{x - s\_j}{s\_i - s\_j}$ to the virtual cloud. Note that $g(i)=s_i$. This polynomial $g$ is the [Largeange basis](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$. 
+1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$d$ polynomial $g(x) = \sum\_{i\in[0,d)} s\_i \prod\_{j\in[0, d), j\ne i} \frac{x - s\_j}{s\_i - s\_j}$ to the virtual cloud. Note that $g(i)=s_i$. This polynomial $g$ is the [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$. 
 
 
 2. The verifier is allowed to query the virtual cloud by sending it an element $r$ and the virtual cloud responds back with $g(r)$, the evaluation of $r$ on $g$.
@@ -40,7 +40,7 @@ We will now recall that we are working over the field $\mathbb{F}_p$ where $p\gg
 > The Verifier chooses a uniformly random element $r \in_R \mathbb{F}_p$ and queries the virtual cloud just once with $r$:
 
 1. Clearly, if $g(r) \neq 0$, then $g$ is not the trivial polynomial, so $S$ is not all-zeros.
-2. What if $g(r)=0$? Then, we use the Theorem that $g$ has at most $d$ roots to say: If $r\in_R \mathbb{F_p}$ and $g(r)=0$ then the probability that $g$ is non-zero is at most $d/p$ (where $p$ is the size of the Field).
+2. What if $g(r)=0$? Then, we use the [Theorem](/2020-07-17-the-marvels-of-polynomials-over-a-field) that $g$ has at most $d$ roots to say: If $r\in_R \mathbb{F_p}$ and $g(r)=0$, then the probability that $g$ is non-zero is at most $d/p$ (where $p$ is the size of the field).
 
 We can choose $p\gg d$, so the error probability is as low as we want. So if $g(r)=0$, then the Verifier declares that $S$ is all-zero.
 
