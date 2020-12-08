@@ -1,6 +1,6 @@
 ---
 title: A Simple and Succinct Zero Knowledge Proof
-date: 2020-07-11 10:37:00 -07:00
+date: 2020-07-11 13:37:00 -04:00
 published: false
 ---
 
