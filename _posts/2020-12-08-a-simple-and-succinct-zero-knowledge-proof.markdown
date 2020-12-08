@@ -1,7 +1,10 @@
 ---
 title: A Simple and Succinct Zero Knowledge Proof
-date: 2020-07-11 13:37:00 -04:00
-published: false
+date: 2020-12-08 13:37:00 -05:00
+tags:
+- zero-knowledge
+- crypto101
+author: Ittai Abraham, Alin Tomescu
 ---
 
 Many people have popularized the idea that succinct proofs and zero-knowledge proofs are a type of [moon math](https://medium.com/@VitalikButerin/quadratic-arithmetic-programs-from-zero-to-hero-f6d558cea649). In this post, our goal is to present a simple proof system that can provide an introduction and intuition to this space. Perhaps surprisingly, the only tool we will use is the [Theorem](/2020-07-17-the-marvels-of-polynomials-over-a-field) that non-trivial degree-at-most-$d$ polynomials over a field have at most $d$ roots.
@@ -12,10 +15,11 @@ The traditional CS educational approach typically first shows a zero-knowledge s
 Since Colorability, Hamilonicity and Satisfiability are all [NP-complete](https://en.wikipedia.org/wiki/NP-completeness) problems, the advantage of this approach is that it immediately gives very general Theoretical Computer Science results via [Karp-based reductions](https://en.wikipedia.org/wiki/Polynomial-time_reduction) to any problem in NP.
 
 In this post, we take a different approach.
-We start with a seemly useless problem (that is solvable in polynomial time) as our goal is to give an intuition for later constructions, not to prove general complexity results.
+We start with a seemly useless problem (that is solvable in polynomial time) as our goal is to give an intuition for later constructions, not to prove general complexity results. Perhaps surprisingly, we will show in later posts that this simple problem is the basis of many of the new advances in this area.
+
 
 ### The setting
-We will assume two parties: a Prover, and a Verifier.
+We will assume two parties: a *Prover*, and a *Verifier*.
 
 The Prover has an input $S=\langle s_0,\dots,s_{d-1}\rangle $ which is a vector of say $d=10^{10}$ field elements (so $s_i \in \mathbb{F}_p$). It will be important that assume $p$ is large relative to $d$ (so $p \gg  d$). All the Prover wants to do is prove to the Verifier this simple fact:
 > Is $S$ the all-zero vector or not?
@@ -65,5 +69,7 @@ So we have shown a way for the verifier to obtain a succinct zero-knowledge proo
 
 A major complaint against this scheme is the strange communication mechanism.
 1. First, it required the Prover to upload the polynomial $g$. This naively seems to be a non-succulent operation and requires some trusted cloud to store a lot of information. Luckily, we will show in a later post how cryptographic tools can implement this succinctly over a standard communication channel.
-2. Secondly, it required the virtual cloud to respond to a query $x$ with the value $g(x)$. This may seem to require a trusted computing cloud. Luckily again, we will show in a later post how cryptographic tools can implement this functionality over a standard communication channel.
-3. Finally, recall that we needed $d\ll p$. There is sometimes a challenge in forcing the Prover to use a degree-at-most-$d$ polynomial and not one of higher degree. Again we will see techniques in later posts to force the Prover to use a low degree.
+2. Secondly, it required the virtual cloud to respond to a query $r$ with the value $g(r)$. This may seem to require a trusted computing cloud. Luckily again, we will show in a later post how cryptographic tools can implement this functionality over a standard communication channel.
+3. Finally, recall that we needed $d\ll p$. There is sometimes a challenge in forcing the Prover to use a degree-at-most-$d$ polynomial and not one of higher degree. Again we will see techniques in later posts to force the Prover to use a low degree polynomial.
+
+Please answer/discuss/comment/ask on [Twitter](...).
