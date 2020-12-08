@@ -1,6 +1,6 @@
 ---
 title: The Marvels of Polynomials over a Field
-date: 2020-07-17 10:55:00 -07:00
+date: 2020-07-17 13:55:00 -04:00
 author: Ittai Abraham
 ---
 
