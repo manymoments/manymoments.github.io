@@ -44,7 +44,6 @@ Let's go right away to a Lock-Commit based (uniform) consensus protocol tolerati
 
     // pseudocode for Replica j
     
-    state = init // the state of the state machine
     log = []     // a log (of size 1) of committed values
     view = 1     // view number that indicates the current Primary
     lock-value = null
