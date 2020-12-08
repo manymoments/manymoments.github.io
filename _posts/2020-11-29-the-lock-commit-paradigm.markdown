@@ -8,7 +8,7 @@ author: Ittai Abraham, Kartik Nayak
 
 In this post, we explore the Lock-Commit paradigm for consensus protocols. This approach is probably the most celebrated and widely used technique for reaching consensus in a safe manner. This approach is one of the key techniques in [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf) and Lamport's [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf).
 
-We exemplify this paradigm by showing a single-shot [synchronous protocol](/2019-06-01-2019-5-31-models/) for [uniform consensus](/2019-06-27-defining-consensus/) that is tolerant to $f$ [omission](/2020-09-13-synchronous-consensus-omission-faults/) failures, given $2f<n$.
+We exemplify this paradigm by showing a single-shot [synchronous protocol](/2019-06-01-2019-5-31-models/) (with message delay at most $\Delta$) for [uniform consensus](/2019-06-27-defining-consensus/) that is tolerant to $f$ [omission](/2020-09-13-synchronous-consensus-omission-faults/) failures, given $2f<n$.
 
 Related posts:
 
@@ -20,7 +20,7 @@ Related posts:
 
 ## Lock-Commit
 
-Recall that our goal is solving consensus in a system with *clients* and $n$ *replicas*. We are in the Primary-Backup paradigm where the protocol progresses in *views*. In each view, one designated replica is the *primary* of this view and the others are the *backups* of this view.
+Recall that our goal is solving consensus in a system with *clients* and $n$ *replicas*. We are in the Primary-Backup paradigm where the protocol progresses in *views*. In each view $v$, one designated replica (whose id is $v$) is the *primary* of this view and the others are the *backups* of this view. There is a *view change trigger* protocol that decides when to globally execute a *view change* protocol that increments the view (in a single shot synchronous model, it is enough to have $n$ views, but more generally you could have a round-robin or randomized leader election matching of Primaries to views).
 
 The safety risk in consensus is that a replica *commits* to a value but this decision is not known to other replicas. In particular, a new primary in a new view may emerge that does not know about the committed value. The **Lock-Commit paradigm** introduces a *Lock* step before the *Commit* decision and entails the following two important parts:
 
@@ -28,7 +28,7 @@ The safety risk in consensus is that a replica *commits* to a value but this dec
 
 2. *As a new Primary: Read and Adopt*. When a new primary starts, it runs a special *view change* protocol. In this protocol, the new primary decides which value to try to commit. A new Primary must read the locks from a **quorum** of replicas and must adopt the *lock-value* with the highest *lock-view* it sees.
 
-This approach obtains safety because *any two quorum sets must have a non-empty intersection and choosing the lock-value with the highest lock-view will guarantee the most recent lock-value is a safe choice*. In this post, we will use quorums that consist of $n-f=f\+1$ replicas.
+The intuition of why this approach obtains safety is because *any two quorum sets must have a non-empty intersection and choosing the lock-value with the highest lock-view will guarantee seeing the committed value* (see the proof below). In this post, we will use quorums that consist of $n-f=f\+1$ replicas.
 
 This simple idea is very powerful and can be extended to many settings:
 
@@ -48,7 +48,7 @@ Let's go right away to a Lock-Commit based (uniform) consensus protocol tolerati
     view = 1     // view number that indicates the current Primary
     lock-value = null
     lock-view = 0     // the highest view a propose was heard
-    start timer(1) // start timer for first view
+    start timer(1) // start timer for view 1 (for duration 8 Delta)
     
     
     while true:
