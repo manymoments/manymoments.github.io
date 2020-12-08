@@ -76,7 +76,7 @@ $$
 It is direct to see that $q$ has degree $d-1$.
 
 In the next posts, we will use this very useful fact about roots of polynomials over finite fields.
-First, we will use it as the foundation for Secret Sharing and then as the foundation for Zero Knowledge Proofs.
+First, we will use it as the foundation for [secret sharing](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis) and then as the foundation for Zero Knowledge Proofs.
 
 A significantly more general result about polynomials over a field views them as a special case of a [unique factorization domain](https://en.wikipedia.org/wiki/Unique_factorization_domain). This view exposes deep connections between the natural numbers, polynomials over a field, and the [fundamental theorem of Arithmetic](https://www.maths.tcd.ie/pub/Maths/Courseware/Primality/Primality.pdf).  
 

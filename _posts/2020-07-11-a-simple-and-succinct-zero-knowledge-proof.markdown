@@ -54,7 +54,10 @@ The verifier can ask for say $g(i)$ and learn some $s_i \in S$, so the first thi
 
 Even that may leak information, for example, for $d=1$, the vector $S$ is of size $2$ and $g$ is a degree one polynomial. If the Verifier learns, say $g(10)$, then it has learned some linear relation between $s_0$ and $s_1$.
 
-To overcome this, the Prover simply adds one more random element $r$ to its vector, $S'=\langle s_0,\dots,s_{d-1}, r\rangle $ and works with a polynomial $g'$ of degree $d+1$. Using an argument that is similar to the one in [our second post](...), it can be seen that for any $S$, the Verifier's view, $g(x)$, for $x>d+1$, is uniformly distributed in $\mathbb{F}_p$. Hence the only information the Verifier gains from the protocol, the Verifier could have simulated locally. So the verifies gains no information at all.
+To overcome this, the Prover simply adds one more random element $r$ to its vector, $S'=\langle s_0,\dots,s_{d-1}, r\rangle $ and works with a polynomial $g'$ of degree $d+1$. Using an argument that is similar to the one in [our secret sharing post](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis), it can be seen that for any $S$, the Verifier's view, $g'(r)$, for $r>d+1$, is uniformly distributed in $\mathbb{F}_p$. Hence the only information the Verifier gains from the protocol, the Verifier could have simulated locally. So the verifies gains no information at all.
+
+In our example above, for $d=1$, $g'$ will now be a degree two polynomial.
+Since for any $s_0$ and $s_1$, the distribution of $g'(10)$ is uniform, the Verifier learns nothing about $S$.
 
 So we have shown a way for the verifier to obtain a succinct zero-knowledge proof!
 
