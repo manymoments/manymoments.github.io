@@ -7,7 +7,7 @@ tags:
 author: Ittai Abraham, Alin Tomescu
 ---
 
-Many people have popularized the idea that succinct proofs and zero-knowledge proofs are a type of [moon math](https://medium.com/@VitalikButerin/quadratic-arithmetic-programs-from-zero-to-hero-f6d558cea649). In this post, our goal is to present a simple proof system that can provide an introduction and intuition to this space. Perhaps surprisingly, the only tool we will use is the [Theorem](/2020-07-17-the-marvels-of-polynomials-over-a-field) that non-trivial degree-at-most-$d$ polynomials over a field have at most $d$ roots.
+Many people have popularized the idea that **succinct proofs** and **zero-knowledge proofs** are a type of [moon math](https://medium.com/@VitalikButerin/quadratic-arithmetic-programs-from-zero-to-hero-f6d558cea649). In this post, our goal is to present a simple proof system that can provide an introduction and intuition to this space. Perhaps surprisingly, the only tool we will use is the [Theorem](/2020-07-17-the-marvels-of-polynomials-over-a-field) that non-trivial degree-at-most-$d$ polynomials over a field have at most $d$ roots.
 
 ### Start with Succinctness, add Zero Knowledge later
 The traditional CS educational approach typically first shows a zero-knowledge scheme related to proving [3-colorability of a graph](https://crypto.stanford.edu/cs355/18sp/lec3.pdf), or proving the existence of a [Hamiltonian cycle](https://people.eecs.berkeley.edu/~sanjamg/classes/cs294-spring16/scribes/7.pdf). Succinct proofs are often taught at a [later phase](https://crypto.stanford.edu/cs355/19sp/lec17.pdf) and in connection to the [PCP](https://en.wikipedia.org/wiki/PCP_theorem) theorem.
@@ -21,14 +21,14 @@ We start with a seemly useless problem (that is solvable in polynomial time) as 
 ### The setting
 We will assume two parties: a *Prover*, and a *Verifier*.
 
-The Prover has an input $S=\langle s_0,\dots,s_{d-1}\rangle $ which is a vector of say $d=10^{10}$ field elements (so $s_i \in \mathbb{F}_p$). It will be important that assume $p$ is large relative to $d$ (so $p \gg  d$). All the Prover wants to do is prove to the Verifier this simple fact:
+The Prover has an input $S=\langle s_0,\dots,s_{d-1}\rangle $ which is a vector of say $d=10^{10}$ field elements (so $s_i \in \mathbb{F}_p$). It will be important that assume $p$ is large relative to $d$ (so $p \gg  d$). All the Prover wants to do is prove to the Verifier this simple *boolean* fact:
 > Is $S$ the all-zero vector or not?
 
 We will assume the only way the Prover and Verifier can interact is via a special communication channel we will call the *virtual cloud*:
 1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$d$ polynomial $g(x) = \sum\_{i\in[0,d)} s\_i \prod\_{j\in[0, d), j\ne i} \frac{x - s\_j}{s\_i - s\_j}$ to the virtual cloud. Note that $g(i)=s_i$. This polynomial $g$ is the [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$. 
 
 
-2. The verifier is allowed to query the virtual cloud by sending it an element $r$ and the virtual cloud responds back with $g(r)$, the evaluation of $r$ on $g$.
+2. The verifier is allowed to *query* the virtual cloud by sending it an element $r$ and the virtual cloud responds back with $g(r)$, the evaluation of $r$ on $g$.
 
 
 ### A non-succinct solution, with no error
@@ -36,7 +36,7 @@ How can the verifier be sure that $S$ is all-zero and hence $g$ is the zero (tri
 
 Observe that when $S$ is all-zero then $g$ is the (trivial) zero polynomial! But if $S$ is not all-zero then the [fundamental theorem of arithmetic adopted to finite field polynomials](https://decentralizedthoughts.github.io/2020-07-17-the-marvels-of-polynomials-over-a-field/) says that $g$ has at most $d$ roots. So the verifier has a simple way to distinguish: it can query $d+1=10^{10} +1$ distinct points and check if they are all zero.
 
-This solution is not succinct as it requires the Verifier to send $d+1$ queries, which is too many. Can the Verifier use less queries?
+This solution is not succinct as it requires the Verifier to send $d+1$ queries, which is too many. Can the Verifier use less queries? Can the Verifier query just one point?
 
 ### A succinct solution
 We will now recall that we are working over the field $\mathbb{F}_p$ where $p\gg d$. By now, it should be quite clear how the Verifier can get a succinct proof that $S$ is all-zero or not.
