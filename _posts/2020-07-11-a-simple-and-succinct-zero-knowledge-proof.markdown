@@ -21,30 +21,28 @@ The Prover has an input $S=\langle s_0,\dots,s_{d-1}\rangle $ which is a vector 
 > Is $S$ the all-zero vector or not?
 
 We will assume the only way the Prover and Verifier can interact is via a special communication channel we will call the *virtual cloud*:
-1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$d$ polynomial $g(x)=\prod_{0 \leq i <d} (x-s_i)$ to the virtual cloud. Note that $g(i)=s_i$.
-    + **ALIN:** This is a typo, I think. Did you mean $g(s_i) = 0,\forall i\in \\{0,1,\dots,d-1\\}$?
-2. The verifier is allowed to query the virtual cloud by sending it an element $x$ and the virtual cloud responds back with $g(x)$, the evaluation of $x$ on $g$.
-    + **ALIN:** Using $x$ for polynomial variable and for random point is confusing, I think.
+1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$d$ polynomial $g(x) = \sum\_{i\in[0,d)} s\_i \prod\_{j\in[0, d), j\ne i} \frac{x - s\_j}{s\_i - s\_j}$ to the virtual cloud. Note that $g(i)=s_i$. This polynomial $g$ is the [Largeange basis](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$. 
+
+
+2. The verifier is allowed to query the virtual cloud by sending it an element $r$ and the virtual cloud responds back with $g(r)$, the evaluation of $r$ on $g$.
 
 
 ### A non-succinct solution, with no error
 How can the verifier be sure that $S$ is all-zero and hence $g$ is the zero (trivial) polynomial? 
- 
- - **ALIN:** When $S$ is all zeros, $g(x) = x^d$. Not sure where this is going. Did you mean to define $g$ differently: the Lagrange interpolation such that $g(i) = s_i$? If so, that has a different form: $g(x) = \sum\_{i\in[0,d)} s\_i \prod\_{j\in[0, d), j\ne i} \frac{x - s\_j}{s\_i - s\_j}$ 
 
-Well, the verifier knows (from our [previous post](...)) that non-trivial degree-at-most-$d$ polynomials over a field have at most $d$ roots. So it can simply query $d+1=10^{10} +1$ distinct points and check that they are all zero.
+Observe that when $S$ is all-zero then $g$ is the (trivial) zero polynomial! But if $S$ is not all-zero then the [fundamental theorem of arithmetic adopted to finite field polynomials](https://decentralizedthoughts.github.io/2020-07-17-the-marvels-of-polynomials-over-a-field/) says that $g$ has at most $d$ roots. So the verifier has a simple way to distinguish: it can query $d+1=10^{10} +1$ distinct points and check if they are all zero.
 
 This solution is not succinct as it requires the Verifier to send $d+1$ queries, which is too many. Can the Verifier use less queries?
 
 ### A succinct solution
 We will now recall that we are working over the field $\mathbb{F}_p$ where $p\gg d$. By now, it should be quite clear how the Verifier can get a succinct proof that $S$ is all-zero or not.
 
-> The Verifier chooses a uniformly random element $x \in_R \mathbb{F}_p$ and queries the virtual cloud just once with $x$:
+> The Verifier chooses a uniformly random element $r \in_R \mathbb{F}_p$ and queries the virtual cloud just once with $r$:
 
-1. Clearly, if $g(x) \neq 0$, then $g$ is not the trivial polynomial, so $S$ is not all-zeros.
-2. What if $g(x)=0$? Then, we use the Theorem that $g$ has at most $d$ roots to say: If $x\in_R \mathbb{F_p}$ and $g(x)=0$ then the probability that $g$ is non-zero is at most $d/p$ (where $p$ is the size of the Field).
+1. Clearly, if $g(r) \neq 0$, then $g$ is not the trivial polynomial, so $S$ is not all-zeros.
+2. What if $g(r)=0$? Then, we use the Theorem that $g$ has at most $d$ roots to say: If $r\in_R \mathbb{F_p}$ and $g(r)=0$ then the probability that $g$ is non-zero is at most $d/p$ (where $p$ is the size of the Field).
 
-We can choose $p\gg d$, so the error probability is as low as we want. So if $g(x)=0$, then the Verifier declares that $S$ is all-zero.
+We can choose $p\gg d$, so the error probability is as low as we want. So if $g(r)=0$, then the Verifier declares that $S$ is all-zero.
 
 That's it! this is a very succinct proof: instead of querying $d+1=10^{10} +1$ points, the Verifier can succinctly query just one (local) point and learn about a (global) property $S$ (with a small error probability).
 
