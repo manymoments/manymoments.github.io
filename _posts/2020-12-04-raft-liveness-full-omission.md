@@ -41,8 +41,20 @@ We have outlined one issue with guaranteeing the liveness of Raft in the presenc
 
 ## Bonus: Patching
 
-This particular issue can be patched, for example, by either:
-1. requiring servers to ignore RequestVote RPCs if they have received an AppendEntries RPC from the leader within the election timeout. This was suggested later in the [Raft paper](https://raft.github.io/raft.pdf) as mitigation for liveness issues during reconfiguration, or
+Naturally, the question arises of whether we can patch Raft such that it able to guarantee liveness in the presence of omission faults, provided that at least a majority of servers are up and the links between them are perfect. In our example, a leader (server 3) with a majority quorum (itself and server 2) is forced to step down by another server (server 1). This is not desirable behaviour but this issue can be fixed, for example, by either:
+1. requiring servers to ignore RequestVote RPCs if they have received an AppendEntries RPC from the leader within the election timeout. This was suggested in section 6 in the [Raft paper](https://raft.github.io/raft.pdf) as mitigation for liveness issues during reconfiguration, or
 2. by using PreVote, which requires potential candidates to run a trial election before incrementing their term and executing a normal election. A server only votes for a potential candidate during the trial election if it would vote for it during a normal election and importantly, if has not received an AppendEntries RPC from the leader with in the election timeout. This is described in section 9.6 of [Diego Ongaro’s thesis](https://web.stanford.edu/~ouster/cgi-bin/papers/OngaroPhD.pdf).
+
+We will now look more closely at the later patch and show that it does in fact fix our issue.
+
+*Claim:* Raft with PreVote guarantees that a leader with the support of a majority quorum of followers, all up and connected by perfect links, will not be forced to step down.
+
+*Proof:*
+
+A leader will only step down if it receives an RPC (except PreVote) with a greater term, therefore if no server has a greater term than the leader then the leader cannot be forced to step down.
+We will assume that initially all servers have a term equal to or less than the leader and show that no server can increase its term to more than the leader's term.
+
+The first server to increase its term to more than the leader's must have first completed the PreVote phase with a majority of servers. Since the leader has perfect links to a majority quorum of followers, none of the majority will pre vote and thus the cannot receive sufficient pre votes to update its term.
+
 
 However, such a protocol changes simply create new liveness issues in different scenarios.
