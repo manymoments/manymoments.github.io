@@ -72,4 +72,4 @@ A major complaint against this scheme is the strange communication mechanism.
 2. Secondly, it required the virtual cloud to respond to a query $r$ with the value $g(r)$. This may seem to require a trusted computing cloud. Luckily again, we will show in a later post how cryptographic tools can implement this functionality over a standard communication channel.
 3. Finally, recall that we needed $d\ll p$. There is sometimes a challenge in forcing the Prover to use a degree-at-most-$d$ polynomial and not one of higher degree. Again we will see techniques in later posts to force the Prover to use a low degree polynomial.
 
-Please answer/discuss/comment/ask on [Twitter](...).
+Please answer/discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1336363509492424704?s=20).
