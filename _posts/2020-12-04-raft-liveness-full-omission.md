@@ -1,5 +1,5 @@
 ---
-title: Raft does not Guarantee Liveness in the face of Omission Faults.
+title: Raft does not Guarantee Liveness in the face of Network Faults.
 date: 2020-12-04 09:01:00 -05:00
 published: false
 ---
@@ -9,52 +9,28 @@ Last week, [Cloudflare published a postmortem](https://blog.cloudflare.com/a-byz
 The [original Raft paper](https://raft.github.io/raft.pdf) makes the following claim:
 *“[Consensus algorithms] are fully functional (available) as long as any majority of the servers are operational and can communicate with each other and with clients.”*
 
-This statement implies that consensus algorithms such as Raft should tolerate message delay or loss (also known as [omission faults](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/)) as long as it does not impact communication between the majority of servers.
+This statement implies that consensus algorithms such as Raft should tolerate network failures (also known as [omission faults](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/)) as long as they do not impact communication between the majority of servers.
+In this post, we will consider whether Raft can guarantee liveness, and specifically whether it can establish a stable leader, if a network fault means that some servers are no longer connected to each other.
 
-In this post, however, we will show the following claim:
+## Does Raft guarantee liveness in the presence of network failures?
 
-*Claim:* Raft does not guarantee liveness if one link between servers can arbitrarily delay or drop messages.
+Unfortunately, Raft, as described in the original paper, does not guarantee liveness in all such cases. Consider the following example.
 
-*Proof:*
+We have 5 servers and servers 1, 2 and 3 are connected to each other. Server 4 is only connected to server 2 and server 5 is only connected to server 3. Initially, server 3 is the leader. Server 4 is not connected to the leader so it will timeout, increment its term and send a RequestVote RPC to server 2. Server 2 will update its term and then force server 3 to do same and thus step down. Eventually, a new leader will be elected (either server 1, 2 or 3) but either server 4 or server 5 (or both) will not be connected to the leader and thus will timeout, updating its term and forcing the leader to step down. This system will not be able to establish a stable leader.
 
-At the high level, we can show this by demonstrating that leadership can bounce between the servers at either end of the broken link such that a stable leader is not established.
+In order to guarantee liveness, Raft must ensure that if a leader is up and connected to a majority of servers then it will not be forced to step down. Fortunately, section 9.6 of [Diego Ongaro’s thesis](https://web.stanford.edu/~ouster/cgi-bin/papers/OngaroPhD.pdf) suggests how this can be achieved using **PreVote**. PreVote requires potential candidates to run a trial election to test if they can win an election before incrementing their term and running a normal election using RequestVote. A server only pre-votes for a potential candidate during the PreVote phase if it would vote for it during a normal election and importantly, if has not received an AppendEntries RPC from the leader with in the election timeout. PreVote fixes the problem have we described as server 4 and 5 will not update their terms as they will not receive pre-votes from the majority of servers.
 
-Specifically, consider the following scenario...
+An alternative fix is to require servers to ignore RequestVote RPCs if they have received an AppendEntries RPC from the leader within the election timeout. This was suggested in section 6 in the [Raft paper](https://raft.github.io/raft.pdf) as mitigation for liveness issues during reconfiguration. However, we will focus on PreVote instead.
 
-We have three servers: server 1, server 2, and server 3. All servers are up and available. The three servers are executing the Raft algorithm, as described in the [Raft paper](https://raft.github.io/raft.pdf) and there are no [Byzantine failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). Servers 1 and 2, as well as servers 2 and 3, are connected by perfect links, where all messages sent between these servers are reliably delivered in a timely manner. The link between server 1 and server 3 however is broken and may drop or delay some messages. This is the partial network failure which [caused the Cloudflare outage](https://blog.cloudflare.com/a-byzantine-failure-in-the-real-world/).
+## So, does Raft with PreVote guarantee liveness then?
 
-To begin with, all servers are in term 1, server 3 is the leader and servers 1 and 2 are followers. All three servers have identical logs.
+Unfortunately not. In fact, PreVote introduces new liveness issues to Raft. Consider the following example. We have 5 servers and servers 1, 2 and 3 are connected to each other. Server 4 is connected only to server 2 and server 5 has failed.
 
-We expect that this system would be fully available as we have a clear leader (server 3) and a follower (server 2) which are connected by perfect links. But this is not always the case. Here’s why:
+Initially, server 4 is the leader. It was elected before its links to the other servers (except server 2) failed. Server 4 is now unable to make progress as it is not connected to a majority of servers. Servers 1 and 3 will not hear from the leader so they will timeout and begin the PreVote phase. Neither server will complete its PreVote phase as server 2 will not pre-vote for either server as it still receives regular AppendEntries from the leader (server 4). This system will not able to elect a new leader and the old leader will not be able to make progress.
 
-1. The broken link between server 1 and 3 could delay/drop the AppendEntries RPC heartbeats from server 3. Server 1’s election timeout could elapse without hearing from the leader (server 3).
-Server 1 increases its term from term 1 to term 2 and sends RequestVote RPCs to servers 2 and 3.
-2. Server 3 ends up stepping down as leader of term 1. This could occur because either:
-  * server 3 receives the RequestVote RPC from server 1 and steps down directly or,
-  * server 2 receives the RequestVote RPC from server 1, updates its own term to term 2, and informs server 3 that it is now term 2 in the next AppendEntries RPC response.
-3. Server 1 will receive a vote from server 2 (and maybe also from server 3). Server 1 will therefore become the leader of term 2 as it has received at least two votes. Server 1 can begin appending log entries to servers 2 and 3. If the broken link between server 1 and 3 delivers the AppendEntries RPC to server 3 then we can reach a state where all logs are the same.
-4. This is now the same situation we started with, except that we are in term 2 instead of term 1, and server 1 and 3 have swapped roles. This sequence of events could continue indefinitely.
+This can be addressed by requiring leaders to actively step down if they do not receive AppendEntries responses from a majority of servers. This optimisation is referred to as CheckQuourm.
 
-Note that this case is also not specific to deployments with three servers. We can recreate the same issue with five servers by substituting server 2 with servers 2, 4, and 5. We can do the same for seven servers and so forth.
+## Does Raft with PreVote and CheckQuorum guarantee liveness?
 
-We have outlined one issue with guaranteeing the liveness of Raft in the presence of partial network failures.  Fundamentally, whilst Raft does guarantee liveness when up to a minority of servers have failed, **Raft does not guarantee liveness in the presence of omission faults** and thus this should be taken into consideration when deciding to depend upon the availability of Raft in production.
-
-## Bonus: Patching
-
-Naturally, the question arises of whether we can patch Raft such that it able to guarantee liveness in the presence of omission faults, provided that at least a majority of servers are up and the links between them are perfect. In our example, a leader (server 3) with a majority quorum (itself and server 2) is forced to step down by another server (server 1). This is not desirable behaviour but this issue can be fixed, for example, by either:
-1. requiring servers to ignore RequestVote RPCs if they have received an AppendEntries RPC from the leader within the election timeout. This was suggested in section 6 in the [Raft paper](https://raft.github.io/raft.pdf) as mitigation for liveness issues during reconfiguration, or
-2. by using PreVote, which requires potential candidates to run a trial election before incrementing their term and executing a normal election. A server only votes for a potential candidate during the trial election if it would vote for it during a normal election and importantly, if has not received an AppendEntries RPC from the leader with in the election timeout. This is described in section 9.6 of [Diego Ongaro’s thesis](https://web.stanford.edu/~ouster/cgi-bin/papers/OngaroPhD.pdf).
-
-We will now look more closely at the later patch and show that it does in fact fix our issue.
-
-*Claim:* Raft with PreVote guarantees that a leader with the support of a majority quorum of followers, all up and connected by perfect links, will not be forced to step down.
-
-*Proof:*
-
-A leader will only step down if it receives an RPC (except PreVote) with a greater term, therefore if no server has a greater term than the leader then the leader cannot be forced to step down.
-We will assume that initially all servers have a term equal to or less than the leader and show that no server can increase its term to more than the leader's term.
-
-The first server to increase its term to more than the leader's must have first completed the PreVote phase with a majority of servers. Since the leader has perfect links to a majority quorum of followers, none of the majority will pre vote and thus the cannot receive sufficient pre votes to update its term.
-
-
-However, such a protocol changes simply create new liveness issues in different scenarios.
+Yes. If there is no leader, then an election (or series of elections) will occur and eventually, a server will be elected leader. To be elected leader, the server must be connected to a majority of servers as it received votes from a majority of servers in the PreVote and RequestVote phases.
+There will always be at least one server that can win an election. This is the server (or servers) with the most up-to-date log (logs) within the subset of servers which are all online and connected to each other. PreVote ensures that once a leader has been elected, the system will be stable as it will not be forced to step down. CheckQuorum ensures that if a leader is not connected to a majority of servers, it will step down and allow a new leader to be elected.
