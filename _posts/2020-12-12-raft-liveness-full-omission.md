@@ -1,5 +1,5 @@
 ---
-title: Raft does not Guarantee Liveness in the face of Network Faults.
+title: Raft does not Guarantee Liveness in the face of Network Faults
 date: 2020-12-12 09:01:00 -05:00
 published: false
 authors: Heidi Howard, Ittai Abraham
