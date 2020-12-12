@@ -8,7 +8,7 @@ authors: Heidi Howard, Ittai Abraham
 Last month, [Cloudflare published a postmortem](https://blog.cloudflare.com/a-byzantine-failure-in-the-real-world/) of a recent 6-hour outage caused by a partial switch failure which left [etcd](https://etcd.io) unavailable as it was unable to establish a stable leader. This outage has understandably led to [discussion online](https://twitter.com/heidiann360/status/1332711011451867139) about exactly what liveness guarantees are provided by the [Raft](https://raft.github.io) consensus algorithm in the face of network failures.
 
 The [original Raft paper](https://raft.github.io/raft.pdf) makes the following claim:
-*“[Consensus algorithms] are fully functional (available) as long as any majority of the servers are operational and can communicate with each other and with clients.”*
+> “[Consensus algorithms] are fully functional (available) as long as any majority of the servers are operational and can communicate with each other and with clients.”
 
 This statement implies that consensus algorithms such as Raft should tolerate network failures (also known as [omission faults](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/)) as long as they do not impact communication between the majority of servers.
 In this post, we will consider whether Raft can guarantee liveness, and specifically whether it can establish a stable leader, if a network fault means that some servers are no longer connected to each other.
