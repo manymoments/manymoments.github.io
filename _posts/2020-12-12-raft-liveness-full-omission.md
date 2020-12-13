@@ -19,9 +19,12 @@ In this post, we will consider whether Raft can guarantee liveness, and specific
 
 Unfortunately, Raft, as described in the original paper, does not guarantee liveness in all such cases. Consider the following example.
 
-<p align="center">
-    <img src="/uploads/RAFT 1.jpg" width="80%" title="Partially connected servers 4 and 5 constantly interrupt the elected leader from servers 1,2, or 3." />
-</p>
+<figure class="image">
+  <img src="/uploads/RAFT 1.jpg" width="80%">
+  <figcaption><center>Partially connected servers 4 and 5 constantly interrupt the elected leader from servers 1,2, or 3.</center></figcaption>
+</figure>
+
+
 
 We have 5 servers and servers 1, 2, and 3 are connected to each other. Server 4 is only connected to server 2 and server 5 is only connected to server 3. Initially, server 3 is the leader. Server 4 is not connected to the leader so it will timeout, increment its term and send a RequestVote RPC to server 2. Server 2 will update its term and then force server 3 to do the same and thus step down. Eventually, a new leader will be elected (either server 1, 2, or 3) but either server 4 or server 5 (or both) will not be connected to the leader and thus will timeout, updating its term and forcing the leader to step down. This system will not be able to establish a stable leader.
 
@@ -33,10 +36,10 @@ An alternative fix is to require servers to ignore RequestVote RPCs if they have
 
 Unfortunately not. In fact, PreVote introduces new liveness issues to Raft. Consider the following example. We have 5 servers and servers 1, 2, and 3 are connected to each other. Server 4 is connected only to server 2 and server 5 has failed.
 
-<p align="center">
-    <img src="/uploads/RAFT 2.jpg" width="80%" title="The leader, Server 4, suffers partial network faults but does not step down. Server 2 does not timeout, severs 1 and 3 will fail PreVote because of server 2." />
-</p>
-
+<figure class="image">
+  <img src="/uploads/RAFT 2.jpg" width="80%">
+  <figcaption><center>The leader, Server 4, suffers partial network faults but does not step down. Server 2 does not timeout, severs 1 and 3 will fail PreVote because of server 2.</center></figcaption>
+</figure>
 
 
 Initially, server 4 is the leader. It was elected before its links to the other servers (except server 2) failed. Server 4 is now unable to make progress as it is not connected to a majority of servers. Servers 1 and 3 will not hear from the leader so they will timeout and begin the PreVote phase. Neither server will complete its PreVote phase as server 2 will not pre-vote for either server as it still receives regular AppendEntries from the leader (server 4). This system will not able to elect a new leader and the old leader will not be able to make progress.
