@@ -29,12 +29,12 @@ Unfortunately not. In fact, PreVote introduces new liveness issues to Raft. Cons
 
 Initially, server 4 is the leader. It was elected before its links to the other servers (except server 2) failed. Server 4 is now unable to make progress as it is not connected to a majority of servers. Servers 1 and 3 will not hear from the leader so they will timeout and begin the PreVote phase. Neither server will complete its PreVote phase as server 2 will not pre-vote for either server as it still receives regular AppendEntries from the leader (server 4). This system will not able to elect a new leader and the old leader will not be able to make progress.
 
-This can be addressed by requiring leaders to actively step down if they do not receive AppendEntries responses from a majority of servers. This optimisation is referred to as CheckQuourm and related matters are mentioned in section 6.2 of Ongaro’s thesis and in [raft discussions](https://github.com/etcd-io/etcd/issues/3866).
+This can be addressed by requiring leaders to actively step down if they do not receive AppendEntries responses from a majority of servers. This optimisation is sometimes referred to as CheckQuourm and related matters are mentioned in section 6.2 of [Ongaro’s thesis](https://web.stanford.edu/~ouster/cgi-bin/papers/OngaroPhD.pdf) and in [raft discussions](https://github.com/etcd-io/etcd/issues/3866).
 
 ## Does Raft with PreVote and CheckQuorum guarantee liveness?
 
 Yes. If there is no leader, then an election (or series of elections) will occur and eventually, a server will be elected leader. To be elected leader, the server must be connected to a majority of servers as it received votes from a majority of servers in the PreVote and RequestVote phases.
 
-CheckQuorum ensures that if the elected leader becomes not connected to a majority of responding servers, it will step down and allow a new leader to be elected.
+CheckQuorum ensures that if the elected leader is no longer connected to a majority of responding servers, it will step down and allow a new leader to be elected.
 
-There will always be at least one server that can win an election. This is the server (or servers) with the most up-to-date log (logs) within the subset of servers which are all online and connected to a majority of responding servers. PreVote ensures that once a leader from this set has been elected, the system will be stable as it will not be forced to step down. 
+There will always be at least one server that can win an election. This is the server (or servers) with the most up-to-date log (logs) within the subset of servers which are all online and connected to a majority of responding servers. PreVote ensures that once a leader from this set has been elected, the system will be stable as it will not be forced to step down.
