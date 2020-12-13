@@ -47,3 +47,7 @@ Yes. If there is no leader, then an election (or series of elections) will occur
 CheckQuorum ensures that if the elected leader is no longer connected to a majority of responding servers, it will step down and allow a new leader to be elected.
 
 There will always be at least one server that can win an election. This is the server (or servers) with the most up-to-date log (logs) within the subset of servers which are all online and connected to a majority of responding servers. PreVote ensures that once a leader from this set has been elected, the system will be stable as it will not be forced to step down.
+
+
+Please answer/discuss/comment/ask on [Twitter](...).
+
