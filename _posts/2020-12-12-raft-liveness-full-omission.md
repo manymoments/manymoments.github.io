@@ -62,5 +62,4 @@ CheckQuorum ensures that if the elected leader is no longer connected to a major
 There will always be at least one server that can win an election. This is the server (or servers) with the most up-to-date log (logs) within the subset of servers which are all online and connected to a majority of responding servers. PreVote ensures that once a leader from this set has been elected, the system will be stable as it will not be forced to step down.
 
 
-Please answer/discuss/comment/ask on [Twitter](...).
-
+Please answer/discuss/comment/ask on [Twitter](https://twitter.com/heidiann360/status/1338564664523943936?s=20).
