@@ -10,9 +10,9 @@ this page is a dynamically changing index of all our posts, it's one more place 
 
 Start with the definition of [Consensus and Agreement](/2019-06-27-defining-consensus/). Then learn about the [network model](/2019-06-01-2019-5-31-models/), the [threshold adversary](/2019-06-17-the-threshold-adversary/) model, and the
 [power of the adversary](/2019-06-07-modeling-the-adversary/).
-Finally, many protocols need a [trusted setup phase](/2019-07-18-setup-assumptions/).
+Finally, many protocols need a [trusted setup phase](/2019-07-19-setup-assumptions/).
 
-You can learn more about [Partial Synchrony](/2019-09-13-flavours-of-partial-synchrony/) and about different [relaxations of Broadcast](/2019-10-22-flavours-of-broadcast/).
+You can learn more about [Partial Synchrony](/2019-09-14-flavours-of-partial-synchrony/) and about different [relaxations of Broadcast](/2019-10-22-flavours-of-broadcast/).
 
 One of the classic protocols of distributed computing is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/).
 
