@@ -24,11 +24,11 @@ Our goal is solving consensus in a system with *clients* and $n$ *replicas*. In 
 
 The safety risk in consensus is that a replica *commits* to a value but its decision is not known to other replicas. In particular, a new primary in a new view may emerge that does not know about the committed value. The **Lock-Commit paradigm** introduces a *Lock* step before the *Commit* decision and entails the following two important parts:
 
-1. *Lock a quorum before you Commit*. To commit a value $cmd$, the primary of view $v$ first makes sure there is a **quorum** of replicas that store a lock that consists of a **lock-value** $cmd$ and a **lock-view** $v$. This is typically done by having the primary *propose* $cmd$ and receive $n-f$ acknowledgments that $cmd$ is locked.
+1. *Lock a quorum before you Commit*. To commit a value $cmd$, the primary of view $v$ first makes sure there is a **quorum** of replicas that store a lock that consists of a **lock-value** $cmd$ and a **lock-view** $v$. This is typically done by having the primary *propose* the value $cmd$ and receive $n-f$ *acknowledgments* that the value $cmd$ is locked in view $v$.
 
-2. *Read a quorum before you Propose*. When a new primary starts a new view, it runs a *view change* protocol. In this protocol, the new primary of view $v$ needs to decide which value to propose (and eventually commit) in view $v$. The new Primary must read the locks of previous views from a **quorum** of replicas and must adopt the *lock-value* with the highest *lock-view* it sees.
+2. *Read a quorum before you Propose*. When a new primary starts a new view, it runs a *view change* protocol. In this protocol, the new primary of view $v$ needs to decide which value to propose (and eventually commit) in view $v$. The new Primary must read the locks of previous views from a **quorum** of replicas and must adopt the *lock-value* with the **highest** *lock-view* it sees.
 
-Intuitively, this approach is safe is because *any two quorum sets must have a non-empty intersection, and choosing the lock-value with the highest lock-view will guarantee seeing the committed value* (see the proof below). In this post, we will use quorums that consist of $n-f=f\+1$ replicas.
+Intuitively, this approach is safe is because *any two quorum sets must have a non-empty intersection, and choosing the lock-value with the highest lock-view will guarantee seeing the committed value* (see the proof below). In this post, we assume $n=2f+1$ and use majority quorums that consist of $n-f=f\+1$ replicas.
 
 This Lock-Commit paradigm is very powerful and can be extended to many settings:
 
