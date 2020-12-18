@@ -26,19 +26,19 @@ The safety risk in consensus is that a replica *commits* to a value but this dec
 
 1. *Lock before you Commit*. To commit a value $cmd$, the primary of view $v$ first makes sure there is a **quorum** of replicas that store a lock that consists of a **lock-value** $cmd$ and a **lock-view** $v$.
 
-2. *As a new Primary: Read and Adopt*. When a new primary starts, it runs a special *view change* protocol. In this protocol, the new primary decides which value to try to commit. A new Primary must read the locks from a **quorum** of replicas and must adopt the *lock-value* with the highest *lock-view* it sees.
+2. *As a new Primary: Read and Adopt*. When a new primary starts, it runs a *view change* protocol. In this protocol, the new primary of view $v$ needs to decide which value to try to lock (and eventually commit) in view $v$. A new Primary must read the locks of previous views from a **quorum** of replicas and must adopt the *lock-value* with the highest *lock-view* it sees.
 
-The intuition of why this approach obtains safety is because *any two quorum sets must have a non-empty intersection and choosing the lock-value with the highest lock-view will guarantee seeing the committed value* (see the proof below). In this post, we will use quorums that consist of $n-f=f\+1$ replicas.
+Intuitively, this approach is safe is because *any two quorum sets must have a non-empty intersection, and choosing the lock-value with the highest lock-view will guarantee seeing the committed value* (see the proof below). In this post, we will use quorums that consist of $n-f=f\+1$ replicas.
 
-This simple idea is very powerful and can be extended to many settings:
+This Lock-Commit paradigm is very powerful and can be extended to many settings:
 
-1. Since Commit-Lock is based on *quorum intersection*, safety does not rely on any synchrony. Indeed unlike the [Commit-Notify](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) approach, Commit-Lock can be extended to an asynchronous model.
+1. Since Commit-Lock is based on *quorum intersection*, safety does not rely on any synchrony. Indeed unlike the [Commit-Notify](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) approach, Commit-Lock can be extended to an asynchronous (or partially synchronous) model.
 
 2. This approach guarantees [uniform consensus](/2019-06-27-defining-consensus/) (so even omission-faulty replicas commit on the same value). In essence, you do not commit before you have proof that the system is [committed](/2019-12-15-consensus-model-for-FLP/).
 
 3. This paradigm can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](/2019-11-10-authenticated-synchronous-bft/); and for $n>3f$, by using Byzantine Quorums that intersect by at least $f\+1$ replicas.
 
-Let's go right away to a Lock-Commit based (uniform) consensus protocol tolerating $f<n/2$ omission faults for a single slot:
+Here is a Lock-Commit based (uniform) consensus protocol tolerating $f<n/2$ omission faults for a single slot:
 
 ## Lock-Commit for omission failures
 
@@ -46,23 +46,23 @@ Let's go right away to a Lock-Commit based (uniform) consensus protocol tolerati
     
     log = []     // a log (of size 1) of committed values
     view = 1     // view number that indicates the current Primary
-    lock-value = null
     lock-view = 0     // the highest view a propose was heard
+    lock-value = null // the value associated with the highest lock
     start timer(1) // start timer for view 1 (for duration 8 Delta)
     
     
     while true:
-       // as a primary (you are replica 1 and view is 1)
+       // as primary 1: replica 1 and view is 1
        on receiving first cmd from client and j == 1 and view == 1:
              send ("propose", cmd, view) to all replicas
        
-       // as a backup replica in the same view
+       // as a backup replica 
        on receiving ("propose", cmd, v) and v == view:
              lock-view = v
              lock-value = cmd
              send ("lock", cmd, v) to the primary j
        
-       // as a primary (you are replica j and view is j)
+       // as a primary: replica j and view is j
        on receiving ("lock", cmd, view) from n-f distinct replicas and view == j:
              // commit (after you know enough have locked)
              log[0] = cmd
@@ -84,9 +84,9 @@ When does a replica move from one view to another? When it sees that the current
              // this will trigger a timer and a "highest lock message"
              send ("view change", i+1) to all replicas (including self)
 
-Note that the view change trigger protocol can be simplified and also altered to have a linear communication optimistic path. Assuming synchrony, we could for example, simply trigger a view change after each 8 message delays. The more elaborate option above will give us flexibility in later posts.
+Note that the view change trigger protocol can be simplified and also altered to have a linear communication optimistic path. Assuming synchrony, we could for example, simply trigger a view change after each 8 message delays. The more elaborate option described above will allow us to generalize in later posts.
 
-What do the next primaries propose? To be safe, they must read from a quorum and use the value with the highest view number. This is the essence of the **view change** protocol:
+What do the next primaries propose? To maintain safety, they must read from a quorum and use the lock-value with the highest lock-view. This is the essence of the **view change** protocol:
 
        // send your highest lock
        on receiving ("view change", v) and view < v:
@@ -110,7 +110,7 @@ The key intuition for safety is a quorum intersection argument between two quoru
 $W$: A set of replicas who sent a lock message on the committed value (and are hence locked on it).
 $R$: A set of replicas who send their highest locks to a primary in any higher view.
 
-If $\|W \cap R\| \geq 1$ replica, then the committed value is always passed on to the next leader, who will not propose a different value (due to which a different lock will not be formed). This argument thus holds for all subsequent views. The argument is formalized using induction in the following claim.
+If $\|W \cap R\| \geq 1$ replica, then the committed value is always passed on to the next leader as a lock-value whose lock-view is maximial. This argument thus holds for all subsequent views and is formalized using induction in the following claim.
 
 **Claim:** Let $v$ be the first view where some replica commits to some value $cmd$.
 Then, no primary will propose $cmd' \\neq cmd$ at any view $v'\\geq v$.
@@ -153,5 +153,8 @@ Again observe the use of synchrony.
 2. In this post, we do not talk about executing the commands (as required in a [state machine replication protocol](/2019-10-15-consensus-for-state-machine-replication/)) nor about how clients can [learn](...) about consensus. The protocol can be easily modified to handle these aspects.
 
 3. Observe that the only requirement is that $\|W \cap R\| \geq 1$ (honest) replica. Thus, while we consider using quorums of size $n-f = f+1$, the sizes are flexible and do not have to be symmetric. This is the idea behind [Flexible Paxos](https://arxiv.org/pdf/1608.06696v1.pdf).
+
+### Acknolegments
+Many thanks to [Alin Tomescu](https://alinush.github.io/) for valuable comments and insights!
 
 Please answer/discuss/comment/ask on [Twitter](...).
