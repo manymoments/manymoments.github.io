@@ -157,4 +157,4 @@ Again observe the use of synchrony.
 ### Acknolegments
 Many thanks to [Alin Tomescu](https://alinush.github.io/) for valuable comments and insights!
 
-Please answer/discuss/comment/ask on [Twitter](...).
+Please answer/discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1339895006610542594?s=20).
