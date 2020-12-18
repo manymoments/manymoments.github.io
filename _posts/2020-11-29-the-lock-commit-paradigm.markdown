@@ -154,7 +154,7 @@ Again observe the use of synchrony.
 
 3. Observe that the only requirement is that $\|W \cap R\| \geq 1$ (honest) replica. Thus, while we consider using quorums of size $n-f = f+1$, the sizes are flexible and do not have to be symmetric. This is the idea behind [Flexible Paxos](https://arxiv.org/pdf/1608.06696v1.pdf).
 
-### Acknolegments
+### Acknowlegment
 Many thanks to [Alin Tomescu](https://alinush.github.io/) for valuable comments and insights!
 
 Please answer/discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1339895006610542594?s=20).
