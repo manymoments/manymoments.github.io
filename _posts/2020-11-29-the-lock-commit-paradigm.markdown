@@ -6,13 +6,13 @@ tags:
 author: Ittai Abraham, Kartik Nayak
 ---
 
-In this post, we explore the Lock-Commit paradigm for consensus protocols. This approach is probably the most celebrated and widely used technique for reaching consensus in a safe manner. This approach is one of the key techniques in [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf) and Lamport's [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf).
+In this post, we explore one of the most celebrated and widely used techniques for reaching consensus: the **Lock-Commit paradigm**. This approach is a key technique of [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf), Lamport's [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf), and many subsequent protocols. Protocols like Raft, PBFT, Tendermint, SBFT, Casper, HotStuff, etc are all based on this paradigm.
 
-We exemplify this paradigm by showing a single-shot [synchronous protocol](/2019-06-01-2019-5-31-models/) (with message delay at most $\Delta$) for [uniform consensus](/2019-06-27-defining-consensus/) that is tolerant to $f$ [omission](/2020-09-13-synchronous-consensus-omission-faults/) failures, given $2f<n$.
+We exemplify the *Lock-Commit paradigm* with a simple single-shot [synchronous protocol](/2019-06-01-2019-5-31-models/) (with message delay at most $\Delta$) for [uniform consensus](/2019-06-27-defining-consensus/) that is tolerant to $f$ [omission](/2020-09-13-synchronous-consensus-omission-faults/) failures, given $2f<n$.
 
 Related posts:
 
-1. In synchrony, for non-uniform consensus,  this related [post](/2019-10-31-primary-backup/) shows how to tolerate $k<n$ *crash* failures. A different [post](/2020-09-13-synchronous-consensus-omission-faults/) shows how to tolerate $t<n/2$ *omission* failures (recall that for omision failures, non-uniform consensus means that faulty replicas may commit on incorrect values).
+1. In synchrony, this [post](/2019-10-31-primary-backup/) shows how to tolerate $k<n$ *crash* failures. A different [post](/2020-09-13-synchronous-consensus-omission-faults/) shows a non-uniform consensus protocols that tolerates $t<n/2$ *omission* failures (recall that for omision failures, non-uniform consensus means that faulty replicas may commit on incorrect values).
 
 2. This related [post](/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) shows that it is impossible to tolerate $2f\\geq n$ omission failures. As an exercise, you can extend this lower bound to show it is impossible to tolerate $k\+ft \\geq n$ for $k$ crash failures and $f$ omission failures.
 
@@ -20,23 +20,23 @@ Related posts:
 
 ## Lock-Commit
 
-Recall that our goal is solving consensus in a system with *clients* and $n$ *replicas*. We are in the Primary-Backup paradigm where the protocol progresses in *views*. In each view $v$, one designated replica (whose id is $v$) is the *primary* of this view and the others are the *backups* of this view. There is a *view change trigger* protocol that decides when to globally execute a *view change* protocol that increments the view (in a single shot synchronous model, it is enough to have $n$ views, but more generally you could have a round-robin or randomized leader election matching of Primaries to views).
+Our goal is solving consensus in a system with *clients* and $n$ *replicas*. In the *Primary-Backup approach*, the protocol progresses in *views*. In each view $v$, one designated replica is the *primary* of this view and the others are the *backups* of this view. There is a *view change trigger* protocol that decides when to globally execute a *view change* protocol that increments the view (in a single shot synchronous model, it is enough to have $n$ views and simply assign replica $v$ to be the primary of view $v$, but more generally you could have a round-robin or randomized leader election matching of Primaries to views).
 
-The safety risk in consensus is that a replica *commits* to a value but this decision is not known to other replicas. In particular, a new primary in a new view may emerge that does not know about the committed value. The **Lock-Commit paradigm** introduces a *Lock* step before the *Commit* decision and entails the following two important parts:
+The safety risk in consensus is that a replica *commits* to a value but its decision is not known to other replicas. In particular, a new primary in a new view may emerge that does not know about the committed value. The **Lock-Commit paradigm** introduces a *Lock* step before the *Commit* decision and entails the following two important parts:
 
-1. *Lock before you Commit*. To commit a value $cmd$, the primary of view $v$ first makes sure there is a **quorum** of replicas that store a lock that consists of a **lock-value** $cmd$ and a **lock-view** $v$.
+1. *Lock a quorum before you Commit*. To commit a value $cmd$, the primary of view $v$ first makes sure there is a **quorum** of replicas that store a lock that consists of a **lock-value** $cmd$ and a **lock-view** $v$. This is typically done by having the primary *propose* $cmd$ and receive $n-f$ acknowledgments that $cmd$ is locked.
 
-2. *As a new Primary: Read and Adopt*. When a new primary starts, it runs a *view change* protocol. In this protocol, the new primary of view $v$ needs to decide which value to try to lock (and eventually commit) in view $v$. A new Primary must read the locks of previous views from a **quorum** of replicas and must adopt the *lock-value* with the highest *lock-view* it sees.
+2. *Read a quorum before you Propose*. When a new primary starts a new view, it runs a *view change* protocol. In this protocol, the new primary of view $v$ needs to decide which value to propose (and eventually commit) in view $v$. The new Primary must read the locks of previous views from a **quorum** of replicas and must adopt the *lock-value* with the highest *lock-view* it sees.
 
 Intuitively, this approach is safe is because *any two quorum sets must have a non-empty intersection, and choosing the lock-value with the highest lock-view will guarantee seeing the committed value* (see the proof below). In this post, we will use quorums that consist of $n-f=f\+1$ replicas.
 
 This Lock-Commit paradigm is very powerful and can be extended to many settings:
 
-1. Since Commit-Lock is based on *quorum intersection*, safety does not rely on any synchrony. Indeed unlike the [Commit-Notify](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) approach, Commit-Lock can be extended to an asynchronous (or partially synchronous) model.
+1. Since Lock-Commit is based on *quorum intersection*, safety does not rely on any synchrony. Indeed unlike the [Commit-Notify](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) approach, the Lock-Commit approach can be extended to an asynchronous (or partially synchronous) models.
 
-2. This approach guarantees [uniform consensus](/2019-06-27-defining-consensus/) (so even omission-faulty replicas commit on the same value). In essence, you do not commit before you have proof that the system is [committed](/2019-12-15-consensus-model-for-FLP/).
+2. The Lock-Commit approach guarantees [uniform consensus](/2019-06-27-defining-consensus/) (so even omission-faulty replicas commit on the same value). In essence, it guarantees that a replica does not decide before the system is [committed](/2019-12-15-consensus-model-for-FLP/).
 
-3. This paradigm can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](/2019-11-10-authenticated-synchronous-bft/); and for $n>3f$, by using Byzantine Quorums that intersect by at least $f\+1$ replicas.
+3. The Lock-Commit approach can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](/2019-11-10-authenticated-synchronous-bft/); and for $n>3f$, by using a quorum systems where every two sets intersect by at least $f\+1$ replicas.
 
 Here is a Lock-Commit based (uniform) consensus protocol tolerating $f<n/2$ omission faults for a single slot:
 
