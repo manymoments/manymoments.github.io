@@ -15,7 +15,7 @@ Instead of solving consensus on a [single command](https://decentralizedthoughts
 
 # Multi-shot Lock-Commit for omission failures
 
-Unlike the single-shot protocol, this protocol never terminates, it just appends commands to an ever-increasing log of committed commands called *commitLog*. Another change is that each time the commitLog is sent, the recipient checks if its commitLog is behind (missing commands) and then updates its log (**learn** about committed commands it missed).
+Unlike the single-shot protocol, this protocol never terminates, it just appends commands to an ever-growing log of committed commands called *commitLog*. Another change is that each time the commitLog is sent from a sender to a recipient, the recipient *checks* if its commitLog is behind (missing commands) and then *updates* its log (**learns** about committed commands it missed).
 
 Once the primary commits a command, we use the boolean *readyToPropose* to indicate that the primary can send a new proposal to append to the log. 
 
@@ -25,8 +25,8 @@ Once the primary commits a command, we use the boolean *readyToPropose* to indic
     state = init // the state of the state machine
     commitLog = []     // a log of committed commands
     view = 1     // view number that indicates the current Primary
-    lockcmd = null
-    lock = 0     // the highest view a propose was heard
+    lock-val = null
+    lock-view = 0     // the highest view a propose was heard
     mycmd = null
     start timer(1) // start timer for first view
     readyToPropose = true // primary can send another propose
@@ -43,28 +43,26 @@ Once the primary commits a command, we use the boolean *readyToPropose* to indic
              // learn if needed
              if CL >= commitLog then 
                  commitLog = CV
-                 lock = v
-                 lockcmd = cmd
+                 lock-view = v
+                 lock-value = cmd
                  send ("lock", commitLog, cmd, v) to the primary j
 
        on receiving ("lock", CL, cmd, view) from n-f distinct replicas and view == j:
              // append to log
              commitLog.append(cmd)
-             send ("commit", commitLog, cmd, view) to all replicas
+             send ("commit", commitLog, view) to all replicas
              readyToPropose = true
              
        // as a replica: execute and terminate
-       on receiving ("commit", CL, cmd, v):
+       on receiving ("commit", CL, v):
              // learn if needed
              if CL >= commitLog then
                  commitLog = CV
-                 // append to log
-                 commitLog.append(cmd)
                  restart timer(v)
 
 Note that as an optimization, we could have piggybacked the "commit" message with the next "propose" message.
 
-The **view change trigger** protocol is similar to the single-shot, except that timer(i) is restarted each time a replica appends to commitLog (see "restart timer" above). This implements a *stable leader* variant where a primary can commit many entries and is replaced only when there are $f\+1$ "blame" messages. An alternative variant that replaces the primary every round will be explored in later posts.
+The **view change trigger** protocol is similar to the single-shot one, except that timer(i) is restarted each time a replica appends to commitLog (see "restart timer" above). This implements a *stable leader* variant where a primary can commit many entries and is replaced only when there are $f\+1$ "blame" messages. An alternative variant that replaces the primary every round will be explored in later posts.
 
       on timer(i) expiring and view == i; or
       on receiving ("blame", i) from f+1 distinct replicas
@@ -79,24 +77,24 @@ The **view change** protocol is modified so the new primary learns about command
        on receiving ("view change", v) and view < v:
             view = v
             start timer(v)
-            send ("highest lock", commitLog, lockcmd, lock, v) to replica v
+            send ("highest lock", commitLog, lock-val, lock-view, view) to replica v
             
        // as the primary (you are replica j)
-       on receiving messages M={("highest lock", CL, cmd, v, j)} from n-f distinct replicas and view == j:
+       on receiving messages M={("highest lock", CL, l-val, l-view, j)} from n-f distinct replicas and view == j:
             Let CL be the longest commit log in M.CL
             // learn if needed
             If CL > commitLog then commitLog = CV
             Let H be the set of messages in M where M.CL == commitLog
-            if H is empty or all H.v == 0:
+            if H is empty or all H.l-view == 0:
                  mycmd = any value heard from the clients
             otherwise:
                  // use the value of the message in H with highest view
-                 let m in H be a message with maximum H.v 
-                 mycmd = m.cmd
+                 let m in H be a message with maximum H.l-view 
+                 mycmd = m.l-val
             readyToPropose = false
             send ("propose", mycmd, view) to all replicas
 
-Observe that when a primary proposes a message, as well as when replicas send their highest lock to the next primary, the entire commit log is sent in the message. This ensures that, at any time, whenever a replica is locked on value, all the previous log positions are committed. While sending the entire log each time brings in conceptual simplicity, it is expensive to send the entire log. In a future post, we will discuss how this can be optimized (for example one can just send the digest of the log).
+Observe that when a primary proposes a message, as well as when replicas send their highest lock to the next primary, the entire commit log is sent in the message. This ensures that, at any time, whenever a replica is locked on value, all the previous log positions are committed. While sending the entire log each time brings conceptual simplicity, it is expensive to send the entire log. In a future post, we will discuss how this can be optimized (for example one can just send the digest of the log and/or exchange just the missing parts of the log).
 
 # Multi-shot Lock-Commit tolerating both omission and crash failures
 
