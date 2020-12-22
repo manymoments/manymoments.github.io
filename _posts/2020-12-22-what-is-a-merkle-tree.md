@@ -1,6 +1,6 @@
 ---
 title: What is a Merkle Tree?
-date: 2020-02-27 09:05:00 -08:00
+date: 2020-12-22 09:05:00 -05:00
 published: false
 tags:
 - cryptography
@@ -10,7 +10,23 @@ tags:
 author: Alin Tomescu
 ---
 
-_Merkle Hash Trees (MHTs)_[^Merkle87] are a way to sign many documents using just one digital signature.
+In this post, we will demystify _Merkle trees_ by showing how they help solve three different problems:
+
+ 1. Maintaining integrity of files stored on Dropbox.com, or _file outsourcing_,
+ 2. Transmitting files over unreliable channels, or _anti-entropy_,
+ 3. Signing many documents fast, or _batch signing_.
+
+Merkle trees are built using _cryptographic hash functions_, which we assume you understand.
+If not, no worries: just read [our post on hash functions](/2020-08-28-what-is-a-cryptographic-hash-function)!
+
+## Intuition: A Merkle tree is a collision-resistant hash function
+
+Recall [from our previous post on hash functions](/2020-08-28-what-is-a-cryptographic-hash-function), that a hash function $H$ is collision resistant if it is computationally-intractable[^handwave] for an adversary to find:
+
+
+_Merkle Hash Trees (MHTs)_[^Merkle87] 
+
+<!--
 
 ## An Example
 
@@ -53,8 +69,6 @@ The good things about this solution:
 
 The slight drawback of this solution is that the data that Dropbox needs to send to Bob is more than one signature, its also the Merkle Branch Proof.
 
----
-
 Well, MHTs will allow you to immediately detect any such unauthorized changes to your outsourced files.
 
 You might say, _"but I'll notice anyway when I download the file, open it and manually inspect it."_
@@ -70,8 +84,6 @@ Nonetheless, the verifier can still be convinced that the prover is sending the 
 
  - Transforming one-time signature schemes to many-time schemes
  - Batch signing
+-->
 
-## References
-
-[^Merkle87]: **A Digital Signature Based on a Conventional Encryption Function**, by Merkle, Ralph C., *in CRYPTO '87*, 1988
-[^CLRS09]: **Introduction to Algorithms, Third Edition**, by Cormen, Thomas H. and Leiserson, Charles E. and Rivest, Ronald L. and Stein, Clifford, 2009
+{% include_relative bib.md %}

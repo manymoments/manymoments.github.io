@@ -64,6 +64,8 @@ More advanced:
 
 - [Bilinear Accumulators](/2020-04-01-bilinear-accumulators-for-cryptocurrency/) and [range proofs](/2020-03-02-range-proofs-from-polynomial-commitments-reexplained/).
 
+- [A simple and succinct zero-knowledge proof](/2020-12-08-a-simple-and-succinct-zero-knowledge-proof)
+
 - Private set intersection: [part 1](/2020-03-29-private-set-intersection-a-soft-introduction/) and [part 2](/2020-07-26-private-set-intersection-2/)
 
 # Research

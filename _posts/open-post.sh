@@ -17,7 +17,7 @@ is_number()
 files=`cd $postdir && find . -name "*.md" && find . -name "*.markdown"`
 
 files=`echo "$files" | grep -v "/files/"`
-files=`echo "$files" | grep -v "/templ.md"`
+files=`echo "$files" | grep -v "/templ.md" | grep -v "/bib.md"`
 
 files=`echo "$files" | cut -c 3-` # cuts the first two characters (i.e., the ./)
 

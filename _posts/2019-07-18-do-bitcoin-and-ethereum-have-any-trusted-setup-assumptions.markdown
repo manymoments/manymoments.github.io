@@ -4,11 +4,14 @@ date: 2019-07-18 17:13:00 -07:00
 tags:
 - blockchain101
 layout: post
+author: Ittai Abraham, Alin Tomescu, Avishay Yanai
 ---
 
+<!--
 <p align="center">
   co-authored with <a href="https://people.csail.mit.edu/alinush/">Alin Tomescu </a> and <a href="https://www.yanai.io/">Avishay Yanai</a>
 </p>
+-->
 
 Both Bitcoin and Ethereum depend on the security of certain cryptographic hash functions and certain elliptic curve based cryptography. In this post we ask if they also depend on some [Trusted Setup Assumptions](https://ittaiab.github.io/2019-07-18-setup-assumptions/).
 
