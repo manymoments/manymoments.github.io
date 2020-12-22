@@ -1,6 +1,6 @@
 ---
 title: Do Bitcoin and Ethereum have any trusted setup assumptions?
-date: 2019-07-18 17:13:00 -07:00
+date: 2019-07-18 20:13:00 -04:00
 tags:
 - blockchain101
 layout: post
