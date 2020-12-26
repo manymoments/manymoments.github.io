@@ -16,6 +16,8 @@ Unlike the [single-shot protocol](https://decentralizedthoughts.github.io/2020-1
 
 Once the primary commits a command, we use the boolean *readyToPropose* to indicate that the primary can send a new proposal to append to the log. 
 
+We will also use a deterministic mapping from view to primary. Let $primary(v)$ be the id of the primary for view $v$.
+
 
     // pseudocode for Replica j
     
@@ -31,53 +33,58 @@ Once the primary commits a command, we use the boolean *readyToPropose* to indic
     while true:
     
        // as a primary (you are replica j)
-       on receiving cmd from client, view == j, readyToPropose == true:
+       if primary(view) == j:
+       on receiving cmd from client and readyToPropose == true:
              readyToPropose = false
              send ("propose", commitLog, cmd, view) to all replicas
              
-       // as a backup replica in the same view
-       on receiving ("propose", CL, cmd, v) and v==view:
+       // as a replica in the same view -> lock
+       on receiving ("propose", CL, cmd, v) and v == view:
              // learn if needed
-             if CL >= commitLog then 
-                 commitLog = CV
-                 lock-view = v
-                 lock-value = cmd
-                 send ("lock", commitLog, cmd, v) to the primary j
+             if CL > commitLog then commitLog = CV
+             if CL == commitLog:                
+                lock-view = v
+                lock-value = cmd
+                send ("lock", commitLog, lock-value, lock-view) to the primary j
 
-       on receiving ("lock", CL, cmd, view) from n-f distinct replicas and view == j:
+       // as a primary getting n-f locks -> commit
+       if primary(view) == j:
+       on receiving ("lock", CL, cmd, view) from n-f distinct replicas:
              // append to log
-             commitLog.append(cmd)
-             send ("commit", commitLog, view) to all replicas
-             readyToPropose = true
+             if CL == commitLog then
+                commitLog.append(cmd)
+                send ("commit", commitLog, view) to all replicas
+                readyToPropose = true
              
-       // as a replica: execute and terminate
-       on receiving ("commit", CL, v):
+       // as a replica in dame view -> append and start next timer
+       on receiving ("commit", CL, v) and v == view:
              // learn if needed
-             if CL >= commitLog then
-                 commitLog = CV
-                 restart timer(v)
+             if CL > commitLog then
+                commitLog = CV
+                restart timer(v)
 
 Note that as an optimization, we could have piggybacked the "commit" message with the next "propose" message.
 
 The **view change trigger** protocol is similar to the single-shot one, except that timer(i) is restarted each time a replica appends to commitLog (see "restart timer" above). This implements a *stable leader* variant where a primary can commit many entries and is replaced only when there are $f\+1$ "blame" messages. An alternative variant that replaces the primary every round will be explored in later posts.
 
-      on timer(i) expiring and view == i; or
-      on receiving ("blame", i) from f+1 distinct replicas
-            send ("blame", i) to all replicas
-      on receiving ("blame", i) from n-f distinct and view <= i:
-            // this will trigger a timer and a "highest lock message"
-            send ("view change", i+1) to all replicas (including self)
+      on timer(v) expiring and view == v; or
+      on receiving ("blame", v) from f+1 distinct replicas
+            send ("blame", v) to all replicas
+      on receiving ("blame", v) from n-f distinct replicas and view <= v:
+            // this will trigger view change to view v+1
+            send ("view change", v+1) to all replicas 
 
-The **view change** protocol is modified so the new primary learns about committed commands it has missed (this variant is different from Raft where the new primary must be the most up-to-date replica). The new primary must choose the lock-value of the highest lock-view for the proposals that are about the longest commitLog entry it has seen. If the longest commitLog entry is committed and the new primary sees no append proposals then the new primary is free to choose from the client commands. Here is the view change for replica $j$:
+The **view change** protocol is modified so the new primary learns about committed commands it has missed (this is different from Raft where the new primary must be the most up-to-date replica). The new primary must choose the lock-value of the highest lock-view for the proposals that are about the longest commitLog entry it has seen. If the longest commitLog entry is committed and the new primary sees no append proposals then the new primary is free to choose from the client commands. Here is the view change for replica $j$:
 
-       // send your commit log and your highest lock
+       // send commit log and highest lock
        on receiving ("view change", v) and view < v:
             view = v
-            start timer(v)
-            send ("highest lock", commitLog, lock-val, lock-view, view) to replica v
+            start timer(view)
+            send ("highest lock", commitLog, lock-value, lock-view, view) to replica v
             
        // as the primary (you are replica j)
-       on receiving messages M={("highest lock", CL, l-val, l-view, j)} from n-f distinct replicas and view == j:
+       if primary(view) == j:       
+       on receiving messages M={("highest lock", CL, l-value, l-view, j)} from n-f distinct replicas:
             Let CL be the longest commit log in M.CL
             // learn if needed
             If CL > commitLog then commitLog = CV
@@ -85,11 +92,11 @@ The **view change** protocol is modified so the new primary learns about committ
             if H is empty or all H.l-view == 0:
                  mycmd = any value heard from the clients
             otherwise:
-                 // use the value of the message in H with highest view
+                 // use the lock-value of the message in H with highest lock-view
                  let m in H be a message with maximum H.l-view 
-                 mycmd = m.l-val
+                 mycmd = m.l-value
             readyToPropose = false
-            send ("propose", mycmd, view) to all replicas
+            send ("propose", commitLog, mycmd, view) to all replicas
 
 Observe that when a primary proposes a message, as well as when replicas send their highest lock to the next primary, the entire commit log is sent in the message. This ensures that, at any time, whenever a replica is locked on value, all the previous log positions are committed. While sending the entire log each time brings conceptual simplicity, it is expensive to send the entire log. In practice, one can use message digests and chained digests to quickly identify any missing committed commands. In a future post, we will discuss how this can be optimized.
 
@@ -117,7 +124,7 @@ Here is the pseudocode for Replica $j$:
              readyToPropose = false
        on receiving ("help", CL, cmd, v) and v==view:
              // learn if needed
-             if CL >= commitLog then commitLog = CV
+             if CL > commitLog then commitLog = CV
              send ("propose", commitLog, cmd, v) to all replicas
              send ("help done", commitLog, cmd, v) to the primary j
        on receiving ("help done", CL, cmd, view) from f+1 distinct replicas and view == j:
@@ -125,17 +132,15 @@ Here is the pseudocode for Replica $j$:
              commitLog.append(cmd)
              send ("commit", commitLog, cmd, view) to all replicas
              readyToPropose = true
-       // as a replica: execute and terminate
+       // as a replica: execute and restart timer
        on receiving ("commit", CL, cmd, v):
              // learn if needed
-             if CL >= commitLog then commitLog = CV
-             // append to log
-             commitLog.append(cmd)
+             if CL > commitLog then commitLog = CV
              restart timer(v)
        // as a backup replica in the same view
        on receiving ("propose", CL, cmd, v) and v==view:
              // learn if needed
-             if CL >= commitLog then commitLog = CV
+             if CL > commitLog then commitLog = CV
              //lock
              lock-view = v
              lock-value = cmd
