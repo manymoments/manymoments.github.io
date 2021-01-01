@@ -65,10 +65,10 @@ Even that may leak information, for example, for $d=2$, the vector $S$ is of siz
 
 To make sure the adversary can learn nothing about $S$, the Prover extends its vector $S$ with one more field element $t$. Given $S$, let $S'=\langle s_0,\dots,s_{d-1}, t\rangle $ be the extended vector. If $S$ is that all-zero vector then the Prover sets $t=0$. Otherwise the Prover chooses $t$ uniformly at random. So instead of the polynomial $g$ of degree $d-1$, the Prover now commits to a polynomial $g'$ of degree $d$ such that for all $0\leq i \leq d-1$, $g'(i)=s_i$ and $g'(d)=t$. Using an argument that is similar to the one in [our secret sharing post](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis), it can be seen that for any non-zero vector $S$, given a uniformly distributed $t$ in $\mathbb{F}_p$, the Verifier's view, $g'(r)$, for any $r>d$, is uniformly distributed in $\mathbb{F}_p$. Hence the only information the Verifier gains from the protocol, the Verifier could have simulated locally without any interaction. So the Verifier gains no information at all.
 
-In our example above, for $d=2$, $g'$ will now be a degree two polynomial, such that $g'(0)=s_0, g'(1)=s_1, g'(2)=t$ where $t$ is uniform.
+In our example above, for $|S|=2$, $g'$ will now be a degree two polynomial, such that $g'(0)=s_0, g'(1)=s_1, g'(2)=t$ where $t$ is uniform.
 Since for any $s_0$ and $s_1$, and for any $r>2$, the distribution of $g'(r)$ is uniform, the Verifier learns nothing about $S$.
 
-Just as before, if $g(r) \neq 0$ then the Verifier has a proof that $S$ is not the all-zero vector. If $g(r)=0$ then the Verifier has a proof that $S$ is most likely the all-zero vector. The probability of error is at most $d/(p-(d+1))$ (if $S$ is not the all zero-vector, then $g'$ has at most $d$ roots and the Verifier samples $r$ uniformly in $d<r<p$).
+So the Verifier queries a random point $r$ uniformly in $[d+1,p-1]$. If $g(r) \neq 0$ then the Verifier has a proof that $S$ is not the all-zero vector. If $g(r)=0$ then the Verifier has a proof that $S$ is most likely the all-zero vector. The probability of error is at most $d/(p-(d+1))$ (if $S$ is not the all zero-vector, then $g'$ has at most $d$ roots and the Verifier samples $r$ uniformly from $p-(d+1)$ elements).
 
 So we have shown a way for the Verifier to obtain a succinct zero-knowledge proof!
 
