@@ -28,7 +28,7 @@ The Prover has an input $S=\langle s_0,\dots,s_{d-1}\rangle $ which is a vector 
 > Is $S$ the all-zero vector or not?
 
 We will assume the only way the Prover and Verifier can interact is via a special communication channel we will call the *virtual cloud*:
-1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$d-1$ polynomial $g(x) = \sum\_{i\in[0,d-1]} s\_i \prod\_{j\in[0, d-1], j\ne i} \frac{x - s\_j}{s\_i - s\_j}$ to the virtual cloud. Note that for all $0\leq i \leq d-1$ we have $g(i) = s_i$. This polynomial $g$ is the [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$.
+1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$d-1$ polynomial $g(x) = \sum\_{i\in[0,d-1]} s\_i \prod\_{j\in[0, d-1], j\ne i} \frac{x - s\_j}{s\_i - s\_j}$ to the virtual cloud. Note that for all $0\leq i \leq d-1$ we have $g(i) = s_i$. This polynomial $g$ is the [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$. 
 
 
 2. The Verifier is allowed to *query* the virtual cloud by sending it an element $r$ and the virtual cloud responds back with $g(r)$, the evaluation of $r$ on $g$.
@@ -37,23 +37,23 @@ We will assume the only way the Prover and Verifier can interact is via a specia
 ### A non-succinct solution, with no error
 How can the Verifier be sure that $S$ is all-zero and hence $g$ is the zero (trivial) polynomial? 
 
-Observe that when $S$ is all-zero then $g$ is the (trivial) zero polynomial! But if $S$ is not all-zero then the [fundamental theorem of arithmetic adopted to finite field polynomials](https://decentralizedthoughts.github.io/2020-07-17-the-marvels-of-polynomials-over-a-field/) says that $g$ has at most $d$ roots. So the verifier has a simple way to distinguish: it can query $d+1=10^{10} +1$ distinct points and check if they are all zero.
+Observe that when $S$ is all-zero then $g$ is the (trivial) zero polynomial! But if $S$ is not all-zero then the [fundamental theorem of arithmetic adopted to finite field polynomials](https://decentralizedthoughts.github.io/2020-07-17-the-marvels-of-polynomials-over-a-field/) says that $g$ has at most $d-1$ roots. So the verifier has a simple way to distinguish: it can query $d=10^{10}$ distinct points and check if they are all zero.
 
-This solution is not succinct as it requires the Verifier to send $d+1$ queries, which is too many. Can the Verifier use less queries? Can the Verifier query just one point?
+This solution is not succinct as it requires the Verifier to send $d$ queries, which give not succientness. Can the Verifier use less queries? Can the Verifier query just one point?
 
 ### A succinct solution, with small error
-We will now recall that we are working over the field $\mathbb{F}_p$ where $p\gg d$. By now, it should be quite clear how the Verifier can get a succinct proof that $S$ is all-zero or not.
+We will now use the fact that we are working over the field $\mathbb{F}_p$ where $p\gg d$. By now, it should be quite clear how the Verifier can get a succinct proof that $S$ is all-zero or not.
 
 > The Verifier chooses a uniformly random element $r \in_R \mathbb{F}_p$ and queries the virtual cloud just once with $r$:
 
 1. Clearly, if $g(r) \neq 0$, then $g$ is not the trivial polynomial, so $S$ is not all-zeros.
-2. What if $g(r)=0$? Then, we use the [Theorem](/2020-07-17-the-marvels-of-polynomials-over-a-field) that $g$ has at most $d$ roots to say: If $r\in_R \mathbb{F_p}$ and $g(r)=0$, then the probability that $g$ is non-zero is at most $d/p$ (where $p$ is the size of the field).
+2. What if $g(r)=0$? Then, we use the [Theorem](/2020-07-17-the-marvels-of-polynomials-over-a-field) that if $g$ is non-zero then it has at most $d-1$ roots to say: If $r\in_R \mathbb{F_p}$ and $g(r)=0$, then the probability that $g$ is non-zero is at most $(d-1)/p$ (where $p$ is the size of the field).
 
 We can choose $p\gg d$, so the error probability is as low as we want. So if $g(r)=0$, then the Verifier declares that $S$ is all-zero.
 
-That's it! this is a very succinct proof: instead of querying $d+1=10^{10} +1$ points, the Verifier can succinctly query just one (local) point and learn about a (global) property $S$ (with a small error probability).
+That's it! this is a very succinct proof: instead of querying $d=10^{10}$ points, the Verifier can succinctly query just one (local) point and learn about a (global) property $S$ (with a small error probability).
 
-At the core of this succinct proof is the power of randomization: by accepting a small probability of error, it is possible to prove $g(r) \neq 0$ using one query instead of $d+1$ queries. Quite remarkable, this mathematical fact can be boosted to much more general proofs (with small error).
+At the core of this succinct proof is the power of randomization: by accepting a small probability of error, it is possible to prove $g(r) \neq 0$ using one query instead of $d$ queries. Quite remarkably, this mathematical fact can be boosted to much more general succeint proofs (with small error).
 
 ### Adding Zero Knowledge
 
@@ -63,10 +63,12 @@ The Verifier can querry for some $0 \leq i \leq d-1$, receive back $g(i)=s_i$, a
 
 Even that may leak information, for example, for $d=2$, the vector $S$ is of size $2$ and $g$ is a degree one polynomial (such that $g(0)=s_0$ and $g(1)=s_1)$. If the Verifier qerries, say $r=10$, it learns the value of $g(10)$. Since $g$ has degree 1, the Verifier has learned some linear relation between $s_0$ and $s_1$! As a concrete example, if $g(10)=1$ then the Verifier has learned that it cannot be the case that $s_0=1$ and $s_1 \neq 1$.
 
-To make sure the adversary can learn nothing about $S$, the Prover simply adds one more uniformly random field element $t$ to its vector $S$. Let $S'=\langle s_0,\dots,s_{d-1}, t\rangle $. Instead of the polynomial $g$ of degree $d-1$, the Prover now works with a polynomial $g'$ of degree $d+1$ such that for all $0\leq i \leq d-1$, $g'(i)=s_i$ and $g'(d)=t$ . Using an argument that is similar to the one in [our secret sharing post](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis), it can be seen that for any vector $S$, given a uniformly distributed $t$ in $\mathbb{F}_p$, the Verifier's view, $g'(r)$, for any $r>d$, is uniformly distributed in $\mathbb{F}_p$. Hence the only information the Verifier gains from the protocol, the Verifier could have simulated locally without any interaction. So the Verifier gains no information at all.
+To make sure the adversary can learn nothing about $S$, the Prover extends its vector $S$ with one more field element $t$. Given $S$, let $S'=\langle s_0,\dots,s_{d-1}, t\rangle $ be the extended vector. If $S$ is that all-zero vector then the Prover sets $t=0$. Otherwise the Prover chooses $t$ uniformly at random. So instead of the polynomial $g$ of degree $d-1$, the Prover now works with a polynomial $g'$ of degree $d$ such that for all $0\leq i \leq d-1$, $g'(i)=s_i$ and $g'(d)=t$ . Using an argument that is similar to the one in [our secret sharing post](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis), it can be seen that for any non-zero vector $S$, given a uniformly distributed $t$ in $\mathbb{F}_p$, the Verifier's view, $g'(r)$, for any $r>d$, is uniformly distributed in $\mathbb{F}_p$. Hence the only information the Verifier gains from the protocol, the Verifier could have simulated locally without any interaction. So the Verifier gains no information at all.
 
 In our example above, for $d=2$, $g'$ will now be a degree two polynomial, such that $g'(0)=s_0, g'(1)=s_1, g'(2)=t$ where $t$ is uniform.
 Since for any $s_0$ and $s_1$, and for any $r>2$, the distribution of $g'(r)$ is uniform, the Verifier learns nothing about $S$.
+
+Just as before, if $g(r) \neq 0$ then the Verifier has a proof that $S$ is not the all-zero vector. If $g(r)=0$ then the Verifier has a proof that $S$ is most likely the all-zero vector. The probability of error is at most $d/(p-(d+1))$ (if $S$ is not the all zero-vector, then $g'$ has at most $d$ roots and the Verifier samples $r$ uniformly in $d<r<p$).
 
 So we have shown a way for the Verifier to obtain a succinct zero-knowledge proof!
 
