@@ -1,7 +1,6 @@
 ---
 title: What is a Merkle Tree?
 date: 2020-12-22 09:05:00 -05:00
-#published: false
 tags:
 - cryptography
 - merkle-hash-tree
