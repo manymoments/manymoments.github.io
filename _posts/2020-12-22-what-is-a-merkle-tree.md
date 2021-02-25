@@ -1,7 +1,7 @@
 ---
 title: What is a Merkle Tree?
 date: 2020-12-22 09:05:00 -05:00
-published: false
+#published: false
 tags:
 - cryptography
 - merkle-hash-tree
@@ -24,13 +24,14 @@ In this post, we will demystify _Merkle trees_ using three examples of problems 
 \def\vect#1{\boldsymbol{\vec{#1}}}
 $$</p>
 
-By the end of the post, you'll be able to understand several **key concepts**:
+By the end of the post, you'll be able to understand **key concepts** that, at this point, might intimidate you:
 
- 1. A Merkle tree is[^consideredtobe] a **collision-resistant hash function** $\mht$ that takes $n$ inputs $(x\_1, \dots, x\_n)$ and outputs a _Merkle root hash_ $h = \mht(x\_1, \dots, x\_n)$,
- 1. A verifier who has the root hash $h$ can be given $\hat{x}\_i$ and a **Merkle proof** for $\hat{x}\_i$ which convinces them that $\hat{x}\_i$ was the $i$th input used to compute $h$.
-    + In other words, convinces them that there exist other $x_i$'s such that $h=\mht(x\_1, \dots, x\_{i-1}, \hat{x}\_i,x\_{i+1},\dots,x\_n)$.
- 1. An attacker cannot come up with a Merkle root $h$ and two values $x_i\ne x_i'$ with proofs $\pi_i$ and $\pi_i'$ that both verify for position $i$ w.r.t. $h$.
-    + In other words, if a proof says that $x_i$ was the $i$th input when computing $h$, no attacker can come up with a different proof that says a different $x_i'\ne x_i$ was the $i$th input.
+ 1. A Merkle tree is[^consideredtobe] a **collision-resistant hash function**, denoted by $\mht$, that takes $n$ inputs $(x\_1, \dots, x\_n)$ and outputs a _Merkle root hash_ $h = \mht(x\_1, \dots, x\_n)$,
+ 1. A verifier who only has the root hash $h$ can be given an $x\_i$ and an associated **Merkle proof** which convinces them that $x\_i$ was the $i$th input used to compute $h$.
+    + In other words, convinces them that there exist other $x_j$'s such that $h=\mht(x\_1, \dots, x\_{i-1}, x\_i,x\_{i+1},\dots,x\_n)$.
+    + This ability to verify that an $x_i$ is the element at the $i$th position against the root hash $h$ (i.e., without having to store all $n$ inputs) is the fundamental power of Merkle trees which we explore in this post.
+ 1. If a Merkle proof says that $x_i$ was the $i$th input used to computed $h$, no attacker can come up with another Merkle proof that says a different $x_i'\ne x_i$ was the $i$th input.
+    - More formally, an attacker cannot come up with a Merkle root $h$ and two values $x_i\ne x_i'$ with proofs $\pi_i$ and $\pi_i'$ that both verify for position $i$ w.r.t. $h$.
 
 <!-- 1. Merkle tree are quite **versatile.** They can be used to hash sets, vectors, dictionaries, directed acyclic graphs (DAGs), and many other types of data.
     + Even better, when used to hash a set (or a dictionary), the Merkle tree can be "organized" carefully to allow for **non-membership proofs** of elements in the set (or of keys in the dictionary) -->
@@ -50,7 +51,7 @@ If not, just read [our post on hash functions][hashurl]!
 
 ## This is a Merkle tree!
 
-Suppose you have $n=8$ files $(f_1, f_2, \dots, f_8)$ and a [collision-resistant hash function][hashurl] $H$ and you want to have some fun.
+Suppose you have $n=8$ files, denoted by $(f_1, f_2, \dots, f_8)$, you have a [collision-resistant hash function][hashurl] $H$ and you want to have some fun.
 
 You start by hashing each file as $h_i = H(f_i)$:
 
@@ -93,21 +94,24 @@ In the end, you only live once, so you'd better hash these last two hashes as $h
 **Congratulations!**
 What you have done is computed a Merkle tree on $n=8$ **leaves**, as depicted in the picture above.
 
-Note that every **node** in the tree stores a hash.
-Specifically, the $i$th **leaf** of the tree stores the hash $h_i$ of the file $f_i$.
-Then, each **internal node** of the tree stores the hash of its two children.
-Lastly, the $h_{1,8}$ hash stored in the **root node** is called the **Merkle root hash**.
+Note that every **node** in the tree stores a hash:
+
+ - The $i$th **leaf** of the tree stores the hash $h_i$ of the file $f_i$.
+ - Each **internal node** of the tree stores the hash of its two children.
+ - The $h_{1,8}$ hash stored in the **root node** is called the **Merkle root hash**.
+
 <!-- As we'll argue later, this Merkle root hash can be viewed as a collision-resistant hash of the 8 files. -->
 
 You could easily generalize and compute a Merkle tree over any number $n$ of files.
 
-It is useful to _think of computing the Merkle tree as computing a collision-resistant hash function_ denoted by $\mht$, which takes $n$ inputs (e.g., the $n$ files) and outputs the Merkle root.
+It is useful to _think of computing the Merkle tree as computing a collision-resistant hash function_, denoted by $\mht$, which takes $n$ inputs (e.g., the $n$ files) and outputs the Merkle root hash.
 For example, we will often use the following notation:
 
 $$h_{1,8}=\mht(f_1, f_2, \dots,f_8)$$
 
 Importantly, note that computing $\mht$ (i.e., computing the Merkle tree), involves many computations of its **underlying collision-resistant hash function** $H$. 
-At the risk of overwhelming you with notation, observe that $h_{1,8}=\mht(f_1, f_2, \dots,f_8)$ is computed as:
+
+At the risk of overwhelming you with notation, it is useful to observe that $h_{1,8}$ has a "recursive" structure:
 
 \begin{align\*}
 h_{1,8} = MHT(f_1, \dots, f_8) = H(\\\\\
@@ -123,13 +127,15 @@ h_{1,8} = MHT(f_1, \dots, f_8) = H(\\\\\
 \end{align\*}
 
 {: .box-note}
-Really this is just a (verbose) mathematical representation of what we visually depicted as a tree above!
+Really this is just a (verbose) mathematical representation of the Merkle tree that we visually depicted above!
 
-We often refer to a file $f_i$ as **being in the Merkle tree**, to indicate it was part of the input used to compute the tree.
+We often refer to a file $f_i$ as **"being in the Merkle tree"** to indicate it was one of the $n$ input files used to compute the tree.
 
 <!--It is useful to number the **levels** of a Merkle tree built over $2^{k-1} < n\le 2^k$ leaves from 1 (i.e., the bottom level storing the leaves) to $k+1$ (i.e., the top level storing the root node).-->
 
 ## This is a Merkle proof!
+
+Alright, you've computed your Merkle tree over your 8 files.
 
 Next, you upload your files **and** Merkle tree on Dropbox.com and delete everything from your computer except the Merkle root $h_{1,8}$.
 Your goal is to later download any one of your files from Dropbox **and** make sure Dropbox did not accidentally corrupt it.
@@ -151,7 +157,7 @@ But how do you verify?
 
 Well, observe that the Merkle proof for $f_i$ is exactly the subset of hashes in the Merkle tree that, together with $f_i$, allow you to recompute the root hash of the Merkle tree and check it matches the real hash $h_{1,8}$, **without knowing any of the other hashed files**.
 
-So, to verify the proof, you simply fill in the blanks in the picture above by computing the following hashes, in this order:
+So, to verify the proof, you simply "fill in the blanks" in the picture above by computing the missing hashes depicted with dotted boxes, in this order:
 \begin{align\*}
     h_3' &= H(f_3)\\\\\
     h_{3,4}' &= H(h_3', h_4)\\\\\
@@ -171,7 +177,7 @@ But why does this check suffice as a proof that $f_i$ was downloaded correctly?
 Here's some intuition.
 Since the Merkle proof verified, this means you were able to recompute the root hash $h_{1,8}$ by using $f_i$ as the $i$th input and the Merkle proof as the remaining inputs.
 If the proof verification had yielded the same hash $h_{1,8}$ but with a different file $f_i' \ne f_i$ as the $i$th input, then this would yield a collision in the underlying hash function $H$ used to build the tree.
-This is not trivial to see but we argue it more formally later.
+This last observation is not trivial to see but we will help you see it later, when we argue security formally.
 <!-- in the Merkle tree, which is modelled as collision-resistant hash function $\mht$. -->
 <!-- This, in turn, can be turned into a collision-->
 
@@ -196,7 +202,8 @@ Well, just take a look at the [Certificate Transparency (CT)][ct] project, which
 These Merkle trees easily have hundreds of millions of leaves and are designed to scale to billions.
 
 **Moral of the story:**
-To avoid the need for the verifier to store a hash for each one of the $n$ outsourced file, we resort to Merkle hashing all files and sending an $O(\log{n})$-sized Merkle proof with each downloaded file.
+To avoid the need for the verifier to store a hash for each one of the $n$ outsourced file, we use Merkle trees.
+This way, you only need to store a Merkle root hash (rather than $n$ hashes) and receive an $O(\log{n})$-sized Merkle proof with each downloaded file.
 
 {: .box-note}
 If you are still concerned about large Merkle proof size, you should look at more _algebraic_ **vector commitments (VCs)**, such as recent ones based on [polynomial commitments](https://alinush.github.io/2020/05/06/aggregatable-subvector-commitments-for-stateless-cryptocurrencies.html) or on [RSA assumptions](https://alinush.github.io/2020/11/24/Catalano-Fiore-Vector-Commitments.html).
@@ -219,7 +226,7 @@ Sometimes it is useful for _Alice_, who is running Bitcoin on her mobile phone, 
 
 **Inefficient, consensus-based solution:**
 Alice could simply download every newly mined Bitcoin block on her phone and inspect the block for a transaction from Bob that pays her.
-This requires Alice to download a lot of data (1 MiB / block), which can be either slow or expensive, since mobile data costs money.
+But this requires Alice to download a lot of data (1 MiB / block), which can be either slow or expensive, since mobile data costs money.
 _(The unstated assumption here is that Alice relies on Bitcoin's proof-of-work consensus protocol to decide whether a block is valid. These consensus-related details are covered in other posts[^post1]$^,$[^post2] on this blog.)_
 
 {: .box-warning}
@@ -231,14 +238,16 @@ If Alice was indeed paid by Bob, then Bitcoin can prove this to her via a **Merk
 Specifically, Alice will ask a Bitcoin node if she was paid by Bob in the latest block, but instead of simply trusting the _"Yes, you were paid and here's the transaction"_ answer, she will ask the node to _prove membership of the transaction_ in the block via a Merkle proof.
 
 Importantly, Alice never has to download the full block: she only needs to download a small part of the block called the **block header**, which contains the root of a Merkle tree built over all transactions in that block[^catena].
-This way, Alice can verify the Merkle proof leading to Bob's transaction in this tree, which will assure her that transaction is in the block without having to download the other transactions.
+This way, Alice can verify the Merkle proof leading to Bob's transaction in this tree, which will assure her that Bob's transaction is in the block without having to download the other transactions.
 
 <img src="/uploads/merkle-bitcoin-2.png" />
 
 {: .box-warning}
-Of course, this Merkle-based solution still assumes Alice relies on Bitcoin's proof-of-work consensus to validate block _headers_. However, since headers are 80 bytes, this is much more efficient than downloading full (1 MiB) blocks.
-Furthermore, note that, because of Bitcoin's _chronologically-ordered_ Merkle tree, a node can still lie and say _"No, you weren't paid by Bob"_ and Alice would have no way to tell the truth _efficiently_ without actually downloading every new block and inspecting it.
-One way this problem could be solved is by lexicographically-ordering Bitcoin's Merkle tree, either by the payer or by the payee's Bitcoin address.
+This Merkle-based solution still requires Alice to rely on Bitcoin's proof-of-work consensus to validate block _headers_. 
+However, since headers are 80 bytes, this is much more efficient than downloading full (1 MiB) blocks.
+Furthermore, some of you might note that, because of Bitcoin's _chronologically-ordered_ Merkle tree, a node can still lie and say _"No, you weren't paid by Bob"_ and Alice would have no way to tell the truth _efficiently_ without actually downloading every new block and inspecting it.
+One way this problem could be solved is by re-ordering Bitcoin's Merkle tree, either by the payer or by the payee's Bitcoin address.
+We leave the details of this to another post.
 <!-- We touch upon this briefly later, when discussing Ethereum's Merkle tree.-->
 
 **Moral of the story:** 
@@ -253,7 +262,7 @@ It would be nice if you could not just _detect_ these modifications but actually
 
 **The naive solution** would be to simply restart the file download whenever you detect a modification via the Merkle-based technique we discussed before.
 However, this could be painfully slow.
-In fact, if the connection is sufficiently unreliable and the file is sufficiently large, this might never terminate.
+In fact, if the connection is sufficiently unreliable and if the file is sufficiently large, this might never terminate.
 
 A **better solution** is to split the file into **blocks** and use the Merkle tree to detect modifications _at the block level_ (i.e., at a finer granularity) rather than at the file level.
 This way, you only need to restart the download for incorrectly downloaded blocks, which helps you make steady progress.
@@ -261,7 +270,7 @@ This way, you only need to restart the download for incorrectly downloaded block
 To keep things simple, we will focus on a simpler scenario where just one file is outsourced to Dropbox rather than $n$ files.
 We will discuss later how this can be generalized to $n$ files.
 
-#### Recovering corrupted file blocks with one Merkle proof per file block
+#### Inefficient: Recovering corrupted file blocks with one Merkle proof per block
 
 As we said above, we will split the file $f$ into, say, $b=8$ **blocks**:
 
@@ -285,8 +294,9 @@ Note that there's an interesting choice of block size to be made, as a function 
 However, this is beyond the purpose of this post.
 Also note that there are other ways to deal with unreliable channels, such as error-correcting codes, which again are beyond the purpose of this post.
 
-Unfortunately, this **first solution** always involves downloading all $b-1$ hashes in the Merkle tree (roughly[^pow2]), in addition to the blocks themselves.
-This is because this first solution requires Dropbox to send a Merkle proof for _every_ block[^dedup], even if that block is correct.
+<!-- this **first solution** always involves downloading all $b-1$ hashes in the Merkle tree (roughly[^pow2]), in addition to the blocks themselves. -->
+Unfortunately, in this **first solution**, you are re-downloading the full Merkle tree, in addition to the blocks themselves.
+This is because Dropbox sends a Merkle proof for _every_ block[^dedup], **even if that block is correct**.
 
 We will fix this next.
 
@@ -468,9 +478,43 @@ Without describing Ethereum's exact Merkle tree design, here's how one would des
 
 <!-- ### Batch signing via Merkle trees -->
 
+## Want more?
+
+Well, I hope you found all of this fascinating and want to learn more.
+You could start by going to the bonus section below and reading our formal security proof for Merkle trees.
+
+Then, you could read my three favorite Merkle tree papers, which I think are highly approachable even for beginners.
+
+First, you should read the paper on **history trees** by Crosby and Wallach[^CW09].
+History trees are Merkle trees that "grow" from left to right, in the sense that one is only allowed to append new leafs to the right of the tree.
+
+Despite their simplicity, history trees are incredibly powerful since they support _append-only proofs_: given an older tree of $t$ leaves and a new tree of $t'=t+\Delta$ leaves, one can prove (using a succinct $O(\log{t'})$-sized proof) that the new tree includes all the leaves from the old tree.
+This makes history trees very useful for building append-only logs such as [Certificate Transparency (CT)][ct], which is at the core of securing HTTPS.
+
+{: .box-note}
+_"Append-only logs? Don't you mean blockchains?"_ you ask.
+Nope, I do not.
+These logs have a different mechanism to detect (rather than prevent) forks.
+However, each fork is always provably extended in append-only fashion using the proofs described above.
+
+Second, you should read the paper on CONIKS by Melara et al[^MBBplus15].
+CONIKS is also a transparency log, but geared more towards securing instant messaging apps such as Signal, rather than HTTPS.
+One interesting thing you'll learn from this paper is how to lexicographically-order your Merkle trees so you can prove something is **not** in the tree, as we briefly touched upon in the Bitcoin section.
+In fact, I believe this paper takes the most sane, straightforward approach to doing so.
+Specifically, CONIKS builds a **Merkle prefix tree**, which is much simpler to implement than any binary search tree or treap (at least in my own experience).
+It also has the advantage of having expected $O(\log{n})$ height if the data being Merkle-ized is not adversarially-produced.
+
+{: .box-note}
+A related paper is would be the Revocation Transparency (RT) manuscript[^LK15], which CONIKS can be regarded as improving upon in terms of proof size and other dimensions.
+
+Third, you should read the Verifiable Data Structures[^ELC16] manuscript by the Certificate Transparency (CT) team, which combines a history tree with a lexicographically-ordered tree (such as CONIKS) into a single system with its own advantages.
+
+At the end of the day, I think what I'm trying to say is _"why don't you go read about transparency logs and come write a blog post on Decentralized Thoughts so I don't have to do it!"_ :)
+
+
 ## Bonus: A Merkle tree is a collision-resistant hash function
 
-A very simple way to think of a Merkle hash tree with $n$ _leaves_ is as a collision-resistant hash function $\mht$ that takes $n$ inputs[^contrast] and ouputs a hash, a.k.a. the _Merkle root hash_.
+A very simple way to think of a Merkle hash tree with $n$ _leaves_ is as a collision-resistant hash function $\mht$ that takes $n$ inputs[^contrast] and ouputs a $2\lambda$-bit hash, a.k.a. the _Merkle root hash_.
 More formally, the _Merkle hash function_ is defined as:
 
 $$\mht : \left(\{0,1\}^*\right)^n \rightarrow \{0,1\}^{2\lambda}$$
@@ -499,7 +543,7 @@ Specifically, if $b_i = 0$, then $h_i$ is a left child of its parent node in the
 In our previous discussion, we never had to bring up these _direction bits_ because we always visually depicted a specific Merkle proof. 
 However, here, we need to reason about _any_ Merkle proof for _any_ arbitrary leaf.
 Since such a proof can "take arbitrary left and right turns" as it's going down the tree, we use these direction bits as "guidance" for the verifier.
-(A careful reader might notice that the direction bits can actually be derived from the leaf index $i$ being proved and don't actually need to be sent with the proof: the bits are exactly $i$'s binary representation.)
+(A careful reader might notice that the direction bits can actually be derived from the leaf index $i$ being proved and don't actually need to be sent with the proof: the direction bits are obtained by flipping $i$'s binary representation.)
 
 Roughly speaking, to verify $\pi_i$, the verifier uses $x_i$ together with the sibling hashes and the direction bits to compute the hashes $(z_1, \dots, z_{k+1})$ along the path from $x_i$ to the root.
 More precisely, the verifier:
@@ -562,7 +606,7 @@ H(h_{j-1}, z_{j-1}) = H(h_{j-1}', z_{j-1}'),\ \text{if}\ b_{j-1} = 0
 \end{align\*}
 
 (Again, recall that $z_1 = x_i$ and $z_1'=x_i'$.)
-But this would break the collision-resistance of $H$, which is a contradiction.
+But such a collision at level $j$ implies a break in the collision-resistance of $H$, which is a contradiction.
 QED.
 
 {: .box-note}
@@ -586,42 +630,10 @@ In the end, we will get to the bottom level which is guaranteed to have $z_1\ne 
 This is actually the _extreme case \#2_ that we've handled above!
 No matter what, there will always be a collision!
 
-## Want more?
-
-Well, I hope you found all of this fascinating and want to learn more.
-
-For this, you could start with my favorite three Merkle tree papers, which I think are highly approachable even for beginners.
-
-First, you should read the paper on **history trees** by Crosby and Wallach[^CW09].
-History trees are Merkle trees that "grow" from left to right, in the sense that one is only allowed to append new leafs to the right of the tree.
-
-Despite their simplicity, history trees are incredibly powerful since they support _append-only proofs_: given an older tree of $t$ leaves and a new tree of $t'=t+\Delta$ leaves, one can prove (using a succinct $O(\log{t'})$-sized proof) that the new tree includes all the leaves from the old tree.
-This makes history trees very useful for building append-only logs such as [Certificate Transparency (CT)][ct], which is at the core of securing HTTPS.
-
-{: .box-note}
-_"Append-only logs? Don't you mean blockchains?"_ you ask.
-Nope, I do not.
-These logs have a different mechanism to detect rather than prevent forks.
-However, each fork is always provably extended in append-only fashion using the proofs described above.
-
-Second, you should read the paper on CONIKS by Melara et al[^MBBplus15].
-CONIKS is also a transparency log, but geared more towards securing instant messaging apps such as Signal, rather than HTTPS.
-One interesting thing you'll learn from this paper is how to lexicographically-order your Merkle trees so you can prove something is **not** in the tree, as we briefly touched upon in the Bitcoin section.
-In fact, I believe this paper takes the most sane, straightforward approach to doing so.
-Specifically, CONIKS builds a **Merkle prefix tree**, which is much simpler to implement than any binary search tree or treap (at least in my own experience).
-It also has the advantage of having expected $O(\log{n})$ height if the data being Merkle-ized is no adversarially-produced.
-
-{: .box-note}
-A related paper is would be the Revocation Transparency (RT) manuscript[^LK15], which CONIKS can be regarded as improving upon in terms of proof size and other dimensions.
-
-Third, you should read the Verifiable Data Structures[^ELC16] manuscript by the Certificate Transparency (CT) team, which combines a history tree with a lexicographically-ordered tree (such as CONIKS) into a single system with its own advantages.
-
-At the end of the day, I think what I'm trying to say is _"why don't you go read about transparency logs and come write a blog post on Decentralized Thoughts so I don't have to do it!"_ :)
-
 {% include_relative bib.md %}
 
 [^catena]: For a simple explanation of Bitcoin's block structure, see the author's [presentation on Catena](https://alinush.github.io/talks.html#catena-efficient-non-equivocation-via-bitcoin), #shamelessplug.
-[^consideredtobe]: To be more specific, a Merkle tree **can be viewed as** a hash function on $n$ inputs, but can be so much more than that. For example, when Merkle hashing a _dictionary_ with a large key space, a Merkle tree can be viewed as a hash function on $2^{256}$ inputs, where most of them are not set or "null," which makes computing it (in a careful manner) feasible. Importantly, these kinds of Merkle trees allow for **non-membership** proofs of inputs that are set to null.
+[^consideredtobe]: To be more specific, a Merkle tree **can be viewed as** a hash function on $n$ inputs, but can be so much more than that. For example, when Merkle hashing a _dictionary_ with a large key space, a Merkle tree can be viewed as a hash function on $2^{256}$ inputs, where most of them are not set (i.e., "null"), which makes computing it (in a careful manner) feasible. Importantly, these kinds of Merkle trees allow for **non-membership** proofs of inputs that are set to null.
 [^contrast]: In contrast, the collision-resistant functions $H$ we discussed in our [previous post][hashurl] take just one input $x$ and hash it as $h = H(x)$.
 [^dedup]: I'm assuming Dropbox is smart and doesn't send a hash twice when it's shared by two proofs. This is why the overhead is only $b-1$.
 [^handwave]: Computational intractability would deserve its own post. For now, just think of it as _"no algorithm we can conceive of can break collision resistance **and** finish executing before the heat death of the Universe."_
