@@ -629,6 +629,10 @@ In the end, we will get to the bottom level which is guaranteed to have $z_1\ne 
 This is actually the _extreme case \#2_ that we've handled above!
 No matter what, there will always be a collision!
 
+## Acknowledgments
+
+Special thanks to [Ittai Abraham](https://decentralizedthoughts.github.io/about-ittai/) for reviewing a draft of this post and sending insightful comments.
+
 {% include_relative bib.md %}
 
 [^catena]: For a simple explanation of Bitcoin's block structure, see the author's [presentation on Catena](https://alinush.github.io/talks.html#catena-efficient-non-equivocation-via-bitcoin), #shamelessplug.
