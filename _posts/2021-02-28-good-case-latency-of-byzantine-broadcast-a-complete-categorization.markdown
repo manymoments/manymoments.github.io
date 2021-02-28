@@ -1,7 +1,10 @@
 ---
 title: 'Good-case Latency of Byzantine Broadcast: a Complete Categorization'
 date: 2021-02-28 13:07:00 -05:00
-published: false
+tags:
+- research
+- lowerbound
+- SMR
 ---
 
 <span style="color:grey"> Guest post by [Zhuolun Xiang](https://sites.google.com/site/danielxiangzl/)  </span>
