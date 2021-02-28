@@ -28,6 +28,8 @@ Therefore, it is natural and important to ask
 
 {: .box-note}
 What is the best latency a BFT SMR can achieve to commit decisions in the good case?
+
+
 We refer to the above latency notion as *good-case latency*. For broadcast, we similarly define the good-case latency to be the *latency to commit when the broadcaster is honest*.
 
 Somehow surprisingly, the above question has not been formally answered yet. Although a sequence of efforts improves the good-case latency of BFT SMR, there lacks a complete and rigorous characterization of the whole picture. Before we present our results, let's take a quick look at the **existing best solutions** for BFT SMR on the good-case latency. For the synchrony model where the network delay is bounded by $\Delta$, [Sync HotStuff](https://decentralizedthoughts.github.io/2019-11-12-Sync-HotStuff/) commits in $2\Delta$ under $n\geq 2f+1$. For the partial synchrony model where the network delay is bounded only after a Global Stable Time (GST), [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) commits in 3 rounds after GST under $n\geq 3f+1$, and [FaB](https://ieeexplore.ieee.org/document/1467815) commits in 2 rounds after GST under $n\geq 5f+1$. **We show that all these protocols can be improved!**
