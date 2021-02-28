@@ -32,7 +32,7 @@ Somehow surprisingly, the above question has not been formally answered yet. Alt
 
 ## Results Overview
 
-### :bulb: **Theory**
+### ![](https://github.githubassets.com/images/icons/emoji/unicode/1f4a1.png?v8)  **Theory**
 Our [good-case latency paper](https://arxiv.org/abs/2102.07240) gives a **complete categorization** for the good-case latency of broadcast, under synchrony, partial synchrony, and asynchrony. As mentioned, the protocols for broadcast can be converted to BFT SMR with similar good-case latency guarantees. The lower bound results also shed light on what is the limitation of good-case latency for BFT SMR. All of our bounds are **tight** except for just one case, as summarized in the table below. 
 
 ![](https://i.imgur.com/Okje5V8.png)
@@ -40,11 +40,11 @@ Our [good-case latency paper](https://arxiv.org/abs/2102.07240) gives a **comple
 
 - For asynchrony, Byzantine broadcast is impossible and the standard broadcast formulation is *Byzantine reliable broadcast (BRB)*, which has a tight bound of 2 rounds for the good-case latency. 
 - For partial synchrony, we propose a new broadcast formulation called *partially synchronous Byzantine broadcast (Psync-BB)* that captures a single-shot of BFT SMR protocols like PBFT. We show that the $n\geq 5f+1$ boundary for 2-round PBFT claimed in [FaB](https://ieeexplore.ieee.org/document/1467815) is actually incorrect, and the right boundary should be $n\geq 5f-1$ for authenticated BFT protocols. 
-- For synchrony, we reveal a surprisingly rich structure of the good-case latency for Byzantine broadcast (BB). For a more accurate characterization, we adopt the separation of *assumed network delay $\Delta$* and the *actual (unknown) network delay $\delta$*. We also distinguish two assumptions about the clock synchronization -- the *synchronized start* case where all parties can start the protocol and local clock at the same time, and the *unsynchronized start* case where all parties start the protocol and local clock within $\Delta$ time of each other. To strengthen the results, all lower bounds assume sync start and all upper bounds assume unsyncronized start, except the case when $n/3<f<n/2$, which is especially interesting as the *tight bounds depend on the clock synchronization assumption*, and for unsyncronized start the tight bound is $\Delta+1.5\delta$, *not even an integer multiple of the delay*!
+- For synchrony, we reveal a surprisingly rich structure of the good-case latency for Byzantine broadcast (BB). For a more accurate characterization, we adopt the separation of *assumed network delay $\Delta$* and the *actual (unknown) network delay $\delta$*. We also distinguish two assumptions about the clock synchronization -- the *synchronized start* case where all parties can start the protocol and local clock at the same time, and the *unsynchronized start* case where all parties start the protocol and local clock within $\Delta$ time of each other. To strengthen the results, all lower bounds assume sync start and all upper bounds assume unsynchronized start, except the case when $n/3<f<n/2$, which is especially interesting as the *tight bounds depend on the clock synchronization assumption*, and for unsynchronized start the tight bound is $\Delta+1.5\delta$, *not even an integer multiple of the delay*!
 
 
 
-### :rocket: **Practice**
+### ![](https://github.githubassets.com/images/icons/emoji/unicode/1f680.png?v8) **Practice**
 For the practical side, the investigation on good-case latency leads to **better BFT SMR protocols** over [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf), [FaB](https://ieeexplore.ieee.org/document/1467815), and [Sync HotStuff](https://decentralizedthoughts.github.io/2019-11-12-Sync-HotStuff/) in terms of good-case latency. 
 - For partial synchrony, we obtain a [2-round BFT SMR](https://arxiv.org/abs/2102.07932) protocol that only requires $n\geq 5f-1$. Our protocol refutes the claim made in [FaB](https://ieeexplore.ieee.org/document/1467815) saying that $n=5f+1$ is the best possible resilience for $2$-round BFT SMR protocols. Interestingly, for the canonical example with $n=4$ and $f=1$, we can have a 2-round PBFT protocol with the optimal resilience!
 - For synchrony, we obtain a [$1\Delta$-SMR](https://arxiv.org/abs/2003.13155) protocol that commits in $\Delta+2\delta$ with $n\geq 2f+1$, reducing the commit latency (which is $2\Delta$) of [Sync HotStuff](https://decentralizedthoughts.github.io/2019-11-12-Sync-HotStuff/) by almost half when $\delta\ll\Delta$.
