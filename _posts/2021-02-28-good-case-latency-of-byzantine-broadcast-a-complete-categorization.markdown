@@ -21,9 +21,9 @@ Practical SMR solutions care about the **good case** performance measured as the
 
 Therefore, it is natural and important to ask
 
-:::info
+{: .box-note}
 What is the best latency a BFT SMR can achieve to commit decisions in the good case?
-:::
+
 
 We refer to the above latency notion as *good-case latency*. For broadcast, we similarly define the good-case latency to be the *latency to commit when the broadcaster is honest*.
 
