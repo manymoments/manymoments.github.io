@@ -1,7 +1,6 @@
 ---
 title: 2-round BFT SMR with n=4, f=1
 date: 2021-03-03 06:37:00 -05:00
-published: false
 tags:
 - research
 - SMR
