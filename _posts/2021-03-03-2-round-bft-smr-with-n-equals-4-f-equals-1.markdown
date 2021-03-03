@@ -59,7 +59,7 @@ It seems like $n=5f+1$ is the best we can have for 2-round commit. If we let $n=
 
 ## [(5f-1)-SMR](https://arxiv.org/abs/2102.07932): 2 rounds with $n=5f-1$
 
-However, we show the resilience of FaB can be further improved to $n=5f-1$. The key observation we have is to <span style="background-color: #FFFF00">use signatures to detect the equivocation of the leadert</span>
+However, we show the resilience of FaB can be further improved to $n=5f-1$. The key observation we have is to <span style="background-color: #FFFF00">use signatures to detect the equivocation of the leader</span>
 , as the leader must sign its proposed value. Our protocol also has 1 round of proposing and 1 round of voting in the steady state. After the leader proposes, the parties can commit if they receive $n-f=4f-1$ votes for the same value.
 
 
