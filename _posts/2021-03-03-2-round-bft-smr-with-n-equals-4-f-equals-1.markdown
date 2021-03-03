@@ -8,7 +8,6 @@ author: Zhuolun Xiang
 ---
 
 <span style="color:grey"> Guest post by [Zhuolun Xiang](https://sites.google.com/site/danielxiangzl/)  </span>
-
 In the [previous post](https://decentralizedthoughts.github.io/2021-02-28-good-case-latency-of-byzantine-broadcast-a-complete-categorization/), we presented a summary of our **good-case latency** results for Byzantine broadcast and Byzantine fault tolerant state machine replication (BFT SMR), where the good case measures the latency to commit given that the leader/broadcaster is honest. In this post, we describe a new Byzantine Fault Tolerant (BFT) State Machine Replication (SMR) protocol for [partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/), where the network becomes synchronous after an unknown Global Stable Time (GST). The details of the protocol can be found in our **[paper](https://arxiv.org/abs/2102.07932)**.
 
 {: .box-note}
