@@ -4,7 +4,7 @@ date: 2019-11-11 03:01:00 -05:00
 author: Kartik Nayak, Ittai Abraham, Ling Ren
 ---
 
-<span style="color:grey"> ![](https://github.githubassets.com/images/icons/emoji/unicode/23f0.png?v8) Post updated on March 2021</span>
+<span style="color:grey"> ![](https://github.githubassets.com/images/icons/emoji/unicode/23f0.png?v8) Post updated in March 2021</span>
 
 
 Different modeling assumptions under which we construct BFT protocols often make it hard to compare two protocols and understand their relative contributions. In this post we discuss *[synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/)* protocols in the *[authenticated](https://decentralizedthoughts.github.io/2019-07-18-setup-assumptions/)* model (assuming a PKI).
