@@ -35,17 +35,17 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 | [Dfinity \[2018\]](https://dfinity.org/static/dfinity-consensus-0325c35128c72b42df7dd30c22c41208.pdf)                                                              | SMR   | N          | $9\Delta$                                           | [$O(n^2)$](https://eprint.iacr.org/2018/1153.pdf)                 | N   | N         |
 | [PiLi \[2018\]](https://eprint.iacr.org/2018/980.pdf)\*\*                                                                            | SMR   | Y          | $65\Delta$                                         | $O(n^2)$                  | Y   | N         |
 | [Sync HotStuff \[2019\]](https://eprint.iacr.org/2019/270.pdf)\*\*                                                                   | SMR   | N          | $(2\Delta, O(\Delta))$                                | $(O(n^2), O(n^2))$        | Y   | N         |
-| [OptSync \[2020\]](https://eprint.iacr.org/2020/458.pdf)\*\*\* | SMR | N | $((2\delta, 2\Delta), O(\Delta))$ | $(O(n^2), O(n^2))$ | Y | N |
+| [OptSync \[2020\]](https://eprint.iacr.org/2020/458.pdf)\^ | SMR | N | $((2\delta, 2\Delta), O(\Delta))$ | $(O(n^2), O(n^2))$ | Y | N |
 | [Near-optimal Good-case Latency \[2020\]](https://arxiv.org/abs/2003.13155) | BB | N | $\Delta + 2\delta$ | $O(n^2)$ | N | N |
-| [Optimal Good-case Latency \[2021\]](https://arxiv.org/pdf/2102.07240.pdf)\^ | BB | N | $\Delta + 1.5\delta$ | $O(n^2)$ | N | N |
+| [Optimal Good-case Latency \[2021\]](https://arxiv.org/pdf/2102.07240.pdf)\^\^ | BB | N | $\Delta + 1.5\delta$ | $O(n^2)$ | N | N |
 
 \* The protocol by Micali and Vaikuntanathan requires $\kappa$ rounds where $\kappa$ is a statistical security parameter and obtains a "player replaceability" notion of adaptive security.
 
 \*\* PiLi and Sync HotStuff also handle a weaker synchrony model with *mobile sluggish faults*.
 
-\*\*\* For OptSync, in steady state, we describe the latency for the optimistic case as well as the regular case.
+\^ For OptSync, in steady state, we describe the latency for the optimistic case as well as the regular case.
 
-\^ For the work on optimal good-case latency, the latency is described assuming an *unsyncrhonized start* between different parties. If different parties start at the same time, the latency is $\Delta + \delta$. In both cases, the latencies are optimal.
+\^\^ For the work on optimal good-case latency, the latency is described assuming an *unsyncrhonized start* between different parties. If different parties start at the same time, the latency is $\Delta + \delta$. In both cases, the latencies are optimal.
 
 **Lock-step execution vs. bounded-message delay.** As can be seen in the latency column, lock-step protocols express latency in terms of \#rounds, whereas non-lock-step protocols in terms of $\Delta$.
 This distinction is minor in theory (or asymptotically) because one can obtain lock-step execution from a bounded message delay assumption, by merely using a *clock synchronization* protocol such as [Dolev et al.](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.499.2250&rep=rep1&type=pdf) and [Abraham et al.](https://eprint.iacr.org/2018/1028.pdf).
