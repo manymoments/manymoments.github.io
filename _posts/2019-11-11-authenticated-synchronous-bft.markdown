@@ -37,7 +37,7 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 | [Sync HotStuff \[2019\]](https://eprint.iacr.org/2019/270.pdf)\*\*                                                                   | SMR   | N          | $(2\Delta, O(\Delta))$                                | $(O(n^2), O(n^2))$        | Y   | N         |
 | [OptSync \[2020\]](https://eprint.iacr.org/2020/458.pdf)\*\*\* | SMR | N | $((2\delta, 2\Delta), O(\Delta))$ | $(O(n^2), O(n^2))$ | Y | N |
 | [Near-optimal Good-case Latency \[2020\]](https://arxiv.org/abs/2003.13155) | BB | N | $\Delta + 2\delta$ | $O(n^2)$ | N | N |
-| [Optimal Good-case Latency \[2021\](https://arxiv.org/pdf/2102.07240.pdf)]\^ | BB | N | $\Delta + 1.5\delta$ | $O(n^2)$ | N | N |
+| [Optimal Good-case Latency \[2021\]](https://arxiv.org/pdf/2102.07240.pdf)\^ | BB | N | $\Delta + 1.5\delta$ | $O(n^2)$ | N | N |
 
 \* The protocol by Micali and Vaikuntanathan requires $\kappa$ rounds where $\kappa$ is a statistical security parameter and obtains a "player replaceability" notion of adaptive security.
 
