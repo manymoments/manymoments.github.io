@@ -1,6 +1,6 @@
 ---
 title: Authenticated Synchronous BFT
-date: 2019-11-11 00:01:00 -08:00
+date: 2019-11-11 03:01:00 -05:00
 author: Kartik Nayak, Ittai Abraham, Ling Ren
 ---
 
