@@ -48,7 +48,7 @@ To evaluate and compare authenticated synchronous protocols we analyze them in t
 
 $^+$ For OptSync, in steady state, we describe the latency for the optimistic case as well as the regular case.
 
-$^{++}$ For the work on optimal good-case latency, we have $m \geq 1$. The latency is described assuming an *unsynchronized start* between different parties. If different parties start at the same time, the latency is $(1+\frac{1}{2m})\Delta + \delta$. In both cases, the latencies are optimal when $m \rightarrow \infty$.
+$^{++}$ For the work on optimal good-case latency, we have $m \geq 1$. The parameters are described assuming an *unsynchronized start* between different parties. The latency is optimal when $m \rightarrow \infty$. If different parties start at the same time, the latency is $\Delta + \delta$ and communication complexity is $O(n^3)$.
 
 **Lock-step execution vs. bounded-message delay.** As can be seen in the latency column, lock-step protocols express latency in terms of \#rounds, whereas non-lock-step protocols in terms of $\Delta$.
 This distinction is minor in theory (or asymptotically) because one can obtain lock-step execution from a bounded message delay assumption, by merely using a *clock synchronization* protocol such as [Dolev et al.](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.499.2250&rep=rep1&type=pdf) and [Abraham et al.](https://eprint.iacr.org/2018/1028.pdf).
