@@ -89,3 +89,6 @@ In our **[good-case latency paper](https://arxiv.org/abs/2102.07240)**, we argue
 
 {: .box-note}
 At the time when writing this post, we noticed a concurrent work by Petr Kuznetsov, Andrei Tonkikh, and Yan X Zhang titled "[**Revisiting Optimal Resilience of Fast Byzantine Consensus**](https://arxiv.org/abs/2102.12825)" that independently obtains almost the same set of results mentioned in this post, though stated for the problem formulation of Byzantine agreement instead of broadcast. We believe the protocols and lower bound proofs in the above work and [our work](https://arxiv.org/abs/2102.07240) (the partial synchrony part) share very similar intuition and construction, and can actually imply one another.
+
+
+Please answer/discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1367143317687963651?s=20).
