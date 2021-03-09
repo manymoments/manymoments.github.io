@@ -58,7 +58,8 @@ For the practical side, the investigation on good-case latency leads to **better
 
 
 ## Protocols and Impossibility Proofs
-Stay tuned for our next post!
+Check out our [next post](https://decentralizedthoughts.github.io/2021-03-03-2-round-bft-smr-with-n-equals-4-f-equals-1/) and the [next one](https://decentralizedthoughts.github.io/2021-03-09-good-case-latency-of-byzantine-broadcast-the-synchronous-case/)!
 
+Please answer/discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1366106073145442304?s=20).
 
 
