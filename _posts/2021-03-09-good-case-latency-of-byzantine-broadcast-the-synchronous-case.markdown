@@ -1,7 +1,6 @@
 ---
 title: 'Good-case Latency of Byzantine Broadcast: the Synchronous Case'
 date: 2021-03-09 11:00:00 -05:00
-published: false
 tags:
 - lowerbound
 - synchronous protocols
