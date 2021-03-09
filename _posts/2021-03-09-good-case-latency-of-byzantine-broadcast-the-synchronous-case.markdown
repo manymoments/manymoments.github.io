@@ -79,3 +79,7 @@ The $(\Delta+1.5\delta)$-BB protocol is in fact optimal in terms of latency for 
 | $n/2\leq f<n$ |           $(\lfloor \frac{n}{n-f}\rfloor)\Delta$           |                  $O(\frac{n}{n-f})\Delta$                  |
 
 \* The $\Delta+1.5\delta$ result assumes an unsynchronized start between different parties. If different parties start at the same time (have perfectly synchronized clocks), the optimal good-case latency is $\Delta+\delta$ for this case. 
+
+
+
+Please answer/discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1369327021831168000).
