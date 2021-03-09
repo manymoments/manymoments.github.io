@@ -7,4 +7,4 @@ gem "github-pages", '193', group: :jekyll_plugins
 gem 'jekyll-paginate'
 
 # add emoji
-gem 'gemoji'
+gem 'jekyll-emoji'
