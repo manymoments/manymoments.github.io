@@ -28,8 +28,7 @@ The Prover has an input $S=\langle s_0,\dots,s_{d-1}\rangle $ which is a vector 
 > Is $S$ the all-zero vector or not?
 
 We will assume the only way the Prover and Verifier can interact is via a special communication channel we will call the *virtual cloud*:
-1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$(d-1)$ polynomial $g(x) = \sum\_{i\in[0,d-1]} s\_i \prod\_{j\in[0, d-1], j\ne i} \frac{x - s\_j}{s\_i - s\_j}$ to the virtual cloud. Note that for all $0\leq i \leq d-1$ we have $g(i) = s_i$. This polynomial $g$ is the [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$. 
-
+1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$(d-1)$ polynomial $g(x) = \sum\_{i\in[0,d-1]} s\_i \prod\_{j\in[0, d-1], j\ne i} \frac{x - j}{i - j}$ to the virtual cloud. Note that for all $0\leq i \leq d-1$ we have $g(i) = s_i$. This polynomial $g$ is the [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$. 
 
 2. The Verifier is allowed to *query* the virtual cloud by sending it an element $r$ and the virtual cloud responds back with $g(r)$, the evaluation of $r$ on $g$.
 
@@ -80,7 +79,7 @@ A major complaint against this scheme is the strange communication mechanism.
 3. Finally, recall that we needed $d\ll p$. There is sometimes a challenge in forcing the Prover to use a degree-at-most-$d$ polynomial and not one of higher degree. Again we will see techniques in later posts to force the Prover to use a low degree polynomial.
 
 ### Acknoledgments
-Thank you [Radu Grigore](http://rgrig.appspot.com/) for pointing out typos and helping improve this post.
+We thank [Radu Grigore](http://rgrig.appspot.com/) for pointing out typos and helping improve this post.
 
 
 Please answer/discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1336363509492424704?s=20).
