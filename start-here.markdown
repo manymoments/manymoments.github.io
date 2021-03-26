@@ -40,6 +40,10 @@ One of the core challenges in fault-tolerant distributed computing is Asynchrony
 
 - FLP lower bound: Consensus must have some initial state that is [uncommitted](/2019-12-15-consensus-model-for-FLP/) and this imples [executions with at least $f+1$ rounds in Synchrony](/2019-12-15-synchrony-uncommitted-lower-bound/) and [non-terminating executions in Asynchrony](/2019-12-15-asynchrony-uncommitted-lower-bound/) (the FLP impossibility).
 
+- BKR lower bound: Asynchronous Verifiable Secret Sharing must have a [non-zero probability of not terminating] (https://decentralizedthoughts.github.io/2020-07-15-asynchronous-fault-tolerant-computation-with-optimal-resilience/).
+
+- Raft does not guarantee liveness under [omission faults] (https://decentralizedthoughts.github.io/2020-12-12-raft-liveness-full-omission/).
+
 # Blockchains
 
 What was the [first blockchain (or how to timestamp a digital document)](/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/)?  Do Proof of work Blockchains need any [setup assumptions?](/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/), what [checkpointing a blockchain](/2019-09-13-dont-trust-checkpoint/) mean?  A simple security proof for [Nakamoto Consensus](/2019-11-29-Analysis-Nakamoto/). What is the problem of [Selfish Mining](/2020-02-26-selfish-mining/)? The simplest L2 solution is a [Payment Channel](/2019-10-25-payment-channels-are-just-a-two-person-bfs-smr-systems/).
