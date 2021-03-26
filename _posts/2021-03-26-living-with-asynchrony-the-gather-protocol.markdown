@@ -74,5 +74,5 @@ Each party sends a single broadcast (which requires $O(n^2)$ words), requiring $
 In future posts, we will talk about how to enhance the Gather protocol even further: add binding properties, add verification properties and see how cryptography can help... stay tuned!
 
 
-Please answer/discuss/comment/ask on [Twitter](...). 
+Please answer/discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1375454545103499264?s=20).  
 
