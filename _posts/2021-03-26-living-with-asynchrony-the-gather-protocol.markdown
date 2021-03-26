@@ -7,16 +7,23 @@ published: false
 A very useful tool in the field of [asynchronus](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) distributed computing is [reliable broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/), or simply called *broadcast*. It allows parties to send and receive messages, knowing that other parties will receive the same messages as well, even if a malicious adversary control $f$ parties and $f<n/3$. Broadcast is deterministic and takes just a constant number of rounds. 
 
 
-A natural extension of broadcast is a *multi-broadcast*, where each party has an input. Ideally, you may want all parties to *agree on the same set* of outputs - but this primitive, called *Agreement on a Core Set* (ACS) requires to solve consensus in asynchrony, [which we know cannot be done deterministically](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/). Running ACS tyoically also incurs high costs, as $n$ binary agreemtns are required.
+A natural extension of broadcast is a *multi-broadcast*, where each party has an input. Ideally, you may want all parties to *agree on the same set* of outputs - but this primitive, called *Agreement on a Core Set* (ACS) requires to solve consensus in asynchrony, [which we know cannot be done deterministically](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/). Running ACS typically also incurs high costs, as $n$ binary agreements are required.
 
 
 
-In this post we explore the suprising alternative, called **Gather**. To the best of our knowledge this primitive first appeared as the main building block in Cannetti and Rabin's [Asynchronouys Byzantine Agreemnt protocol](https://www.net.t-labs.tu-berlin.de/~petr/FDC-07/papers/CR93.pdf). This primitive has been used in [asynchronous approaximate agreement](https://www.cs.huji.ac.il/~ittaia/papers/AAD-OPODIS04.pdf) and Asuncjhroonous Distributed Key Generation. 
+In this post, we explore a surprising alternative, called **Gather** which runs in a constant number of rounds. To the best of our knowledge, this primitive first appeared as the main building block in Cannetti and Rabin's [Asynchronouys Byzantine Agreement protocol](https://www.net.t-labs.tu-berlin.de/~petr/FDC-07/papers/CR93.pdf). This primitive has many uses, for example in [asynchronous approximate agreement](https://www.cs.huji.ac.il/~ittaia/papers/AAD-OPODIS04.pdf) and [Asynchronous Distributed Key Generation](https://arxiv.org/abs/2102.09041). 
 
 
-In a gather protocol, each party has an input, and all parties output sets of received values and the parties who sent them (i.e. of pairs $(j,x)$ where $j$ is the index of a party, and $x$ is the value it sent). In addition, there exists some core set $S^*$ of size at least $n-f$ that all nonfaulty parties include in their outputs. In order to avoid trivial solutions, if a nonfaulty party includes $(j,x_j)$ in its output, and $j$ is a nonfaulty party, then $x_j$ must be $j$'s input. Furthermore, all parties that include some pair for a party $j$ agree on the value it sent. More precisely, if two nonfaulty parties include the pairs $(j,x)$ and $(j,x')$ in their outputs, then $x=x'$. At first glance it seems like we are somehow cheating: the parties still agree on the core set and can just output it instead. The crucial observation here is that all parties output sets including $S^*$, but they don't necessarily know what $S^*$ is and can't output it instead.
+In a gather protocol, each party has an input, and all parties output sets of received values and the parties who sent them (i.e. of pairs $(j,x)$ where $j$ is the index of a party, and $x$ is the value it sent). The properties are:
 
-The following protocol is actually a little stronger than described above, and it achieves a binding property that we will describe later.
+
+1. **Core**: There exists some **core** set $S^*$ of size at least $n-f$ that all nonfaulty parties include in their outputs. 
+
+2. **Validity**: If a nonfaulty party includes $(j,x_j)$ in its output, and $j$ is a nonfaulty party, then $x_j$ must be $j$'s input. 
+
+3. **Agreement**: All parties that include some pair for a party $j$ agree on the value it sent. More precisely, if two nonfaulty parties include the pairs $(j,x)$ and $(j,x')$ in their outputs, then $x=x'$. 
+
+At first glance, it may seem as if Gather is solving agreement, but that is not the case!  The crucial observation is that all parties output a set that includes $S^*$, but they don't necessarily know what $S^*$ is!
 
 ## The basic Gather protocol
 
@@ -28,12 +35,12 @@ We will define $x_i$ to be party $i$'s input. Since this protocol uses broadcast
 4. When receiving a message $T_j$ from party $j$, accept the message after receiving the broadcast $x_k$ from $k$ for every $(k,x_k)\in T_j$. After accepting $n-f$ sets $T_j$, output $U_i=\cup T_j$.
 
 See the similarity in rounds 3 and 4? it may seem like adding another identical round doesn't do much, but we will see that is not the case at all.
-Lets try to understand the protocol gradually and see what each round adds to the process.
+Let's try to understand the protocol gradually and see what each round adds to the process.
 
 ## Round breakdown
 
 ### Rounds 1-2
-We start off by broadcasting values (via reliable broadcast), then collect $n-f$ broadcasted vause and send them as a set. The property we obtain is that *if an honest party accepts some set then eventually all honest parties will accept that set*. This propoerty is key for the livness of the protocol.
+We start off by broadcasting values (via reliable broadcast), then collect $n-f$ broadcasted values and send them as a set. The property we obtain is that *if an honest party accepts some set then eventually all honest parties will accept that set*. This property is key for the liveness of the protocol.
 
 
 ### Round 3
@@ -54,11 +61,11 @@ We use the weak core property to achieve a common core in one more round.
 
 * **Common core**: There exists a round 2 set $S^*$ sent by a nonfualty party that all nonfaulty parties include in their $U$ sets. 
 
-By weak core, there is a set $S^*$ that at least $|W|=f+1$ nonfaulty parties include $S^*$ in their round 3 sets. Every nonfaulty party computes their round 4 sets as a union of $n-f$ round 3 sets. At least one such set must have come from $W$, hence $U$ mucst include $S^*$.
+By weak core, there is a set $S^*$ that at least $|W|=f+1$ nonfaulty parties include $S^*$ in their round 3 sets. Every nonfaulty party computes their round 4 sets as a union of $n-f$ round 3 sets. At least one such set must have come from $W$, hence $U$ must include $S^*$.
 
 
-## How many words does gather use?
+## Gather protocol complexity
 
-Each party sends a single broadcast, requiring $O(n^3)$ words to be sent overall. In addition we have a constant number of all-to-all communication rounds in which parties send sets of $O(n)$ elements to each other. This also totals in $O(n^3)$ words sent overall. This brings our sum-total to $O(n^3)$ words sent overall.
+Each party sends a single broadcast (which requires $O(n^2)$ words), requiring $O(n^3)$ words to be sent overall. In addition, we have a constant number of all-to-all communication rounds in which parties send sets of $O(n)$ elements to each other. This also totals in $O(n^3)$ words sent overall. This brings our sum-total to $O(n^3)$ words sent overall.
 
-In future posts we will talk about how to enhance this protocol even further: add binding propoerties, add verification propoweries and see hoow cryptography can help... stay tuned!
+In future posts we will talk about how to enhance this protocol even further: add binding properties, add verification properties and see how cryptography can help... stay tuned!
