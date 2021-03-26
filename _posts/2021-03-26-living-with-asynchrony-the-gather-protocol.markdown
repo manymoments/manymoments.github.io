@@ -68,4 +68,4 @@ By weak core, there is a set $S^*$ that at least $|W|=f+1$ nonfaulty parties inc
 
 Each party sends a single broadcast (which requires $O(n^2)$ words), requiring $O(n^3)$ words to be sent overall. In addition, we have a constant number of all-to-all communication rounds in which parties send sets of $O(n)$ elements to each other. This also totals in $O(n^3)$ words sent overall. This brings our sum-total to $O(n^3)$ words sent overall.
 
-In future posts we will talk about how to enhance this protocol even further: add binding properties, add verification properties and see how cryptography can help... stay tuned!
+In future posts, we will talk about how to enhance this protocol even further: add binding properties, add verification properties and see how cryptography can help... stay tuned!
