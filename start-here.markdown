@@ -4,7 +4,7 @@ date: 2020-09-21 09:34:00 -04:00
 ---
 
 {: .box-note}
-this page is a dynamically changing index of all our posts, it's one more place to start reading Decentralized Thoughts
+this page is a dynamically changing index of all our posts, it's one more place to start reading Decentralized Thoughts (you can read chronologically [here](https://decentralizedthoughts.github.io/)).
 
 # Basics, Foundations, and Classics
 
@@ -86,5 +86,7 @@ More advanced:
 - Good-case Latency of Byzantine Broadcast: [the Synchronous Case](https://decentralizedthoughts.github.io/2021-03-09-good-case-latency-of-byzantine-broadcast-the-synchronous-case/) and [a Complete Categorization](https://decentralizedthoughts.github.io/2021-02-28-good-case-latency-of-byzantine-broadcast-a-complete-categorization/).
 
 - [2-round BFT SMR with n=4, f=1](https://decentralizedthoughts.github.io/2021-03-03-2-round-bft-smr-with-n-equals-4-f-equals-1/).
+
+
 
 
