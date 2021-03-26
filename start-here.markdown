@@ -43,16 +43,7 @@ One of the core challenges in fault-tolerant distributed computing is Asynchrony
 
 # Blockchains
 
-- [The first blockchain (or how to timestamp a digital document)](/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/).
-
-- [Setup assumptions in Bitcoin and Ethereum](/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/) and the notion of [checkpointing a blockchain](/2019-09-13-dont-trust-checkpoint/). 
-
-- [Security analysis of Nakamoto Consensus](/2019-11-29-Analysis-Nakamoto/)
-
-
-- [Blockchain Selfish Mining](/2020-02-26-selfish-mining/). 
-
-- [Payment Channels](/2019-10-25-payment-channels-are-just-a-two-person-bfs-smr-systems/)
+What was the [first blockchain (or how to timestamp a digital document)](/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/)?  Do Proof of work Blockchains need any [setup assumptions?](/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/), what [checkpointing a blockchain](/2019-09-13-dont-trust-checkpoint/) mean?  A simple security proof for [Nakamoto Consensus](/2019-11-29-Analysis-Nakamoto/). What is the problem of [Selfish Mining](/2020-02-26-selfish-mining/)? The simplest L2 solution is a [Payment Channel](/2019-10-25-payment-channels-are-just-a-two-person-bfs-smr-systems/).
 
 # Cryptography
 
@@ -69,17 +60,17 @@ More advanced:
 
 - Private set intersection: [part 1](/2020-03-29-private-set-intersection-a-soft-introduction/) and [part 2](/2020-07-26-private-set-intersection-2/)
 
-# Research
+# Research oriented posts
 
 - [What is the difference between PBFT, Tendermint, SBFT, and HotStuff ?](/2019-06-23-what-is-the-difference-between/)
 
-- [Survay of modern Authenticated Synchronous BFT protocols](/2019-11-11-authenticated-synchronous-bft/)
+- [Survay of modern Authenticated Synchronous BFT protocols](/2019-11-11-authenticated-synchronous-bft/) (updated in march 2021).
 
-- [Sync HotStuff](/2019-11-12-Sync-HotStuff/)
+- [Sync HotStuff](/2019-11-12-Sync-HotStuff/).
 
-- [Streamlet](/2020-05-14-streamlet/)
+- [Streamlet](/2020-05-14-streamlet/).
 
-- [Optimal Optimistic Responsivness](/2020-06-12-optimal-optimistic-responsiveness/)
+- [Optimal Optimistic Responsivness](/2020-06-12-optimal-optimistic-responsiveness/).
 
 - Encrypted Blockchain Databases [part 1](/2020-07-10-encrypted-blockchain-databases-part-i/) and [part 2](/2020-07-10-encrypted-blockchain-databases-part-ii/).
 
@@ -91,6 +82,6 @@ More advanced:
 
 - Good-case Latency of Byzantine Broadcast: [the Synchronous Case](https://decentralizedthoughts.github.io/2021-03-09-good-case-latency-of-byzantine-broadcast-the-synchronous-case/) and [a Complete Categorization](https://decentralizedthoughts.github.io/2021-02-28-good-case-latency-of-byzantine-broadcast-a-complete-categorization/).
 
-- [2-round BFT SMR with n=4, f=1](https://decentralizedthoughts.github.io/2021-03-03-2-round-bft-smr-with-n-equals-4-f-equals-1/)
+- [2-round BFT SMR with n=4, f=1](https://decentralizedthoughts.github.io/2021-03-03-2-round-bft-smr-with-n-equals-4-f-equals-1/).
 
--
+
