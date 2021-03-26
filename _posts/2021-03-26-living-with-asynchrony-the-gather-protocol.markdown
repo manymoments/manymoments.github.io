@@ -14,7 +14,7 @@ A natural extension of broadcast is a *Multi-Broadcast*, where each party has an
 
 
 
-In this post, we explore a surprising alternative, called **Gather** which runs in a constant number of rounds. To the best of our knowledge, this primitive first appeared as the main building block in Canetti and Rabin's [Asynchronouys Byzantine Agreement protocol](https://www.net.t-labs.tu-berlin.de/~petr/FDC-07/papers/CR93.pdf). This primitive has many uses, for example in [Asynchronous Approximate Agreement](https://www.cs.huji.ac.il/~ittaia/papers/AAD-OPODIS04.pdf) and in [Asynchronous Distributed Key Generation](https://arxiv.org/abs/2102.09041). 
+In this post, we explore a surprising alternative, called **Gather** which runs in a constant number of rounds. To the best of our knowledge, this primitive first appeared as the main building block in Canetti and Rabin's [Asynchronous Byzantine Agreement protocol](https://www.net.t-labs.tu-berlin.de/~petr/FDC-07/papers/CR93.pdf). This primitive has many uses, for example in [Asynchronous Approximate Agreement](https://www.cs.huji.ac.il/~ittaia/papers/AAD-OPODIS04.pdf) and in [Asynchronous Distributed Key Generation](https://arxiv.org/abs/2102.09041). 
 
 
 In a Gather protocol, each party has an input, and each party outputs a set of received values and the parties who sent them (i.e. of pairs $(j,x)$ where $j$ is the index of a party, and $x$ is the value it sent). The properties are:
