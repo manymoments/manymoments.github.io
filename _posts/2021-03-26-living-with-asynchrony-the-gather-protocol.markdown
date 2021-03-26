@@ -22,13 +22,13 @@ In this post, we explore a surprising alternative, called **Gather** which runs 
 In a Gather protocol, each party has an input, and each party outputs a set of received values and the parties who sent them (i.e. of pairs $(j,x)$ where $j$ is the index of a party, and $x$ is the value it sent). The properties are:
 
 
-1. **Common core**: There exists a **core** set $S^{\*}$ of size at least $n-f$ such that all nonfaulty parties include $S^*$ in their output set. 
+1. **Common core**: There exists a **core** set $S$ of size at least $n-f$ such that all nonfaulty parties include $S$ in their output set. 
 
 2. **Validity**: If a nonfaulty party includes $(j,x_j)$ in its output set, and $j$ is a nonfaulty party, then $x_j$ must be $j$'s input. 
 
 3. **Agreement**: All parties that include some pair for a party $j$ agree on the value it sent. More precisely, if two nonfaulty parties include the pairs $(j,x)$ and $(j,x')$ in their outputs, then $x=x'$. 
 
-At first glance, it may seem as if Gather is solving agreement, but that is not the case!  The crucial observation is that all parties output a set that includes the core $S^{*}$ but they don't necessarily know what $S^{*}$ is.
+At first glance, it may seem as if Gather is solving agreement, but that is not the case!  The crucial observation is that all parties output a set that includes the core $S$ but they don't necessarily know what $S*$ is.
 
 ## The basic Gather protocol
 
