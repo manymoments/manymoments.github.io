@@ -4,7 +4,7 @@ date: 2021-03-26 06:54:00 -04:00
 tags:
 - dist101
 - asynchrony
-Authors:
+Author:
 - Gilad Stern
 - Ittai Abraham
 ---
