@@ -40,9 +40,9 @@ One of the core challenges in fault-tolerant distributed computing is Asynchrony
 
 - FLP lower bound: Consensus must have some initial state that is [uncommitted](/2019-12-15-consensus-model-for-FLP/) and this imples [executions with at least $f+1$ rounds in Synchrony](/2019-12-15-synchrony-uncommitted-lower-bound/) and [non-terminating executions in Asynchrony](/2019-12-15-asynchrony-uncommitted-lower-bound/) (the FLP impossibility).
 
-- BKR lower bound: Asynchronous Verifiable Secret Sharing must have a [non-zero probability of not terminating] (https://decentralizedthoughts.github.io/2020-07-15-asynchronous-fault-tolerant-computation-with-optimal-resilience/).
+- BKR lower bound: Asynchronous Verifiable Secret Sharing must have a [non-zero probability of not terminating](https://decentralizedthoughts.github.io/2020-07-15-asynchronous-fault-tolerant-computation-with-optimal-resilience/).
 
-- Raft does not guarantee liveness under [omission faults] (https://decentralizedthoughts.github.io/2020-12-12-raft-liveness-full-omission/).
+- Raft does not guarantee liveness under [omission faults](https://decentralizedthoughts.github.io/2020-12-12-raft-liveness-full-omission/).
 
 # Blockchains
 
