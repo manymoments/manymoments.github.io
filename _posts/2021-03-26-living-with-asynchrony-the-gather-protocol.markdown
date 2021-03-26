@@ -26,7 +26,7 @@ In a Gather protocol, each party has an input, and each party outputs a set of r
 
 3. **Agreement**: All parties that include some pair for a party $j$ agree on the value it sent. More precisely, if two nonfaulty parties include the pairs $(j,x)$ and $(j,x')$ in their outputs, then $x=x'$. 
 
-At first glance, it may seem as if Gather is solving agreement, but that is not the case!  The crucial observation is that all parties output a set that includes the core $S^{*}$ but they don't necessarily know what $S^{*}$ is.
+At first glance, it may seem as if Gather is solving agreement, but that is not the case!  The crucial observation is that all parties output a set that includes the core $S^{\*}$ but they don't necessarily know what $S^{\*}$ is.
 
 ## The basic Gather protocol
 
