@@ -20,7 +20,11 @@ One of the classic protocols of distributed computing is the [Dolev-Strong Authe
 
 We begin by defining [State Machine Replication](/2019-10-15-consensus-for-state-machine-replication/) (SMR) and talk about different degrees of [SMR fault tolerance](/2019-10-25-flavours-of-state-machine-replication/). The scalability and performance of a State Machine Replication system is not just about [Consensus, but also about Data and Execution](/2019-12-06-dce-the-three-scalability-bottlenecks-of-state-machine-replication/).
 
-We start with a [simple SMR for crash failures](/2019-11-01-primary-backup/). We later extend this to omission failures. [First via single shot](/2020-09-13-synchronous-consensus-omission-faults/).
+We start with a [simple SMR for crash failures](/2019-11-01-primary-backup/). We later extend this to omission failures. [First via single shot](/2020-09-13-synchronous-consensus-omission-faults/) and then via the [Lock-commit](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/) paradigm to [multi-shot consensus](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/).
+
+# Living with Asynchrony
+
+One of the core challenges in fault-tolerant distributed computing is Asynchrony. The classic [FLP lower bound](/2019-12-15-consensus-model-for-FLP/) is a fundamental result. The basic building blocks are [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/) and [Gather](https://decentralizedthoughts.github.io/2021-03-26-living-with-asynchrony-the-gather-protocol/). 
 
 
 # Lower Bounds
@@ -54,17 +58,14 @@ We start with a [simple SMR for crash failures](/2019-11-01-primary-backup/). We
 
 The basics:
 
-- [Cryptographic hash function](/2020-08-28-what-is-a-cryptographic-hash-function/)
+- [Cryptographic hash function](/2020-08-28-what-is-a-cryptographic-hash-function/) and [Merkle Trees](https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/)
 
-- [Polynomials over a finite field](/2020-07-17-the-marvels-of-polynomials-over-a-field/)
-
-- [Polinomial secret sharing](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/).
+- [Polynomials over a finite field](/2020-07-17-the-marvels-of-polynomials-over-a-field/) and their use for [Polinomial secret sharing](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) and even [Zero knowledge proofs](https://decentralizedthoughts.github.io/2020-12-08-a-simple-and-succinct-zero-knowledge-proof/)
 
 More advanced:
 
 - [Bilinear Accumulators](/2020-04-01-bilinear-accumulators-for-cryptocurrency/) and [range proofs](/2020-03-02-range-proofs-from-polynomial-commitments-reexplained/).
 
-- [A simple and succinct zero-knowledge proof](/2020-12-08-a-simple-and-succinct-zero-knowledge-proof)
 
 - Private set intersection: [part 1](/2020-03-29-private-set-intersection-a-soft-introduction/) and [part 2](/2020-07-26-private-set-intersection-2/)
 
