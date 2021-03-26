@@ -49,7 +49,7 @@ We start off by Broadcasting values (via Reliable Broadcast), then collect $n-f$
 The first non-trivial property we achieve happens after nonfaulty parties accept $n-f$ $S$ sets:
 
 * **Weak core**: Let $G$ be the $n-f$ first nonfaulty parties that complete round 3. There exists a round 2 set $S^{\*}$ sent by a nonfaulty party such that $f+1$ nonfaulty parties include $S^{\*}$ in their $T$ sets.
-More formally: there exists a set $W \subset G$ of size $|W|=f+1$, such that for any $i\in W$, $S^{\*}\subseteq T_i$. 
+More formally: there exists a set $W \subset G$ of size $\|W\|=f+1$, such that for any $i\in W$, $S^{\*}\subseteq T_i$. 
 
 
 Lets count how many sets are received by $G$ that are sent from nonfaulty parties in round 2. Since each party in $G$ gathers $n-f$ sets in round 3, then at least $n-2f$ of those set were sent from nonfaulty parties. By assumption $f<\frac{n}{3}$, so $n-2f\geq f+1$. Hence, each nonfaulty party in $G$ receives round 2 sets from at least $f+1$ nonfaulty parties. In total, parties in $G$ receive *at least* $(f+1)(n-f)$ round 2 sets.
@@ -64,7 +64,7 @@ We use the weak core property to achieve a common core in one more round.
 
 * **Common core**: There exists a round 2 set $S^{\*}$ sent by a nonfaulty party that all nonfaulty parties include in their $U$ sets. 
 
-By the weak core property, there is a set $S^{\*}$  such that at least $|W|=f+1$ nonfaulty parties include $S^{\*}$ in their round 3 sets. Every nonfaulty party computes their round 4 sets as a union of $n-f$ round 3 sets. At least one such set must have come from $W$, hence $U$ must include $S^{\*}$. Note that $S^{\*}$ is of size $n-f$ or greater because nonfaulty parties wait for their round 2 sets to be of that size before sending them. This means that our common core also fulfills our size requirement.
+By the weak core property, there is a set $S^{\*}$  such that at least $\|W\|=f+1$ nonfaulty parties include $S^{\*}$ in their round 3 sets. Every nonfaulty party computes their round 4 sets as a union of $n-f$ round 3 sets. By quorum intersection of $n-f$ and $f+1$, at least one such set must have come from $W$, hence $U$ must include $S^{\*}$. Note that $S^{\*}$ is of size $n-f$ or greater because nonfaulty parties wait for their round 2 sets to be of that size before sending them. This means that our common core also fulfills our size requirement.
 
 
 ## Gather protocol complexity
