@@ -1,7 +1,6 @@
 ---
 title: 'Living with Asynchrony: the Gather protocol'
 date: 2021-03-26 06:54:00 -04:00
-published: false
 tags:
 - dist101
 - asynchrony
@@ -10,7 +9,7 @@ Authors:
 - Ittai Abraham
 ---
 
-A very useful tool in [Asynchronus](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) distributed computing is [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/), or simply called *Broadcast*. It allows parties to send and receive messages, knowing that other parties will receive the same messages as well, even if a malicious adversary control $f$ parties and $f<n/3$. Broadcast is deterministic and takes just a constant number of rounds. 
+A very useful tool in [Asynchronus](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) distributed computing is [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/), or simply called *Broadcast*. It allows a leader to send a message, knowing that all parties will eventually receive the same message, even if a malicious adversary control $f$ parties and $f<n/3$. Broadcast is deterministic and takes just a constant number of rounds. 
 
 
 A natural extension of broadcast is a *Multi-Broadcast*, where each party has an input. Ideally, you may want all parties to *agree on the same set* of outputs - but this primitive, called *Agreement on a Core Set* (ACS, see [Canetti](http://www.cs.technion.ac.il/users/wwwb/cgi-bin/tr-get.cgi/1993/CS/CS0755.pdf) page 15), requires to solve Consensus in asynchrony, [which we know must have infinite executions](https://decentralizedthoughts.github.io/2019-12-15z-asynchrony-uncommitted-lower-bound/). Running ACS typically also incurs high costs, as $n$ binary agreements are required.
@@ -23,7 +22,7 @@ In this post, we explore a surprising alternative, called **Gather** which runs 
 In a Gather protocol, each party has an input, and each party outputs a set of received values and the parties who sent them (i.e. of pairs $(j,x)$ where $j$ is the index of a party, and $x$ is the value it sent). The properties are:
 
 
-1. **Common core**: There exists some **core** set $S^*$ of size at least $n-f$ such that all nonfaulty parties include $S^*$ in their output set. 
+1. **Common core**: There exists a **core** set $S^*$ of size at least $n-f$ such that all nonfaulty parties include $S^*$ in their output set. 
 
 2. **Validity**: If a nonfaulty party includes $(j,x_j)$ in its output set, and $j$ is a nonfaulty party, then $x_j$ must be $j$'s input. 
 
@@ -51,11 +50,11 @@ We start off by Broadcasting values (via Reliable Broadcast), then collect $n-f$
 ### Round 3
 The first non-trivial property we achieve happens after nonfaulty parties accept $n-f$ $S$ sets:
 
-* **Weak core**: Let $G$ be the $n-f$ first nonfaulty that complete round 3. There exists a round 2 set $S^*$ sent by a nonfaulty party such that $f+1$ nonfaulty parties include $S^*$ in their $T$ sets.
+* **Weak core**: Let $G$ be the $n-f$ first nonfaulty parties that complete round 3. There exists a round 2 set $S^*$ sent by a nonfaulty party such that $f+1$ nonfaulty parties include $S^*$ in their $T$ sets.
 More formally: there exists a set $W \subset G$ of size $|W|=f+1$, such that for any $i\in W$, $S^*\subseteq T_i$. 
 
 
-We count how many sets are received by $G$ that are sent from nonfaulty parties in round 2. Since each party in $G$ gathers $n-f$ sets in round 3, then at least $n-2f$ of those set were sent from nonfaulty parties. By assumption $f<\frac{n}{3}$, so $n-2f\geq f+1$. So, each nonfaulty party in $G$ receives round 2 sets from at least $f+1$ nonfaulty parties. In total, parties in $G$ receive *at least* $(f+1)(n-f)$ round 2 sets.
+Lets count how many sets are received by $G$ that are sent from nonfaulty parties in round 2. Since each party in $G$ gathers $n-f$ sets in round 3, then at least $n-2f$ of those set were sent from nonfaulty parties. By assumption $f<\frac{n}{3}$, so $n-2f\geq f+1$. Hence, each nonfaulty party in $G$ receives round 2 sets from at least $f+1$ nonfaulty parties. In total, parties in $G$ receive *at least* $(f+1)(n-f)$ round 2 sets.
 
 Assume the property above is false, so every round 2 set from a nonfaulty party is received by at most $f$ nonfaulty parties in $G$. This means that the total number of rounds 2 sets from nonfaulty parties that are received by nonfaulty parties is *at most* *$f(n-f)$*. This is a contradiction (clearly $f(n-f)<(f+1)(n-f)$).
 
@@ -67,7 +66,7 @@ We use the weak core property to achieve a common core in one more round.
 
 * **Common core**: There exists a round 2 set $S^*$ sent by a nonfaulty party that all nonfaulty parties include in their $U$ sets. 
 
-By weak core, there is a set $S^*$ that at least $|W|=f+1$ nonfaulty parties include $S^*$ in their round 3 sets. Every nonfaulty party computes their round 4 sets as a union of $n-f$ round 3 sets. At least one such set must have come from $W$, hence $U$ must include $S^*$. Note that $S^*$ is of size $n-f$ or greater because nonfaulty parties wait for their round 2 sets to be of that size before sending them. This means that our common core also fulfills our size requirement.
+By the weak core property, there is a set $S^*$  such that at least $|W|=f+1$ nonfaulty parties include $S^*$ in their round 3 sets. Every nonfaulty party computes their round 4 sets as a union of $n-f$ round 3 sets. At least one such set must have come from $W$, hence $U$ must include $S^*$. Note that $S^*$ is of size $n-f$ or greater because nonfaulty parties wait for their round 2 sets to be of that size before sending them. This means that our common core also fulfills our size requirement.
 
 
 ## Gather protocol complexity
