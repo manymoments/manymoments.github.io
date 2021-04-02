@@ -134,8 +134,9 @@ The commit rule requires the view $v$ Primary to gather $n{-}f$ votes on the sam
 Note that the path from $highestBlock$ to the genesis consists of a sub-path of un-committed blocks and a sub-path from the $commitMark$ to the genesis of committed blocks. During State Transfer, replicas can safely exchange the $commitMark$ and any missing blocks on this path. 
 
 
-The "goto" message is used to synchronize the replicas. We could have the Primary send it every round but chose to optimize it away in the synchronized failure free case.
-
-For simplicity, the commit rule above commits a block $A$ when the Primary gathers $n{-}f$ votes of *exactly* block $A$. Due to "goto" messages, some views may be skipped. We may relax this commit rule and commit a block $B$ when  $n{-}f$ votes arrive, where each block is either $B$ or *extends* $B$. In the safety claim, view $v$ would be the first view for which there are $n{-}f$ replicas such that for each member: their $highestBlock$ is either $B$ or extends $B$ at the beginning of the first view that they participate in after view $v$. 
+The "goto" message is used to synchronize the replicas. We could have the Primary send it every round but chose to optimize it away in the synchronized failure free case. 
 
 We describe Benign Hotstuff as a system for replicating a log, but the same can be used to implement any [replicated state machine](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/).
+
+
+Please answer/discuss/comment/ask on [Twitter](...).  
