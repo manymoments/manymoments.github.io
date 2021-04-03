@@ -1,7 +1,6 @@
 ---
 title: Benign Hotstuff
 date: 2021-04-02 05:54:00 -04:00
-published: false
 tags:
 - dist101
 - blockchain101
@@ -56,7 +55,7 @@ Initially, each replica executes "Change to view 0".
 1. The Primary of view $v$:
     1. Gathers vote messages for view $v$ and updates $highestBlock$ to be the block with the highest view. As part of *State Transfer*: If the vote message points to earlier blocks that the Primary does not have it asks for them.
     2. If $n-f$ vote messages for view $v$ do not arrive by $\Delta$ time, the Primary can send $($**"goto"**$, v)$ to all replicas.
-    4. Once $n-f$ votes for view $v$ arrive
+    4. Once $n-f$ votes for view $v$ arrive:
         1. The Primary creates a proposal block $B=(cmd, v, highestBlock)$ to extend the blockChain, where $cmd$ is from the clients.
         2. **Commit rule**: If $n-f$ votes for view $v$  have the same $highestBlock$ then the Primary increments its $commitMark$ to be $highestBlock$.
         3. The Primary sends $($**"propose"**$, B, commitMark)$ to all replicas.
@@ -85,7 +84,7 @@ Observe that orphan blocks (and even orphan sub-trees) may occur and represent p
 ![](https://i.imgur.com/EmKTWP7.jpg)
 
 
-In the second example below, Primary 0 sends a proposal, and all replicas vote for it. The Primary of view 1 sees $n{-}f$ votes for block 0, so it updates $commitBlock$ to point to block 0 and forwards this along with the proposal of block 1. Then replica 2 which is the Primary crashes. Here we assume that the timer $T_2$ of replica 0 expires much sooner and it switches to view 3. As replica 2 crashed and replica 1 is still in view 2, replica 3 does not receive $n{-}f=2$ votes, so it sends a "goto" message. This message causes replica 2 to move to view 3 and allows replica 0 to gather $n{-}f=2$ votes for view 3 and move the $commitMark$ to block 1.
+In the second example below, Primary 0 sends a proposal, and all replicas vote for it. The Primary of view 1 sees $n{-}f$ votes for block 0, so it updates $commitBlock$ to point to block 0 and forwards this along with the proposal of block 1. Then replica 2 which is the Primary of. view 2 crashes. Here we assume that the timer $T_2$ of replica 0 expires much sooner and it switches to view 3. As replica 2 crashed and replica 1 is still in view 2, replica 3 does not receive $n{-}f=2$ votes, so it sends a "goto" message. This message causes replica 2 to move to view 3 and allows replica 0 to gather $n{-}f=2$ votes for view 3 and move the $commitMark$ to block 1.
 
 ![](https://i.imgur.com/TC5xNVI.jpg)
 
@@ -105,7 +104,7 @@ Assume the statement is true for all proposals from view $v$ to view $u{-}1$ and
 
 By the induction hypothesis, all proposals from view $v$ to view $u{-}1$ extend $B$, so at the beginning of view $u$, the highest block of any replica in $Q$ must either be $B$ or extend $B$. 
 
-The Primary of view $u$ collects votes from $n{-}f$  replicas $R$ and extends the block in $R$ with the highest view.  By quorum intersection, the sets $Q$ and $R$ must intersect, so the Primary of view $u$ must see at least one block of view at least $v$ and at most $u{-}1$. Since all blocks of view at least $v$ extend $B$ then the Primary of view $u$ must also extend $B$.
+The Primary of view $u$ collects votes from $n{-}f$  replicas $R$ and extends the block in $R$ with the highest view.  By quorum intersection, the sets $Q$ and $R$ must intersect ($n-2f>0$), so the Primary of view $u$ must see at least one block of view at least $v$ and at most $u{-}1$ from a replica in $Q$. Since all blocks of view at least $v$ extend $B$ then the Primary of view $u$ must also extend $B$.
 
 
 **Live after GST claim**: when the system is in synchrony, then a sequence of two good primaries will make progress.
