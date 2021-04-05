@@ -138,4 +138,4 @@ The "goto" message is used to synchronize the replicas. We could have the Primar
 We describe Benign Hotstuff as a system for replicating a log, but the same can be used to implement any [replicated state machine](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/).
 
 
-Please answer/discuss/comment/ask on [Twitter](...).  
+Please answer/discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1379061379899006984?s=20).  
