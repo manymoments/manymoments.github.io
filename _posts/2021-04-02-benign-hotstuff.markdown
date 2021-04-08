@@ -58,7 +58,7 @@ Initially, each replica executes "Change to view 0".
     4. Once $n-f$ votes for view $v$ arrive:
         1. The Primary creates a proposal block $B=(cmd, v, highestBlock)$ to extend the blockChain, where $cmd$ is from the clients.
         2. **Commit rule**: If $n-f$ votes for view $v$  have the same $highestBlock$ then the Primary increments its $commitMark$ to be $highestBlock$.
-        3. The Primary sends $($**"propose"**$, B, commitMark)$ to all replicas.
+        3. The Primary sends $($**"propose"**$, B, commitMark)$ to all replicas. The Primary then changes to view $v{+}1$.
 
 4. Change to view $v$:
     1. Start timer $T_{v}$ for $5\Delta$.
