@@ -1,6 +1,6 @@
 ---
 title: Range Proofs from Polynomial Commitments, Re-explained
-date: 2020-03-02 21:00:00 -11:00
+date: 2020-03-03 03:00:00 -05:00
 tags:
 - polynomials
 - kzg
