@@ -151,7 +151,7 @@ The same reasoning applies here too, except the vanishing polynomial $X-\omega^{
 
 The next idea is that to reduce proving $w_1, w_2, w_3$ are zero $\forall X\in H$, to proving that a random linear combination of them is zero $\forall X\in H$. Specifically, that:
 
-$$H(x) = w_1(X) + \tau w_2(X) + \tau^2 w_3(X) = 0,\forall X\in H$$
+$$H(X) = w_1(X) + \tau w_2(X) + \tau^2 w_3(X) = 0,\forall X\in H$$
 
 Here $\tau\in \Fp$ is picked uniformly at random **by the verifier**.
 
