@@ -6,7 +6,7 @@ tags:
 author: Ittai Abraham, Kartik Nayak
 ---
 
-In this post, we explore one of the most celebrated and widely used techniques for reaching consensus: the **Lock-Commit paradigm**. This approach is a key technique of [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf), Lamport's [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf), and many subsequent protocols. Protocols like Raft, PBFT, Tendermint, SBFT, Casper, HotStuff, etc are all based on this paradigm.
+In this post, we explore one of the most celebrated and widely used techniques for reaching consensus: the **Lock-Commit paradigm**. This approach is a key technique of [DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf), Lamport's [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf), and many subsequent protocols. Protocols like Raft, PBFT, Tendermint, SBFT, Casper, HotStuff, etc., are all based on this paradigm.
 
 We exemplify the *Lock-Commit paradigm* with a simple single-shot [synchronous protocol](/2019-06-01-2019-5-31-models/) (with message delay at most $\Delta$) for [uniform consensus](/2019-06-27-defining-consensus/) that is tolerant to $f$ [omission](/2020-09-13-synchronous-consensus-omission-faults/) failures, given $2f<n$.
 
@@ -36,7 +36,7 @@ This Lock-Commit paradigm is very powerful and can be extended to many settings:
 
 2. The Lock-Commit approach guarantees [uniform consensus](/2019-06-27-defining-consensus/) (so even omission-faulty replicas commit on the same value). In essence, it guarantees that a replica does not decide before the system is [committed](/2019-12-15-consensus-model-for-FLP/).
 
-3. The Lock-Commit approach can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](/2019-11-10-authenticated-synchronous-bft/); and for $n>3f$, by using a quorum systems where every two sets intersect by at least $f\+1$ replicas.
+3. The Lock-Commit approach can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](/2019-11-10-authenticated-synchronous-bft/); and for $n>3f$, by using a quorum system where every two sets intersect by at least $f\+1$ replicas.
 
 Here is a Lock-Commit based (uniform) consensus protocol tolerating $f<n/2$ omission faults for a single slot:
 
