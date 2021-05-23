@@ -212,15 +212,28 @@ The prover can actually compute a constant-sized proof for the three evaluations
 
 The cost for the prover is:
 
- - Compute two polynomial commitments, one to $g(X)$ and one to $q(X)$,
+ - Compute two polynomial commitments, one to $g(X)$ (of degree $n+1$) and one to $q(X)$ (of degree $2n+1$)
+    + $g$ has degree $n+1$ when adding ZK
+    + $w_1$ has degree $\deg(g) + \deg(\frac{X^n - 1}{X-1}) = (n + 1) + (n - 1) = 2n$ 
+        + (assuming $f$ has degree smaller than $g$)
+    - $w_2$ has degree $2\deg(g) + \deg(\frac{X^n-1}{X-\omega^{n-1}})=2 n + 2 + n - 1 = 3n + 1$  
+    - $w_3$ has degree $2\deg(g) + \deg(X-\omega^{n-1}) = 2n + 3$
+    - $H(X)$ has degree $\max(\deg(w_1),\deg(w_2),\deg(w_3))=3n+1$
+    - $q(X)=\frac{H(X)}{X^n - 1}$ has degree $2n+1$
  - Evaluate $g(\rho)$, $g(\rho \omega)$ and $\hat{w}(\rho)$,
+    - $\deg(\hat{w}(X)) = \deg(q)=2n+1$
  - Use the PCS to prove the evaluations are correct.
+    + Quotients in proofs for $g$ have degree $n$
+    - Quotient in proof for $\hat{w}$ has degree $2n$
 
 For the verifier, it has to:
 
  - Reconstruct a commitment to $\hat{w}(X)$
+    + Two exponentiations
  - Verify the three evaluation proofs
+    + 6 pairings (can batch)
  - Carry out the operations in Equations \ref{eq:wrho-start} to \ref{eq:wrho-end} to check $w(\rho)=0$
+    - Several field operations (cheap) 
 
 ## A few notes
 
