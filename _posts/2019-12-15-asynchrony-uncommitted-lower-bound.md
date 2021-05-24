@@ -98,7 +98,7 @@ We started from an uncommitted configuration (Lemma 1) and then showed that we c
 
 This proof is non-constructive; it shows that an infinite execution must exist. Using randomization, there are protocols that are *almost surely terminating* (their probability measure of terminating is one). There exist asynchronous consensus protocols that terminate in an expected constant number of rounds. More on that in later posts.
 
-**Acknowledgment.** We would like to thank Nancy Lynch, Kartik Nayak, Ling Ren, [Nibesh Shrestha](https://twitter.com/NibeshShrestha1) for helpful feedback on this post.
+**Acknowledgment.** We would like to thank Nancy Lynch, Kartik Nayak, Ling Ren, [Nibesh Shrestha](https://twitter.com/NibeshShrestha1), Sravya Yandamuri for helpful feedback on this post.
 
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1206298743823355905?s=20)
