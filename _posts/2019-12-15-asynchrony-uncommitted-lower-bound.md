@@ -63,7 +63,7 @@ For each $i \in \{0,1\}$, let $\pi_i$ be the longest prefix of $\tau_i$ that doe
 Since $\pi_0,\pi_1$ start from the same configuration $C$, let $G$ be the least common ansenstor configuration of $\pi_0,\pi_1$ and assume without loss of generality that $G\xrightarrow{e} G'$ is such that $G'$ is 1-committed. 
 
 
-Now examine the sub-sequence $G=Y_1\dots,Y_k=C_0$ of $\pi_0$ from $G$ to $C_0$. Let $G'=Z_1\dots,Z_k=C'_0$ be such that $Y_i \xrightarrow{e} Z_i$. Since $Z_1=G'$ is 1-committed and $Z_k=C'_0$ is 0-commiteed then clearly there must exist two *ajecnt* configurations $Y \xrightarrow{e'} Y'$  (in the path Y_1\dots,Y_k) such that that $Z$ is 1-committed and $Z'$ is 0-committed where $Y \xrightarrow{e} Z$ and $Y' \xrightarrow{e} Z'$. Note that this follows from the [discrete version of the intermediate value theorem](https://en.wikipedia.org/wiki/Sperner%27s_lemma#One-dimensional_case).
+Now examine the sub-sequence $G=Y_1,\dots,Y_k=C_0$ of $\pi_0$ from $G$ to $C_0$. Let $G'=Z_1,\dots,Z_k=C'_0$ be such that $Y_i \xrightarrow{e} Z_i$. Since $Z_1=G'$ is 1-committed and $Z_k=C'_0$ is 0-commiteed then clearly there must exist two *ajecnt* configurations $Y \xrightarrow{e'} Y'$  (in the path Y_1,\dots,Y_k) such that that $Z$ is 1-committed and $Z'$ is 0-committed where $Y \xrightarrow{e} Z$ and $Y' \xrightarrow{e} Z'$. Note that this follows from the [discrete version of the intermediate value theorem](https://en.wikipedia.org/wiki/Sperner%27s_lemma#One-dimensional_case).
 
 **Proof of Lemma 2 given the claim**
 
