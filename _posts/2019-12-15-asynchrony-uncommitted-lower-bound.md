@@ -50,6 +50,9 @@ Recall the **proof pattern** for showing the existence of an *uncommitted config
 The *contradiction* of the statement of Lemma 2 is that: for all $C'$, such that  $C \rightsquigarrow C'$, let  $C' \xrightarrow{e=(p,m)} C''$, then either $C''$ is 1-committed or $C''$ is 0-committed ($C''$ is not uncommitted).
 
 
+![](https://i.imgur.com/6eb3I6t.jpg)
+
+
 Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{e'=(p',m')} X'$ and $e'$ is a pending message in $X$.
 
 **Claim**: there must exist two adjacent configurations $Y \xrightarrow{e'} Y'$ and a pending message $e'=(p',m')$ in $Y$ such that:
@@ -62,8 +65,13 @@ For each $i \in \{0,1\}$, let $\pi_i$ be the longest prefix of $\tau_i$ that doe
 
 Since $\pi_0,\pi_1$ start from the same configuration $C$, let $G$ be the least common ansenstor configuration of $\pi_0,\pi_1$ and assume without loss of generality that $G\xrightarrow{e} G'$ is such that $G'$ is 1-committed. 
 
+![](https://i.imgur.com/sZWp2VU.jpg)
+
 
 Now examine the sub-sequence $G=Y_1,\dots,Y_k=C_0$ of $\pi_0$ from $G$ to $C_0$. Let $G'=Z_1,\dots,Z_k=C'_0$ be such that $Y_i \xrightarrow{e} Z_i$. Since $Z_1=G'$ is 1-committed and $Z_k=C'_0$ is 0-commiteed then clearly there must exist two *adjacent* configurations $Y \xrightarrow{e'} Y'$  (in the path $Y_1,\dots,Y_k$) such that that $Z$ is 1-committed and $Z'$ is 0-committed where $Y \xrightarrow{e} Z$ and $Y' \xrightarrow{e} Z'$. Note that this follows from the [discrete version of the intermediate value theorem](https://en.wikipedia.org/wiki/Sperner%27s_lemma#One-dimensional_case).
+
+
+![](https://i.imgur.com/TLWm47j.jpg)
 
 **Proof of Lemma 2 given the claim**
 
@@ -87,10 +95,6 @@ Let $Y,Y'$ be these two adjacent configurations. There are two cases to consider
 
 This completes the proof of Lemma 2, and that completes the proof of the FLP Theorem.
 
-
-<p align="center">
-    <img src="/uploads/FLP post 3 - lemma 2.png" width="600" title="lemma 2">
-</p>
 
 
 **Discussion.**
