@@ -35,7 +35,7 @@ We will prove the theorem for *Reliable Broadcast*, which is strictly weaker tha
 
 **(agreement)**: If some non-faulty party outputs a value then eventually all non-faulty parties will output the same value.
 
-The proof of the theorem follows from the two claims below.
+The proof of the theorem follows from the two claims below:
 
 **Claim 1:** *Transferability without Non-Equivocation is not enough.*
 
