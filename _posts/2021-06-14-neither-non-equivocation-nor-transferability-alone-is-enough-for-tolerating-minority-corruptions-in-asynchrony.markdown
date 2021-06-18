@@ -82,4 +82,4 @@ On the positive side, [Clement, Junqueira, Kate, and Rodrigues](https://citeseer
 
 **Acknowledgments** We would like to thank Ittai Abraham for his help with this post!
 
-Please comment on [Twitter](...).
+Please comment on [Twitter](https://twitter.com/ittaia/status/1405923076211097602?s=20).
