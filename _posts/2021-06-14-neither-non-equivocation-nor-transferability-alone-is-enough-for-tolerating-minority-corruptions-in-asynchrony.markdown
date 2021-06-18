@@ -11,6 +11,10 @@ author: Sravya Yandamuri, Naama Ben David
 
 In this post, we explore a theorem of [Clement, Junqueira, Kate, and Rodrigues](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf) from PODC 2012 regarding the limits of non-equivocation. Informally, this theorem says that neither *Non-equivocation* nor *Transferability* alone is enough for tolerating minority corruptions in asynchrony.
 
+
+**Theorem [CJKR12](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf):** *Neither non-equivocation nor transferability is individually sufficient to solve asynchronous Reliable Broadcast given $n \leq 3f$ and a malicious adversary that can control $f$ parties.*
+
+
 Let's define the notions of *transferable authentication* and *non-equivocation*:
 
 **Transferable Authentication**
@@ -22,7 +26,6 @@ Transferability captures the notion of a party being able to transfer a proof of
 In the image, there are 3 parties, each of which has a trusted hardware module. Each message sent by a party is passed through its trusted hardware module, enforcing that it does not equivocate.
 
 
-**Theorem [CJKR12](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf):** *Neither non-equivocation nor transferability is individually sufficient to solve asynchronous Reliable Broadcast given $n \leq 3f$ and a malicious adversary that can control $f$ parties.*
 
 On the positive side, [Clement, Junqueira, Kate, and Rodrigues](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf) prove that given both non-equivocation **and** transferability, Reliable Broadcast for any $n > 2f$ is possible. See [this post](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) for an explanation on why Byzantine agreement in the partial synchrony setting (and asynchrony) requires $n\geq{3t+1}$.
 
