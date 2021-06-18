@@ -25,11 +25,11 @@ Transferability captures the notion of a party being able to transfer a proof of
 ![](https://i.imgur.com/bJE1Iaa.png)
 In the image, there are 3 parties, each of which has a trusted hardware module. Each message sent by a party is passed through its trusted hardware module, enforcing that it does not equivocate.
 
+**The proof**
 
+See [this post](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) for an explanation on why Byzantine agreement in the partial synchrony setting (and asynchrony) requires $n\geq{3t+1}$.
 
-On the positive side, [Clement, Junqueira, Kate, and Rodrigues](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf) prove that given both non-equivocation **and** transferability, Reliable Broadcast for any $n > 2f$ is possible. See [this post](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) for an explanation on why Byzantine agreement in the partial synchrony setting (and asynchrony) requires $n\geq{3t+1}$.
-
-We will prove the theorem for the case of Reliable Broadcast, which is strictly weaker than consensus, as it does not guarantee termination in the case of a faulty leader. For a more in-depth description of Reliable Broadcast, see [this post](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/). To recap, the properties guaranteed by Reliable Broadcast can be summarized as follows:
+We will prove the theorem for *Reliable Broadcast*, which is strictly weaker than consensus, as it does not guarantee termination in the case of a faulty leader. For a more in-depth description of Reliable Broadcast, see [this post](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/). To recap, the properties guaranteed by Reliable Broadcast can be summarized as follows:
 
 **(validity)**: If the leader is non-faulty then eventually all non-faulty parties will output the leader’s input.
 
@@ -76,6 +76,8 @@ Again, imagine a network with three parties: A, B, and C such that A is always t
 This scenario violates agreement, as two correct parties A and C decided different values. Note that in none of the worlds did any party equivocate by sending different messages to different parties.
 
 This concludes the proof of the theorem. Note that the proof that non-equivocation alone is insufficient for Reliable Broadcast does not take into account the fact that A could have waited to hear from C that it heard the value $m'$. Although A and C delivering a value other than $m$ violates validity, they could still satisfy agreement. Perhaps a weaker primitive than Reliable Broadcast is possible with non-equivocation alone and $n\geq{2t+1}$. 
+
+On the positive side, [Clement, Junqueira, Kate, and Rodrigues](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf) prove that given both non-equivocation **and** transferability, Reliable Broadcast for any $n > 2f$ is possible. 
 
 
 **Acknowledgments** We would like to thank Ittai Abraham for his help with this post!
