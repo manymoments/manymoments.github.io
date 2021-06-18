@@ -9,9 +9,9 @@ tags:
 author: Sravya Yandamuri, Naama Ben David
 ---
 
-In this post, we explore the theorem of [Clement, Junqueira, Kate, and Rodrigues](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf) from PODC 2012 regarding the limits of non-equivocation. Informally it says that neither *Non-equivocation* nor *Transferability* alone is enough for tolerating minority corruptions in asynchrony.
+In this post, we explore a theorem of [Clement, Junqueira, Kate, and Rodrigues](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf) from PODC 2012 regarding the limits of non-equivocation. Informally, this theorem says that neither *Non-equivocation* nor *Transferability* alone is enough for tolerating minority corruptions in asynchrony.
 
-Before presenting the main theorem, let's define the notions of *transferable authentication* and *non-equivocation*.
+Let's define the notions of *transferable authentication* and *non-equivocation*:
 
 **Transferable Authentication**
 Transferability captures the notion of a party being able to transfer a proof of a statement to another party, such that if $p_i$ is able to evaluate the validity of statement $s$ using proof $q$, then $p_j$, who receives the same $s$ and $q$ from $p_i$, can also evaluate $s$ and obtain the same result. For the purposes of this post, we use a more specific definition for transferable authentication. A message $m$ is said to be authenticated if it is accompanied by a proof, $\sigma_i$, that it was sent by party $p_i$. Any party that receives $m$ and $\sigma_i$ can verify that $m$ was sent by $p_i$ using the function $verify(m, \sigma_{i})$. Note that authentication should be unforgeable, meaning that if $verify(m,\sigma_{i})=true$, and $p_i$ is non-faulty, $m$ must have been sent by $p_i$. We then define transferable authentication as when correct parties $p_j$ and $p_k$ always obtain the same result from $verify(m,\sigma_{i})$ when $p_k$ receives $m$ and $\sigma_i$ from $p_j$.
@@ -22,9 +22,9 @@ Transferability captures the notion of a party being able to transfer a proof of
 In the image, there are 3 parties, each of which has a trusted hardware module. Each message sent by a party is passed through its trusted hardware module, enforcing that it does not equivocate.
 
 
-**Theorem [CJKR12](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf): Neither non-equivocation nor transferability is individually sufficient to solve asynchronous Reliable Broadcast given $n \leq 3f$ and a malicious adversary that can control $f$ parties.** 
+**Theorem [CJKR12](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf):** *Neither non-equivocation nor transferability is individually sufficient to solve asynchronous Reliable Broadcast given $n \leq 3f$ and a malicious adversary that can control $f$ parties.*
 
-See [this post](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) for an explanation on why Byzantine agreement in the partial synchrony setting (and asynchrony) requires $n\geq{3t+1}$.
+On the positive side, [Clement, Junqueira, Kate, and Rodrigues](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf) prove that given both non-equivocation **and** transferability, Reliable Broadcast for any $n > 2f$ is possible. See [this post](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) for an explanation on why Byzantine agreement in the partial synchrony setting (and asynchrony) requires $n\geq{3t+1}$.
 
 We will prove the theorem for the case of Reliable Broadcast, which is strictly weaker than consensus, as it does not guarantee termination in the case of a faulty leader. For a more in-depth description of Reliable Broadcast, see [this post](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/). To recap, the properties guaranteed by Reliable Broadcast can be summarized as follows:
 
@@ -34,7 +34,7 @@ We will prove the theorem for the case of Reliable Broadcast, which is strictly 
 
 The proof of the theorem follows from the two claims below.
 
-**Claim 1: Transferability without Non-Equivocation is not enough**
+**Claim 1:** *Transferability without Non-Equivocation is not enough.*
 
 Roughly speaking, for $n=3$, if the leader can equivocate it can break agreement. Transferability does not help because asynchrony can delay the messages between the two honest parties. 
 
@@ -54,7 +54,7 @@ A and B are correct. A sends $m'$ to B and C. C crashes before sending anything 
 ![](https://i.imgur.com/gjfRiyw.png)
 B and C are correct, and A is Byzantine. A sends $m'$ to B and $m$ to C. C cannot distinguish between World 3 and World 1 and delivers $m$. Messages between B and C are delayed. B cannot distinguish between World 3 and World 2 and delivers $m'$. This scenario violates agreement, as two honest parties B and C deliver different values.
 
-**Claim 2: Non-Equivocation without Transferability is not enough**
+**Claim 2:** *Non-Equivocation without Transferability is not enough.*
 
 
 Roughly speaking, for $n=3$, if the leader is delayed then an honest party must rely on the third party. But if there is no transferability then this party can send a conflicting message and break validity.
