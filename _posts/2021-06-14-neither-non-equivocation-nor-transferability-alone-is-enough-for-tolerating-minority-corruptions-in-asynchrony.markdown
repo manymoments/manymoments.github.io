@@ -9,10 +9,10 @@ tags:
 author: Sravya Yandamuri, Naama Ben David
 ---
 
-In this post, we explore a theorem of [Clement, Junqueira, Kate, and Rodrigues](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf) from PODC 2012 regarding the limits of non-equivocation. Informally, this theorem says that neither *Non-equivocation* nor *Transferability* alone is enough for tolerating minority corruptions in asynchrony.
+In this post, we explore a theorem of [Clement, Junqueira, Kate, and Rodrigues](https://www.cs.purdue.edu/homes/akate/publications/Non-equivocation.pdf) from PODC 2012 regarding the limits of non-equivocation. Informally, this theorem says that neither *Non-equivocation* nor *Transferability* alone is enough for tolerating minority corruptions in asynchrony.
 
 
-**Theorem [CJKR12](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf):** *Neither non-equivocation nor transferability is individually sufficient to solve asynchronous Reliable Broadcast given $n \leq 3f$ and a malicious adversary that can control $f$ parties.*
+**Theorem [CJKR12](https://www.cs.purdue.edu/homes/akate/publications/Non-equivocation.pdf):** *Neither non-equivocation nor transferability is individually sufficient to solve asynchronous Reliable Broadcast given $n \leq 3f$ and a malicious adversary that can control $f$ parties.*
 
 
 Let's define the notions of *transferable authentication* and *non-equivocation*:
@@ -65,7 +65,7 @@ Roughly speaking, for $n=3$, if the leader is delayed then an honest party must 
 Again, imagine a network with three parties: A, B, and C such that A is always the leader.
 
 **World 1:** A, B, and C are all correct parties. A sends $m'$ to B and C, however its message to C is delayed until sometime $t'$. C receives $m'$ from B before $t'$. By validity, B delivers $m'$ before $t'$. By agreement (since B is deciding m'), C decides $m'$ before time $t'$ .
-![](https://i.imgur.com/A77BbdM.png)
+![](https://i.imgur.com/Ob5gClu.png)
 
 
 
@@ -77,9 +77,9 @@ This scenario violates agreement, as two correct parties A and C decided differe
 
 This concludes the proof of the theorem. Note that the proof that non-equivocation alone is insufficient for Reliable Broadcast does not take into account the fact that A could have waited to hear from C that it heard the value $m'$. Although A and C delivering a value other than $m$ violates validity, they could still satisfy agreement. Perhaps a weaker primitive than Reliable Broadcast is possible with non-equivocation alone and $n\geq{2t+1}$. 
 
-On the positive side, [Clement, Junqueira, Kate, and Rodrigues](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.363.8415&rep=rep1&type=pdf) prove that given both non-equivocation **and** transferability, Reliable Broadcast for any $n > 2f$ is possible. 
+On the positive side, [Clement, Junqueira, Kate, and Rodrigues](https://www.cs.purdue.edu/homes/akate/publications/Non-equivocation.pdf) prove that given both non-equivocation **and** transferability, Reliable Broadcast for any $n > 2f$ is possible. 
 
 
-**Acknowledgments** We would like to thank Ittai Abraham for his help with this post!
+**Acknowledgments** We would like to thank [Flavio Junqueira](https://scholar.google.com/citations?user=48qKfREAAAAJ&hl=en) for his insightful feedback and Ittai Abraham for his help with this post!
 
 Please comment on [Twitter](https://twitter.com/ittaia/status/1405923076211097602?s=20).
