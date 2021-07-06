@@ -210,7 +210,9 @@ This, in turn, ensures that $w(X)=0,\forall X\in\Fp$
 {: .box-note}
 The prover can actually compute a constant-sized proof for the three evaluations $g(\rho)$, $g(\rho \omega)$ and $\hat{w}(\rho)$, as mentioned in the [original post](https://hackmd.io/@dabo/B1U4kx8XI).
 
-The cost for the prover is:
+### Time complexities
+
+The computational cost for the prover is:
 
  - Compute two polynomial commitments, one to $g(X)$ (of degree $n+1$) and one to $q(X)$ (of degree $2n+1$)
     + $g$ has degree $n+1$ when adding ZK
@@ -226,14 +228,14 @@ The cost for the prover is:
     + Quotients in proofs for $g$ have degree $n$
     - Quotient in proof for $\hat{w}$ has degree $2n$
 
-For the verifier, it has to:
+The verifier has to compute the following:
 
  - Reconstruct a commitment to $\hat{w}(X)$
     + Two exponentiations
  - Verify the three evaluation proofs
     + 6 pairings (can batch)
  - Carry out the operations in Equations \ref{eq:wrho-start} to \ref{eq:wrho-end} to check $w(\rho)=0$
-    - Several field operations (cheap) 
+    - Several field operations (cheap)
 
 ## A few notes
 
