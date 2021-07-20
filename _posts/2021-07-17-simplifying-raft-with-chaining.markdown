@@ -154,6 +154,6 @@ Benign HotStuff stores a term with every block whereas Chained Raft only tracks 
 
 We have described Raft using append-only chains instead of mutable logs. Interestingly, Chained Raft and Raft are very similar protocols. Raft can be expressed naturally using chains as it already decides commands strictly in-order (unlike some other consensus protocols such as [Multi-Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf)).
 
-So, what do you think? Is Chained Raft simpler than the original Raft protocol? Would you be interested in seeing other log-based consensus algorithms such as [Multi-Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) or [Fast Paxos](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2005-112.pdf) described using chains? Let us know your thoughts on [twitter](...).
+So, what do you think? Is Chained Raft simpler than the original Raft protocol? Would you be interested in seeing other log-based consensus algorithms such as [Multi-Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) or [Fast Paxos](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2005-112.pdf) described using chains? Let us know your thoughts on [twitter](https://twitter.com/heidiann360/status/1417516761180786698?s=20).
 
 **Acknowledgment.** We would like to thank Kartik Nayak for his feedback on this blog post.
