@@ -1,7 +1,6 @@
 ---
 title: Simplifying Raft with Chaining
 date: 2021-07-17 11:25:00 -04:00
-published: true
 author: Heidi Howard, Natacha Crooks, Ittai Abraham
 ---
 
