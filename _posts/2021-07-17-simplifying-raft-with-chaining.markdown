@@ -2,7 +2,7 @@
 title: Simplifying Raft with Chaining
 date: 2021-07-17 11:25:00 -04:00
 published: false
-author: Heidi Howard, Nacha Crooks, Ittai Abraham
+author: Heidi Howard, Natacha Crooks, Ittai Abraham
 ---
 
 [Raft](https://raft.github.io/raft.pdf) is a consensus algorithm for deciding a sequence of commands to execute on a [replicated state machine](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/). Raft is famed for its understandability (relative to other consensus algorithms such as [Paxos](https://www.microsoft.com/en-us/research/uploads/prod/2016/12/The-Part-Time-Parliament.pdf)) yet some aspects of the protocol still require careful treatment. For instance, determining when it is safe for a leader to commit commands from previous leaders or when it is safe for servers to delete or overwrite commands in their logs.
@@ -129,9 +129,9 @@ Combining the previous properties and the fact that servers only commit commands
 
 ### Liveness
 
-Like Raft, Chained Raft guarantees liveness [after synchrony](https://decentralizedthoughts.github.io/2019-09-14-flavours-of-partial-synchrony/) provided at least a majority of servers are up and communicating reliably [(caveats still apply)](https://decentralizedthoughts.github.io/2020-12-12-raft-liveness-full-omission/). 
+Like Raft, Chained Raft guarantees liveness [after synchrony](https://decentralizedthoughts.github.io/2019-09-14-flavours-of-partial-synchrony/) provided at least a majority of servers are up and communicating reliably [(caveats apply)](https://decentralizedthoughts.github.io/2020-12-12-raft-liveness-full-omission/). 
 
-The proof of liveness which we will skip for now is much the same for Raft and Chained Raft, however, the following idea is useful to note. From the leader append-only property we know that if two servers have the same last appended term then their heads are either the same or one head extends the other. This means that for any pair of servers at least one server could vote for the other and thus it is the case that at least one server in any majority could be elected leader.
+The proof of liveness which we will skip for now is much the same for Raft and Chained Raft, however, the following idea is useful to note. From the leader append-only property we know that if two servers have the same last appended term then their heads are either the same or one head extends the other. This means that for any pair of servers at least one server could vote for the other and thus at least one server in any majority could be elected leader.
 
 
 ### Comparison to Benign Hotstuff
