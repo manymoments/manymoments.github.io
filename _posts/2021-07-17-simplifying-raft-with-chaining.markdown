@@ -141,7 +141,7 @@ Benign HotStuff is a rotating leader protocol, where each leader (aka a _primary
 
 In benign HotStuff, the role of leader is rotated between servers in a round-robin fashion, whereas in Raft and Chained Raft, servers must gain votes from a majority of servers before becoming a leader.
 
-Benign Hotstuff takes the ["Raft-style" approach to consensus]((https://dl.acm.org/doi/abs/10.1145/3380787.3393681)) of assigning terms to blocks for their lifetime and thus blocks are not "promoted" to greater terms by subsequent leaders, as is the case with "Paxos-style" consensus. Chained Raft avoids the question of what term to assign to blocks from previous terms by storing only the term of the head (using the last appended term).
+Benign Hotstuff takes the ["Raft-style" approach to consensus](https://dl.acm.org/doi/abs/10.1145/3380787.3393681) of assigning terms to blocks for their lifetime and thus blocks are not "promoted" to greater terms by subsequent leaders, as is the case with "Paxos-style" consensus. Chained Raft avoids the question of what term to assign to blocks from previous terms by storing only the term of the head (using the last appended term).
 
 Like Benign HotStuff, Chained Raft requires the leader to copy uncommitted blocks (called _state transfer_ in Benign Hotstuff) to its followers alongside adding a new block in the current term. This restriction helps to simplify both algorithms as it means that the most recently added block, the head, is always from the latest leader.
 
