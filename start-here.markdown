@@ -6,7 +6,7 @@ date: 2020-09-21 09:34:00 -04:00
 {: .box-note}
 this page is a dynamically changing index of all our posts, it's one more place to start reading Decentralized Thoughts (you can read chronologically [here](https://decentralizedthoughts.github.io/)).
 
-We would love to get your feedback and thoughts on [twitter]().
+We would love to get your feedback and thoughts on [Twitter](https://twitter.com/ittaia/status/1421066572207169544?s=20).
 
 
 # Basics, Foundations, and Classics
@@ -20,7 +20,7 @@ You can learn more about [Partial Synchrony](/2019-09-14-flavours-of-partial-syn
 One of the classic protocols of distributed computing is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/).
 
 
-# Consensus in partial synchrony
+# Consensus in Partial Synchrony
 
 Partial synchrony is one of the most used models in real work systems today.
 
@@ -39,7 +39,7 @@ We start with a [simple SMR for crash failures](/2019-11-01-primary-backup/). We
 
 # Living with Asynchrony
 
-One of the core challenges in fault-tolerant distributed computing is Asynchrony. The classic [FLP lower bound](/2019-12-15-consensus-model-for-FLP/) is a fundamental result. The basic building blocks are [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/) and [Gather](https://decentralizedthoughts.github.io/2021-03-26-living-with-asynchrony-the-gather-protocol/). 
+One of the core challenges in fault-tolerant distributed computing is Asynchrony. The classic [FLP lower bound](/2019-12-15-consensus-model-for-FLP/) is a fundamental result. Some basic building blocks are [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/) and [Gather](https://decentralizedthoughts.github.io/2021-03-26-living-with-asynchrony-the-gather-protocol/). 
 
 
 # Lower Bounds
@@ -63,11 +63,11 @@ One of the core challenges in fault-tolerant distributed computing is Asynchrony
 
 # Blockchains
 
-What was the [first blockchain (or how to timestamp a digital document)](/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/)?  Do Proof of work Blockchains need any [setup assumptions?](/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/), what [checkpointing a blockchain](/2019-09-13-dont-trust-checkpoint/) mean?  A simple security proof for [Nakamoto Consensus](/2019-11-29-Analysis-Nakamoto/). What is the problem of [Selfish Mining](/2020-02-26-selfish-mining/)? The simplest L2 solution is a [Payment Channel](/2019-10-25-payment-channels-are-just-a-two-person-bfs-smr-systems/).
+What was the [first blockchain (or how to timestamp a digital document)](/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/)?  Do Proof of work Blockchains need any [setup assumptions?](/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/), what does [checkpointing a blockchain](/2019-09-13-dont-trust-checkpoint/) mean?  A simple security proof for [Nakamoto Consensus](/2019-11-29-Analysis-Nakamoto/). What is the problem of [Selfish Mining](/2020-02-26-selfish-mining/)? The simplest L2 solution is a [Payment Channel](/2019-10-25-payment-channels-are-just-a-two-person-bfs-smr-systems/).
 
 # Cryptography
 
-The basics:
+Some basics:
 
 - [Cryptographic hash function](/2020-08-28-what-is-a-cryptographic-hash-function/) and [Merkle Trees](https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/)
 
