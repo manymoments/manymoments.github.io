@@ -6,6 +6,9 @@ date: 2020-09-21 09:34:00 -04:00
 {: .box-note}
 this page is a dynamically changing index of all our posts, it's one more place to start reading Decentralized Thoughts (you can read chronologically [here](https://decentralizedthoughts.github.io/)).
 
+We would love to get your feedback and thoughts on [twitter]().
+
+
 # Basics, Foundations, and Classics
 
 Start with the definition of [Consensus and Agreement](/2019-06-27-defining-consensus/). Then learn about the [network model](/2019-06-01-2019-5-31-models/), the [threshold adversary](/2019-06-17-the-threshold-adversary/) model, and the
@@ -16,11 +19,23 @@ You can learn more about [Partial Synchrony](/2019-09-14-flavours-of-partial-syn
 
 One of the classic protocols of distributed computing is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/).
 
+
+# Consensus in partial synchrony
+
+Partial synchrony is one of the most used models in real work systems today.
+
+Modern variants of the classic protocols of Paxos and Raft are covered in [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/) and [Simplifing Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/).
+
+For Byzantine adversaries, checkout [Streamlet](/2020-05-14-streamlet/).
+
+
 # State Machine Replication
 
 We begin by defining [State Machine Replication](/2019-10-15-consensus-for-state-machine-replication/) (SMR) and talk about different degrees of [SMR fault tolerance](/2019-10-25-flavours-of-state-machine-replication/). The scalability and performance of a State Machine Replication system is not just about [Consensus, but also about Data and Execution](/2019-12-06-dce-the-three-scalability-bottlenecks-of-state-machine-replication/).
 
 We start with a [simple SMR for crash failures](/2019-11-01-primary-backup/). We later extend this to omission failures. [First via single shot](/2020-09-13-synchronous-consensus-omission-faults/) and then via the [Lock-commit](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/) paradigm to [multi-shot consensus](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/).
+
+
 
 # Living with Asynchrony
 
@@ -44,6 +59,8 @@ One of the core challenges in fault-tolerant distributed computing is Asynchrony
 
 - Raft does not guarantee liveness under [omission faults](https://decentralizedthoughts.github.io/2020-12-12-raft-liveness-full-omission/).
 
+- CJKR lower bound: Neither Non-equivocation nor Transferability alone is enough for [tolerating minority corruptions in asynchrony] (https://decentralizedthoughts.github.io/2021-06-14-neither-non-equivocation-nor-transferability-alone-is-enough-for-tolerating-minority-corruptions-in-asynchrony/)
+
 # Blockchains
 
 What was the [first blockchain (or how to timestamp a digital document)](/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/)?  Do Proof of work Blockchains need any [setup assumptions?](/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/), what [checkpointing a blockchain](/2019-09-13-dont-trust-checkpoint/) mean?  A simple security proof for [Nakamoto Consensus](/2019-11-29-Analysis-Nakamoto/). What is the problem of [Selfish Mining](/2020-02-26-selfish-mining/)? The simplest L2 solution is a [Payment Channel](/2019-10-25-payment-channels-are-just-a-two-person-bfs-smr-systems/).
@@ -60,7 +77,6 @@ More advanced:
 
 - [Bilinear Accumulators](/2020-04-01-bilinear-accumulators-for-cryptocurrency/) and [range proofs](/2020-03-02-range-proofs-from-polynomial-commitments-reexplained/).
 
-
 - Private set intersection: [part 1](/2020-03-29-private-set-intersection-a-soft-introduction/) and [part 2](/2020-07-26-private-set-intersection-2/)
 
 # Research oriented posts
@@ -70,8 +86,6 @@ More advanced:
 - [Survay of modern Authenticated Synchronous BFT protocols](/2019-11-11-authenticated-synchronous-bft/) (updated in march 2021).
 
 - [Sync HotStuff](/2019-11-12-Sync-HotStuff/).
-
-- [Streamlet](/2020-05-14-streamlet/).
 
 - [Optimal Optimistic Responsivness](/2020-06-12-optimal-optimistic-responsiveness/).
 
@@ -86,7 +100,6 @@ More advanced:
 - Good-case Latency of Byzantine Broadcast: [the Synchronous Case](https://decentralizedthoughts.github.io/2021-03-09-good-case-latency-of-byzantine-broadcast-the-synchronous-case/) and [a Complete Categorization](https://decentralizedthoughts.github.io/2021-02-28-good-case-latency-of-byzantine-broadcast-a-complete-categorization/).
 
 - [2-round BFT SMR with n=4, f=1](https://decentralizedthoughts.github.io/2021-03-03-2-round-bft-smr-with-n-equals-4-f-equals-1/).
-
 
 
 
