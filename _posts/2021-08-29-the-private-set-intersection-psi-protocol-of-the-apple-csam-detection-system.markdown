@@ -3,7 +3,7 @@ title: The Private Set Intersection (PSI) Protocol of the Apple CSAM Detection S
 date: 2021-08-29 17:55:00 -04:00
 published: false
 tags:
-- PSI
+- private-set-intersection
 author: Benny Pinkas
 ---
 
