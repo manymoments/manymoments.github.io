@@ -80,7 +80,7 @@ The Diffie-Hellman hardness assumption states that any polynomial-time algorithm
 The Apple PSI system makes novel usage of Diffie-Hellman [random self-reducibility](https://en.wikipedia.org/wiki/Random_self-reducibility) in order to generate keys for the PSI protocol.  
 [Naor and Reingold](https://dl.acm.org/doi/10.1145/972639.972643) described a random self reduction for DH tuples: Given a triple $(L,T,P)$ of group elements, choose random $\beta, \gamma$ in $[1,q]$ and compute $Q = \beta T + \gamma g$ and $S = \beta P + \gamma L$.
 The following property holds:
-- If $(L,T,P)$ is a DH tuple, i.e. it is of the form $(L=\alpha g,T,P=\alpha T)$ for some $\alpha$, then $(L,Q,S) = (L,\beta T + \gamma g, \beta P + \gamma L$)$ is also a DH tuple. Furthermore,  $Q= \beta T + \gamma g$ is uniformly distributed in $G$.
+- If $(L,T,P)$ is a DH tuple, i.e. it is of the form $(L=\alpha g,T,P=\alpha T)$ for some $\alpha$, then $(L,Q,S) = (L,\beta T + \gamma g, \beta P + \gamma L)$ is also a DH tuple. Furthermore,  $Q= \beta T + \gamma g$ is uniformly distributed in $G$.
 - Otherwise (i.e., if $(L,T,P)$ is *not* a DH tuple), $(Q,S)$ is a uniformly chosen pair of values in $G$.
 
 **Generating key using the random self-reducibility:** Diffie-Hellman random self-reducibility is used in the Apple PSI system in the following way. The server chooses a master secret key $\alpha$, which is used for all clients. It sends to the clients a cuckoo table $T$ which, for a value $x$ appearing in the server's input, stores in either $T[h1(x)]$ or in $T[h2(x)]$ the value $\alpha H(x)$, with $H()$ being a random hash function mapping values to the group. The server also sends the value $\alpha g$ to the clients.
