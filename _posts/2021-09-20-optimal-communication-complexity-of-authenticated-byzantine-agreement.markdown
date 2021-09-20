@@ -65,5 +65,5 @@ We utilize the above technique to improve the communication complexity of a prim
 
 Let us know your thoughts, 
 
-Atsuki Momose and [Ling Ren](https://sites.google.com/view/renling) 
+[Atsuki Momose](https://twitter.com/AtsukiMomose) and [Ling Ren](https://sites.google.com/view/renling) 
 
