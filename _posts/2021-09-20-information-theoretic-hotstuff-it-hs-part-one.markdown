@@ -6,7 +6,7 @@ tags:
 author: Gilad Stern, Ittai Abraham
 ---
 
-This post is the first of two on *Information Theoretic HotStuff*, abbreviated as *IT-HS*. Information Theoretic HotStuff is a [Byzantine Consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) protocol in a [partially synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) model. IT-HS replaces all of [HotStuff's](https://arxiv.org/abs/1803.05069) cryptographic signatures with simple information theoretic message passing techniques over [authenticated channels](https://decentralizedthoughts.github.io/2019-07-19-setup-assumptions/). 
+This post is the first of two on *Information Theoretic HotStuff (IT-HS)*. Information Theoretic HotStuff is a [Byzantine Consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) protocol in a [partially synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) model. It replaces all of [HotStuff's](https://arxiv.org/abs/1803.05069) cryptographic signatures with simple information theoretic message passing techniques over [authenticated channels](https://decentralizedthoughts.github.io/2019-07-19-setup-assumptions/). 
 
 
 <details>
