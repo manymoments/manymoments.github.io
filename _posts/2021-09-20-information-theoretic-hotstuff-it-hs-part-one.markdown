@@ -6,17 +6,16 @@ tags:
 author: Gilad Stern, Ittai Abraham
 ---
 
-This post is the first of two on [Information Theoretic HotStuff (IT-HS)](https://arxiv.org/abs/2009.12828). Information Theoretic HotStuff is a [Byzantine Consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) protocol in the [partially synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) model. It replaces all of [HotStuff's](https://arxiv.org/abs/1803.05069) cryptographic signatures with simple information theoretic message passing techniques over [authenticated channels](https://decentralizedthoughts.github.io/2019-07-19-setup-assumptions/). 
-
+This post is the first of two on [Information Theoretic HotStuff (IT-HS)](https://arxiv.org/abs/2009.12828). Information Theoretic HotStuff is a [Byzantine Consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) protocol in the [partially synchronous](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) model. It replaces all of [HotStuff's](https://arxiv.org/abs/1803.05069) cryptographic signatures with simple information theoretic message passing techniques over [authenticated channels](https://decentralizedthoughts.github.io/2019-07-19-setup-assumptions/). Information theoretic protocols are often easy to reason about, form a great introduction for learning the basics of consensus, have less of an attack surface, and highlight useful core distributed computing techniques.
 
 <details>
-  <summary>Short refresher on Byzantine consensus and Partial Synchrony</summary>
+  <summary>Click this line for a short refresher on Byzantine consensus and Partial Synchrony.</summary>
 
 In a system with Byzantine faults, we assume there are $n$ parties, and $f$ of them might be corrupt. All honest (i.e. non-corrupt) parties run a protocol, and the corrupt parties can try to actively sabotage the process by deviating from the protocol. A Byzantine consensus protocol has three properties:
 
-* **Termination**: If all honest parties participate in the protocol, they eventually complete it.
-* **Correctness**: Every honest party that completes the protocol outputs the same value.
-* **Validity**: If all parties are honest, and they have the same value $x$, then they output $x$.
+(1) **Termination**: If all honest parties participate in the protocol, they eventually complete it.
+(2) **Correctness**: Every honest party that completes the protocol outputs the same value.
+(3) **Validity**: If all parties are honest, and they have the same value $x$, then they output $x$.
 
 Finally, a partially synchronous system is one that starts off as a completely unreliable network and eventually stabilizes. More precisely, in the beginning of the protocol messages sent by honest parties eventually reach their destination, but could take any finite amount of time. At some point in time called the Global Stabilization Time ($GST$), the network becomes stable. After $GST$, all messages are delivered in at most $\Delta$ time, for some known $\Delta$. This also means that any message sent before $GST$ is delivered by time $GST+\Delta$.
 </details>
