@@ -1,7 +1,6 @@
 ---
 title: 'Information Theoretic HotStuff (IT-HS): Part One'
 date: 2021-09-20 08:07:00 -04:00
-published: false
 tags:
 - dist101
 author: Gilad Stern, Ittai Abraham
@@ -11,9 +10,9 @@ This post is the first of two on *Information Theoretic HotStuff*, abbreviated a
 
 
 <details>
-  <summary>Short reminder on Byzantine consensus and Partial Synchrony</summary>
+  <summary>Short refresher on Byzantine consensus and Partial Synchrony</summary>
 
-As a short reminder, in a system with Byzantine faults, we assume there are $n$ parties, and $f$ of them might be corrupt. All honest (i.e. non-corrupt) parties run a protocol, and the corrupt parties can try to actively sabotage the process by deviating from the protocol. A Byzantine consensus protocol has three properties:
+In a system with Byzantine faults, we assume there are $n$ parties, and $f$ of them might be corrupt. All honest (i.e. non-corrupt) parties run a protocol, and the corrupt parties can try to actively sabotage the process by deviating from the protocol. A Byzantine consensus protocol has three properties:
 
 * **Termination**: If all honest parties participate in the protocol, they eventually complete it.
 * **Correctness**: Every honest party that completes the protocol outputs the same value.
