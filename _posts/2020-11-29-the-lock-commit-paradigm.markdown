@@ -21,7 +21,9 @@ Related posts:
 
 4. In a [follow-up post](/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/), we extend the lock-commit paradigm to a multi-shot protocol that can tolerate both $f$ omission failures and $k$ [crash](/2019-06-07-modeling-the-adversary/) failures given $k\+2f<n$.
 
-## Lock-Commit Paradigm and the Primary-Backup approach
+5. Protocols in partial synchrony that uses the lock-commit paradigm: [Streamlet](https://decentralizedthoughts.github.io/2020-05-14-streamlet/), [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/), [Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/), [Information Theoretic HotStuff](https://decentralizedthoughts.github.io/2021-09-20-information-theoretic-hotstuff-it-hs-part-one/).
+
+## Lock-Commit Paradigm
 
 Consider the task of solving consensus in a system with *clients* and $n$ *replicas*. Clients send commands to the replicas and the goal of the replicacs (in the single shot case) is to decide on one command. In the **Primary-Backup approach**, the protocol progresses in *views*. In each view $v$, one designated replica is the *primary replica* and the other replicas are the *backup replicas* of this view. The primary of a view needs to *propose* a command and replica need to eventually *commit* (or decide) on a command.  There is a *view change trigger* protocol that decides when to globally execute a *view change* protocol that increments the view. 
 
@@ -40,6 +42,8 @@ This Lock-Commit paradigm is the core of Paxos. It is extended to many settings:
 2. The Lock-Commit paradigm guarantees [uniform consensus](/2019-06-27-defining-consensus/) (so even omission-faulty replicas commit on the same value). In essence, it guarantees that a replica does not decide before the *system* is in a [committed](/2019-12-15-consensus-model-for-FLP/) state.
 
 3. The Lock-Commit paradigm can be extended to tolerate malicious adversaries. For $n>2f$, by using [signatures and synchrony](/2019-11-10-authenticated-synchronous-bft/); and for $n>3f$, by using a quorum system where every two sets intersect by at least $f\+1$ replicas.
+
+
 
 Here is a Lock-Commit based (uniform) consensus protocol tolerating $f<n/2$ omission faults for a single slot:
 
