@@ -21,7 +21,7 @@ Related posts:
 
 4. In a [follow-up post](/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/), we extend the lock-commit paradigm to a multi-shot protocol that can tolerate both $f$ omission failures and $k$ [crash](/2019-06-07-modeling-the-adversary/) failures given $k\+2f<n$.
 
-5. Protocols in partial synchrony that uses the lock-commit paradigm: [Streamlet](https://decentralizedthoughts.github.io/2020-05-14-streamlet/), [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/), [Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/), [Information Theoretic HotStuff](https://decentralizedthoughts.github.io/2021-09-20-information-theoretic-hotstuff-it-hs-part-one/).
+5. Protocols in partial synchrony that use the lock-commit paradigm: [Streamlet](https://decentralizedthoughts.github.io/2020-05-14-streamlet/), [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/), [Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/), [Information Theoretic HotStuff](https://decentralizedthoughts.github.io/2021-09-20-information-theoretic-hotstuff-it-hs-part-one/).
 
 ## Lock-Commit Paradigm
 
