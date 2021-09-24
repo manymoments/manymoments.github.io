@@ -15,7 +15,7 @@ We show a natural and simple transformation of a single-shot protocol to a multi
 
 Once the primary commits a command, we use the boolean *readyToPropose* to indicate that the primary can send a new proposal to append to the log. 
 
-We will also use a deterministic mapping from view to primary. Let $primary(v)$ be the id of the primary for view $v$.
+For simplicity, we use a deterministic mapping from view to primary. Let $primary(v)$ be the id of the primary for view $v$.
 
 
     // pseudocode for Replica j
@@ -183,5 +183,5 @@ If some non-faulty parties have not committed to log position $j$ before enterin
 
 Hence the non-faulty primary of view $v$ will continue to append messages to the log and will eventually reach position $j$.
 
-Please answer/discuss/comment/ask on [Twitter](...).
+Please answer/discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1441412266591621122?s=20).
 
