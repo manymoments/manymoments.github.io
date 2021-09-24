@@ -6,13 +6,13 @@ tags:
 author: Ittai Abraham, Kartik Nayak
 ---
 
-In this follow up post to our basic [Lock-Commit post](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/), we show a multi-shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that can tolerate $f$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures, given *2f < n*.
-We then extend it to one that tolerates both $f$ omission failures and $k$ [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures given *k+2f < n*.
+In this follow up post to our [Lock-Commit post](https://decentralizedthoughts.github.io/2020-11-29-the-lock-commit-paradigm/), we show two important extensions. The first is how to get multi-shot [synchronous protocol](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) for [uniform consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) that can tolerate $f$ [omission](https://decentralizedthoughts.github.io/2020-09-13-synchronous-consensus-omission-faults/) failures, given *2f < n*.
+The second is how to tolerate both $f$ omission failures and $k$ [crash](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) failures given *k+2f < n*.
 
 
 # Multi-shot Lock-Commit for omission failures
 
-Unlike the [single-shot protocol](https://decentralizedthoughts.github.io/2020-11-29-the-lock-commit-paradigm/), this protocol never terminates, it just appends commands to an ever-growing log of committed commands called *commitLog*. The log is extended by **appending** commands to it. As in the previous post, we do not discuss executing the commands as well as how clients can learn about consensus (will be covered in later posts). Another change is that each time the commitLog is sent from a sender to a recipient, the recipient *checks* if its commitLog is behind (missing commands) and then *updates* its log (**learns** about committed commands it missed).
+We show a natural and simple transformation of a single shot protocol to a multi shot one. Unlike the [single-shot protocol](https://decentralizedthoughts.github.io/2020-11-29-the-lock-commit-paradigm/), the multi-shot variant does not terminate. It allows to *append* commands to an ever-growing log of committed commands called *commitLog*. The log is extended by **appending** commands to it. As in the previous post, we do not discuss executing the commands as well as how clients can learn about consensus (will be covered in later posts). Another change is that each time the commitLog is sent from a sender to a recipient, the recipient *checks* if its commitLog is behind (missing commands) and then *updates* its log (**learns** about committed commands it missed). This is sometimes called *state transfer*.
 
 Once the primary commits a command, we use the boolean *readyToPropose* to indicate that the primary can send a new proposal to append to the log. 
 
