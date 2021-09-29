@@ -31,7 +31,7 @@ Imagine having an external clock that can provide an ideal clock time for each e
 2. For an execution $e$, define  $totalTime(e)$ as the elapsed time between the earliest time a non-faulty sends a message and the latest time a non-faulty party terminates. 
 3. For an execution $e$, define $roundComplexity(e)$ as 
 $$
-\frac{totalTime(e)}{\max_{m \in M} messageDelay(m)}.
+\frac{ totalTime(e) }{ \max_{m \in M} messageDelay(m) } .
 $$
 5. For the protocol $P$, define $roundComplexity(P)$ as the maximum $roundComplexity(e)$ over all executions and adversary strategies.  In later posts, we will generalize this definition to randomized protocols and expected round complexity.
 
@@ -207,5 +207,5 @@ For Agreement, when the broadcaster is faulty, if a non-faulty party decides $v$
 For more results, please refer to our [good-case and bad-case latency paper](https://arxiv.org/pdf/2109.12454.pdf).
 
 
-Your comments and decentralized thoughts on [Twitter](?).  
+Your comments and decentralized thoughts on [Twitter](https://twitter.com/ittaia/status/1443160799665610758?s=20).  
 
