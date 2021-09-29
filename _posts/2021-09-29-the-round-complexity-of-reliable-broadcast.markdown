@@ -29,11 +29,8 @@ Imagine having an external clock that can provide an ideal clock time for each e
 
 1. For a message $m$ that is sent and received between two non-faulty parties, define $messageDelay(m)$ as the time elapsed between the send and receive time points.
 2. For an execution $e$, define  $totalTime(e)$ as the elapsed time between the earliest time a non-faulty sends a message and the latest time a non-faulty party terminates. 
-3. For an execution $e$, define $roundComplexity(e)$ as 
-$$
-\frac{ totalTime(e) }{ \max_{m \in M} messageDelay(m) } .
-$$
-5. For the protocol $P$, define $roundComplexity(P)$ as the maximum $roundComplexity(e)$ over all executions and adversary strategies.  In later posts, we will generalize this definition to randomized protocols and expected round complexity.
+3. For an execution $e$, define $roundComplexity(e)$ as $\frac{ totalTime(e) }{ \max_{m \in M} messageDelay(m) }.$
+4. For the protocol $P$, define $roundComplexity(P)$ as the maximum $roundComplexity(e)$ over all executions and adversary strategies.  In later posts, we will generalize this definition to randomized protocols and expected round complexity.
 
 
 
