@@ -56,7 +56,7 @@ Log Paxos thus decides a *log* of values, and the safety property is that **if a
 
 The Log Paxos protocol is as follows. As before it progresses over a series of rounds denoted by ballot numbers, each split into two phases. Every acceptor only participates in the greatest (by ballot number) round it has heard of.
 
-In *phase 1*, a designated proposer for ballot $b$ broadcasts $\textit{phase1a}(b)$. Each acceptor, $a$, upon receiving this $\textit{phase1a}$ message, replies with its greatest accepted ballot, $\textit{phase1b}(b, a, (b_{{max}}, l_{{max}}))$.  Every acceptor is initialised with a default accepted ballot (containing an empty log), so there will always be a greatest ballot.
+In *phase 1*, a designated proposer for ballot $b$ broadcasts $\textit{phase1a}(b)$. Each acceptor, $a$, upon receiving this $\textit{phase1a}$ message, replies with its greatest accepted ballot, $\textit{phase1b}(b, a, (b_{max}, l_{max}))$.  Every acceptor is initialised with a default accepted ballot (containing an empty log), so there will always be a greatest ballot.
 
 Once the proposer has received 1b responses from a majority of acceptors, it finds the greatest accepted ballot number, and within ballots with that ballot number selects the longest log.
 
