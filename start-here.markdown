@@ -17,32 +17,46 @@ Finally, many protocols need a [trusted setup phase](/2019-07-19-setup-assumptio
 
 You can learn more about [Partial Synchrony](/2019-09-14-flavours-of-partial-synchrony/) and about different [relaxations of Broadcast](/2019-10-22-flavours-of-broadcast/).
 
-One of the classic protocols of distributed computing is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/).
+## Synchrony
+
+For synchrony, the classic protocol is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/). A survey of [authenticated protocols in sycnrony](/2019-11-11-authenticated-synchronous-bft/).
 
 
-# Consensus in Partial Synchrony
+## Partial Synchrony
 
 Partial synchrony is one of the most used models in real work systems today.
 
-Modern variants of the classic protocols of Paxos and Raft are covered in [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/) and [Simplifing Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/).
+Modern variants of the classic protocols of Paxos and Raft are covered in [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/) and [Simplifing Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/). [Log Paxos](https://decentralizedthoughts.github.io/2021-09-30-distributed-consensus-made-simple-for-real-this-time/) is a modern take on multi-Paxos, it's both surprisingly simple and concretely efficient.
 
 For Byzantine adversaries, checkout [Information Theoretic HotStuff](https://decentralizedthoughts.github.io/2021-09-20-information-theoretic-hotstuff-it-hs-part-one/), or [Streamlet](/2020-05-14-streamlet/).
+
+## Asynchrony
+
+One of the core challenges in fault-tolerant distributed computing is Asynchrony. The classic [FLP lower bound](/2019-12-15-consensus-model-for-FLP/) is a fundamental result showing the impossibility of consensus. 
+
+A fundamental building block in asynchrony is the [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/) protocol. 
+
+How do you measure [round complexity in asynchrony](https://decentralizedthoughts.github.io/2021-09-29-the-round-complexity-of-reliable-broadcast/) (and can you improve the round complexity of reliable broadcast)? 
+
+The multi-leader generalization of reliable broadcast is called [Reliable Gather](https://decentralizedthoughts.github.io/2021-03-26-living-with-asynchrony-the-gather-protocol/). 
+ 
 
 
 # State Machine Replication
 
 We begin by defining [State Machine Replication](/2019-10-15-consensus-for-state-machine-replication/) (SMR) and talk about different degrees of [SMR fault tolerance](/2019-10-25-flavours-of-state-machine-replication/). The scalability and performance of a State Machine Replication system is not just about [Consensus, but also about Data and Execution](/2019-12-06-dce-the-three-scalability-bottlenecks-of-state-machine-replication/).
 
-We start with a [simple SMR for crash failures](/2019-11-01-primary-backup/). We later extend this to omission failures. [First via single shot](/2020-09-13-synchronous-consensus-omission-faults/) and then via the [Lock-commit](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/) paradigm to [multi-shot consensus](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/).
+Start with a [simple SMR for crash failures](/2019-11-01-primary-backup/). Extend SMR to omission failures. [First via single shot](/2020-09-13-synchronous-consensus-omission-faults/) and then via the [Lock-commit](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/) paradigm to [multi-shot consensus](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/).
 
 
+In partial synchrony, [Log Paxos](https://decentralizedthoughts.github.io/2021-09-30-distributed-consensus-made-simple-for-real-this-time/) shows how to extend Paxos to multi-Paxos in a very simple and efficient manner.
 
-# Living with Asynchrony
 
-One of the core challenges in fault-tolerant distributed computing is Asynchrony. The classic [FLP lower bound](/2019-12-15-consensus-model-for-FLP/) is a fundamental result. Some basic building blocks are [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/) and [Gather](https://decentralizedthoughts.github.io/2021-03-26-living-with-asynchrony-the-gather-protocol/). 
 
 
 # Lower Bounds
+
+Lower bounds give us powerful tools to understand the fundamental limitations and model assumptions. 
 
 - Folklore: [Consensus with Ommsion failures](/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) requires $f<n/2$.
 
@@ -51,7 +65,6 @@ One of the core challenges in fault-tolerant distributed computing is Asynchrony
 - FLM lower bound: [Byzantine Consensus with no PKI](/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) (or more generally when the adversary can simulate) requires $f<n/3$.
 
 - Dolev and Reischuk lower bound: [Consensus often needs a quadratic number of messages](/2019-08-16-byzantine-agreement-needs-quadratic-messages/).
-
 
 - FLP lower bound: Consensus must have some initial state that is [uncommitted](/2019-12-15-consensus-model-for-FLP/) and this imples [executions with at least $f+1$ rounds in Synchrony](/2019-12-15-synchrony-uncommitted-lower-bound/) and [non-terminating executions in Asynchrony](/2019-12-15-asynchrony-uncommitted-lower-bound/) (the FLP impossibility).
 
@@ -100,6 +113,8 @@ More advanced:
 - Good-case Latency of Byzantine Broadcast: [the Synchronous Case](https://decentralizedthoughts.github.io/2021-03-09-good-case-latency-of-byzantine-broadcast-the-synchronous-case/) and [a Complete Categorization](https://decentralizedthoughts.github.io/2021-02-28-good-case-latency-of-byzantine-broadcast-a-complete-categorization/).
 
 - [2-round BFT SMR with n=4, f=1](https://decentralizedthoughts.github.io/2021-03-03-2-round-bft-smr-with-n-equals-4-f-equals-1/).
+
+- [Optimal Communication Complexity of Authenticated Byzantine Agreement](https://decentralizedthoughts.github.io/2021-09-20-optimal-communication-complexity-of-authenticated-byzantine-agreement/)
 
 
 
