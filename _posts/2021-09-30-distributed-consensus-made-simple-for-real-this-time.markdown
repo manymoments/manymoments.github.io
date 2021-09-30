@@ -4,7 +4,7 @@ date: 2021-09-30 03:39:00 -04:00
 tags:
 - dist101
 - paxos
-author: Christopher Jensen, Heidi Howard
+author: Chris Jensen, Heidi Howard
 ---
 
 [Multi-Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf) is the *de facto* solution for deciding a log of commands to execute on a [replicated state machine](https://www.cs.cornell.edu/fbs/publications/ibmFault.sm.pdf), yet it's famously difficult to understand, motivating the switch to 'simpler' consensus protocols such as [Raft](https://raft.github.io/raft.pdf). The conventional wisdom is that the best way to use [Paxos](https://www.microsoft.com/en-us/research/uploads/prod/2016/12/The-Part-Time-Parliament.pdf) (aka Synod, or single-shot Paxos), to decide a log of commands is to run many instances of it, where the $i^{th}$ instance decides the $i^{th}$ command in the log. This approach, known as Multi-Paxos, can decide a command in one round trip since the first of Paxos's two phases can be shared between instances, effectively electing a *leader*.
@@ -17,7 +17,7 @@ In Paxos, a value is *decided* when a majority of *acceptors* have *accepted* th
 
 To instead decide an extendable log of values, we modify Paxos such that a ballot consists of a ballot number and the current log. We then allow acceptors to accept a proposed ballot if either the proposed ballot's number is greater than their stored ballot's, or when they are equal, if the proposed log extends the stored one. With this change, **a log is decided when a majority of acceptors have accepted ballots with the same ballot number and logs which extend it**. We ensure that **once a log is decided all logs which are decided after it (causally) or in a greater ballot will extend it**, by requiring proposers at the end of phase 1 to choose the longest log from the greatest ballot. This approach means that unlike Paxos, a proposer may concurrently propose multiple logs with the same ballot number, provided the logs extend those it has previously proposed.
 
-This post first recaps Paxos and then presents our new take on Paxos in the form of *Log Paxos*. We examine the safety and liveness of the two protocols, highlighting the extensive similarities between the protocols and their proofs. We conclude by discussing how to optimize the performance of Log Paxos and how Log Paxos compares to other consensus protocols such as Multi-Paxos and Raft. As an added bonus, we also discuss [how to model check the protocols in TLA+](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf)
+This post first recaps Paxos and then presents our new take on Paxos in the form of *Log Paxos*. We examine the safety and liveness of the two protocols, highlighting the extensive similarities between the protocols and their proofs. We conclude by discussing how to optimize the performance of Log Paxos and how Log Paxos compares to other consensus protocols such as Multi-Paxos and Raft. As an added bonus, we also discuss [how to model check the protocols in TLA+](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf).
 
 ## Recap: Paxos
 
