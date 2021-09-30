@@ -181,7 +181,7 @@ During *phase 2*, the log stored on the proposer will only be extended.  Thus ra
 
 One simple approach (inspired by [Raft](https://raft.github.io/raft.pdf)) is for the proposer to keep track of a *MatchIndex* (the highest index where all lower indices are known to be replicated on an acceptor) and a *NextIndex* (the index of the next unsent entry in the log). When the proposer sends a $\textit{phase2a}$ message, it only sends the postfix from *NextIndex*. Presuming that no messages are lost or re-ordered, every new postfix will only extend the acceptor's log, and the acceptor can send back an acknowledge (ack). If a message is lost or re-ordered, this will be seen as missing entries in the reconstructed log. In this case, the acceptor will negatively acknowledge the message and attach the index of the first missing entry. When the proposer receives an ack it updates its *MatchIndex*. If the proposer receives a nack, in addition to the *MatchIndex*, it must also update the NextIndex so that the next update contains the missing entries.
 
-Since we have focused on simplicity over performance, there are many other opportunities to optimize the performance of Log Paxos. Let us know on twitter (link at the end of the post) if you'd like to see another post discussing these.
+Since we have focused on simplicity over performance, there are many other opportunities to optimize the performance of Log Paxos. Let us know on [twitter](https://twitter.com/heidiann360/status/1443491633752850434?s=20) if you'd like to see another post discussing these.
 
 ## Comparison to other consensus protocols
 
@@ -215,7 +215,7 @@ A major difference between CASPaxos and using Log Paxos to decide the result of 
 
 ## Summary
 
-We believe that by extending a single instance of Paxos instead of using many instances of Paxos, Log Paxos is simpler to understand (and hence to implement, verify, and optimize correctly) than Multi-Paxos, the classic approach to distributed consensus over a log. Do you agree? **Let us know what you think on [Twitter]()**.
+We believe that by extending a single instance of Paxos instead of using many instances of Paxos, Log Paxos is simpler to understand (and hence to implement, verify, and optimize correctly) than Multi-Paxos, the classic approach to distributed consensus over a log. Do you agree? **Let us know what you think on [Twitter](https://twitter.com/heidiann360/status/1443491633752850434?s=20)**.
 
 We'd like to thank Ittai for his comments which greatly helped to refine this post! 
 
