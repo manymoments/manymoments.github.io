@@ -217,7 +217,9 @@ A major difference between CASPaxos and using Log Paxos to decide the result of 
 
 We believe that by extending a single instance of Paxos instead of using many instances of Paxos, Log Paxos is simpler to understand (and hence to implement, verify, and optimize correctly) than Multi-Paxos, the classic approach to distributed consensus over a log. Do you agree? **Let us know what you think on [Twitter](https://twitter.com/heidiann360/status/1443491633752850434?s=20)**.
 
-We'd like to thank Ittai Abraham for his comments which greatly helped to refine this post and Denis Rystsov for let us know about to a formatting issue. 
+We'd like to thank Ittai Abraham for his comments which greatly helped to refine this post and Denis Rystsov for let us know about to a formatting issue.
+
+**EDIT:** After posting this we learned of a similar algorithm, known as [Sequence Paxos](https://arxiv.org/abs/2008.13456), which has been used in the teaching of distributed systems. You can learn more about Sequence Paxos [here](https://youtu.be/_4FVBBjVsPA).
 
 ---
 
