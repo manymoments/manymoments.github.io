@@ -121,7 +121,8 @@ Do we have to assume a PKI to get to 2 rounds? This protocol decides in 2 rounds
 2. Otherwise, there are at most $f-1$ faulty non-broadcaster parties.
    
     2A. If even one honest party sees $n-f-1$ ```<echo 0, v>``` then at least $n-f-1-(f-1)=n-2f$ honest send ```<echo 0, v>``` and at most $2f-1$ remaining non-broadcasters can send  ```<echo 0, v'>```. Hence all honest will send ```<echo 1, v>``` and then ```<echo 2, v>``` and then decide $v$.
-    2B. Otherwise some honest saw $n-f-1$ ```<echo 2, v>```, so at least $n-f-1-(f-1)=n-2f>f+1$ honest send ```<echo 2, v>```. We will now show that no honest sent ```<echo 2, v'>``` hence all honest will decide $v$: Since some honest sent ```<echo 2, v>``` then at least $n-2f$ honest sent ```<echo 1, v>```, hence there can be at most $2f-1$ that send ```<echo 1, v'>```.
+
+    2B. Otherwise some honest saw $n-f-1$ ```<echo 2, v>```, so at least $n-f-1-(f-1)=n-2f>f+1$ honest send ```<echo 2, v>```. We will now show that no honest sent ```<echo 2, v'>``` hence all honest will decide $v$: Since some honest sent ```<echo 2, v>``` then at least $n-2f$ honest sent ```<echo 1, v>```, hence there can be at most $2f-1$ non-broadcasters that send ```<echo 1, v'>```.
 
 > *Exercise 3*: Verify that the above protocol satisfies validity and agreement, and has $(2,4)$-round.
 
