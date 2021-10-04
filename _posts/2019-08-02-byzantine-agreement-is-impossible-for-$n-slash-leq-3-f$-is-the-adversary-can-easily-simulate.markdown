@@ -1,6 +1,6 @@
 ---
 title: Byzantine Agreement is Impossible for $n \leq 3 f$ if the Adversary can Simulate
-date: 2019-08-02 06:55:00 -11:00
+date: 2019-08-02 13:55:00 -04:00
 tags:
 - dist101
 - lowerbound
@@ -84,7 +84,7 @@ The main thing to observe is that the lower bound requires the adversary to simu
 - In particular, Nakamoto Consensus is an example of a Byzantine Agreement protocol that only requires a fresh random genesis as a setup and can withstand $(n/2)(1+\epsilon)>f>n/3$ corruptions (see [GKL](https://eprint.iacr.org/2014/765.pdf)) or this [blog post](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/).
 
 
-The other thing to observe is that when the FLM bound holds, it holds in a strong way for randomized protocols, disallowing even protocols that reach agreement with a small constant probability of error. See the unpublished manuscript of [KY](http://www.math.ucsd.edu/~ronspubs/89_08_byzantine.pdf).
+The other thing to observe is that when the FLM bound holds, it holds in a strong way for randomized protocols, disallowing even protocols that reach agreement with a small constant probability of error. Moreover, FLM holds even from Crusader Agreement (when we weaken the Agreement to Weak Agreement). See our follow up [blog post](https://decentralizedthoughts.github.io/2021-10-04-crusader-agreement-with-dollars-slash-leq-1-slash-3$-error-is-impossible-for-$n-slash-leq-3f$-if-the-adversary-can-simulate/) for both extensions.  
 
 
 **[FLM 85 modern version] It is impossible to solve synchronous agreement with probability $> 2/3$ against a Byzantine adversary that can simulate $n+f$ parties if $f \geq n/3$.**
