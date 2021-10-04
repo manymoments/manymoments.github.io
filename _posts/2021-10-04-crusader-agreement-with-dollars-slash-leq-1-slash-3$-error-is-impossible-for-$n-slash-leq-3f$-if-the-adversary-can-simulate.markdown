@@ -19,7 +19,7 @@ Consider $n$ parties in the synchronous model, where at most $f$ of them are Byz
 1. **(Validity)**: If all honest parties have the same input then this must be the output of all honest parties.
 2. **(Weak Agreement)**: It is never the case that one honest outputs 1 and another honest outputs 0.
 
-***Exercise***: show a constant round protocol that solves Crusader agreement for any $n>3f$ (first correct answer on [twitter](...) gets $(n-f)$ DT coins).  
+***Exercise***: show a constant round protocol that solves Crusader agreement for any $n>3f$ (first correct answer on [twitter](https://twitter.com/kartik1507/status/1445048662430683138?s=20) gets $(n-f)$ DT coins).  
 
 ### Crusader Agreement with $\epsilon$-error
 This is an even easier problem where you are allowed some probability $\epsilon$ of error:
@@ -41,7 +41,7 @@ As an indication of the strength of the FLM covering technique, the proof is qui
 
 Six parties are connected in a cycle $A,B,C,A',B',C'$. Parties $A,B,C$ have input of 1 (shown in the blue color) and parties $A',B',C'$ have an input of 0 (shown in the red color). This is a great time to stop and ask: why is this setup well-formed? Why is it okay to take a protocol for three parties and wire it with six parties?
 
-The beauty of the FLM proof is that this is a valid, well-formed execution. Consider any two consecutive parties and examine the world where these two parties are honest and the adversary simulated all the four remaining parties.
+The beauty of the FLM proof is that this six node configuration is a valid, well-formed execution. Consider any two consecutive parties and examine the world where these two parties are honest and the adversary strategy is to simulate all the four remaining parties.
 
 ![World 1](https://i.imgur.com/Dx9ioKx.jpg)
 
@@ -63,7 +63,7 @@ Finally, consider World 3, where $C$ and $A'$ are honest. Note that $C$'s view i
 
 We have shown that the FLM lower bound holds for Agreement, and even for Crusader Agreement, even if you are allowed a constant error probability. 
 
-Lower bounds in distributed computing are protocols for the adversary. The FLM lower bound is a striking example of a non-trivial adversary strategy that uses the protocol against itself.   
+Lower bounds in distributed computing are protocols for the adversary. The FLM lower bound is a striking example of a non-trivial adversary strategy: The adversary uses the protocol against itself.   
 
 
 What if we weaken the Validity property instead of the Agreement property: **(Weak Validity)**: if all parties are non-faulty and have the same input then this is the output value. Can you solve this problem for $n=3$? What about solving this problem with probability $0.99$?
