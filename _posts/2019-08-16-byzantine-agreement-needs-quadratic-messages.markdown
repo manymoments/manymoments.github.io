@@ -1,13 +1,13 @@
 ---
 title: Does Byzantine Agreement need Quadratic Messages?
-date: 2019-08-16 15:30:00 -07:00
+date: 2019-08-16 18:30:00 -04:00
 tags:
 - lowerbound
 - dist101
 author: Kartik Nayak, Ittai Abraham
 ---
 
-The quest for building scalable Byzantine agreement has many challenges. In this post we highlight the 1982 [Dolev and Reischuk](http://hebuntu.cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf) lower bound.
+The quest for building scalable Byzantine agreement has many challenges. In this post we highlight the 1982 [Dolev and Reischuk](http://cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf) lower bound.
 
 In this series of posts we are revisiting classic lower bounds from the 1980's. Most of them focused on *deterministic* protocols and computationally *unbounded* adversaries. Part of our goal is to provide a more modern view that also considers *randomized* protocols instead.
 
@@ -44,9 +44,9 @@ messages. In World 2, the adversary does everything as in World 1, except (i) it
 What do honest nodes in $U$ output in World 2? We argue that they will output 0. Observe that for the honest nodes, the two worlds are indistinguishable. Since the protocol is deterministic, they receive exactly the same messages in both worlds. However, since node $p$ does not receive any messages, if it outputs 1, then consistency is violated.
 
 
-The lower bound uses the the fact that the protocol is deterministic. There have been several attempts at circumventing the lower bound using **randomness** and even against an adaptive adversary. Here are a few notable ones:
+The lower bound uses the fact that the protocol is deterministic. There have been several attempts at circumventing the lower bound using **randomness** and even against an adaptive adversary. Here are a few notable ones:
 - [King-Saia](https://arxiv.org/pdf/1002.4561.pdf): Through a sequence of fascinating new ideas, King and Saia presented a beautiful protocol that broke the quadratic communication complexity. Their protocol uses randomness and assumes that honest parties can erase data - so if they later get corrupt the adversary cannot extract the erased data. 
-- [Algorand](https://www.sciencedirect.com/science/article/pii/S030439751930091X?via%3Dihub) uses randomness to cryptographic techniques to compute small committees. Algorand assumes the adaptive adversary cannot cause the corrupt parties to remove the in-flight messages that were sent before they party was corrupted.
+- [Algorand](https://www.sciencedirect.com/science/article/pii/S030439751930091X?via%3Dihub) uses randomness to cryptographic techniques to compute small committees. Algorand assumes the adaptive adversary cannot cause the corrupt parties to remove the in-flight messages that were sent before the party was corrupted.
 - Recently, in PODC’19, we generalized this lower bound for a randomized protocol.
 
 [Randomized version of Dolev-Reischuk.](https://users.cs.duke.edu/~kartik/papers/podc2019.pdf) Any (possibly randomized) BA protocol must in expectation incur at least $\Omega(f^2)$ communication in the presence of a strongly adaptive adversary capable of performing "after-the-fact removal", where $f$ denotes the number of corrupt nodes.
