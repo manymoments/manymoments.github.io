@@ -124,8 +124,8 @@ Next, we'll explain why these polynomials being zero over $H$ is equivalent to c
 
 Note that Equations $\ref{eq:w1}$ through $\ref{eq:w3}$ are using _vanishing polynomials_ that evaluate to zero when $X$ is in a specific subset of $H$.
 
- - e.g., $\frac{X^{n}-1}{X-1}$ is zero $\forall X = \omega^i$ except for $i=0$.
- - e.g., $\frac{X^{n}-1}{X-w^{n-1}}$ is zero $\forall X = \omega^i$ except for $i=n-1$.
+ - e.g., $\frac{X^{n}-1}{X-1}$ is zero $\forall X = \omega^i$ except for $X = w^0 = 1$.
+ - e.g., $\frac{X^{n}-1}{X-w^{n-1}}$ is zero $\forall X = \omega^i$ except for $X = w^{n-1}$.
  - e.g., $X-\omega^{n-1}$ is zero only at $X=\omega^{n-1}$ 
 
 First, let's show that:
@@ -149,21 +149,22 @@ The same reasoning applies here too, except the vanishing polynomial $X-\omega^{
 
 ### Back to the BFGW protocol
 
-The next idea is that to reduce proving $w_1, w_2, w_3$ are zero $\forall X\in H$, to proving that a random linear combination of them is zero $\forall X\in H$. Specifically, that:
+The next idea is to reduce proving that $w_1, w_2$ and w_3$ are zero $\forall X\in H$ to proving that a random linear combination of them is zero $\forall X\in H$.
+Specifically, that:
 
-$$H(X) = w_1(X) + \tau w_2(X) + \tau^2 w_3(X) = 0,\forall X\in H$$
+$$R(X) = w_1(X) + \tau w_2(X) + \tau^2 w_3(X) = 0,\forall X\in H$$
 
 Here $\tau\in \Fp$ is picked uniformly at random **by the verifier**.
 
 The prover computes a quotient polynomial $q$ and sends $\polycommit(q)$ to the verifier:
 
-$$q(X) = H(X)/(X^n-1) = \frac{w_1(X) + \tau w_2(X) + \tau^2 w_3(X)}{X^{n}-1}.$$
+$$q(X) = R(X)/(X^n-1) = \frac{w_1(X) + \tau w_2(X) + \tau^2 w_3(X)}{X^{n}-1}.$$
 
 The prover's goal is to prove that the following polynomial is zero **everywhere**:
 
-$$w(X) = H(X) - q(X) \cdot (X^n - 1) = w_1 + \tau w_2 + \tau^2 w_3 - q \cdot (X^{n}-1)$$
+$$w(X) = R(X) - q(X) \cdot (X^n - 1) = w_1 + \tau w_2 + \tau^2 w_3 - q \cdot (X^{n}-1)$$
 
-(This is equivalent to proving $H(X)$ is zero $\forall X\in H$.)
+(This is equivalent to proving $R(X)$ is zero $\forall X\in H$.)
 
 For this, the verifier will pick a random $\rho\in \Fp$ and ask the prover to prove that $w(\rho)=0$.
 The difficulty is that the verifier doesn't have a commitment to $w(X)$, which means a simple KZG proof for $w(\rho) = 0$ won't do.
@@ -220,8 +221,8 @@ The computational cost for the prover is:
         + (assuming $f$ has degree smaller than $g$)
     - $w_2$ has degree $2\deg(g) + \deg(\frac{X^n-1}{X-\omega^{n-1}})=2 n + 2 + n - 1 = 3n + 1$  
     - $w_3$ has degree $2\deg(g) + \deg(X-\omega^{n-1}) = 2n + 3$
-    - $H(X)$ has degree $\max(\deg(w_1),\deg(w_2),\deg(w_3))=3n+1$
-    - $q(X)=\frac{H(X)}{X^n - 1}$ has degree $2n+1$
+    - $R(X)$ has degree $\max(\deg(w_1),\deg(w_2),\deg(w_3))=3n+1$
+    - $q(X)=\frac{R(X)}{X^n - 1}$ has degree $2n+1$
  - Evaluate $g(\rho)$, $g(\rho \omega)$ and $\hat{w}(\rho)$,
     - $\deg(\hat{w}(X)) = \deg(q)=2n+1$
  - Use the PCS to prove the evaluations are correct.
@@ -243,9 +244,9 @@ The verifier has to compute the following:
 The protocol above is interactive, but can be made non-interactive using the Fiat-Shamir[^FS87] transform.
 
 {: .box-note}
-Why not use a KZG batch proof to prove that $H(X) = 0, \forall X\in H$: i.e., a commitment to a polynomial $q(X)$ such that $H(X) = q(X) \cdot (x^n - 1)$.
-My guess is BFGW doesn't take this route because the verifier doesn't have a commitment to $H(X)$.
-If the verifier were given commitments to $w_1, w_2$ and $w_3$ that he can verify against a commitment to $g(X)$, then he could verify the commitment to $H(X)$.
+Why not use a KZG batch proof to prove that $R(X) = 0, \forall X\in H$: i.e., a commitment to a polynomial $q(X)$ such that $R(X) = q(X) \cdot (x^n - 1)$.
+My guess is BFGW doesn't take this route because the verifier doesn't have a commitment to $R(X)$.
+If the verifier were given commitments to $w_1, w_2$ and $w_3$ that he can verify against a commitment to $g(X)$, then he could verify the commitment to $R(X)$.
 However, verifying a commitment to $w_3$ seems difficult.
 
 ### References
