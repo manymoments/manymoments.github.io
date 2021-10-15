@@ -130,6 +130,6 @@ This also explains why a synchrony assumption is critical for Nakamoto consensus
 - In terms of [setup assumptions](https://decentralizedthoughts.github.io/2019-07-19-setup-assumptions/), observe that the permissioned version of this protocol requires setup, e.g., PKI setup, to verifiably elect leaders. On the other hand, in a proof-of-work world, the only setup needed is to agree on a genesis block (which is a public setup). In both cases, we circumvent the [FLM bound](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) to tolerate more than one-third adversaries.
 - The expected time to mine a block depends on the difficulty of proof-of-work and the computation power invested by all miners participating in the protocol. Since the participants (and consequently the computation power) can change over time, proof-of-work mining difficulty is adjusted every two weeks in Bitcoin to still maintain a mean rate of one block every ten minutes. However, the protocol cannot tolerate a sudden surge or drop in computation power.
 
-**Acknowledgment.** We would like to thank Ittai Abraham for his help on this post!
+**Acknowledgment.** We would like to thank Ittai Abraham and Ling Ren for providing feedback on this post!
 
 Please share your comments on Twitter.
