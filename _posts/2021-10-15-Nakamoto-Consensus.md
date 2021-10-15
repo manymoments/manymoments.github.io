@@ -1,7 +1,6 @@
 ---
 title: Nakamoto's Longest-Chain Wins Protocol
 date: 2021-10-15 00:00:00 -04:00
-published: false
 tags:
 - blockchain101
 author: Kartik Nayak
