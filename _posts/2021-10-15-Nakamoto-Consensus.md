@@ -37,19 +37,25 @@ Observe that there are two simplifications made in the above protocol. First, th
 Let us try to understand how the protocol under some specific scenarios:
 1. **All replicas are honest.** In this scenario, the first-round leader proposes a value v in the first block, and in the next k rounds, the honest leaders in those rounds extend the only chain that exists.
 
-![Scenario 1](https://i.imgur.com/6eQNWsB.png)
+<p align="center">
+<img src="https://i.imgur.com/6eQNWsB.png" width="512" title="Scenario 1">
+</p>
 
 2. **20% of the replicas are Byzantine, and Byzantine replicas attempt to create a different chain.** Observe that if 20% of the replicas are Byzantine, then in expectation, they will be leaders in 20% of the rounds.
 
     For example, we may have HHBBHHHHH... as the sequence of leaders resulting in the chain as follows. 
 
-![Scenario 2a](https://i.imgur.com/DcvCxKi.png)
+<p align="center">
+<img src="https://i.imgur.com/DcvCxKi.png" width="512" title="Scenario 2a">
+</p>
 
 Here, the Byzantine leader in the third round started a different chain, with the first block having value v = Orange (or orange chain) even when a longer blue chain existed. Eventually, the blue chain was committed.
 
 However, the order could have been HHBBBHHHH... resulting in the following chain.
 
-![](https://i.imgur.com/nDMRMFJ.png)
+<p align="center">
+<img src="https://i.imgur.com/nDMRMFJ.png" width="512" title="Scenario 2b">
+</p>
 
 In this scenario, the orange chain grew longer, and eventually, all replicas committed value v = Orange. It is important to stress that, from a consensus standpoint, all honest replicas have still committed the same value. Thus, we have safety and liveness so far as the orange value is a valid value (as per some validity rule). 
 
@@ -59,7 +65,9 @@ However, when we achieve consensus on many values instead of just one, a situati
 
     As an example, the leader order can be BBHBHBBBHBHBHB.... 
 
-![Scenario 3](https://i.imgur.com/eV3TXOV.png)
+<p align="center">
+<img src="https://i.imgur.com/eV3TXOV.png" width="768" title="Scenario 3">
+</p>
 
 Observe that if the Byzantine replicas do not show a chain to honest replicas, an honest leader in the third round can start a new chain instead.
 
@@ -71,7 +79,9 @@ Thus, for a sufficiently large k (security parameter), a private chain attack by
 
 How do we commit more than one value? Of course, an option is to have multiple values in the same block. But note that we cannot have all values in one block due to arrival of values at a later point such that they depend on previous ones. Thus, committing multiple blocks is necessary for any SMR system. Nakamoto achieves this by pipelining this process intuitively: each block acts as a proposer for a value (or values) and a vote for all the blocks that precede it. Thus, there is a genesis block, only one longest chain that extends the genesis, and every block plays both roles.
 
-![Many values](https://i.imgur.com/CxhdIWa.png)
+<p align="center">
+<img src="https://i.imgur.com/CxhdIWa.png" width="768" title="Many values">
+</p>
 
 A block can be committed if it is on the longest chain starting from genesis and if k blocks extend it. Thus, the commit latency for each block is still k. Due to pipelining, a block is committed every round (or a constant number of rounds in expectation). Since all blocks are now connected to the genesis, the notion of creating a new chain by a Byzantine replica is now replaced by a fork instead.
 
@@ -106,7 +116,9 @@ Commit rule: if the longest chain has length x, commit the first x-k blocks.
 
 Proof-of-work provides us with a verifiable unique leader elected uniformly at random in intermittent intervals (earlier referred to as rounds). Well, almost! It turns out that, when parameterized correctly, we achieve these properties with high probability. But in some cases, the uniqueness property does not hold. Why? Each attempt at finding a proof-of-work for the next block involves computing a hash function based on random input (nonce), and thus this process is memoryless (i.e., success in an attempt does not depend on previous attempts). Thus, the arrival rate of the next block in the entire system is governed by a Poisson process, and we may have two replicas (both of them potentially honest) who mine a block within a short time interval. If this time interval is short enough that the replicas do not receive each other's block, we have an honest fork in the system. Observe that this fork exists purely due to a delay in the network. This is why Bitcoin is parameterized to produce a block every ten minutes -- this ensures that honest forks are rare. On the other hand, protocols such as Ethereum generate blocks faster and observe a higher honest forking rate. Honest forking rate reduces the effective computation power of honest replicas, which was shown quantitatively in a previous [post](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/). A graphical illustration of the relationship between the two, shown below, was plotted by [PSS](https://eprint.iacr.org/2016/454.pdf) in their analysis.
 
-![](https://i.imgur.com/gGyfxCv.png)
+<p align="center">
+<img src="https://i.imgur.com/gGyfxCv.png" width="512" title="Graph">
+</p>
 
 In the above figure, the x-axis represents the block time relative to the synchronous network delay. Thus, if the network delay is 10 seconds, we have c = 60 since the expected Bitcoin block time is every 10 minutes. The y-axis represents the adversarial fraction, and the blue line represents the adversarial fraction tolerated or a given c. When c is large, e.g., 60, there is little reduction in the effective computation power, and we can tolerate an adversarial power close to 50%. On the other hand, when c is small, we observe a reduction. Note that the line represents a bound, and thus depending on the tightness of their analysis, a higher adversarial fraction may be tolerable.
 
@@ -118,5 +130,6 @@ This also explains why a synchrony assumption is critical for Nakamoto consensus
 - In terms of [setup assumptions](https://decentralizedthoughts.github.io/2019-07-19-setup-assumptions/), observe that the permissioned version of this protocol requires setup, e.g., PKI setup, to verifiably elect leaders. On the other hand, in a proof-of-work world, the only setup needed is to agree on a genesis block (which is a public setup). In both cases, we circumvent the [FLM bound](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) to tolerate more than one-third adversaries.
 - The expected time to mine a block depends on the difficulty of proof-of-work and the computation power invested by all miners participating in the protocol. Since the participants (and consequently the computation power) can change over time, proof-of-work mining difficulty is adjusted every two weeks in Bitcoin to still maintain a mean rate of one block every ten minutes. However, the protocol cannot tolerate a sudden surge or drop in computation power.
 
+**Acknowledgment.** We would like to thank Ittai Abraham for his help on this post!
 
 Please share your comments on Twitter.
