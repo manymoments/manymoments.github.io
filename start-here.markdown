@@ -4,7 +4,7 @@ date: 2020-09-21 09:34:00 -04:00
 ---
 
 {: .box-note}
-This page is a dynamically changing index of all posts Decentralized Thoughts (you can read chronologically [here](https://decentralizedthoughts.github.io/)).
+This page is a dynamically changing index of all posts on Decentralized Thoughts (you can read chronologically [here](https://decentralizedthoughts.github.io/)).
 
 We would love to get your feedback and thoughts on [Twitter](https://twitter.com/ittaia/status/1421066572207169544?s=20).
 
