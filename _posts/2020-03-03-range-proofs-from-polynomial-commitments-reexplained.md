@@ -149,7 +149,7 @@ The same reasoning applies here too, except the vanishing polynomial $X-\omega^{
 
 ### Back to the BFGW protocol
 
-The next idea is to reduce proving that $w_1, w_2$ and w_3$ are zero $\forall X\in H$ to proving that a random linear combination of them is zero $\forall X\in H$.
+The next idea is to reduce proving that $w_1, w_2$ and $w_3$ are zero $\forall X\in H$ to proving that a random linear combination of them is zero $\forall X\in H$.
 Specifically, that:
 
 $$R(X) = w_1(X) + \tau w_2(X) + \tau^2 w_3(X) = 0,\forall X\in H$$
