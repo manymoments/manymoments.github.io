@@ -22,19 +22,20 @@ Let v denote a replica's input
 
 Each replica maintains a set of chains, initially empty.
 
-The protocol proceeds in rounds. In each round,
-- A unique replica is elected uniformly at random to be the leader L.
-- L adds a block to the longest chain known to it. 
+The protocol proceeds in rounds. In each round r:
+- A unique replica is elected uniformly at random to be the leader L of round r.
+- L adds an empty vote block to the longest chain known to it. 
   If no chain is known, it creates a new chain with a single block with input v.
-- L shares the longest chain with all  replicas who update their set of chains.
+- L shares the longest chain with all replicas.
+- All replicas update their set of chains based on L's message.
 
 Commit rule: If some chain is k blocks long, commit the value in the first block. 
              Share the chain with all other replicas.
 ```
 
-Observe that there are two simplifications made in the above protocol. First, the input value is added only to the first block (a proposal). Subsequent blocks are empty (which act as votes). Second, we did not discuss how a unique leader is elected uniformly at random and how everyone knows that this replica is the leader. For now, we will assume that there is an oracle that provides us with this abstraction.
+Observe that there are two simplifications made in the above protocol. First, the input value is added only to the first block (a proposal). Subsequent blocks are empty (which act as votes). Second, we did not discuss how a unique leader is elected uniformly at random each round and how everyone knows that this replica is the leader. For now, we will assume that there is an oracle that provides us with this abstraction.
 
-Let us try to understand how the protocol under some specific scenarios:
+Let us understand how the protocol under some specific scenarios:
 1. **All replicas are honest.** In this scenario, the first-round leader proposes a value v in the first block, and in the next k rounds, the honest leaders in those rounds extend the only chain that exists.
 
 <p align="center">
@@ -77,24 +78,24 @@ Thus, for a sufficiently large k (security parameter), a private chain attack by
 
 ### From single-shot consensus to consensus for multiple values
 
-How do we commit more than one value? Of course, an option is to have multiple values in the same block. But note that we cannot have all values in one block due to arrival of values at a later point such that they depend on previous ones. Thus, committing multiple blocks is necessary for any SMR system. Nakamoto achieves this by pipelining this process intuitively: each block acts as a proposer for a value (or values) and a vote for all the blocks that precede it. Thus, there is a genesis block, only one longest chain that extends the genesis, and every block plays both roles.
+How do we commit more than one value? Of course, an option is to have multiple values in the same block. But note that we cannot have all values in one block due to arrival of values at a later point such that they depend on previous ones. Thus, committing multiple blocks is necessary for any SMR system. Nakamoto achieves this by pipelining this process in an intuitive manner: each block acts as a proposer for a value (or values) and a vote for all the blocks that precede it. So, there is a genesis block, with only one longest chain that extends the genesis, and every block plays both roles in this longest chain.
 
 <p align="center">
 <img src="https://i.imgur.com/CxhdIWa.png" width="768" title="Many values">
 </p>
 
-A block can be committed if it is on the longest chain starting from genesis and if k blocks extend it. Thus, the commit latency for each block is still k. Due to pipelining, a block is committed every round (or a constant number of rounds in expectation). Since all blocks are now connected to the genesis, the notion of creating a new chain by a Byzantine replica is now replaced by a fork instead.
+A block can be committed if it is on the longest chain starting from genesis and if at least k blocks extend it. Thus, the commit latency for each block is still k. Due to pipelining, a block is committed every round (or a constant number of rounds in expectation). Since all blocks are now connected to the genesis, the notion of creating a new chain by a Byzantine replica is now replaced by a *fork* from the longest chain.
 
 
 ### Permissionlessness, proof-of-work, and need for synchrony
 
-Earlier, we made several simplifying assumptions: 1. assuming a fixed number of replicas that know each other, 2. having a well-defined notion of *rounds*, and 3. assuming a leader election oracle that uniquely and verifiably identifies a leader uniformly at random. Given our basic understanding of the protocol, we will now either relax these assumptions or learn to realize these oracles.
+Earlier, we made several simplifying assumptions: 1. there is a fixed number of replicas that know each other, 2. there is a well-defined notion of *rounds*, and 3. there is a leader election oracle that uniquely and verifiably identifies a leader uniformly at random. Given our basic understanding of the protocol, we will now either relax these assumptions or learn how to realize these oracles.
 
-**Permissioned vs. permissionless.** The notion of having a set of replicas that know each other is called the "permissioned" setting. In effect, any replica that needs to join the system requires permission to be a part of it. Bitcoin works in a more generic setting where any replica can leave or join the system at any point in time. Moreover, the replicas do not have any identity associated with them -- all replicas are pseudonymous. Yet, the expectation is that the protocol still provides us with safety and liveness guarantees. This setting is referred to as "permissionless," and it is strictly harder to design permissionless protocols.
+**Permissioned vs. permissionless.** The notion of having a set of replicas that know each other is called the *permissioned* setting. In effect, any replica that needs to join the system requires permission to be a part of it. Bitcoin works in a more generic setting where any replica can leave or join the system at any point in time. Moreover, the replicas do not have any identity associated with them -- all replicas are pseudonymous. Yet, the expectation is that the protocol still provides us with safety and liveness guarantees. This setting is referred to as *permissionless*, and it is strictly harder to design permissionless protocols.
 
-Since replica can join at any time and replicas do not have identities associated with them, an adversary can masquerade itself as many replicas, also referred to as *Sybil replicas*. Given our leader election protocol, this is concerning: if elections happen uniformly at random, almost all elections will be won by (a Sybil of) the adversary. It can then always pull off a private chain attack described earlier, leading to a safety violation.
+Since replicas can join at any time and replicas do not have identities associated with them, an adversary can masquerade itself as many replicas, also referred to as *Sybil replicas*. Given our leader election protocol, this is concerning: if elections happen uniformly at random, almost all elections will be won by (a Sybil of) the adversary. It can then always pull off a private chain attack described earlier, leading to a safety violation.
 
-**Resource constraints and proof-of-work.** Nakamoto consensus solves this problem by making an additional assumption that relates the *computation power* of honest and Byzantine replicas and using the computing power to determine leaders. Specifically, the protocol is only secure so far as the honest computation power is more than Byzantine computation power. To elect leaders, all replicas engage in a continuous randomized competition that depends on the number of hashes they can compute at any time. The winner of each iteration of this competition needs to present a proof-of-work (explained in more detail in this [post](https://decentralizedthoughts.github.io/2020-08-28-what-is-a-cryptographic-hash-function/)). The process of finding the next block is also referred to as *mining*; hence, the replicas are referred to as miners.
+**Resource constraints and proof-of-work.** Nakamoto consensus solves this problem by making an additional assumption that relates the *computation power* of honest and Byzantine replicas and uses the compution power to determine leaders. Specifically, the protocol is only secure so far as the honest computation power is more than Byzantine computation power. To elect leaders, all replicas engage in a continuous randomized competition that depends on the number of hashes they can compute at any time. The winner of each iteration of this competition needs to present a proof-of-work (explained in more detail in this [post](https://decentralizedthoughts.github.io/2020-08-28-what-is-a-cryptographic-hash-function/)). The process of finding the next block is also referred to as *mining*; hence, the replicas are referred to as miners.
 
 Thus, an updated version of the protocol looks like the following:
 
@@ -114,7 +115,7 @@ Commit rule: if the longest chain has length x, commit the first x-k blocks.
              Share the chain with all other replicas.
 ```
 
-Proof-of-work provides us with a verifiable unique leader elected uniformly at random in intermittent intervals (earlier referred to as rounds). Well, almost! It turns out that, when parameterized correctly, we achieve these properties with high probability. But in some cases, the uniqueness property does not hold. Why? Each attempt at finding a proof-of-work for the next block involves computing a hash function based on random input (nonce), and thus this process is memoryless (i.e., success in an attempt does not depend on previous attempts). Thus, the arrival rate of the next block in the entire system is governed by a Poisson process, and we may have two replicas (both of them potentially honest) who mine a block within a short time interval. If this time interval is short enough that the replicas do not receive each other's block, we have an honest fork in the system. Observe that this fork exists purely due to a delay in the network. This is why Bitcoin is parameterized to produce a block every ten minutes -- this ensures that honest forks are rare. On the other hand, protocols such as Ethereum generate blocks faster and observe a higher honest forking rate. Honest forking rate reduces the effective computation power of honest replicas, which was shown quantitatively in a previous [post](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/). A graphical illustration of the relationship between the two, shown below, was plotted by [DKT+19](https://eprint.iacr.org/2020/601.pdf) in their analysis.
+Proof-of-work provides us with a verifiable unique leader elected uniformly at random in intermittent intervals (earlier referred to as rounds). Well, almost! It turns out that, when parameterized correctly, we achieve these properties with high probability. But in some cases, the uniqueness property does not hold. Why? Each attempt at finding a proof-of-work for the next block involves computing a hash function based on random input (nonce), and thus this process is memoryless (i.e., success in an attempt does not depend on previous attempts). Thus, the arrival rate of the next block in the entire system is governed by a *Poisson process*, and we may have two replicas (both of them potentially honest) who mine a block within a short time interval. If this time interval is short enough that the replicas do not receive each other's block, we have an honest fork in the system. Observe that this fork exists purely due to a delay in the network. This is why Bitcoin is parameterized to produce a block every ten minutes -- this ensures that honest forks are rare. On the other hand, protocols such as Ethereum generate blocks faster and observe a higher honest forking rate. Honest forking rate reduces the effective computation power of honest replicas, which was shown quantitatively in a previous [post](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/). A graphical illustration of the relationship between the two, shown below, was plotted by [DKT+19](https://eprint.iacr.org/2020/601.pdf) in their analysis.
 
 <p align="center">
 <img src="https://i.imgur.com/G5xpPyq.png" width="512" title="Graph">
