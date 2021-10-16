@@ -1,0 +1,210 @@
+---
+title: 'The Ideal State Machine Model: Multiple Clients and Linearizability'
+date: 2021-10-16 15:45:00 -04:00
+tags:
+- dist101
+author: Ittai Abraham
+---
+
+We introduced state machines and [state machine replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) in an earlier post. In this post, we elaborate on the exact notion of safety and liveness that can be obtained by an ideal state machine when there are multiple clients.
+
+First, these definitions highlight the challenges of serving multiple clients. Second, when we implement a *replicated* state machine we need to formally argue that this real environment behaves the same as some ideal environment also with respect to multiple clients. This post will connect the notion of an ideal state machine to Herlihy and Wing's seminal notion of [linearizability](https://cs.brown.edu/~mph/HerlihyW90/p463-herlihy.pdf) from 1987. Linearizability is the *gold standard* in concurrent programming. It captures the powerful and elegant property that overlapping function calls to a *linearizable object* behave as if each function call is executed instantaneously.
+
+
+### The Ideal State Machine Model
+In the *ideal model*, there is a single *server* and a set of *clients*. Clients only communicate with the server. The adversary can corrupt clients and cause them to have omission failures. A client that is not corrupted is called *non-faulty*. We assume a synchronous model of communication where the adversary can delay messages by at most some known bound $\Delta$.  In order to focus on the communication delay effects, we assume that local computation takes zero time.
+
+
+### A Sequential Client
+
+The client is modeled as a simple state machine that sends commands to the server and listens to the server responses. Importantly, the client is *sequential*: it waits to receive the response of its previous command before sending a new command. This simplifies the client and in some settings also provides a basic flow control mechanism that bounds the total number of in-flight commands as a function of the number of permissioned clients. We model the client as having an external ```command-queue``` and ```response-queue```. Finally, we assume each command has a unique identifier so that the client can match the response to the request.
+
+
+```
+// Cleint state machine
+pending = empty
+while true
+    if pending = empty and command-queue is not empty
+        cmd = command-queue.dequeue()
+        send <cmd> to server
+        pending = cmd
+    on <response> from server where response maches pending
+        response-queue.enqueue(response)
+        pending = empty
+```
+
+
+### A batched server implementing a sequential state machine: 
+The state machine is defined by the *transition function*  ```apply()``` that takes the existing state and a new command and outputs the new state and the response: ```(state, response) = apply(state, cmd)```. The server uses a *timer* that ticks every $\Delta$ time to batch client commands into *blocks*. It then executes each block and sends the responses to the relevant clients. 
+
+To maintain the history, the blocks of commands are recorded in a log of blocks.
+
+```
+// Server state machine
+state = init
+log = []
+counter = 1
+while true
+    on <cmd> from client
+        add (cmd, client) to log[counter]
+    on Delta-timer ticking
+        for each (cmd,client) in log[counter]
+            (state, response) = apply(state, cmd)
+            send <response> to client
+        counter++
+```
+We assume here that the server can process all the commands in zero time. Recalls that the adversary controls message delays by up to $\Delta$.
+
+### The Client Experience: Liveness
+
+When a non-faulty client sends a command, it may take up to $3 \Delta$ of network delay before it gets a response: one $\Delta$ to send the command, one $\Delta$ delay for batching, and a final $\Delta$ delay for the response. Here we explicitly ignore the processing and computation time (assume it's zero). So we can state a simple liveness property:
+
+**Liveness**: Each non-faulty client request gets a response after at most $3 \Delta$ time of network delay.
+
+The above requirement is for non-faulty clients. If the client is faulty (can suffer omission faults) then it may happen that the client never receives a response (because the adversary omits the responses at the client).
+
+### The Client Experience: Safety
+Now that we defined the liveness property we need to ask: given a request, what should we consider as a correct response from the server? More generally, we will look at a full *client history* (all the requests and responses of all the clients) and ask: is this history correct?
+
+We will give two answers to this question. The first is by saying that a history is correct if it can be generated in an execution in our ideal model:
+
+
+**Safety (relative to the ideal model)**: a client history is safe if it can be generated in the ideal model.
+
+Our second answer is to use the definition of **[linearizability](http://www.cs.tau.ac.il/~shanir/multiprocessor-synch-2003/linear/notes/linear.pdf)**. We can view each request-response pair as a function call to the state machine object and require that each function call has a **linearization point** at some time between the request and the response. The behavior of the system is as if the function occurs instantaneously at its linearization point and the object behaves like its sequential definition.
+
+Note that since clients may fail, the last client request may not have a response in the client history. Formally, we require that a request with no response either has a linearization point that is after the request or there is no linearization point for this request.
+
+**Safety (linearizability)**: a client history is safe if it is linearizable. 
+
+
+
+So these are two ways to say the same thing! Let's say a few words about why that is the case. The single server executes requests as a sequential state machine. The linearization point of a request is precisely the point in time when the server sequentially executes the request (and a request that has no response and no linearization point is exactly the case that this request message was omitted by the adversary).
+
+### Is this a good definition?
+
+On the positive side, we have defined a natural ideal model and showed its equivalent to the strong consistency notion of linearizability. This seems like a good definition - it prevents behaviors that seem to be obviously incorrect, like ignoring commands and reordering them in ways that ignore the client responses. Safety violations like double-spending or equivocation can all be viewed as violations of the ideal model (or essentially of linearizability).
+
+On the negative side, there is considerable arbitrariness in the ideal model: The adversary has the power to delay messages (by at most $\Delta$) and this way can control the order of requests in the blocks. A server can reorder requests and still maintain the definition of safety. Even worse, a server can see the content of client messages but behave as if the message arrived later. During this time, the server can collude with other clients that can send commands based on this information (know as [sandwich attacks](https://medium.com/coinmonks/defi-sandwich-attack-explain-776f6f43b2fd) in the DeFi world). 
+
+Recently there is much interest in this powder of the server and the adversary to reorder, censor, and front-run. The term [Miner Extractable Value (MEV)](https://arxiv.org/abs/1904.05234) captures this in the context of economic value.  We will explore this topic in later posts.
+
+In this post, we assume this definition of safety is sufficient and focus on showing how to implement a system that behaves like an ideal system even though it is composed of failure-prone servers.
+
+
+## Implementing an Ideal State Machine with Two Servers Where One Can Crash
+
+In this part, we will extend the protocol in our [previous post](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) to the multi-client setting.
+
+### The Two-Server One-Crash Model
+There are two *servers* we call ```primary``` and ```backup``` and a set of *clients*. Clients only communicate with the two servers. The adversary can cause a crash failure to one of the two servers and also cause omission failures to any number of clients. Clients that have no omission failures are called non-faulty. Communication is synchronous: the adversary can delay messages by at most some known bound $\Delta$.  
+
+Note that the adversary in this model can both control the network delays, cause client omission faults, and crash one of the servers while the adversary in the Ideal Model can only control network delays and cause client omission faults.
+
+Our goal is to obtain a protocol with the following two properties:
+1. **Liveness**: Each non-faulty client request gets a response after at most $6 \Delta$ time. Note that we changed the required response time from $3 \Delta$ to $6 \Delta$ and that we only require this for non-faulty clients.
+2. **Safety**: for every client history that is created when running this protocol is a client history that can be generated in the ideal model. In more detail, for any adversary behavior in this model when running the protocol, there exists some adversary behavior in the ideal model that generates the client history. 
+Note that the adversary behavior captures all the power the adversary has in each model. 
+
+### A Fault-Tolerant Client
+
+The basic idea is to interact with the Primary server until the Backup informs the client to change view with a new ```<view change>``` message.
+
+The second idea is to resend the request and change view if a response does not arrive in $3\Delta$ time.
+
+```
+// Client state machine
+pending = empty
+leader = Primary
+set view-change-timer to disable
+while true
+    if pending = empty and command-queue is not empty
+        cmd = command-queue.dequeue()
+        send <cmd> to leader
+        pending = cmd
+        set view-change-timer to 3 Delta
+    on <response> from leader where response maches pending
+        response-queue.enqueue(response)
+        pending = empty
+        set view-change-timer to disable
+    on <view change> from Backup
+        leader = Backup
+    on view-change-timer expire
+        leader = Backup
+        if pending not empty
+            send <cmd> to leader
+```
+
+Here it may happen that the same ```<response>``` arrives twice (once from the Primary and once from the Backup). The protocol will simply ignore the second ```<response>```.
+
+### The Primary
+
+The main change is that the Primary sends the block of requests to the Backup server *before* executing them. Note that even if there are no client requests an empty block is sent to the Backup every $\Delta$ time - this is a form of a heartbeat that will allow the Backup to detect if the Primary has crashed.
+
+```
+// Primary state machine
+state = init
+log = []
+counter = 1
+while true
+    on <cmd> from client
+        add (cmd,client) to log[counter]
+    on Delta-timer ticking
+        send <log[counter]> to Backup
+        for each (cmd,client) in log[counter]
+            (state, response) = apply(state, cmd)
+            send <response> to client
+        counter++
+```
+
+### The Backup
+
+The backup waits to receive a block message. If it does not arrive on time then it deducts that the Primary crashed and assumes the role of the leader.
+
+Unlike the Primary, the Backup does not send responses to the clients. When the Backup becomes the leader is will send the ```responses``` of the previous block (in case the Primary crashed before sending the responses). In this case, the client may receive a response twice (having unique request ids allows to ignore the second response).
+
+Finally, the client may need to resend its command. The Backup may receive the same command once from the Primary and once from the client resend. So the Backup checks the command from the client is not already part of a previous block.
+
+
+```
+// Backup state machine
+state = init
+log = []
+counter = 1
+leader = Primary
+set view-change-timer to 2 Delta
+while true
+    // as a follower
+    on <log[counter]> from leader
+         responses = empty
+         for each (cmd,client) in log[counter]
+            (state, response) = apply(state, cmd)
+            add (response, client) to responses
+        counter++
+        reset view-change-timer to 2 Delta
+    // view change
+    on view-change-timer exiring
+        for each (response, client) in responses
+            send <response> to client
+        for each client
+            send <view change> to client
+    // as a leader
+    on <cmd> from client and leader = Backup
+        if (cmd,client) not in log[counter] or log[counter-1]
+            add (cmd,client) to log[counter]
+    on Delta-timer ticking and leader = Backup
+        send <log[counter],counter> to Backup
+        for each (cmd,client) in log[counter]
+            (state, response) = apply(state, cmd)
+            send <response> to client
+        counter++
+```
+
+
+### Exercise  
+
+1. Show that this protocol is *live*. Every command sent by a non-faulty client will receive a response in at most $6 \Delta$ time. The interesting case is when there is a view change.
+2. Show that this protocol is *safe*. Every client history that is created when running this protocol is a client history that can be generated in the ideal model. Again, the interesting case is when the Primary crashes and is a view change. There are several cases to consider in terms of when the Primary crashes, make sure you cover all of them.
+
+
+Your decentralized thoughts and comments on [Twitter](...)
