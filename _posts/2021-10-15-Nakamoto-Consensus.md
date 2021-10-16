@@ -130,4 +130,4 @@ This also explains why a synchrony assumption is critical for Nakamoto consensus
 
 **Acknowledgment.** We would like to thank Ittai Abraham and Ling Ren for providing feedback on this post!
 
-Please share your comments on Twitter.
+Please share your comments on [Twitter](https://twitter.com/kartik1507/status/1449379437586354191?s=20).
