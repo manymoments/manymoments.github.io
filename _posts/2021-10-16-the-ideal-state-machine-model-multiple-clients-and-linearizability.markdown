@@ -204,7 +204,7 @@ while true
 ### Exercise  
 
 1. Show that this protocol is *live*. Every command sent by a non-faulty client will receive a response in at most $6 \Delta$ time. The interesting case is when there is a view change.
-2. Show that this protocol is *safe*. Every client history that is created when running this protocol is a client history that can be generated in the ideal model. Again, the interesting case is when the Primary crashes and is a view change. There are several cases to consider in terms of when the Primary crashes, make sure you cover all of them.
+2. Show that this protocol is *safe*. Every client history that is created when running this protocol is a client history that can be generated in the ideal model. The interesting case is when the Primary crashes and there is a view change. There are several cases to consider in terms of when the Primary crashes, make sure you cover all of them.
 
 
 Your decentralized thoughts and comments on [Twitter](...)
