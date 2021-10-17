@@ -148,10 +148,10 @@ log = []
 counter = 1
 while true
     on <cmd> from client
-        add (cmd,client) to log[counter]
+        add (cmd, client) to log[counter]
     on Delta-timer ticking
         send <log[counter]> to Backup
-        for each (cmd,client) in log[counter]
+        for each (cmd, client) in log[counter]
             (state, response) = apply(state, cmd)
             send <response> to client
         counter++
@@ -159,7 +159,7 @@ while true
 
 ### The Backup
 
-The backup waits to receive a block message. If it does not arrive on time then it deducts that the Primary crashed and assumes the role of the leader.
+The backup waits to receive a block message. If it does not arrive on time then it deduces that the Primary crashed and assumes the role of the leader.
 
 Unlike the Primary, the Backup does not send responses to the clients. When the Backup becomes the leader is will send the ```responses``` of the previous block (in case the Primary crashed before sending the responses). In this case, the client may receive a response twice (having unique request ids allows to ignore the second response).
 
@@ -177,7 +177,7 @@ while true
     // as a follower
     on <log[counter]> from leader
          responses = empty
-         for each (cmd,client) in log[counter]
+         for each (cmd, client) in log[counter]
             (state, response) = apply(state, cmd)
             add (response, client) to responses
         counter++
@@ -190,8 +190,8 @@ while true
             send <view change> to client
     // as a leader
     on <cmd> from client and leader = Backup
-        if (cmd,client) not in log[counter] or log[counter-1]
-            add (cmd,client) to log[counter]
+        if (cmd, client) not in log[counter] or log[counter-1]
+            add (cmd, client) to log[counter]
     on Delta-timer ticking and leader = Backup
         send <log[counter],counter> to Backup
         for each (cmd,client) in log[counter]
