@@ -8,7 +8,7 @@ author: Kartik Nayak
 
 In this post, we will cover Nakamoto's Consensus protocol presented in the [Bitcoin whitepaper](https://bitcoin.org/bitcoin.pdf). There are a lot of posts and videos that explain this seminal and simple protocol. Our goal in this post will be to *intuitively* piece out the need for different aspects of the protocol, such as proof-of-work and how network synchrony plays a role in the protocol.
 
-> The proof-of-work chain is a solution to the Byzantine Generals' Problem. I'll try to rephrase it in that context. --[Satoshi 2008-11-13](https://satoshi.nakamotoinstitute.org/emails/cryptography/11/)
+> The proof-of-work chain is a solution to the Byzantine Generals' Problem. I'll try to rephrase it in that context. [Satoshi Nakamoto 2008-11-13](https://satoshi.nakamotoinstitute.org/emails/cryptography/11/)
 
 We are in the setting described in our [state machine replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) post where a group of $n$ server replicas known to each other agrees on a sequence of values. For simplicity, we start with reaching consensus on a single value. In the second part of this post, we will generalize it to multiple values.
 
