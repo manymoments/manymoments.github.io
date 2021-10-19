@@ -175,7 +175,7 @@ leader = Primary
 set view-change-timer to 2 Delta
 while true
     // as a follower
-    on <log[counter]> from leader
+    on <log[counter]> from leader and 
          responses = empty
          for each (cmd, client) in log[counter]
             (state, response) = apply(state, cmd)
@@ -183,7 +183,8 @@ while true
         counter++
         reset view-change-timer to 2 Delta
     // view change
-    on view-change-timer exiring
+    on view-change-timer expiring
+        leader = Backup
         for each (response, client) in responses
             send <response> to client
         for each client
@@ -193,7 +194,6 @@ while true
         if (cmd, client) not in log[counter] or log[counter-1]
             add (cmd, client) to log[counter]
     on Delta-timer ticking and leader = Backup
-        send <log[counter],counter> to Backup
         for each (cmd,client) in log[counter]
             (state, response) = apply(state, cmd)
             send <response> to client
@@ -205,6 +205,10 @@ while true
 
 1. Show that this protocol is *live*. Every command sent by a non-faulty client will receive a response in at most $6 \Delta$ time. The interesting case is when there is a view change.
 2. Show that this protocol is *safe*. Every client history that is created when running this protocol is a client history that can be generated in the ideal model. The interesting case is when the Primary crashes and there is a view change. There are several cases to consider in terms of when the Primary crashes, make sure you cover all of them.
+
+### Acknowledgment
+Many thanks to Matan, Avihu, and Noa for fixing two bugs in the Backup state machine pseudo code.
+
 
 
 Your decentralized thoughts and comments on [Twitter](...)
