@@ -102,7 +102,7 @@ There are two *servers* we call ```primary``` and ```backup``` and a set of *cli
 Note that the adversary in this model can both control the network delays, cause client omission faults, and crash one of the servers while the adversary in the Ideal Model can only control network delays and cause client omission faults.
 
 Our goal is to obtain a protocol with the following two properties:
-1. **Liveness**: Each non-faulty client request gets a response after at most $6 \Delta$ time. Note that we changed the required response time from $3 \Delta$ to $6 \Delta$ and that we only require this for non-faulty clients.
+1. **Liveness**: Each non-faulty client request gets a response after at most $7 \Delta$ time. Note that we changed the required response time from $3 \Delta$ to $7 \Delta$ and that we only require this for non-faulty clients.
 2. **Safety**: for every client history that is created when running this protocol is a client history that can be generated in the ideal model. In more detail, for any adversary behavior in this model when running the protocol, there exists some adversary behavior in the ideal model that generates the client history. 
 Note that the adversary behavior captures all the power the adversary has in each model. 
 
@@ -190,7 +190,7 @@ while true
         for each client
             send <view change> to client
     // as a leader
-    on <cmd> from client and leader = Backup
+    on <cmd> from client
         if (cmd, client) not in log[counter] or log[counter-1]
             add (cmd, client) to log[counter]
     on Delta-timer ticking and leader = Backup
@@ -203,11 +203,11 @@ while true
 
 ### Exercise  
 
-1. Show that this protocol is *live*. Every command sent by a non-faulty client will receive a response in at most $6 \Delta$ time. The interesting case is when there is a view change.
+1. Show that this protocol is *live*. Every command sent by a non-faulty client will receive a response in at most $7 \Delta$ time. The interesting case is when there is a view change.
 2. Show that this protocol is *safe*. Every client history that is created when running this protocol is a client history that can be generated in the ideal model. The interesting case is when the Primary crashes and there is a view change. There are several cases to consider in terms of when the Primary crashes, make sure you cover all of them.
 
 ### Acknowledgment
-Many thanks to Matan, Avihu, and Noa for fixing two bugs in the Backup state machine pseudo code.
+Many thanks to Matan, Avihu, and Noa for fixing several bugs in the Backup state machine pseudo code.
 
 
 
