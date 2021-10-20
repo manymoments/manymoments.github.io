@@ -215,9 +215,9 @@ A major difference between CASPaxos and using Log Paxos to decide the result of 
 
 ### Zookeeper Atomic Broadcast (ZAB)
 
-[ZAB](https://marcoserafini.github.io/papers/zab.pdf) is the atomic broadcast protocol at the heart of [Apache Zookeeper](https://zookeeper.apache.org), which for a long time was the _default_ choice for a strongly consistent database.
+[ZAB](https://marcoserafini.github.io/papers/zab.pdf) is the atomic broadcast protocol at the heart of [Apache Zookeeper](https://zookeeper.apache.org), a widely used strongly-consistent datastore.
 
-In many ways LogPaxos is an almost identical protocol to ZAB, primarily differing in the framing (LogPaxos replicates a log rather than providing ZAB's atomic broadcast) and the proof of safety. The main practical difference however comes after a leader is elected (_phase 1_ of Paxos and LogPaxos) but before it commits a new client transaction. Here ZAB has an explicit synchronisation phase where it commits the value chosen in _phase 1_. This provides the property that all transactions proposed within a previous round, are delivered (committed) before any within the current round, which is beneficial for Atomic Broadcast.
+In many ways LogPaxos is an almost identical protocol to ZAB, primarily differing in the framing (LogPaxos replicates a log rather than providing ZAB's atomic broadcast) and the proof of safety. The main practical difference is that ZAB has an explicit synchronisation phase where it commits the value chosen in _phase 1_. This ensures that all transactions proposed by the previous leader are committed strictly before any new ones, which is a useful property in the context of Atomic Broadcast. The synchronisation phase is almost equivalent to the first log which is committed after the leader is elected in Log Paxos, however this log can also include new commands.
 
 ## Summary
 
