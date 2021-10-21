@@ -213,6 +213,12 @@ This optimization is compatible with Log Paxos and when applied to a restricted 
 
 A major difference between CASPaxos and using Log Paxos to decide the result of a log of commands is that our protocol allows for multiple values to be decided concurrently within the same ballot number (so long as the logs producing them extend previous ones).
 
+### Zookeeper Atomic Broadcast (ZAB)
+
+[ZAB](https://marcoserafini.github.io/papers/zab.pdf) is the atomic broadcast protocol at the heart of [Apache Zookeeper](https://zookeeper.apache.org), a widely used strongly-consistent datastore.
+
+In many ways LogPaxos is an almost identical protocol to ZAB, primarily differing in the framing (LogPaxos replicates a log rather than providing ZAB's atomic broadcast) and the proof of safety. The main practical difference is that ZAB has an explicit synchronisation phase where it commits the value chosen in _phase 1_. This ensures that all transactions proposed by the previous leader are committed strictly before any new ones, which is a useful property in the context of Atomic Broadcast. The synchronisation phase is almost equivalent to the first log which is committed after the leader is elected in Log Paxos, however this log can also include new commands.
+
 ## Summary
 
 We believe that by extending a single instance of Paxos instead of using many instances of Paxos, Log Paxos is simpler to understand (and hence to implement, verify, and optimize correctly) than Multi-Paxos, the classic approach to distributed consensus over a log. Do you agree? **Let us know what you think on [Twitter](https://twitter.com/heidiann360/status/1443491633752850434?s=20)**.
