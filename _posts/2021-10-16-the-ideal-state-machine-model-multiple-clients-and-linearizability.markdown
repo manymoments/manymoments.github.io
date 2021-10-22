@@ -205,7 +205,7 @@ Now consider a client command and the Primary crashing. There are two cases:
 1. The Primary crashes after sending the client command to the Backup (but before sending a response). In this case, the Backup will receive the command at time $<3\Delta$. Will detect the Primary crashed by time $<5\Delta$, and will send the response. The client will receive the response in at most $<6\Delta$ time.
 
 
-2. The Primary crashes just before sending the client command to the Backup, so just at $<2Delta$ from when the client sends a command. This means that the last command from the Primary to the Backup is sent at $<Delta$ and arrives at $<2\Delta$ from the client command. So the Backup will start a view change at time $<4\Delta$. The client will receive the view change in time $<5\Delta$. The client will resend the command to the Backup and get a response after $<3 \Delta$. So the client will receive a response in at most $<8 \Delta$ time.
+2. The Primary crashes just before sending the client command to the Backup, so just at $<2Delta$ from when the client sends a command. This means that the last command from the Primary to the Backup is sent at $<\Delta$ and arrives at $<2\Delta$ from the client command. So the Backup will start a view change at time $<4\Delta$. The client will receive the view change in time $<5\Delta$. The client will resend the command to the Backup and get a response after $<3 \Delta$. So the client will receive a response in at most $<8 \Delta$ time.
 
 Finally, after the view change, each command sent to the Backup will get a response in $<3 \Delta$ time.
 
