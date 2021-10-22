@@ -85,11 +85,11 @@ So these are two ways to say the same thing! Let's say a few words about why tha
 
 On the positive side, we have defined a natural ideal model and showed its equivalent to the strong consistency notion of linearizability. This seems like a good definition - it prevents behaviors that seem to be obviously incorrect, like ignoring commands and reordering them in ways that ignore the client responses. Safety violations like double-spending or equivocation can all be viewed as violations of the ideal model (or essentially of linearizability).
 
-On the negative side, there is considerable arbitrariness in the ideal model: The adversary has the power to delay messages (by at most $\Delta$) and this way can control the order of requests in the blocks. A server can reorder requests and still maintain the definition of safety. Even worse, a server can see the content of client messages but behave as if the message arrived later. During this time, the server can collude with other clients that can send commands based on this information (know as [sandwich attacks](https://medium.com/coinmonks/defi-sandwich-attack-explain-776f6f43b2fd) in the DeFi world). 
+On the negative side, there is considerable arbitrariness in the ideal model: The adversary has the power to delay messages (by at most $\Delta$) and this way can control the order of requests in the blocks. A server can reorder requests and still maintain the definition of safety. Even worse, a server can see the content of client messages but behave as if the message arrived later. During this time, the server can collude with other clients that can send commands based on this information (known as [sandwich attacks](https://medium.com/coinmonks/defi-sandwich-attack-explain-776f6f43b2fd) in the DeFi world). 
 
-Recently there is much interest in this powder of the server and the adversary to reorder, censor, and front-run. The term [Miner Extractable Value (MEV)](https://arxiv.org/abs/1904.05234) captures this in the context of economic value.  We will explore this topic in later posts.
+Recently there is much interest in this powder of the server and the adversary to reorder, censor, and front-run. The term [Miner Extractable Value (MEV)](https://arxiv.org/abs/1904.05234) captures this in the context of economic value. One approach is to use [MPC](https://eprint.iacr.org/2020/248) to build a functionality that limits the ability of the adversary. We will explore this topic in later posts.
 
-In this post, we assume this definition of safety is sufficient and focus on showing how to implement a system that behaves like an ideal system even though it is composed of failure-prone servers.
+Let's now show how to implement a system that behaves like an ideal system even though it is composed of failure-prone servers.
 
 
 ## Implementing an Ideal State Machine with Two Servers Where One Can Crash
@@ -97,7 +97,7 @@ In this post, we assume this definition of safety is sufficient and focus on sho
 In this part, we will extend the protocol in our [previous post](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) to the multi-client setting.
 
 ### The Two-Server One-Crash Model
-There are two *servers* we call ```primary``` and ```backup``` and a set of *clients*. Clients only communicate with the two servers. The adversary can cause a crash failure to one of the two servers and also cause omission failures to any number of clients. Clients that have no omission failures are called non-faulty. Communication is synchronous: the adversary can delay messages by at most some known bound $\Delta$.  
+There are two *servers* we call ```Primary``` and ```Backup``` and a set of *clients*. Clients only communicate with the two servers. The adversary can cause a crash failure to one of the two servers and also cause omission failures to any number of clients. Clients that have no omission failures are called non-faulty. Communication is synchronous: the adversary can delay messages by at most some known bound $\Delta$.  
 
 Note that the adversary in this model can both control the network delays, cause client omission faults, and crash one of the servers while the adversary in the Ideal Model can only control network delays and cause client omission faults.
 
@@ -110,7 +110,7 @@ Note that the adversary behavior captures all the power the adversary has in eac
 
 The basic idea is to interact with the Primary server until the Backup informs the client to change view with a new ```<view change>``` message.
 
-The second idea is to resend the request if a change view arrives but no response.
+The second idea is to resend the request if a ```<view change>``` message arrives but no response.
 
 ```
 // Client state machine
@@ -134,7 +134,7 @@ Here it may happen that the same ```<response>``` arrives twice (once from the P
 
 ### The Primary
 
-The main change is that the Primary sends the block of requests to the Backup server *before* executing them. Note that even if there are no client requests an empty block is sent to the Backup every $\Delta$ time - this is a form of a heartbeat that will allow the Backup to detect if the Primary has crashed.
+The main change is that the Primary sends the block of requests to the Backup server *before* executing them. Note that even if there are no client requests, an empty block is sent to the Backup every $\Delta$ time - this is a form of a heartbeat that will allow the Backup to detect if the Primary has crashed.
 
 ```
 // Primary state machine
@@ -156,9 +156,9 @@ while true
 
 The backup waits to receive a block message. If it does not arrive on time then it deduces that the Primary crashed and assumes the role of the leader.
 
-Unlike the Primary, the Backup does not send responses to the clients. When the Backup becomes the leader is will send the ```responses``` of the previous block (in case the Primary crashed before sending the responses). In this case, the client may receive a response twice (having unique request ids allows to ignore the second response).
+When the Backup is not the leader it does not send responses to the clients. When the Backup becomes the leader is will send the ```responses``` of the previous block (in case the Primary crashed before sending the responses). In this case, the client may receive a response twice (having unique request ids allows to ignore the second response).
 
-Finally, the client may need to resend its command. The Backup may receive the same command once from the Primary and once from the client resend. So the Backup checks the command from the client is not already part of a previous block.
+Finally, the client may need to resend its command. The Backup may receive the same command: once from the Primary and once from the client resend. So the Backup checks the command from the client is not already part of a previous block.
 
 
 ```
@@ -230,4 +230,4 @@ Many thanks to Matan, Avihu, and Noa for fixing several bugs in the Backup state
 
 
 
-Your decentralized thoughts and comments on [Twitter](...)
+Your decentralized thoughts and comments on [Twitter](https://twitter.com/ittaia/status/1451515584139730949?s=20)
