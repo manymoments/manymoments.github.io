@@ -13,6 +13,8 @@ We would love to get your feedback and thoughts on [Twitter](https://twitter.com
 
 You can start with the definition of [Consensus and Agreement](/2019-06-27-defining-consensus/). Then learn about the [network model](/2019-06-01-2019-5-31-models/), the [threshold adversary](/2019-06-17-the-threshold-adversary/) model, and the [power of the adversary](/2019-06-07-modeling-the-adversary/). Finally, many protocols need a [trusted setup phase](/2019-07-19-setup-assumptions/). You can learn about different [relaxations of Broadcast](/2019-10-22-flavours-of-broadcast/).
 
+Checkout out our [consensus cheat sheet](https://decentralizedthoughts.github.io/2021-10-29-consensus-cheat-sheet/) for a quick overview of what is possible and impossible.
+
 ## Synchronous Protocols
 
 Under synchrony, a classic protocol is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/). You can read about more recent protocols such as [Sync HotStuff](/2019-11-12-Sync-HotStuff/), an [optimal optimistically responsive synchronous protocol](/2020-06-12-optimal-optimistic-responsiveness/), and simple streamlined synchronous protocol [Streamlet](/2020-05-14-streamlet/). A survey of [authenticated protocols under the synchrony assumption](/2019-11-11-authenticated-synchronous-bft/).
