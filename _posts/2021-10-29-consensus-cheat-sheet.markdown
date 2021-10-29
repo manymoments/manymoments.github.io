@@ -17,7 +17,7 @@ author: Ittai Abraham
 
 Here $n$ is the number of parties, and $f$ is the number of parties that the adversary can [control](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/). Recall [that](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) **Synchrony** $\subseteq$ **Partial Synchrony** $\subseteq$ **Asynchrony** and similarly [that](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) **Crash**  $\subseteq$ **Omission** $\subseteq$ **Byzantine**. Therefore:
 1. Any upper bound holds also going down and/or going to the left (for example, the $O(1)$ round upper bounds hold also in partial synchrony and synchrony).
-2. Any Lower bound holds also going up and/or going to the left (For example, the impossibility of $f \geq n/3$ carries with Byzantine adversaries in PArtial Synchrony carries over to Asynchrony).
+2. Any Lower bound holds also going up and/or going to the right (For example, the impossibility of $f \geq n/3$ carries with Byzantine adversaries in Partial Synchrony carries over to Asynchrony and the $t+1$ round lower bound carries over from Crash to Omission and Byzantine).
 
 
 Acknowledgments: many thanks to Kartik Nayak for help with this post!
