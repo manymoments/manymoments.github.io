@@ -15,4 +15,11 @@ author: Ittai Abraham
 | Asynchrony |  ![](https://github.githubassets.com/images/icons/emoji/unicode/1f422.png?v8) non terminating executions [must exist](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/)| ![](https://github.githubassets.com/images/icons/emoji/unicode/2714.png?v8) $f<n/2$ possible in $O(1)$ expected| ![](https://github.githubassets.com/images/icons/emoji/unicode/2714.png?v8) $f<n/3$ [possible](https://dspace.mit.edu/bitstream/handle/1721.1/14368/20051076-MIT.pdf;jsessionid=2A5CC7AF0CEF95E05450CD863B94A394?sequence=2) in $O(1)$ expected|
 
 
+Here $n$ is the number of parties, and $f$ is the number of parties that the adversary can [control](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/). Recall [that](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) **Synchrony** $\subseteq$ **Partial Synchrony** $\subseteq$ **Asynchrony** and similarly [that](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) **Crash**  $\subseteq$ **Omission** $\subseteq$ **Byzantine**. Therefore:
+1. Any upper bound holds also going down and/or going to the left (for example, the $O(1)$ round upper bounds hold also in partial synchrony and synchrony).
+2. Any Lower bound holds also going up and/or going to the left (For example, the impossibility of $f \geq n/3$ carries with Byzantine adversaries in PArtial Synchrony carries over to Asynchrony).
+
+
+Acknowledgments: many thanks to Kartik Nayak for help with this post!
+
 Your thoughts on [twitter](https://twitter.com/ittaia/status/1454065908415090696?s=20). 
