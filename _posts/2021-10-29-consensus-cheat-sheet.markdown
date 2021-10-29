@@ -6,8 +6,6 @@ tags:
 author: Ittai Abraham
 ---
 
-
-
 | | Crash | Omission | Byzantine |
 | --- | --- | ---- | --- |
 | Synchrony |  ![](https://github.githubassets.com/images/icons/emoji/unicode/2714.png?v8) $f<n$ [is possible](https://decentralizedthoughts.github.io/2019-11-01-primary-backup/) <br /> ![](https://github.githubassets.com/images/icons/emoji/unicode/1f422.png?v8) $f+1$ round executions [must exist](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/)| ![](https://github.githubassets.com/images/icons/emoji/unicode/1f62d.png?v8) $f \geq n/2$ [is impossible](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/)| ![](https://github.githubassets.com/images/icons/emoji/unicode/2714.png?v8) $f<n/2$ [possible with PKI](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/) / [PoW](https://decentralizedthoughts.github.io/2021-10-15-Nakamoto-Consensus/) <br /> ![](https://github.githubassets.com/images/icons/emoji/unicode/1f62d.png?v8) $f \geq n/3$ [impossible without PKI/PoW](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/)|
