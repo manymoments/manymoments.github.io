@@ -124,8 +124,8 @@ Next, we'll explain why these polynomials being zero over $H$ is equivalent to c
 
 Note that Equations $\ref{eq:w1}$ through $\ref{eq:w3}$ are using _vanishing polynomials_ that evaluate to zero when $X$ is in a specific subset of $H$.
 
- - e.g., $\frac{X^{n}-1}{X-1}$ is zero $\forall X = \omega^i$ except for $X = w^0 = 1$.
- - e.g., $\frac{X^{n}-1}{X-w^{n-1}}$ is zero $\forall X = \omega^i$ except for $X = w^{n-1}$.
+ - e.g., $\frac{X^{n}-1}{X-1}$ is zero $\forall X = \omega^i$ except for $X = \omega^0 = 1$.
+ - e.g., $\frac{X^{n}-1}{X-\omega^{n-1}}$ is zero $\forall X = \omega^i$ except for $X = \omega^{n-1}$.
  - e.g., $X-\omega^{n-1}$ is zero only at $X=\omega^{n-1}$ 
 
 First, let's show that:
@@ -150,21 +150,25 @@ The same reasoning applies here too, except the vanishing polynomial $X-\omega^{
 ### Back to the BFGW protocol
 
 The next idea is to reduce proving that $w_1, w_2$ and $w_3$ are zero $\forall X\in H$ to proving that a random linear combination of them is zero $\forall X\in H$.
-Specifically, that:
 
-$$R(X) = w_1(X) + \tau w_2(X) + \tau^2 w_3(X) = 0,\forall X\in H$$
+In other words, the task is reduced to proving:
+
+$$R(X) = w_1(X) + \tau w_2(X) + \tau^2 w_3(X) = 0, \forall X\in H$$
 
 Here $\tau\in \Fp$ is picked uniformly at random **by the verifier**.
 
-The prover computes a quotient polynomial $q$ and sends $\polycommit(q)$ to the verifier:
+The prover divides $R(X)$ by $X^n-1$, which yields a quotient polynomial $q$ and sends $\polycommit(q)$ to the verifier:
 
-$$q(X) = R(X)/(X^n-1) = \frac{w_1(X) + \tau w_2(X) + \tau^2 w_3(X)}{X^{n}-1}.$$
+$$q(X) = R(X) // (X^n-1).$$
+
+(Here, $//$ denotes a division operator that only yields the quotient.)
 
 The prover's goal is to prove that the following polynomial is zero **everywhere**:
 
 $$w(X) = R(X) - q(X) \cdot (X^n - 1) = w_1 + \tau w_2 + \tau^2 w_3 - q \cdot (X^{n}-1)$$
 
-(This is equivalent to proving $R(X)$ is zero $\forall X\in H$.)
+(This is equivalent to proving $R(X)$ is zero $\forall X\in H$.
+Looked at differently, this resembles a KZG batch proof for $R(X)$ being zero at all $X\in H$.)
 
 For this, the verifier will pick a random $\rho\in \Fp$ and ask the prover to prove that $w(\rho)=0$.
 The difficulty is that the verifier doesn't have a commitment to $w(X)$, which means a simple KZG proof for $w(\rho) = 0$ won't do.
