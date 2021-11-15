@@ -129,7 +129,7 @@ Note that Equations $\ref{eq:w1}$ through $\ref{eq:w3}$ are using _vanishing pol
  - e.g., $X-\omega^{n-1}$ is zero only at $X=\omega^{n-1}$ 
 
 First, let's show that:
-$g(1) = f(1) \Leftrightarrow (g-f)\left(\frac{X^n - 1}{X-1}\right) = 0, \forall X\in H$
+$g(1) = f(1) \Leftrightarrow (g-f)\left(\frac{X^n - 1}{X-1}\right) = 0, \forall X\in H$.
 Let $h=(g-f)\left(\frac{X^n - 1}{X-1}\right)$.
 
 Let's start with the "$g(1) = f(1) \Rightarrow h(X) = 0$" direction.
@@ -167,36 +167,37 @@ The prover's goal is to prove that the following polynomial is zero **everywhere
 
 $$w(X) = R(X) - q(X) \cdot (X^n - 1) = w_1 + \tau w_2 + \tau^2 w_3 - q \cdot (X^{n}-1)$$
 
-(This is equivalent to proving $R(X)$ is zero $\forall X\in H$.
-Looked at differently, this resembles a KZG batch proof for $R(X)$ being zero at all $X\in H$.)
+This is equivalent to proving $R(X) = 0, \forall X\in H$
+Looked at differently, $q$ would be a KZG batch proof for $R(X)= 0, \forall X\in H$.
 
-For this, the verifier will pick a random $\rho\in \Fp$ and ask the prover to prove that $w(\rho)=0$.
-The difficulty is that the verifier doesn't have a commitment to $w(X)$, which means a simple KZG proof for $w(\rho) = 0$ won't do.
+The problem is the verifier cannot check this batch proof because it does not have (and, as far as we can tell, cannot be provably given) a commitment to $R(X)$.
 
-But recall that the verifier does have a commitment to $f(X)$ and to $g(X)$.
-So let's expand $w(X)$ to see what extra information the verifier will need to check $w(\rho)=0$.
+Instead, what the prover *can* do is convince the verifier that $w(X)$ is zero by opening it at a random point $\rho$ chosen by the verifier.
 
+So let's expand $w(X)$ to see what extra information the verifier will need to be given in order to check that $w(\rho)=0$.
+
+First, the verifier knows that:
 \begin{align\*}
     w(X) &= w_1(X) + \tau \cdot w_2(X) + \tau^2 \cdot w_3(X) - q(X) \cdot (X^{n}-1)\\\\\
-    w(X) &= (g(X) - f(X)) \cdot \left(\frac{X^{n}-1}{X-1}\right)\\\\\
+         &= (g(X) - f(X)) \cdot \left(\frac{X^{n}-1}{X-1}\right)\\\\\
          &  + \tau \cdot g(X) \cdot (1 - g(X)) \cdot \left(\frac{X^{n}-1}{X-\omega^{n-1}}\right)\\\\\
          &  + \tau^2 \cdot \big[g(X) - 2 g(X \omega)\big] \cdot \big[1 - g(X) + 2 g(X \omega)\big] \cdot (X - \omega^{n-1})\\\\\
          &  - q(X) \cdot (X^{n}-1)
 \end{align\*}
-    
-In particular, let's look at $w(\rho)$:
+
+Second, checking that $w(\rho) = 0$ is equivalent to checking that:
 \begin{align}
     w(\rho) &= (g(\rho) - f(\rho)) \cdot \left(\frac{\rho^{n}-1}{\rho-1}\right)\label{eq:wrho-start}\\\\\
          & + \tau \cdot g(\rho) \cdot (1 - g(\rho)) \cdot \left(\frac{\rho^{n}-1}{\rho-\omega^{n-1}}\right)\\\\\
          & + \tau^2 \cdot \big[g(\rho) - 2 g(\rho \omega)\big] \cdot \big[1 - g(\rho) + 2 g(\rho \omega)\big] \cdot (\rho - \omega^{n-1})\\\\\
-         & - q(\rho) \cdot (\rho^{n}-1)\label{eq:wrho-end}
+         & - q(\rho) \cdot (\rho^{n}-1) = 0\label{eq:wrho-end}
 \end{align}
 
-What if the prover gave the verifier $g(\rho)$ and $g(\rho\omega)$ (together with evaluation proofs, of course), to help it compute $w(\rho)$?
-Then, note that:
+Note that, with a little help, the verifier can actually check the relation above holds:
 
+ - The verifier has commitments to $f(X)$, $g(X)$ and $q(X)$
+ - The verifier can be given $g(\rho)$ and $g(\rho\omega)$ and check them against $\polycommit(g)$, which it has.
  - The verifier can easily compute all the vanishing polynomials evaluated at $\rho$ (e.g., $\frac{\rho^{n}-1}{\rho-1}$) .
- - The verifier can easily check $g(\rho)$ and $g(\rho\omega)$ against $\polycommit(g)$, which it has.
  - The verifier knows $\tau$, so it could combine the results if it were given the **few missing pieces of the puzzle.**
 
 The only thing the verifier is missing is a "small chunk" of the equation above.
