@@ -59,7 +59,7 @@ The lower bound uses the fact that the protocol is deterministic. There have bee
 **Remark:**
 The bound is presented for Broadcast (not Agreement). In terms of feasibility, [both problems are equivalent](https://decentralizedthoughts.github.io/2020-09-14-broadcast-from-agreement-and-agreement-from-broadcast/) and each of them can be reduced from the other. However, communication complexity remains the same only when Byzantine Broadcast is realized using Byzantine Agreement; the sender can send the value to all parties and they can run a Byzantine Agreement protocol. Thus, for communication complexity, showing a bound on Byzantine Broadcast is strictly better.
 
-This post was updated in November 2019 to reflect the lower bound holds for omission failures.
+This post was updated in November 2019 to reflect that the lower bound holds for omission failures.
 
 Please leave comments on [Twitter](https://twitter.com/kartik1507/status/1162564876721692675?s=20) 
 
