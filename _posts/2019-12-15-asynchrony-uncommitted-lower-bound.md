@@ -47,7 +47,7 @@ Recall the **proof pattern** for showing the existence of an *uncommitted config
 
 
 **Proof of Lemma 2** follows this pattern exactly:
-The *contradiction* of the statement of Lemma 2 is that: there exists a configuration $C$ and a message $e=(p,m)$ such that for all $e \notin \pi$, such that  $C \stackrel{\pi}{\rightsquigarrow} C'$, let  $C' \xrightarrow{e=(p,m)} C''$, then either $C''$ is 1-committed or $C''$ is 0-committed ($C''$ is not uncommitted).
+The *contradiction* of the statement of Lemma 2 is that: there exists a configuration $C$ and a message $e=(p,m)$ such that for all $\pi$ with $e \notin \pi$, let $C \stackrel{\pi}{\rightsquigarrow} C'$, let  $C' \xrightarrow{e=(p,m)} C''$, then either $C''$ is 1-committed or $C''$ is 0-committed ($C''$ is not uncommitted).
 
 
 ![](https://i.imgur.com/6eb3I6t.jpg)
