@@ -26,8 +26,8 @@ Recall that given a configuration $C$ there is a set $M$ of pending messages. Th
 
 
 Given an initial uncommitted configuration, our goal will be to build an infinite execution such that:
-1. The sequence is uncommitted: every configuration of the infinite execution is uncommitted.
-2. The sequence is fair: every message sent is eventually delivered.
+1. The sequence is *uncommitted*: every configuration of the infinite execution is uncommitted. If a configuration is uncommitted, then no party can decide.
+2. The sequence is *fair*: every message sent is eventually delivered. This is the essence of asynchrony, the adversary can delay messages, but only by a finite amount.
 
 To prove the theorem we will prove the following technical Lemma:
 
@@ -42,12 +42,12 @@ Start with Lemma 1, to begin with, an uncommitted configuration. Repeat Lemma 2 
 
 Recall the **proof pattern** for showing the existence of an *uncommitted configuration*:
 1. Proof by *contradiction*: assume all configurations are either 1-committed or 0-committed.
-2. Find a *local structure*: two adjacent configurations $X$ and $X'$ such that $X$ is 1-committed and $X_0$ is 0-committed.
+2. Find a *local structure*: two adjacent configurations $X$ and $X'$ such that $X$ is 1-committed and $X'$ is 0-committed.
 3. Reach a contradiction due to an indistinguishability argument between the two adjacent configurations, $X$ and $X'$ using the adversary's ability to crash one party.
 
 
 **Proof of Lemma 2** follows this pattern exactly:
-The *contradiction* of the statement of Lemma 2 is that: for all $C'$, such that  $C \rightsquigarrow C'$, let  $C' \xrightarrow{e=(p,m)} C''$, then either $C''$ is 1-committed or $C''$ is 0-committed ($C''$ is not uncommitted).
+The *contradiction* of the statement of Lemma 2 is that: there exists a configuration $C$ and a message $e=(p,m)$ such that for all $e \notin \pi$, such that  $C \stackrel{\pi}{\rightsquigarrow} C'$, let  $C' \xrightarrow{e=(p,m)} C''$, then either $C''$ is 1-committed or $C''$ is 0-committed ($C''$ is not uncommitted).
 
 
 ![](https://i.imgur.com/6eb3I6t.jpg)
