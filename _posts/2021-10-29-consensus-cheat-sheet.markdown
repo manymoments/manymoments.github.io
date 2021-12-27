@@ -13,9 +13,9 @@ author: Ittai Abraham
 | Asynchrony |  ![](https://github.githubassets.com/images/icons/emoji/unicode/1f422.png?v8) non terminating executions [must exist](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/)| ![](https://github.githubassets.com/images/icons/emoji/unicode/2714.png?v8) $f<n/2$ possible in $O(1)$ expected| ![](https://github.githubassets.com/images/icons/emoji/unicode/2714.png?v8) $f<n/3$ [possible](https://dspace.mit.edu/bitstream/handle/1721.1/14368/20051076-MIT.pdf;jsessionid=2A5CC7AF0CEF95E05450CD863B94A394?sequence=2) in $O(1)$ expected|
 
 
-Here $n$ is the number of parties, and $f$ is the number of parties that the [adversarial threshold](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/). Recall [that](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) **Synchrony** $\subseteq$ **Partial Synchrony** $\subseteq$ **Asynchrony**. Similarly [that](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) **Crash**  $\subseteq$ **Omission** $\subseteq$ **Byzantine**. Therefore,
-1. Any upper bound holds if we go down and/or to the left. e.g., the $O(1)$ expected round upper bounds under asynchrony also hold in partial synchrony and synchrony.
-2. Any lower bound holds if we go up and/or to the right. e.g., the impossibility of $f \geq n/3$ carries with Byzantine adversaries in partial synchrony carries over to asynchrony and the $t+1$ round lower bound carries over from crash to omission and Byzantine.
+Here $n$ is the number of parties, and $f$ is the number of parties that the [adversary controlls](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/). Recall [that](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) **Synchrony** $\subseteq$ **Partial Synchrony** $\subseteq$ **Asynchrony**. Similarly [that](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) **Crash**  $\subseteq$ **Omission** $\subseteq$ **Byzantine**. Therefore,
+1. Any upper bound holds if you go up and/or to the left in the table. e.g., the $O(1)$ expected round upper bounds under asynchrony also hold in partial synchrony and in synchrony.
+2. Any lower bound holds if you go down and/or to the right in the table. e.g., the impossibility of $f \geq n/3$ with Byzantine adversaries in partial synchrony carries over to asynchrony, and the $t+1$ round lower bound carries over from crash to omission and Byzantine.
 
 
 Acknowledgments: many thanks to Kartik Nayak for help with this post!
