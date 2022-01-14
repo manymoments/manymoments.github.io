@@ -33,11 +33,11 @@ Decision rule:
          Otherwise output a default value bot
 ```
 
-Validity: if the leader is honest then due to signature unforgeability, all honest parties will see exactly a single value.
+**Validity**: if the leader is honest then due to signature unforgeability, all honest parties will see exactly a single value.
 
-Termination: All parties terminate at the end of round 2.
+**Termination**: All parties terminate at the end of round 2.
 
-Agreement (partial): If a malicious leader sends a value to some honest in round 1, all honest parties will receive it at the end of round 2. If a malicious leader sends two different values in round 1, then all honest parties will see two different values and decide $\bot$.
+**Agreement (partial)**: If a malicious leader sends a value to some honest in round 1, all honest parties will receive it at the end of round 2. If a malicious leader sends two different values in round 1, then all honest parties will see two different values and decide $\bot$.
 
 So does this protocol work?
 
@@ -66,11 +66,11 @@ Decision rule:
 This protocol is resilient to 1 Byzantine failure because you only accept a value in the last round if t+1=2 parties signed it! if there are two signatures then one of them is from an honest party, so all honest parties will see this value. 
 
 The principle is to only accept a value in the last round if its contents can certify that all parties have received this value. This leads to a very powerful idea in the synchronous model:
-* the validity of a message is a function also of the time it is received
+***The validity of a message is a function also of the time it is received***
 
-The Dolev-Strong protocol extends this approach and uses *signatures chains*. Signature chains have two essential properties that allow honest parties to agree on a value at the end of $t+1$ rounds.
+The Dolev-Strong protocol implements this idea via **signatures chains**. Signature chains have two essential properties that allow honest parties to agree on a value at the end of $t+1$ rounds.
 - A signature chain consists of signatures from *distinct* parties. So, if we have a signature chain of length $t+1$, it will certainly contain an honest signature by honest party $h$. Party $h$ can send the value to all parties.
-- In round $i$, an honest party will accept only a signature chain of length $i$. So even if the adversary forms a Byzantine-only chain of length $\leq t$, then if it sends this chain in round $t+1$ it will not be accepted.
+- In round $i$, an honest party will accept (consider valid) only a signature chain of length $i$. So even if the adversary forms a Byzantine-only chain of length $\leq t$, then if it sends this chain in round $t+1$ it will not be accepted.
 
 Messages in the protocol are signature chains where a *k-signature chain* is defined recursively as follows:
 
@@ -115,9 +115,9 @@ Decision at the end of round t+1:
 
 The protocol satisfies agreement, validity, and termination:
 
-**Termination.** The protocol is deterministic and terminates in $t+1$ rounds.
+**Termination**: The protocol is deterministic and terminates in $t+1$ rounds.
 
-**Validity.** The (honest) leader will only sign one value, and this value will be sent to all honest parties in the next round. Due to the unforgeability of digital signatures, no other signature chain can exist.
+**Validity**: The (honest) leader will only sign one value, and this value will be sent to all honest parties in the first round. Due to the unforgeability of digital signatures, no other signature chain can exist.
 
 **Agreement.** If an honest party receives a $k$-signature chain at the end of round $k$, then it will send it to all honest parties in round $k+1$. This holds for all rounds except the last round, round $t+1$. But since the honest party can only receive a $t+1$-sized chain in round $t+1$ and a $t+1$-sized chain contains at least one honest party $h$, $h$ must have already sent this value to all other honest parties. Thus, every value received by one honest party will be received by all other parties. (This does not hold in the case where the leader has sent more than two values. But the protocol ensures that all honest parties receive at least two of the values and hence they will agree on a default value).
 
