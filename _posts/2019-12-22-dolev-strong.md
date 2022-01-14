@@ -1,6 +1,6 @@
 ---
 title: Dolev-Strong Authenticated Broadcast
-date: 2019-12-22 09:05:00 -08:00
+date: 2019-12-22 12:05:00 -05:00
 tags:
 - dist101
 author: Ittai Abraham, Kartik Nayak
@@ -14,46 +14,65 @@ This post is about the classic result from 1983 on authenticated broadcast again
 Recall [Broadcast properties](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/): (1) *Termination* -  all honest parties decide and terminate; (2) *Validity* - if the leader is honest, its value is the decision value; and (3) *Agreement* - all honest parties decide the same value.
 
 
-The Dolev-Strong protocol works in the synchronous and *authenticated* setting. In this setting, we assume a PKI infrastructure. We denote the signature of message $m$ by party $i$ as $sign(m,i)$. We assume signature unforgeability.
+The Dolev-Strong protocol works in the *synchronous* and *authenticated* setting. In this setting, we assume a PKI infrastructure. Denote the signature of message $m$ by party $i$ as $sign(m,i)$. We assume signature unforgeability.
 
-Let us try to obtain the following: if some honest party receives a value sent by the leader, all honest parties will receive it. Thus, at the end of the protocol, all honest parties would receive the same set of values, and deterministically agree on the same value.
-
-Here is an attempt to put the above intuition in a protocol that can handle one malicious party:
+As a first attempt, let's try to implement Broadcast for $t=1$ in 2 rounds. In the first round, the leader sends a signed message. In the second round, an honest party forwards the leader message to everyone:
 
 ```
 // Attempt 1:
 
 Round 1: Leader (party 1) sends message <v, sign(v,1)> to all parties
 Round 2: If party i receives <v, sign(v,1)> from leader,
-            then sends <v, sign(v,1)> to all
-Round 3: If party i receives only a single leader-signed value v,
+            then add v to V_i and send <v, sign(v,1)> to all
+End of round 2: 
+         If party i receives <v, sign(v,1)> from anyone
+            then add v to V_i
+Decision rule:
+         If the set V_i contains only a single value v,
             then output v
-         Otherwise output a default value \bot
+         Otherwise output a default value bot
 ```
 
-Observe: If the leader is honest, then all parties will see the leader's value. Even if a Byzantine leader sends its value to some honest in round 1, all honest parties will receive it at the beginning of round 3. So does this protocol work?
+Validity: if the leader is honest then due to signature unforgeability, all honest parties will see exactly a single value.
 
-No! the problem is that a Byzantine leader can send no value in round 1, but send a value to only a few honest parties in round 2. The honest parties who receive the value will output that value whereas other honest parties will output a $\bot$. Dolev-Strong fixes this by building a chain of signatures containing:
+Termination: All parties terminate at the end of round 2.
+
+Agreement: If a malicious leader sends a value to some honest in round 1, all honest parties will receive it at the end of round 2. If a malicious leader sends two different values in round 1, then all honest parties will see two different values and decide $\bot$.
+
+So does this protocol work?
+
+No! the problem is that a Byzantine leader can send no value in round 1, then send a value to only a few honest parties in round 2. The honest parties who receive the value will output that value whereas other honest parties will output a $\bot$.
+
+The core problem is that you may learn the decision value in the last round (round 2) but you are not sure that all other honest parties will also receive this value. You cannot forward your messages because this is the last round. Dolev and Strong show a very elegant way to guarantee agreement even if the value decided is revealed in the last round.
+
+In round 1 we accept a value if it's signed by the leader, but in round 2 we accept a value only if it's signed by both the leader and another party.
 
 
 ```
 // Attempt 2:
 
-Round 1: Leader (party 1) sends message <v, sign(v,1)> to all parties.
-Round 2: If party i receives m=<v, sign(v,1)> from leader,
-            then it sends <m, sign(v,i)> to all.
-Round 3: If party i receives only a single leader-signed value $v$,
+Round 1: Leader (party 1) sends message <v, sign(v,1)> to all parties
+Round 2: If party i receives <v, sign(v,1)> from leader,
+            then add v to V_i and send <v, sign(v,1), sign(v,i)> to all
+End of round 2: 
+         If party i receives <v, sign(v,1), sign (v,j)> from j>1
+            then add v to V_i
+Decision rule:
+         If the set V_i contains only a single value v,
             then output v
-         Otherwise output a default value \bot$
+         Otherwise output a default value bot
 ```
 
-This protocol is indeed a Broadcast protocol resilient to 1 Byzantine failure (where "signed value" is either a signature from the leader or a signature from some party $i$ on a signature of the leader).
+This protocol is resilient to 1 Byzantine failure because you only accept a value in the last round if t+1=2 parties signed it! if there are two signatures then one of them is from an honest party, so all honest parties will see this value. 
 
-To tolerate more than 1 Byzantine failure, the Dolev-Strong protocol extends this approach and uses *signatures chains*. Signature chains have two essential properties that allow honest parties to agree on a value at the end of $t+1$ rounds.
+The principle is to only accept a value in the last round if its contents can certify that all parties have received this value. This leads to a very powerful idea in the synchronous model:
+* the validity of a message is a function also of the time it is received
+
+The Dolev-Strong protocol extends this approach and uses *signatures chains*. Signature chains have two essential properties that allow honest parties to agree on a value at the end of $t+1$ rounds.
 - A signature chain consists of signatures from *distinct* parties. So, if we have a signature chain of length $t+1$, it will certainly contain an honest signature by honest party $h$. Party $h$ can send the value to all parties.
-- A round $i$ signature chain will be of length $i$. This is to disallow a Byzantine party from creating a Byzantine-only chain of length $< t$ and send it to honest parties at round $t+1$.
+- In round $i$, an honest party will accept only a signature chain of length $i$. So even if the adversary forms a Byzantine-only chain of length $\leq t$, then if it sends this chain in round $t+1$ it will not be accepted.
 
-In more detail, messages in the protocol are signature chains where a *k-signature chain* is defined recursively as follows:
+Messages in the protocol are signature chains where a *k-signature chain* is defined recursively as follows:
 
 A **1-signature chain** on $v$ is a pair $(v, sign(v,1))$.
 
@@ -79,6 +98,7 @@ Party $i$ does the following:
 For a message m arriving at the beginning of round j:
   if party i has sent less than two messages; and
     if m is a valid (j-1)-signature chain on $v$, then
+        add v to V
         send <m, sign(m,i)> to all parties
 ```
 
@@ -88,18 +108,18 @@ For a message m arriving at the beginning of round j:
 // Party i decision rule
 
 Decision at the end of round t+1:
-  Let V be the set of values for party i received a valid signature chain.
-  If |V|=0 or |V|>1, then decide default value $\bot$.
-  Otherwise decide v, where V={v}.
+  Let V be the set of values for party i received a valid signature chain
+  If |V|=0 or |V|>1, then decide default value bot
+  Otherwise decide v, where V={v}
 ```
 
-Now, let us argue how the protocol satisfies agreement, validity, and termination.
+The protocol satisfies agreement, validity, and termination:
 
 **Termination.** The protocol is deterministic and terminates in $t+1$ rounds.
 
-**Validity.** For validity, observe that the (honest) leader will only sign one value, and this value will be sent to all honest parties in the next round. Due to the unforgeability of digital signatures, no other signature chain can exist.
+**Validity.** The (honest) leader will only sign one value, and this value will be sent to all honest parties in the next round. Due to the unforgeability of digital signatures, no other signature chain can exist.
 
-**Agreement.** Observe that if an honest party receives a $k$-signature chain at the end of round $k$, then it will send it to all honest parties in round $k+1$. This holds for all rounds except the last round, round $t+1$. But since the honest party can only receive a $t+1$-sized chain in round $t+1$ and a $t+1$-sized chain contains at least one honest party $h$, $h$ must have already sent this value to all other honest parties. Thus, every value received by one honest party will be received by all other parties. (This does not hold in the case where the leader has sent more than two values. But the protocol ensures that all honest parties receive at least two of the values and hence they will agree on a default value).
+**Agreement.** If an honest party receives a $k$-signature chain at the end of round $k$, then it will send it to all honest parties in round $k+1$. This holds for all rounds except the last round, round $t+1$. But since the honest party can only receive a $t+1$-sized chain in round $t+1$ and a $t+1$-sized chain contains at least one honest party $h$, $h$ must have already sent this value to all other honest parties. Thus, every value received by one honest party will be received by all other parties. (This does not hold in the case where the leader has sent more than two values. But the protocol ensures that all honest parties receive at least two of the values and hence they will agree on a default value).
 
 #### Complexity measures and Notes
 Every party sends at most two values, and each value may contain $O(t)$ signatures. The total communication is $O(n^2t)$ signatures.
