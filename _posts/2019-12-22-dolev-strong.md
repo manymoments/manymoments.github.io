@@ -14,7 +14,7 @@ This post is about the classic result from 1983 on authenticated broadcast again
 Recall [Broadcast properties](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/): (1) *Termination* -  all honest parties decide and terminate; (2) *Validity* - if the leader is honest, its value is the decision value; and (3) *Agreement* - all honest parties decide the same value.
 
 
-The Dolev-Strong protocol works in the *synchronous* and *authenticated* setting. In this setting, we assume a PKI infrastructure. Denote the signature of message $m$ by party $i$ as $sign(m,i)$. We assume signature unforgeability.
+The Dolev-Strong protocol requires: (1) a *synchronous* model, in this post, we will assume *lock-step*; (2) an *authenticated* setting.  In this setting, we assume a PKI infrastructure. Denote the signature of message $m$ by party $i$ as $sign(m,i)$. We assume signature unforgeability.
 
 As a first attempt, let's try to implement Broadcast for $t=1$ in 2 rounds. In the first round, the leader sends a signed message. In the second round, an honest party forwards the leader message to everyone:
 
@@ -129,6 +129,9 @@ Here is an open question: for $t<n$, reduce communication to $o(n^3)$ against so
 Note that this protocol relies heavily on synchrony and [does not work for $t \geq n/2$](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) in the client-server model where the clients are passive or maybe offline.
 In the Dolev-Strong protocol,  an online server accepts a length $k$ chain in round $k$ but must reject it in round $>k$. However, there is no way for a server to prove to a client when it received a message (other than to sign and send and the client to verify online in the next round).
 
-Another great description and proof of the Dolev-Strong protocol can be found in Jonathan Katz's [Advanced Topics in Cryptography course notes](http://www.cs.umd.edu/~jkatz/gradcrypto2/NOTES/lecture26.pdf). In the blockchain space, the Dolev-Strong protocol is mentioned by [Spacemesh](https://spacemesh.io/byzantine-agreement-algorithms-and-dolev-strong/).
+Another great description and proof of the Dolev-Strong protocol can be found in Jonathan Katz's [Advanced Topics in Cryptography course notes](http://www.cs.umd.edu/~jkatz/gradcrypto2/NOTES/lecture26.pdf). In the blockchain space, the Dolev-Strong protocol is mentioned by [Spacemesh](https://spacemesh.io/byzantine-agreement-algorithms-and-dolev-strong/). Buterin's [post](https://vitalik.ca/general/2018/08/07/99_fault_tolerant.html) explains how to implement Dolev-Strong in the synchronous model and hints at how it could be used as a finality gadget for stronger $99\%$ fault tolerance for online observers.
+
+Historically, a very similar protocol for the authenticated setting was suggested by Lamport, Shostak, and Pease in their seminal paper [The Byzantine Generals problem](https://lamport.azurewebsites.net/pubs/byz.pdf). However, it seems that the authenticated protocol in Section 4 does not explicitly mention that length $k$ chains must not be accepted at time $>k$.
+
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1208871356516966401?s=20)
