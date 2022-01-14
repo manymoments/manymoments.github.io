@@ -37,15 +37,15 @@ Validity: if the leader is honest then due to signature unforgeability, all hone
 
 Termination: All parties terminate at the end of round 2.
 
-Agreement: If a malicious leader sends a value to some honest in round 1, all honest parties will receive it at the end of round 2. If a malicious leader sends two different values in round 1, then all honest parties will see two different values and decide $\bot$.
+Agreement (partial): If a malicious leader sends a value to some honest in round 1, all honest parties will receive it at the end of round 2. If a malicious leader sends two different values in round 1, then all honest parties will see two different values and decide $\bot$.
 
 So does this protocol work?
 
-No! the problem is that a Byzantine leader can send no value in round 1, then send a value to only a few honest parties in round 2. The honest parties who receive the value will output that value whereas other honest parties will output a $\bot$.
+No! the problem with agreement is that a Byzantine leader can send no value in round 1, then send a value to only a few honest parties in round 2. The honest parties who receive the value will output that value whereas other honest parties will output a $\bot$.
 
 The core problem is that you may learn the decision value in the last round (round 2) but you are not sure that all other honest parties will also receive this value. You cannot forward your messages because this is the last round. Dolev and Strong show a very elegant way to guarantee agreement even if the value decided is revealed in the last round.
 
-In round 1 we accept a value if it's signed by the leader, but in round 2 we accept a value only if it's signed by both the leader and another party.
+In round 1: accept a value if it's signed by the leader, but in round 2: accept a value only if it's signed by both the leader and another party.
 
 
 ```
