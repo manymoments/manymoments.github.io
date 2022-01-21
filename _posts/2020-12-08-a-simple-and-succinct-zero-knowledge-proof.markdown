@@ -25,7 +25,7 @@ We start with a seemingly useless problem, one that is not NP-complete (in fact,
 ### The setting
 We will assume two parties: a *Prover*, and a *Verifier*. 
 
-The Prover has an input $S=\langle s_0,\dots,s_{d-1}\rangle$ which is a vector of say $d=10^{10}$ field elements (for each $i$, $s_i \in \mathbb{F}_p$). It will be important to assume that $p$ is large relative to $d$ (say $p \approx 2^256$). All the Prover wants to do is prove to the Verifier this simple *boolean* fact:
+The Prover has an input $S=\langle s_0,\dots,s_{d-1}\rangle$ which is a vector of say $d=10^{10}$ field elements (for each $i$, $s_i \in \mathbb{F}_p$). It will be important to assume that $p$ is large relative to $d$ (say $p \approx 2^{256}$). All the Prover wants to do is prove to the Verifier this simple *boolean* fact:
 > Is $S$ the all-zero vector or not?
 
 We will assume the only way the Prover and Verifier can interact is via a special communication channel we will call the *virtual cloud*:
