@@ -7,36 +7,43 @@ tags:
 author: Ittai Abraham, Alin Tomescu
 ---
 
-Many people have popularized the idea that **succinct proofs** and **zero-knowledge proofs** are a type of [moon math](https://medium.com/@VitalikButerin/quadratic-arithmetic-programs-from-zero-to-hero-f6d558cea649). In this post, our goal is to present a simple proof system that can provide an introduction and intuition to this space. Perhaps surprisingly, the only tool we will use is the [Theorem](/2020-07-17-the-marvels-of-polynomials-over-a-field) that non-trivial degree-at-most-$d$ polynomials over a field have at most $d$ roots.
+There is a popular belief that **succinct proofs** and **zero-knowledge proofs** are a type of [moon math](https://medium.com/@VitalikButerin/quadratic-arithmetic-programs-from-zero-to-hero-f6d558cea649). In this post, our goal is to present a simple proof system that can provide an introduction and intuition to this space. Perhaps surprisingly, the only tool we will use is the [Theorem](/2020-07-17-the-marvels-of-polynomials-over-a-field) that non-trivial degree-at-most-$d$ polynomials over a field have at most $d$ roots.
 
 ### Start with Succinctness, add Zero Knowledge later
-The traditional CS educational approach typically first shows a zero-knowledge scheme related to proving [3-colorability of a graph](https://crypto.stanford.edu/cs355/18sp/lec3.pdf) (also see [MIT demo](http://web.mit.edu/~ezyang/Public/graph/svg.html) or Vipul Goyal's [notes](https://www.cs.cmu.edu/~goyal/s18/15503/scribe_notes/lecture23.pdf)), or proving the existence of a Hamiltonian cycle (see notes of [Boaz Barak](https://www.boazbarak.org/cs127spring16/chap14_zero_knowledge.html), or [Sanjam Garg](https://people.eecs.berkeley.edu/~sanjamg/classes/cs294-spring16/scribes/7.pdf)). A good resource to learn more is the [9th BIU Winter School on Cryptography and Zero Knowledge](https://cyber.biu.ac.il/event/the-9th-biu-winter-school-on-cryptography/).
+Traditional Computer Science Curriculum typically starts with a zero knowledge scheme based on proving [3-colorability of a graph](https://crypto.stanford.edu/cs355/18sp/lec3.pdf) ([MIT demo](http://web.mit.edu/~ezyang/Public/graph/svg.html) or [Vipul Goyal](https://www.cs.cmu.edu/~goyal/s18/15503/scribe_notes/lecture23.pdf)), or on proving the existence of a Hamiltonian cycle (see [Boaz Barak](https://www.boazbarak.org/cs127spring16/chap14_zero_knowledge.html), or [Sanjam Garg](https://people.eecs.berkeley.edu/~sanjamg/classes/cs294-spring16/scribes/7.pdf)). The wonderful [9th BIU Winter School on Cryptography and Zero Knowledge](https://cyber.biu.ac.il/event/the-9th-biu-winter-school-on-cryptography/) also takes a similar approach.
 
-Since Colorability, Hamilonicity and Satisfiability are all [NP-complete](https://en.wikipedia.org/wiki/NP-completeness) problems, the advantage of this approach is that it immediately gives very general Zero Knowledge results via [Karp-based reductions](https://en.wikipedia.org/wiki/Polynomial-time_reduction) to any problem in NP. 
+The advantage of this approach is that it immediately gives very general Zero Knowledge results via [Karp-based reductions](https://en.wikipedia.org/wiki/Polynomial-time_reduction) to any problem in NP. 
+This is because Colorability, Hamilonicity and Satisfiability are all [NP-complete](https://en.wikipedia.org/wiki/NP-completeness) problems.
 
-Succinct proofs are often taught at a [later phase](https://crypto.stanford.edu/cs355/19sp/lec17.pdf) and in connection to the [PCP](https://en.wikipedia.org/wiki/PCP_theorem) theorem. A good resource to learn these foundations is Alessandro Chiesa's course on [Foundations of Probabilistic Proofs](https://people.eecs.berkeley.edu/~alexch/classes/CS294-F2020.html).
+Succinct proofs (and *arguments*, but will ignore the distinction here) are often taught at a [later phase](https://crypto.stanford.edu/cs355/19sp/lec17.pdf) and in connection to the [PCP](https://en.wikipedia.org/wiki/PCP_theorem) theorem. Alessandro Chiesa's course on [Foundations of Probabilistic Proofs](https://people.eecs.berkeley.edu/~alexch/classes/CS294-F2020.html) is a great resource.
 
 
-In this post, we take a different approach whose goal is to provide a simple and self-contained construction that can provide intuition for later constructions.
-We start with a seemly seemingly useless problem, one that is solvable in polynomial time, and discuss a solution in a non-standard *virtual cloud* communication model. Perhaps surprisingly, we will show in later posts that this simple problem is the basis of more general results in this area.
+In this post, we take a different approach whose goal is to provide a simple and self-contained construction that can provide intuition for many of the constructions that are used in practice.
+We start with a seemingly useless problem, one that is not NP-complete (in fact, solvable in polynomial time). We provide a solution in a non-standard *virtual cloud* communication model. Perhaps surprisingly, we will show in later posts that this simple problem is the basis of more general results in this area.
 
 
 ### The setting
 We will assume two parties: a *Prover*, and a *Verifier*. 
 
-The Prover has an input $S=\langle s_0,\dots,s_{d-1}\rangle $ which is a vector of say $d=10^{10}$ field elements (so $s_i \in \mathbb{F}_p$). It will be important to assume that $p$ is large relative to $d$ (so $p \gg  d$). All the Prover wants to do is prove to the Verifier this simple *boolean* fact:
+The Prover has an input $S=\langle s_0,\dots,s_{d-1}\rangle$ which is a vector of say $d=10^{10}$ field elements (for each $i$, $s_i \in \mathbb{F}_p$). It will be important to assume that $p$ is large relative to $d$ (say $p \approx 2^256). All the Prover wants to do is prove to the Verifier this simple *boolean* fact:
 > Is $S$ the all-zero vector or not?
 
 We will assume the only way the Prover and Verifier can interact is via a special communication channel we will call the *virtual cloud*:
-1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$(d-1)$ polynomial $g(x) = \sum\_{i\in[0,d-1]} s\_i \prod\_{j\in[0, d-1], j\ne i} \frac{x - j}{i - j}$ to the virtual cloud. Note that for all $0\leq i \leq d-1$ we have $g(i) = s_i$. This polynomial $g$ is the [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$. 
+1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$(d-1)$ polynomial $g(x)$ such that
+  * for all $0\leq i \leq d-1$ we have $g(i) = s_i$.
+  * $g(x) is a degree-at-most-$d$ polynomial. 
+It is easy for the prover to create $g$ via [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$.
+$$
+g(x) = \sum\_{i\in[0,d-1]} s\_i \prod\_{j\in[0, d-1], j\ne i} \frac{x - j}{i - j}
+$$
 
 2. The Verifier is allowed to *query* the virtual cloud by sending it an element $r$ and the virtual cloud responds back with $g(r)$, the evaluation of $r$ on $g$.
 
 
 ### A non-succinct solution, with no error
-How can the Verifier be sure that $S$ is all-zero and hence $g$ is the zero (trivial) polynomial? 
+How can the Verifier be *sure* that $S$ is all-zero and hence $g$ is the zero (trivial) polynomial? 
 
-Observe that when $S$ is all-zero then $g$ is the (trivial) zero polynomial! But if $S$ is not all-zero then the [fundamental theorem of arithmetic adapted to finite field polynomials](https://decentralizedthoughts.github.io/2020-07-17-the-marvels-of-polynomials-over-a-field/) says that $g$ has at most $d-1$ roots. So the verifier has a simple way to distinguish: it can query $d=10^{10}$ distinct points and check if they are all zero.
+When $S$ is all-zero then $g$ is the (trivial) zero polynomial. But if $S$ is not all-zero then the [fundamental theorem of arithmetic adapted to finite field polynomials](https://decentralizedthoughts.github.io/2020-07-17-the-marvels-of-polynomials-over-a-field/) says that $g$ has at most $d-1$ roots. So the verifier has a simple way to distinguish: it can query $d=10^{10}$ distinct points and check if they are all zero.
 
 This solution is not succinct as it requires the Verifier to send $d$ queries. Can the Verifier use less queries? Can the Verifier query just one point?
 
@@ -45,14 +52,14 @@ We will now use the fact that we are working over the field $\mathbb{F}_p$ where
 
 > The Verifier chooses a uniformly random element $r \in_R \mathbb{F}_p$ and queries the virtual cloud just once with $r$:
 
-1. Clearly, if $g(r) \neq 0$, then $g$ is not the trivial polynomial, so $S$ is not all-zeros.
+1. If $g(r) \neq 0$, then $g$ is not the trivial polynomial, so $S$ is not all-zeros.
 2. What if $g(r)=0$? Then, we use the [Theorem](/2020-07-17-the-marvels-of-polynomials-over-a-field) that, if $g$ is non-zero, then it has at most $d-1$ roots to say: If $r\in_R \mathbb{F_p}$ and $g(r)=0$, then the probability that $g$ is non-zero is at most $(d-1)/p$ (where $p$ is the size of the field).
 
 We can choose $p\gg d$, so the error probability is as low as we want. So if $g(r)=0$, then the Verifier declares that $S$ is all-zero.
 
 That's it! This is a very succinct proof: instead of querying $d=10^{10}$ points, the Verifier can succinctly query just one (local) point and learn about a (global) property $S$ (with a small error probability).
 
-At the core of this succinct proof is the power of randomization: by accepting a small probability of error, it is possible to prove $g(r) \neq 0$ using one query instead of $d$ queries. Quite remarkably, this mathematical fact can be boosted to much more general succeint proofs (with small error).
+At the core of this succinct proof is the power of randomization: by accepting a small probability of error, it is possible to prove $g(r) \neq 0$ using one query instead of $d$ queries. Quite remarkably, this mathematical fact can be boosted to much more general succinct proofs (with small error).
 
 ### Adding Zero Knowledge
 
@@ -62,7 +69,7 @@ The Verifier can query for some $0 \leq i \leq d-1$, receive back $g(i)=s_i$, an
 
 Even that may leak information, for example, for $d=2$, the vector $S$ is of size $2$ and $g$ is a degree one polynomial (such that $g(0)=s_0$ and $g(1)=s_1)$. If the Verifier queries, say $r=10$, it learns the value of $g(10)$. Since $g$ has degree 1, the Verifier has learned some linear relation between $s_0$ and $s_1$! As a concrete example, if $g(10)=1$ then the Verifier has learned that it cannot be the case that $s_0=1$ and $s_1 \neq 1$.
 
-To make sure the adversary can learn nothing about $S$, the Prover extends its vector $S$ with one more field element $t$. Given $S$, let $S'=\langle s_0,\dots,s_{d-1}, t\rangle $ be the extended vector. If $S$ is the all-zero vector, then the Prover sets $t=0$. Otherwise the Prover chooses $t$ uniformly at random. So instead of the polynomial $g$ of degree $d-1$, the Prover now commits to a polynomial $g'$ of degree $d$ such that for all $0\leq i \leq d-1$, $g'(i)=s_i$ and $g'(d)=t$. Using an argument that is similar to the one in [our secret sharing post](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis), it can be seen that for any non-zero vector $S$, given a uniformly distributed $t$ in $\mathbb{F}_p$, the Verifier's view, $g'(r)$, for any $r>d$, is uniformly distributed in $\mathbb{F}_p$. Hence the only information the Verifier gains from the protocol, the Verifier could have simulated locally without any interaction. So the Verifier gains no information at all.
+To make sure the adversary can learn nothing about $S$, the Prover extends its vector $S$ with one more field element $t$. Given $S$, let $S'=\langle s_0,\dots,s_{d-1}, t\rangle $ be the extended vector. If $S$ is the all-zero vector, then the Prover sets $t=0$. Otherwise, the Prover chooses $t$ uniformly at random. So instead of the polynomial $g$ of degree $d-1$, the Prover now commits to a polynomial $g'$ of degree $d$ such that for all $0\leq i \leq d-1$, $g'(i)=s_i$ and $g'(d)=t$. Using an argument that is similar to the one in [our secret sharing post](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis), it can be seen that for any non-zero vector $S$, given a uniformly distributed $t$ in $\mathbb{F}_p$, the Verifier's view, $g'(r)$, for any $r>d$, is uniformly distributed in $\mathbb{F}_p$. Hence the only information the Verifier gains from the protocol, the Verifier could have simulated locally without any interaction. So the Verifier gains no information at all.
 
 In our example above, for $|S|=2$, $g'$ will now be a degree two polynomial, such that $g'(0)=s_0, g'(1)=s_1, g'(2)=t$ where $t$ is uniform.
 Since for any $s_0$ and $s_1$, and for any $r>2$, the distribution of $g'(r)$ is uniform, the Verifier learns nothing about $S$.
