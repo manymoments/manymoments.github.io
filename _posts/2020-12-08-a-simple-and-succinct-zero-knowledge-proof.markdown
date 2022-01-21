@@ -32,11 +32,8 @@ We will assume the only way the Prover and Verifier can interact is via a specia
 1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$(d-1)$ polynomial $g(x)$ such that
   * for all $0\leq i \leq d-1$ we have $g(i) = s_i$.
   * $g(x)$ is a degree-at-most-$d$ polynomial. 
-
-The prover creates $g$ via [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$:
-$$
-g(x) = \sum\_{i\in[0,d-1]} s\_i \prod\_{j\in[0, d-1], j\ne i} \frac{x - j}{i - j}
-$$
+  * The prover creates $g$ via [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$:
+$g(x) = \sum\_{i\in[0,d-1]} s\_i \prod\_{j\in[0, d-1], j\ne i} \frac{x - j}{i - j}$
 
 2. The Verifier is allowed to *query* the virtual cloud by sending it an element $r$ and the virtual cloud responds back with $g(r)$, the evaluation of $r$ on $g$.
 
