@@ -33,7 +33,7 @@ We will assume the only way the Prover and Verifier can interact is via a specia
   * for all $0\leq i \leq d-1$ we have $g(i) = s_i$.
   * $g(x)$ is a degree-at-most-$d$ polynomial. 
 
-It is easy for the prover to create $g$ via [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$.
+The prover creates $g$ via [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$:
 $$
 g(x) = \sum\_{i\in[0,d-1]} s\_i \prod\_{j\in[0, d-1], j\ne i} \frac{x - j}{i - j}
 $$
@@ -44,7 +44,7 @@ $$
 ### A non-succinct solution, with no error
 How can the Verifier be *sure* that $S$ is all-zero and hence $g$ is the zero (trivial) polynomial? 
 
-When $S$ is all-zero then $g$ is the (trivial) zero polynomial. But if $S$ is not all-zero then the [fundamental theorem of arithmetic adapted to finite field polynomials](https://decentralizedthoughts.github.io/2020-07-17-the-marvels-of-polynomials-over-a-field/) says that $g$ has at most $d-1$ roots. So the verifier has a simple way to distinguish: it can query $d=10^{10}$ distinct points and check if they are all zero.
+When $S$ is all-zero then $g$ is the (trivial) zero polynomial. But if $S$ is not all-zero then the [fundamental theorem of arithmetic adapted to finite field polynomials](https://decentralizedthoughts.github.io/2020-07-17-the-marvels-of-polynomials-over-a-field/) says that $g$ has at most $d-1$ roots. So the verifier has a way to distinguish: it can query $d=10^{10}$ distinct points and check if they are all zero.
 
 This solution is not succinct as it requires the Verifier to send $d$ queries. Can the Verifier use less queries? Can the Verifier query just one point?
 
@@ -56,7 +56,7 @@ We will now use the fact that we are working over the field $\mathbb{F}_p$ where
 1. If $g(r) \neq 0$, then $g$ is not the trivial polynomial, so $S$ is not all-zeros.
 2. What if $g(r)=0$? Then, we use the [Theorem](/2020-07-17-the-marvels-of-polynomials-over-a-field) that, if $g$ is non-zero, then it has at most $d-1$ roots to say: If $r\in_R \mathbb{F_p}$ and $g(r)=0$, then the probability that $g$ is non-zero is at most $(d-1)/p$ (where $p$ is the size of the field).
 
-We can choose $p\gg d$, so the error probability is as low as we want. So if $g(r)=0$, then the Verifier declares that $S$ is all-zero.
+We can choose $p\gg d$, so the error probability is as low as we want. If $g(r)=0$, then the Verifier declares that $S$ is all-zero.
 
 That's it! This is a very succinct proof: instead of querying $d=10^{10}$ points, the Verifier can succinctly query just one (local) point and learn about a (global) property $S$ (with a small error probability).
 
@@ -75,9 +75,9 @@ To make sure the adversary can learn nothing about $S$, the Prover extends its v
 In our example above, for $|S|=2$, $g'$ will now be a degree two polynomial, such that $g'(0)=s_0, g'(1)=s_1, g'(2)=t$ where $t$ is uniform.
 Since for any $s_0$ and $s_1$, and for any $r>2$, the distribution of $g'(r)$ is uniform, the Verifier learns nothing about $S$.
 
-So the Verifier queries a random point $r$ uniformly in $[d+1,p-1]$. If $g(r) \neq 0$ then the Verifier has a proof that $S$ is not the all-zero vector. If $g(r)=0$ then the Verifier has a proof that $S$ is most likely the all-zero vector. The probability of error is at most $d/(p-(d+1))$ (if $S$ is not the all zero-vector, then $g'$ has at most $d$ roots and the Verifier samples $r$ uniformly from $p-(d+1)$ elements).
+The Verifier queries a random point $r$ uniformly in $[d+1,p-1]$. If $g(r) \neq 0$ then the Verifier has a proof that $S$ is not the all-zero vector. If $g(r)=0$ then the Verifier has a proof that $S$ is most likely the all-zero vector. The probability of error is at most $d/(p-(d+1))$ (if $S$ is not the all zero-vector, then $g'$ has at most $d$ roots and the Verifier samples $r$ uniformly from $p-(d+1)$ elements).
 
-So we have shown a way for the Verifier to obtain a succinct zero-knowledge proof!
+We have shown how the Verifier obtains a succinct zero-knowledge proof!
 
 ### Removing the strange virtual cloud communication channel
 
