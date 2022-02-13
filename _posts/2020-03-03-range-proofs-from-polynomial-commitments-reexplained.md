@@ -118,6 +118,8 @@ w_2(X) &= g \cdot (1 - g) \cdot \left(\frac{X^{n}-1}{X-\omega^{n-1}}\right),\lab
 w_3(X) &= \big[g(X) - 2 g(X \omega)\big] \cdot \big[1 - g(X) + 2 g(X \omega)\big] \cdot (X - \omega^{n-1})\label{eq:w3}.
 \end{align}
 
+<!-- TODO: Explain X^N - 1 = \prod_i (X-\omega^i) and that the X-1 in the denominator and (X-\omega^{n-1}) cancel out -->
+
 Next, we'll explain why these polynomials being zero over $H$ is equivalent to conditions (1) through (3) holding.
 
 ### How do the $w_1,w_2,w_3$ polynomials work?
