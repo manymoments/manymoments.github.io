@@ -35,7 +35,9 @@ Notes:
 1. The proof heavily uses the fact that the clients are prone to omission failures. If clients can just crash (or are non-faulty) then the clients can implement SMR using the replicas as relays.
 2. This lower bound can be generalized to $n$ replicas and $f$ omission failures for any $n\leq 2f$.
 3. Since it just requires omission faults, this lower bound holds even if there is a setup and a PKI.
-4. This post was updated in November 2021 to stress that the lower bound requires at least two clients.
+4. This post was updated in November 2021 to stress that the lower bound requires at least two clients. In fact, the state machine we need is a simple two-client write-once register.
+5. While this post focuses on synchrony and omission faults for both one server and all clients, it can also be cast in asynchrony (or partial synchrony) with just one sever. It's a good exercise!
+6. Nancy Lynch's book has a variant of this lower bound for atomic objects in asynchrony. See Theorem 17.6 in her [book](https://dl.acm.org/doi/book/10.5555/2821576). This was later [extended](https://users.ece.cmu.edu/~adrian/731-sp04/readings/GL-cap.pdf) by Gilbert and Lynch to partial synchrony and connected to Browers conjecture.
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1191305159638503426?s=20)
 
