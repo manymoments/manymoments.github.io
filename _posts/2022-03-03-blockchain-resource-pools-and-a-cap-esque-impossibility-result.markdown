@@ -5,7 +5,7 @@ tags:
 - research
 - lowerbound
 - blockchain
-authors: Andrew Lewis-Pye, Tim Roughgarden
+author: Andrew Lewis-Pye, Tim Roughgarden
 ---
 
 The consensus layers of different blockchain protocols can look very
