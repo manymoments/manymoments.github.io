@@ -32,9 +32,9 @@ production power (i.e., hashrate) is controlled by nodes that honestly
 follow the intended protocol; and (ii) the communication network is
 reliable (in the sense of the synchronous model), with all messages
 arriving at their destinations in a bounded amount of time (see
-https://eprint.iacr.org/2014/765.pdf,
-https://eprint.iacr.org/2016/454.pdf, or
-https://arxiv.org/pdf/2005.10484.pdf for details).  Such a protocol
+<https://eprint.iacr.org/2014/765.pdf>,
+<https://eprint.iacr.org/2016/454.pdf>, or
+<https://arxiv.org/pdf/2005.10484.pdf> for details).  Such a protocol
 does not offer any finality guarantees if there can be unbounded
 network delays---for example, if there is a lengthy network partition,
 each side of the partition will grow its own longest chain
@@ -50,7 +50,7 @@ stake is honest.  On the other hand, the protocol satisfies
 probabilistic finality even in the partially synchronous model, in
 which messages can suffer unbounded delays (due, e.g., to network
 outages or denial-of-service attacks).  (For Algorand specifically,
-see https://eprint.iacr.org/2018/377.pdf for details.)
+see <https://eprint.iacr.org/2018/377.pdf> for details.)
 
 The recurring question investigated in our joint research is:
 >to what extent do the desired guarantees of a blockchain protocol dictate how
@@ -141,7 +141,7 @@ implementation.  We expect that many more results along such lines are
 possible.
 
 Further reading/listening:
--paper: http://timroughgarden.org/papers/RPCAP_public_arxiv.pdf
--talk: https://www.youtube.com/watch?v=EfsSV7ni2ZM
+* (paper)[http://timroughgarden.org/papers/RPCAP_public_arxiv.pdf]
+* (talk)[https://www.youtube.com/watch?v=EfsSV7ni2ZM]
 
 Your thoughts/comments on [twitter](...)
