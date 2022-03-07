@@ -28,8 +28,8 @@ To reduce the adversary’s advantage, we introduce a novel **random coloring te
 
 To define the reward structure, we consider the *[graph minors](https://en.wikipedia.org/wiki/Graph_minor)* for the full dag induced by the random  coloring. A minor is derived from the dag by taking all vertices of a certain color, and placing an edge between two vertices if there is a directed path between them that does not include another block of that color (see example below). For each such minor, the probability of a fork is much smaller than in the full graph, and we can make it arbitrarily smaller by increasing the number of colors. Note that the number of colors does not affect the block generation rate. 
 
-![](/assets/img/colordag_coloring.png)
-
+![](https://i.imgur.com/ToR0WSY.png)
+ 
 Random coloring reduces the probability of naturally occurring forks between honest miners, thus eliminating a main advantage of an attacker with consolidated mining power. In a way, it provides similar advantages as [Prism](https://dl.acm.org/doi/pdf/10.1145/3319535.3363213) while maintaining just one chain.
 
 ## Technique 2: Penalties 
