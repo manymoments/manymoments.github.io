@@ -50,6 +50,6 @@ We analyze Colordag under the assumption that we are dealing with an extremely s
 
 The gritty details are in our [Technical Report](https://eprint.iacr.org/2022/308). 
 
-Please leave comments on [Twitter](...)
+Please leave comments on [Twitter](https://twitter.com/ittayeyal/status/1500943944384929792?s=20&t=Q-QPZI9PfIXFnLAyqs3ygQ).
 
 
