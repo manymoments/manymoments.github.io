@@ -46,7 +46,7 @@ To prevent this, Colordag ignores blocks unless, roughly speaking, they are on a
 
 ## Analysis 
 
-We analyze Colordag under the assumption that we are dealing with an extremely strong adversary, who knows when miners will generate blocks and controls the (synchronous) network. Even with such a strong adversary, following Colordag gives what we call an **epsilon-sure Nash Equilibrium**, resilient to coalitions that control a minority of the mining power, where an epsilon-sure Nash Equilibrium is one in which following the protocol is almost surely (i.e., with probability 1-\epsilon, for an arbitrarily small \epsilon) the miners’ strict best response. 
+We analyze Colordag under the assumption that we are dealing with an extremely strong adversary, who knows when miners will generate blocks and controls the (synchronous) network. Even with such a strong adversary, following Colordag gives what we call an **epsilon-sure Nash Equilibrium**, resilient to coalitions that control a minority of the mining power, where an epsilon-sure Nash Equilibrium is one in which following the protocol is almost surely (i.e., with probability $1-\epsilon$, for an arbitrarily small $\epsilon$) the miners’ strict best response. 
 
 The gritty details are in our [Technical Report](https://eprint.iacr.org/2022/308). 
 
