@@ -117,3 +117,5 @@ More advanced:
 - [2-round BFT SMR with n=4, f=1](https://decentralizedthoughts.github.io/2021-03-03-2-round-bft-smr-with-n-equals-4-f-equals-1/).
 
 - [Optimal Communication Complexity of Authenticated Byzantine Agreement](https://decentralizedthoughts.github.io/2021-09-20-optimal-communication-complexity-of-authenticated-byzantine-agreement/)
+
+- [EIP-1559 in Retrospect](https://decentralizedthoughts.github.io/2022-03-10-eip1559/)
