@@ -1,6 +1,6 @@
 ---
 title: Consensus for State Machine Replication
-date: 2019-10-15 19:58:00 -07:00
+date: 2019-10-15 22:58:00 -04:00
 tags:
 - dist101
 author: Kartik Nayak, Ittai Abraham
@@ -30,11 +30,11 @@ An example state machine is the Bitcoin ledger. The state consists of the set of
 
 The server replicas all initially start with the same state. However, when they receive concurrent requests from a client, honest replicas first need to agree on the sequence of client commands received by them. This problem is called **log replication**, and it is a multi-shot version of consensus. After the sequence is agreed upon, the replicas apply the commands in the log, one by one, using the `apply` transition. Assuming the transition is deterministic, all honest server replicas maintain an identical state at all times.
 
-Thus, a Fault Tolerant SMR system needs to perform log replication efficiently and then execute the commands on the log. Specifically, it needs to guarantee the following:
+Thus, a Fault Tolerant SMR system needs to perform log replication efficiently and then execute the commands on the log. More formally we need to guarantee the following:
 
-**(Safety)** Any two honest replicas store the same sequence of commands in their logs.
+**(Safety):** Any two honest replicas store the same prefix of commands in their logs. In other words, if an honest replica appends $cmd$ as the $i$th entry of its log, then no honest replica will append $cmd' \neq cmd$ as the $i$th entry of its log.
 
-**(Liveness)** Honest server replicas will eventually execute a command proposed by a client.
+**(Liveness):** Honest replicas will eventually apply (execute) a command proposed by a client. In other words, if a client proposes a command $cmd$, then eventually all honest replicas will (1) have a log entry $cmd$ appended as some $j$th entry in the log and (2) all previous positions $i<j$ in the log will be set.
 
 The requirements for a FT-SMR seem similar to those for BB and BA. Safety is akin to the agreement property, whereas liveness is similar to the termination property. However, there are a few differences between them:
 1. **Consensus on a sequence of values.** FT-SMR  needs log replication, or multi-shot consensus. Conceptually, one can sequentially compose single-shot consensus protocols. In practice, SMR protocols may optimize without necessarily relying on a sequential composition (more discussed below).
@@ -43,10 +43,14 @@ The requirements for a FT-SMR seem similar to those for BB and BA. Safety is aki
 
 3. **Fault tolerance.** An essential consequence of clients not participating in the protocol is the fault tolerance one can obtain. With BB, we know of protocols such as Dolev-Strong that can tolerate $f < n-1$ faults among $n$ replicas. SMR protocols that obtain Safety and Liveness cannot tolerate more than a minority corruption.
 
-4. **External validity.** Finally, the definition does not explicitly state a validity property as in BB and BA. Fault Tolerant SMR protocols generally satisfy *external validity*, i.e., a command is said to be valid so far as the client signs the value.
+4. **External validity.** The definition does not explicitly state a validity property as in BB and BA. FT-SMR protocols generally satisfy *external validity*, i.e., a command is said to be valid so far as the client signs the command.
+
+5. **Fairness.** Typically FT-SMR aims to provide some stronger degree of fairness on the ordering of commands. The liveness definition provided above only guarantees that clients will *eventually* but does not say how two different clients' commands need to be ordered relative to each other. We will expand on this in future posts.
 
 ### Optimizing for a sequence of values
 
 Since FT-SMR protocols agree on a sequence of values, practical approaches for SMR (such as [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf), [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf), etc.) use a steady-state-and-view-change approach to architect log replication. In the steady-state, there is a designated leader that drives consensus. Typically, the leader does not change until it fails (e.g., due to network delays) or if Byzantine behavior is detected. If the leader fails, the replicas vote to de-throne the leader and elect a new one. The process of choosing a new leader is called view-change. The presence of a single leader for more extended periods yields simplicity and efficiency when the leader is honest. However, it also reduces the amount of *decentralization* and can cause delays if Byzantine replicas are elected as leaders.
+
+Acknowledgments: thanks to [Maxwill](https://twitter.com/tensorfi) for suggestions to improve the definition of safety and liveness.
 
 Please leave comments on [Twitter](https://twitter.com/kartik1507/status/1185321750881538050?s=20)
