@@ -1,10 +1,4 @@
 ---
-title: Dfinity's Consensus: Under Synchrony
-published: false
-tags:
-- blockchain
-- SMR
-author: Jannis Stoeter, Kartik Nayak
 ---
 
 This is part one of a two-part post on consensus protocols published by the [Dfinity Foundation](https://dfinity.org/).
