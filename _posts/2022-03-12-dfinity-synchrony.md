@@ -39,8 +39,12 @@ DSC commits to a block once it can be considered uniquely extensible. Intuitivel
 
 Fig. 1 illustrates three possible scenarios. Observe that in scenarios $A$ and $B,$ we can commit to an iteration-$(k-2)$ block, whereas, in scenario $C$, no block can be committed.
 
-![](https://i.imgur.com/FTxGnDq.png)
-*Figure 1: Illustration of commit rule*
+<figure>
+<p align="center">
+<img align="center" height=300 src="https://i.imgur.com/FTxGnDq.png">
+    </p>
+<figcaption align = "center"><b>Figure 1: Illustration of commit rule.</b></figcaption>
+</figure>
 
 ### Key Invariants in Dfinity's Synchronous Consensus
 
@@ -75,9 +79,12 @@ Suppose that $2$ is the first replica to transition from iteration-$(k-1),$ then
 - 1 proposes a new block $B'_k$ and waits for $2\Delta$ time.
 - 2 receives $B'_k$ within $\Delta$ time after 1 sent it and votes only for that block, since $1$ has the lowest rank.
 
-![](https://i.imgur.com/9lHRgeR.png)
-
-*Figure 2: View of iteration-$k$ when the leader is honest. Proposals by 2 have been omitted for clarity.*
+<figure>
+<p align="center">
+<img align="center" height=300 src="https://i.imgur.com/9lHRgeR.png">
+    </p>
+<figcaption align = "center"><b>Figure 2: View of iteration-$k$ when the leader is honest. Proposals by 2 have been omitted for clarity.</b></figcaption>
+</figure>
 
 Since 2 only votes for 1's block and 1 also only votes for its block, $B'_k$ is the only block that receives $t+1 = 2$ votes in iteration $k.$ It will thus be the uniquely certified block.
 
@@ -110,9 +117,12 @@ Suppose we have the following order of events:
 - 1 will send $C(B_k)$ to 2 and $C(B'_k)$ to 3.
 - Upon receiving $C(B_k)$ and $C(B'_k),$ 2 and 3 will transition to iteration-$(k+1).$
 
-![](https://i.imgur.com/85gtx1K.png)
-
-*Figure 3: View of iteration-$k$ when the leader is Byzantine and proposes multiple blocks. Some edges have been omitted for clarity.*
+<figure>
+<p align="center">
+<img align="center" height=300 src="https://i.imgur.com/85gtx1K.png">
+    </p>
+<figcaption align = "center"><b>Figure 3: View of iteration-$k$ when the leader is Byzantine and proposes multiple blocks. Some edges have been omitted for clarity.</b></figcaption>
+</figure>
 
 In this case, multiple blocks get certified and all honest parties move on to the next iteration. Here we can see why certification does not imply a commit. Certification here merely ensures "progress".
 
