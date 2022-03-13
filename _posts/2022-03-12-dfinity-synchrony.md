@@ -12,7 +12,7 @@ This is part one of a two-part post on consensus protocols published by the [Dfi
 
 Dfinity published two protocols:
 1. The first, published in 2018, is a [BFT protocol under synchrony](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/)  by [Hanke, Movahedi, and Williams](https://arxiv.org/abs/1805.04548). We will call this protocol  Dfinity's Synchronous Consensus  (DSC). An independent report called [Dfinity Consensus Explored](https://eprint.iacr.org/2018/1153) also explained the core consensus aspects of this protocol.
-2. The second, published in 2021, is a BFT protocol under [partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) by [Caminish, Drijvers, Hanke, Pignolet, Shoup, and Williams](https://eprint.iacr.org/2021/632.pdf), called the Internet Computer Consensus (ICC).
+2. The second, published in 2021, is a BFT protocol under [partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) by [Caminisch, Drijvers, Hanke, Pignolet, Shoup, and Williams](https://eprint.iacr.org/2021/632.pdf), called the Internet Computer Consensus (ICC).
 
 
 This post will discuss Dfinity's Synchronous Consensus (DSC) from 2018. This protocol introduces many ideas subsequently used in Internet Consensus Computer (ICC) which is explained in the [next post](). Our goal is to describe the protocol and its invariants intuitively.
