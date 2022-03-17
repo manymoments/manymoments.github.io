@@ -174,3 +174,7 @@ When the network delay is close to $\Delta$, each iteration first incurs the ini
 >
 >
 > Committing (can be executed anytime after the initial wait): if all received $B_{k-1}$ blocks extend the same block $B_{k-2},$ consider $B_{k-2}$ committed.
+
+Please add comments on [Twitter](...).
+
+**Acknowledgment.** We would like to thank Ittai Abraham and the authors of Internet Consensus Computer (Jan, Manu, Timo, Yvonne-Anne, Victor and Dominic) for useful discussions.
