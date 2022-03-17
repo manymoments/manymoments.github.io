@@ -48,10 +48,14 @@ Also, observe that as per Invariant I, when the leader is honest and the network
 - DSC relies on waiting for $2\Delta$ time at the start of an iteration; however, all replicas propose at the start of this timer. The wait time guarantees that an honest leader's proposal is prioritized. ICC replaces this with a softer condition with staggered proposal and voting; if the network is synchronous, it achieves the same effect.
 - The unique extensibility invariant for iteration $k$ in DSC relies on a strong synchrony assumption to detect the absence of additional blocks at height $k-1$ potentially pointing to other certified blocks at height $k-2$. In ICC, such a condition cannot be met under partial synchrony. Replicas instead send a commit message when they believe that a block is uniquely certified (uniquely extensible). The block will be committed if an $n-t$ quorum of replicas sends this message; thus, an ICC commit relies on a quorum intersection argument instead of synchrony. This is also the reason why we are able to tolerate only $t < n/3$ faults.
 
-**Remark 2:** The [ICC paper](https://eprint.iacr.org/2021/632.pdf) describes three different protocols dubbed ICC0, ICC1, ICC2. In this post, we intuitively describe ICC0. 
+**Remark 2: Communication complexity.** Due to partial synchrony, even if the leader in an iteration is honest, under an adversarial block arrival ordering, each replica may end up voting for each of the $n$ proposals. Thus, in the worst case, the communciation complexity in an iteration would be $O(n^3)$ for $O(1)$-sized blocks. However, if the network is synchronous, the expected communication complexity is $O(n^2)$ (similar reasoning as in DSC).
+
+**Remark 3:** The [ICC paper](https://eprint.iacr.org/2021/632.pdf) describes three different protocols dubbed ICC0, ICC1, ICC2. In this post, we intuitively describe ICC0. 
 
 ICC1 introduces some optimizations to ICC0 so that it can be used in a peer-to-peer gossip layer. For example, it introduces additional conditions for a replica to propose a new block and bound the number of stray proposals.
 
 ICC2, in addition, aims to improve the communication complexity of the protocol when the block sizes are much larger than other protocol messages. In particular, they use [erasure codes](https://en.wikipedia.org/wiki/Erasure_code) to reduce this communication complexity. Such techniques have been used in several prior works; we will explain this technique in relation to consensus in more detail in a separate post.
 
 Please add comments on [Twitter](...).
+
+**Acknowledgment.** We would like to thank Ittai Abraham and the authors of Internet Consensus Computer (Jan, Manu, Timo, Yvonne-Anne, Victor and Dominic) for useful discussions.
