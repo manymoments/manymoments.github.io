@@ -142,11 +142,14 @@ We will thus use the commit rule as our third and last protocol invariant:
 
 **III. At the end of iteration $k$, if all iteration-$(k-1)$ blocks extend the same block $B_{k-2}$, then $B_{k-2}$ is uniquely extensible; no other iteration-$(k-2)$ block can be extended from then on.**
 
+## Complexity Metrics
 **Latency.** Finally, let's look at the expected latency of committing a block:
 
 In this context, we can observe a very neat feature of the protocol: all operations except for the initial wait of $2\Delta$ can occur at the actual network speed. As far as we know, this is the first work that explores progress at actual network speed under the synchrony assumption. When the actual network delay is $<< \Delta,$ we expect each iteration to last $2\Delta$ time. Since every iteration has a new random leader, we can expect to have an honest leader within two iterations, after which it takes exactly two iterations to commit the block. Thus, the expected latency in this case is $2*2\Delta + 2*2\Delta = 8\Delta$.
 
 When the network delay is close to $\Delta$, each iteration first incurs the initial $2\Delta$ wait time. In the case in which the adversary controls the replicas with $t-$lowest ranks, which happens with probability $2^{t+1},$ all other operations take at most $(t+1)\Delta$ time. Thus, in expectation, we would need to wait for another $2\Delta$ per iteration. This results in an expected latency to commit of: $2*4\Delta + 4\Delta + 2\Delta = 14 \Delta.$ Note that we can commit immediately after the initial $2\Delta$ wait in iteration-$k+2,$ when iteration-$k$ had an honest leader.
+
+**Communication complexity.** In the protocol, if replicas with top $k$ ranks are Byzantine in an iteration, then the communciation complexity of that iteration is $(2k+1)n^2$. This is because each replica forwards at most 2 messages for the proposal of each Byzantine replica with the low rank. However, this happens with probability $2^{-(k+1)}$. Thus, the expected communication complexity is $O(n^2)$.
 
 ## Full Protocol Specification
 
