@@ -1,5 +1,5 @@
 ---
-title: Consensus by Dfinity - Part II
+title: Consensus by Dfinity - Part II (Internet Computer Consensus)
 date: 2022-03-12 00:00:00 -05:00
 tags:
 - blockchain
