@@ -125,7 +125,7 @@ Suppose we have the following order of events:
 <figcaption align = "center"><b>Figure 3: View of iteration-$k$ when the leader is Byzantine and proposes multiple blocks. Some edges have been omitted for clarity.</b></figcaption>
 </figure>
 
-In this case, multiple blocks get certified and all honest parties move on to the next iteration. Here we can see why certification does not imply a commit. Certification here merely ensures "progress".
+In this case, multiple blocks get certified and all honest parties move on to the next iteration. Here we can see why certification does not imply a commit. Certification here merely ensures "some progress" such that one of these committed blocks is eventually committed.
 
 A slightly different scenario where this can happen is when a Byzantine leader initially does not propose anything but waits for an honest vote on an honest replica's proposal and then sends a different proposal. Since honest parties vote for all lower-ranked blocks, multiple blocks will be certified.
 
