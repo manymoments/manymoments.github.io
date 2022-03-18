@@ -31,7 +31,7 @@ To see why this invariant holds, observe that replicas send proposals and vote f
 
 **II. At least one block and possibly many will be certified in each iteration.**
 
-As explained in the previous paragraph, Invariant II holds when the leader is honest, and the network is synchronous for sufficiently long. What happens when the leader is Byzantine, or the network is not synchronous? In the former case, a Byzantine leader can have multiple blocks certified. But at least one of them will be certified. In particular, similar analysis as described in [Invariant II for SDC]() will apply here too. In the latter case, replicas just wait until at least one block is certified in an iteration. Note that, under partial synchrony, this will eventually happen.
+As explained in the previous paragraph, Invariant II holds when the leader is honest, and the network is synchronous for sufficiently long. What happens when the leader is Byzantine, or the network is not synchronous? In the former case, a Byzantine leader can have multiple blocks certified. But at least one of them will be certified. In particular, similar analysis as described in [Invariant II for SDC](https://decentralizedthoughts.github.io/2022-03-12-dfinity-synchrony/) will apply here too. In the latter case, replicas just wait until at least one block is certified in an iteration. Note that, under partial synchrony, this will eventually happen.
 
 We can see how Invariants I and II together ensure liveness. Invariant I ensures that the protocol can commit to a chain of blocks once there is an honest leader and we have network synchrony. Invariant II ensures that we will move on from a Byzantine leader until we get an honest one while still certifying a block in an iteration.
 
