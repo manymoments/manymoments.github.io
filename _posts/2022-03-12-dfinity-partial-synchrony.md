@@ -1,7 +1,6 @@
 ---
 title: Consensus by Dfinity - Part II
 date: 2022-03-12 00:00:00 -05:00
-published: false
 tags:
 - blockchain
 - SMR
