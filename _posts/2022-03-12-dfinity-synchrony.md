@@ -51,15 +51,15 @@ Fig. 1 illustrates three possible scenarios. Observe that in scenarios $A$ and $
 
 Dfinity's synchronous consensus is built on three key invariants as its pillars; the first two primarily ensure liveness, whereas the third one primarily ensures safety. The invariants are closely related to unique extensibility. Thus, a natural question in this context is how a block can become uniquely extensible? In DSC, unique extensibility can arise in three possible ways: 
 
-(1): we have an honest leader,
-(2): we have a Byzantine leader, but a uniquely certified block,
+(1): we have an honest leader,\
+(2): we have a Byzantine leader, but a uniquely certified block,\
 (3): we have a Byzantine leader and multiple certified blocks, all of which extend the same previous block.
 
 Note that (2) and (3) merely mark opportunities to commit to a block even when the leader is Byzantine. We can, however, not assume that (2) and (3) will ever happen.
 
 We will show that DSC is always able to reach unique extensibility under the given assumptions by introducing the following two invariants:
 
-**I. An honest leader's block will be uniquely certified in an iteration.
+**I. An honest leader's block will be uniquely certified in an iteration.\
 II. In each iteration, at least one block and possibly many will be certified.**
 
 Remember that the protocol selects a new random leader at the beginning of each iteration. In the case of an honest leader, Invariant I ensures that we will be able to commit to a chain of blocks up until the honest leader's block within the next two iterations. In the case of a Byzantine leader, Invariant II will ensure that we can move on to a new leader.
