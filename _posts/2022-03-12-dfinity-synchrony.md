@@ -89,7 +89,7 @@ Suppose that $2$ is the first replica to transition from iteration-$(k-1),$ then
 
 Since 2 only votes for 1's block and 1 also only votes for its block, $B'_k$ is the only block that receives $t+1 = 2$ votes in iteration $k.$ It will thus be the uniquely certified block.
 
-A good question to ask here would be whether a Byzantine replica could also get a block certified in iteration-$k.$ The answer is: no, since it cannot fake its rank (assuming properties of the random beacon) and since we showed that even the first honest party to transition receives an honest leader's block before starting to vote.
+A good question to ask here would be whether a Byzantine replica could also get a block certified in iteration-$k.$ The answer is: no, since it cannot fake its rank and since we showed that even the first honest party to transition receives an honest leader's block before starting to vote.
 
 **Intuition for Invariant II:**
 
