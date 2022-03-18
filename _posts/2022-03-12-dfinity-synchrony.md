@@ -14,7 +14,7 @@ Dfinity published two protocols:
 2. The second, published in 2021, is a BFT protocol under [partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) by [Caminisch, Drijvers, Hanke, Pignolet, Shoup, and Williams](https://eprint.iacr.org/2021/632.pdf), called the Internet Computer Consensus (ICC).
 
 
-This post will discuss Dfinity's Synchronous Consensus (DSC) from 2018. This protocol introduces many ideas subsequently used in Internet Consensus Computer (ICC) which is explained in the [next post](). Our goal is to describe the protocol and its invariants intuitively.
+This post will discuss Dfinity's Synchronous Consensus (DSC) from 2018. This protocol introduces many ideas subsequently used in Internet Consensus Computer (ICC) which is explained in the [next post](https://decentralizedthoughts.github.io/2022-03-12-dfinity-partial-synchrony/). Our goal is to describe the protocol and its invariants intuitively.
 
 DSC solves synchronous state machine replication among $n \geq 2t + 1$ server replicas, where $t$ denotes a bound on the number of Byzantine parties. All messages reach their destination within bounded $\Delta$ time in the synchronous model. DSC assumes the need for a threshold signature scheme where the secret key is shared among the replicas. Among other things, threshold signatures provide the capability of obtaining a random beacon in each iteration of the protocol.
 
