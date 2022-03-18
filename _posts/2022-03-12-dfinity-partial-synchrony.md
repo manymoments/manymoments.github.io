@@ -7,7 +7,7 @@ tags:
 author: Kartik Nayak
 ---
 
-This post is part two of a two-part post on consensus protocols published by the [Dfinity Foundation](https://dfinity.org/); you can find part one [here](). This post will intuitively explain the [Internet Computer Consensus](https://eprint.iacr.org/2021/632.pdf).
+This post is part two of a two-part post on consensus protocols published by the [Dfinity Foundation](https://dfinity.org/); you can find part one [here](https://decentralizedthoughts.github.io/2022-03-12-dfinity-synchrony/). This post will intuitively explain the [Internet Computer Consensus](https://eprint.iacr.org/2021/632.pdf).
 
 The differences between DSC and ICC are primarily due to the underlying network model that they assume --- while DSC works under synchrony and tolerates $t < n/2$ Byzantine faults, ICC works under partial synchrony and tolerates $t < n/3$ Byzantine faults. Recall that the fault tolerance is optimal under the respective network models ([cheat sheet](https://decentralizedthoughts.github.io/2021-10-29-consensus-cheat-sheet/)).
 
