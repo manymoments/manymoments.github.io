@@ -55,6 +55,6 @@ ICC1 introduces some optimizations to ICC0 so that it can be used in a peer-to-p
 
 ICC2, in addition, aims to improve the communication complexity of the protocol when the block sizes are much larger than other protocol messages. In particular, they use [erasure codes](https://en.wikipedia.org/wiki/Erasure_code) to reduce this communication complexity. Such techniques have been used in several prior works; we will explain this technique in relation to consensus in more detail in a separate post.
 
-Please add comments on [Twitter](...).
+Please add comments on [Twitter](https://twitter.com/kartik1507/status/1504899744618872832?s=20&t=og7wq7vnJHctbC0E17hryw).
 
 **Acknowledgment.** We would like to thank Ittai Abraham and the authors of Internet Consensus Computer (Jan, Manu, Timo, Yvonne-Anne, Victor and Dominic) for useful discussions.
