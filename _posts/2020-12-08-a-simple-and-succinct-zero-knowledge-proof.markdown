@@ -29,9 +29,9 @@ The Prover has an input $S=\langle s_0,\dots,s_{d-1}\rangle$ which is a vector o
 > Is $S$ the all-zero vector or not?
 
 We will assume the only way the Prover and Verifier can interact is via a special communication channel we will call the *virtual cloud*:
-1. The Prover has to *commit* to its input $S$ by uploading a degree-at-most-$(d-1)$ polynomial $g(x)$ such that
+1. The Prover has to *commit* to its input $S$ by uploading a polynomial $g(x)$ such that
+  * $g(x)$ is of degree at most $d-1$. 
   * for all $0\leq i \leq d-1$ we have $g(i) = s_i$.
-  * $g(x)$ is a degree-at-most-$d$ polynomial. 
   * The prover creates $g$ via [Lagrange interpolation](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of $S$:
 $g(x) = \sum\_{i\in[0,d-1]} s\_i \prod\_{j\in[0, d-1], j\ne i} \frac{x - j}{i - j}$
 
