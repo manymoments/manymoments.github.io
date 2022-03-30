@@ -7,7 +7,7 @@ tags:
 author: Ittai Abraham, Namma Ben-David, Sravya Yandamuri
 ---
 
-In this series of posts, we explore the marvelous world of consensus in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this post, we present Ben-Or's classic [protocol](https://homepage.cs.uiowa.edu/~ghosh/BenOr.pdf) from 1983. In the next post, we will present a [more modern version](part3).
+In this series of posts, we explore the marvelous world of consensus in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this post, we present Ben-Or's classic [protocol](https://homepage.cs.uiowa.edu/~ghosh/BenOr.pdf) from 1983. In the next post, we will present a [more modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/).
 
 In the [previous post](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/) we defined the problem of Asynchronous Agreement, so without further ado, here is Ben-Or's protocol for Binary Asynchronous Agreement with $n=2f+1$ parties assuming the adversary can crash $f$ parties:
 
@@ -49,7 +49,7 @@ The next property to verify is **Agreement** (that no two parties decide on diff
 
 *Claim 2*: if one party sees $f+1$ messages for `<echo2, r, u>` then all parties will see at least one message for `<echo2, r, u>`. This follows since at least one of the $f+1$ parties that sent `<echo2, r, u>` is non-faulty and again quorum intersection.
 
-Combing both claims, we can now look at the first round $r^*$ in which a party decided value $u$, and conclude that any party that reaches the end of round $r^*$ will have $v=u$. We can now use the argument above for Weak Validity and argue that all non-faulty parties will decide by round $r^*+1$.
+Combing both claims, we can now look at the first round $r$ in which a party decided value $u$, and conclude that any party that reaches the end of round $r$ will have $v=u$. We can now use the argument above for Weak Validity and argue that all non-faulty parties will decide by round $r+1$.
 
 Now for the hard part. Why does this protocol have **Finite Expected Termination**?
 
@@ -61,6 +61,8 @@ This leaves us in an unsatisfying state. While Ben-Or's protocol is elegant, the
 
 More fundamentally, the question we ask is: how can we argue about the expected termination of Asynchronous protocols with an adaptive adversary? Is there a more general framework that can allow us to decompose the problem?
 
-We will answer this [in the next post]().
+We will answer this [in the next post](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/).
 
+
+Thoughts and comments on [Twitter](...)
 
