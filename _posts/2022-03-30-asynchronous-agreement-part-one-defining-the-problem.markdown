@@ -21,7 +21,11 @@ Since FLP shows we cannot get always agreement and always termination, maybe we 
 
 While the weak validity and agreement properties are standard, weak validity will be strengthened in the authenticated model (to external validity). The termination property is more subtle. The first question is how do you define the "number of rounds" in the Asynchronous model? the short answer is that the number of rounds of an execution is the total time divided by the longest message delay. For a longer discussion see [our blog post asynchronous round complexity](https://decentralizedthoughts.github.io/2021-09-29-the-round-complexity-of-reliable-broadcast/). The second question is an expectation over what? The answer is:
 * For a protocol $P$ with $n$ parties to have *expected termination* $ET(P,n)$, means that for every adversary strategy, we take expectation over runs of $P$ using the random choices of the parties.
-$$ ET(P,n)= \max_{\text{ADV strategy}} E_{X \sim runs(P,n,\text{ random coins, ADV strategy})} X $$
+
+$$
+ET(P,n)= \max_{\text{ADV strategy}} E_{X \sim runs(P,n,\text{ random coins, ADV strategy})} X 
+$$
+
 Where $X$ is a random variable that equals the number of rounds till all non-faulty parties decide.
 
 Note that this definition of termination is still underdefined. We need to carefully define what are the possible [adversary strategies](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). Can the adversary make *adaptive* decisions based on the protocol execution? If so, what *information* does the adversary have at each stage? 
@@ -35,13 +39,15 @@ So we can now restate the termination property more formally as follows:
 
 This definition obviously leads to the question of efficiency, what values of $t(n)$ are possible? Must $t(n)$ be a function of $n$ or can it be an absolute constant? 
 
-More on that in the next posts. In the second post, we cover [Ben-Or's classic protocol](...).
+More on that in the next posts. In the second post, we cover [Ben-Or's classic protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/).
 
 ### A note on the Byzantine and authenticated model
 In the authenticated model where the adversary is computationally bounded there are two main differences:
 1. Often a stronger notion of **External Validity** can be obtained (see [Cachin etal](https://www.iacr.org/archive/crypto2001/21390524.pdf)). This property is important for State Machine Replication in the Byzantine model.
-2. In addition, we cannot simply go over all adversary strategies (because there may be exponentially many of them). The solution suggested by [Cachin etal](https://www.iacr.org/archive/crypto2001/21390524.pdf) is to assume the probability of breaking the cryptography is negligible and to show that conditioned on some negligible events not happening, the conditional expectation is finite. Another path is to use a [Dolev-Yao type model](https://cseweb.ucsd.edu/classes/sp05/cse208/lec-dolevyao.html) and assume the cryptography implements a perfect functionality. While this model's assumptions don't hold in reality (cryptography is not perfect), it has proven to be quite a good proxy for distributed protocols.
+2. In addition, we cannot simply go over all adversary strategies (because there may be exponentially many of them). The solution suggested by [Cachin etal](https://www.iacr.org/archive/crypto2001/21390524.pdf) is to assume the probability of breaking the cryptography is negligible and to show that conditioned on some negligible events not happening, the conditional expectation is finite. Another path is to use a [Dolev-Yao type model](https://cseweb.ucsd.edu/classes/sp05/cse208/lec-dolevyao.html) and assume the cryptography implements a perfect functionality. While this model's assumptions don't hold in reality (cryptography is not perfect), it has proven to be quite a good proxy for distributed protocols. 
 
 
 
-Link to the second post on [Ben-Or's classic protocol](...).
+Link to the second post on [Ben-Or's classic protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/).
+
+Your thoughts/comments on [Twitter](...).
