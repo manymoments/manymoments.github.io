@@ -27,7 +27,7 @@ It is critical to prevent the adversary from being able to pick the output value
 
 * **Binding:** At the time at which the first non-faulty party outputs a value, there is a value $b \in \{0,1\}$ such that no party outputs value $1−b$ in any extension of this execution.
 
-Intuitively, GBCA does two things useful for asynchronous agreement. First, it forces the adversary to choose either non-0 or non-1, before the adversary knows the coin values. Second, it lets a party decide if it sees a grade of 2. Given these properties it's easy to implement Asynchronous Agreement:
+Intuitively, GBCA does two things useful for asynchronous agreement. First, it forces the adversary to choose either non-0 or non-1, before the adversary knows the coin values. Second, it lets a party decide if it sees a grade of 2. Given these properties it's easy to implement *Asynchronous Agreement*:
 
 ## Asynchronous Agreement from Graded Binding Crusader Agreement
 
@@ -47,7 +47,7 @@ while true
     r++    
 ```
 
-Note that we add the round number $r$ to each GBCA instance to differentiate the instances of each round. For termination, we use the folklore termination gadget described in [the previous post](post2).
+Note that we add the round number $r$ to each GBCA instance to differentiate the instances of each round. For termination, we use the folklore termination gadget described in [the previous post](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/).
 
 The Asynchronous Agreement property of **Weak Validity** follows from the GBCA Validity property directly. Similarly, the Asynchronous Agreement property of **Agreement** follows from the GBCA Knowledge of Agreement property. So let's focus on the Asynchronous Agreement property of **Finite Expected Termination**.
 
@@ -101,3 +101,6 @@ To conclude, the first round gives Weak Agreement, the second round gives Bindin
 Observe that the binding event happens when the first non-faulty sends echo3, which is one round earlier than the end of the protocol.
 
 In the [next post](post4) we will consider the Byzantine adversary case.
+
+
+Your thoughts and comments on [Twitter](.....)
