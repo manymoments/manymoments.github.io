@@ -10,10 +10,10 @@ author: Ittai Abraham, Naama Ben-David, Sravya Yandamuri
 
 In this series of posts, we explore the marvelous world of consensus in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this third post, we present a modern version of Ben-Or's classic [protocol](https://homepage.cs.uiowa.edu/~ghosh/BenOr.pdf) that is part of our new work on Asynchronous Agreement. In the [first post](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/) we defined the problem and in the [second post](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/) we presented Ben-Or's protocol.
 
-We first decompose Ben-Or's protocol into an outer protocol and an inner protocol (which we call *Graded Binding Crusader Agreement (GBCA)*). This decomposition allows us to reason more modularly and easily about each part. In particular, we show how to carefully reason about an adaptive adversary, by forcing the adversary to ***bind*** to a certain value so that its future options are limited by the protocol.
+We decompose Ben-Or's protocol into an outer protocol and an inner protocol (which we call *Graded Binding Crusader Agreement (GBCA)*). This decomposition allows us to reason more modularly and easily about each part. In particular, we show how to carefully reason about an adaptive adversary, by forcing the adversary to ***bind*** to a certain value so that its future options are limited by the protocol.
 
 ## Graded Binding Crusader Agreement (GBCA)
-Graded Binding Crusader agreement is similar to other agreement problems in that each party has an input value, and must eventually decide on an output value. However, in addition to deciding on an output value, each party also decides on a $grade \in \{0,1,2\}$. Finally, while the input value is either 0 or 1, the output value can be either 0, or 1, or a special value $\bot$ with the following five properties:
+Graded Binding Crusader agreement is similar to other agreement problems in that each party has an input value, and must eventually decide on an output value. There are two differences: First, in addition to deciding on an output value, each party also decides on a $grade \in \{0,1,2\}$. Second, while the input value is either 0 or 1, the output value can be either 0, or 1, or a special value $\bot$. GBCA has the following five properties:
 
 * **Weak Agreement**: If two parties output values $x$ and $y$, then either $x=y$ or at least one of the values is $\bot$.
 * **Validity**: If all parties have the same input $x$, then all outputs will be with value $x$ and grade 2.
@@ -23,9 +23,9 @@ The grade is used for the fourth property:
 
 * **Knowledge of Agreement**: If a party outputs value $x$ and grade 2, then all outputs will be with value $x$ with grade $\geq 1$.
 
-It is critical to prevent the adversary from being able to pick the output value of a party *after* seeing the first non-faulty party output a value. We call this additional property ***binding*** since the adversary is bound to a specific output value from each crusader agreement instance. We do so with the fifth property:
+It is critical to prevent the adversary from being able to pick the output value of a party *after* seeing the first non-faulty party output a value. We call this additional property ***Binding*** since the adversary is bound to a specific output value from each crusader agreement instance. We do so with the fifth property:
 
-* **Binding:** At the time at which the first non-faulty party outputs a value, there is a value $b \in \{0,1\}$ such that no party outputs value $1−b$ in any extension of this execution.
+* **Binding:** At the time at which the first party outputs a value, there is a value $b \in \{0,1\}$ such that no party outputs value $1−b$ in any extension of this execution.
 
 Intuitively, GBCA does two things useful for asynchronous agreement. First, it forces the adversary to choose either non-0 or non-1, before the adversary knows the coin values. Second, it lets a party decide if it sees a grade of 2. Given these properties it's easy to implement *Asynchronous Agreement*:
 
@@ -53,7 +53,7 @@ The Asynchronous Agreement property of **Weak Validity** follows from the GBCA V
 
 **Claim:** The protocol terminates in an expected $O(2^n)$ rounds.
 
-*Proof:*  in every round $r$ the adversary has to bind to some value $b$ before seeing any coin value. Now with probability $O(2^{-n})$ all the coins for this round $r$ turn out to be $b$. If this event happens, then from the GBCA Weak Agreement property, all parties end the GBCA with either $b$ or $\bot$. In either case, since all coins are $b$, all parties that start round $r+1$ have the same value $b$. Hence they will all decide $b$ and terminate at the end of round $r+1$. 
+*Proof:*  in every round $r$ the adversary has to bind to some value $b$ before seeing any coin value. Now with probability $O(2^{-n})$ all the coins for this round $r$ turn out to be $b$. If this event happens, then from the GBCA Weak Agreement property, all parties end the GBCA with either $b$ or $\bot$. In either case, since all coins are $b$, each party that starts round $r+1$ will have the same value $b$. Hence they will all decide $b$ and terminate at the end of round $r+1$. 
 
 Note that this bound is significantly better than the $O(2^{2n})$ bound obtained by [Aguilera and Toueg 1998](https://ecommons.cornell.edu/bitstream/handle/1813/7336/98-1682.pdf?sequence=1&isAllowed=y). Moreover, we will discuss in later posts, our protocol provides better bounds with a weak common coin.
 
@@ -72,10 +72,10 @@ input: r (round number)
 send <echo1, r, v> to all
 wait for n-f <echo1, r, *>
     if all have value w, then send <echo2, r, w> to all
-    otherwise send <echo2, r, bot> to all
+    otherwise, send <echo2, r, bot> to all
 wait for n-f <echo2, r, *>
     if all have value w, then send <echo3, r, w> to all
-    otherwise send <echo3, r, bot> to all
+    otherwise, send <echo3, r, bot> to all
 wait for n-f <echo3, r, *>
     if all have the same non-bot value u, then output u, grade 2
     if all have the value bot, then output bot, grade 0
@@ -96,11 +96,11 @@ Let's go over the five GBCA properties and prove them one by one assuming $n>2f$
 *Binding*: Consider the time at which the first non-faulty party $i$ sends `<echo3, r, *>`. Case 1: if any of the $n-f$ `<echo2, r, *>` messages $i$ received had a non-$\bot$ value $w$, then from  Weak Agreement the adversary has binding to $w$. So the only remaining case is Case 2: that party $i$ heard $n-f$ `<echo2, r, bot>` messages. In that case, from quorum intersection on echo2, any party that sees $n-f$ `<echo2, r, *>` messages must see at least one `<echo2, r, bot>`, hence all such parties will send `<echo3, r, bot>`. Therefore, in this case, all parties will output $\bot$ hence the adversary binding to both 1 and 0. 
 
 
-To conclude, the first round gives Weak Agreement, the second round gives Binding and the third round gives Knowledge of Agreement. 
+To conclude, the first round gives Weak Agreement, the second round gives Binding, and the third round gives Knowledge of Agreement. 
 
-Observe that the binding event happens when the first non-faulty sends echo3, which is one round earlier than the end of the protocol.
+Observe that the binding event happens when the first non-faulty sends echo3, which is one round earlier than the first party ends of the protocol. This will be important when more sophisticated common coins are used. 
 
 In the [next post](post4) we will consider the Byzantine adversary case.
 
 
-Your thoughts and comments on [Twitter](.....)
+Your thoughts and comments on [Twitter](https://twitter.com/ittaia/status/1509241231628505089?s=20&t=fAtKRZZronoJUDA2PtDEWw)
