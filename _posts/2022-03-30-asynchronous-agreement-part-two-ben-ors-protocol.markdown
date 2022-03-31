@@ -41,15 +41,15 @@ If decide(u), then
 ```
 
 
-Why does Ben-Or's protocol work? The first thing to check is **Weak Validity** (if all are non-faulty and start with $v$ then all decide $v$). Indeed, if all parties have the same input $v$, and no party is faulty, then clearly all parties will send `<echo1, 1, v>`, hence will see $f+1$ `<echo1, 1, v>` message after one round, hence will send `<echo2, 1, v>`, hence will see $f+1$ `<echo1, 1, v>` message and decide (and terminate from the termination gadget).
+Why does Ben-Or's protocol work? The first thing to check is **Weak Validity** (if all are non-faulty and start with $b$ then all decide $b$). Indeed, if all parties have the same input $b$, and no party is faulty, then clearly all parties will send `<echo1, 1, b>`, hence will see $f+1$ `<echo1, 1, b>` message after one round, hence will send `<echo2, 1, b>`, hence will see $f+1$ `<echo2, 1, b>` message and decide (and terminate from the termination gadget).
 
 The next property to verify is **Agreement** (that no two parties decide on different values). This follows from two simple claims:
 
 *Claim 1*: there cannot be `<echo2, r, 0>` and `<echo2, r, 1>`. This follows from quorum intersection, sending echo2 requires $f+1$ echo1 of the same value, but this would mean one party sent both `<echo1, r, 0>` and `<echo1, r, 1>` which is not possible. 
 
-*Claim 2*: if one party sees $f+1$ messages for `<echo2, r, u>` then all parties will see at least one message for `<echo2, r, u>`. This follows since at least one of the $f+1$ parties that sent `<echo2, r, u>` is non-faulty and again quorum intersection.
+*Claim 2*: if one party sees $f+1$ messages for `<echo2, r, u>` then all parties will see at least one message for `<echo2, r, u>`. This follows since at least one of the $f+1$ parties that sent `<echo2, r, u>` is non-faulty and again from quorum intersection.
 
-Combing both claims, we can now look at the first round $r$ in which a party decided value $u$, and conclude that any party that reaches the end of round $r$ will have $v=u$. We can now use the argument above for Weak Validity and argue that all non-faulty parties will decide by round $r+1$.
+Combing both claims, we can now look at the first round $r$ in which a party decided value $u$, and conclude that any party that reaches the end of round $r$ will have $v=u$. We can now use the argument above for Weak Validity and prove that all non-faulty parties will decide $u$ by round $r+1$.
 
 Now for the hard part. Why does this protocol have **Finite Expected Termination**?
 
@@ -59,10 +59,10 @@ It turns out that this is a non-trivial theorem for an adaptive adversary. It to
 
 This leaves us in an unsatisfying state. While Ben-Or's protocol is elegant, the proof for Finite Expected Termination is non-trivial and not easily taught in a standard class (or a short blog post). Is there a simpler proof? Maybe there is a reason for the complexity? Another concrete question is about efficiency: can we improve the $O(2^{2n})$  bound to a more natural $O(2^n)$ bound? 
 
-More fundamentally, the question we ask is: how can we argue about the expected termination of Asynchronous protocols with an adaptive adversary? Is there a more general framework that can allow us to decompose the problem?
+More fundamentally, the question we ask is: how should we argue about the expected termination of Asynchronous protocols with an adaptive adversary? Is there a more general framework that can allow us to decompose the problem?
 
 We will answer this [in the next post](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/).
 
 
-Thoughts and comments on [Twitter](...)
+Thoughts and comments on [Twitter](https://twitter.com/ittaia/status/1509211437306163202?s=20&t=Ow_DBFvPTgVP6BQK4BIRLg).
 
