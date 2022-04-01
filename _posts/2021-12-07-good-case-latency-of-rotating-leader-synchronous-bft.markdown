@@ -74,4 +74,4 @@ As mentioned before, we need to ensure that all honest replicas receive a certif
 Replicas multicast the certificate and wait for *$2\Delta$*. If no bad events are detected during that time, replicas commit the proposed block. Waiting for $2\Delta$ time after multicasting the certificate ensures (i) no honest replicas vote for a conflicting proposal in the view; thus a conflicting block certificate cannot exist in the view, and (ii) all honest replicas receive the certificate. Thus, honest replicas will not vote for blocks that do not extend the certificate of the committed block.
 -->
 
-Read more about it [here](https://eprint.iacr.org/2021/1138.pdf).
+Read more about it [here](https://eprint.iacr.org/2021/1138.pdf), and your thoughts on [Twitter](https://twitter.com/ittaia/status/1468159598112788485?s=20&t=0uPOdnjhqf0lEekSPZ2QMA).
