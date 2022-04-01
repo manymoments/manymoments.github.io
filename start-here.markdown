@@ -4,7 +4,7 @@ date: 2020-09-21 09:34:00 -04:00
 ---
 
 {: .box-note}
-This page is a dynamically changing index of all posts on Decentralized Thoughts (you can read chronologically [here](https://decentralizedthoughts.github.io/)).
+This page is a dynamically changing index of all posts on Decentralized Thoughts. Over time it will contain material for a graduate course on Blockchains (currently with a focus on consensus, but stay tuned). You can read all the posts chronologically [here](https://decentralizedthoughts.github.io/).
 
 We would love to get your feedback and thoughts on [Twitter](https://twitter.com/ittaia/status/1421066572207169544?s=20).
 
@@ -30,13 +30,15 @@ For Byzantine adversaries, checkout [Information Theoretic HotStuff](https://dec
 
 ## Asynchronous Protocols
 
-One of the core challenges in a fault-tolerant distributed computing is tolerating an asynchronous network. The classic [FLP lower bound](/2019-12-15-consensus-model-for-FLP/) is a fundamental result showing the impossibility of consensus underf aults. 
+One of the core challenges of distributed computing is tolerating failures in an asynchronous network. The classic [FLP lower bound](/2019-12-15-consensus-model-for-FLP/) is a fundamental result showing the impossibility of consensus under even one crash fault. 
 
 A fundamental building block in asynchrony is the [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/) protocol. 
 
 How do you measure [round complexity in asynchrony](https://decentralizedthoughts.github.io/2021-09-29-the-round-complexity-of-reliable-broadcast/) (and can you improve the round complexity of reliable broadcast)? 
 
 The multi-leader generalization of reliable broadcast is called [Reliable Gather](https://decentralizedthoughts.github.io/2021-03-26-living-with-asynchrony-the-gather-protocol/). 
+
+Our series on the marvels of Asynchronous Agreement: we (1) [define the problem](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/); (2) present [Ben-Or's protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/); (3) provide a [modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/).
  
 
 
@@ -119,3 +121,7 @@ More advanced:
 - [Optimal Communication Complexity of Authenticated Byzantine Agreement](https://decentralizedthoughts.github.io/2021-09-20-optimal-communication-complexity-of-authenticated-byzantine-agreement/)
 
 - [EIP-1559 in Retrospect](https://decentralizedthoughts.github.io/2022-03-10-eip1559/)
+
+- [Colordag: From always-almost to almost-always 50% selfish mining resilience](https://decentralizedthoughts.github.io/2022-03-07-colordag-from-always-almost-to-almost-always-50-percent-selfish-mining-resilience/)
+
+- [Consensus by Dfinity: in synchrony](https://decentralizedthoughts.github.io/2022-03-12-dfinity-synchrony/) and [Consensus by Dfinity - Part II (Internet Computer Consensus): in partial synchrony](https://decentralizedthoughts.github.io/2022-03-12-dfinity-partial-synchrony/) 
