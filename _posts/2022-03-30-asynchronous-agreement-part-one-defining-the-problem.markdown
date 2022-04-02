@@ -48,6 +48,6 @@ In the authenticated model where the adversary is computationally bounded there 
 
 
 
-Link to the second post on [Ben-Or's classic protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/).
+Link to the second post on [Ben-Or's classic protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/) and third post on a [modern variant](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/)
 
 Your thoughts/comments on [Twitter](https://twitter.com/ittaia/status/1509178038919077891?s=20&t=fAtKRZZronoJUDA2PtDEWw).
