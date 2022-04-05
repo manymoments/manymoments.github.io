@@ -1,6 +1,6 @@
 ---
 title: 'Asynchronous Agreement Part 5: Binary Byzantine Agreement from a strong common coin'
-date: 2022-04-06 08:11:00 -04:00
+date: 2022-04-05 08:11:00 -04:00
 tags:
 - asynchrony
 - dist101
