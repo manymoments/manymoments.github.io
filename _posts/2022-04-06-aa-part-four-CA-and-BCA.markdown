@@ -1,6 +1,5 @@
 ---
-title: 'Asynchronous Agreement Part Four: Crusader Agreement and Binding Crusader
-  Agreement'
+title: 'Asynchronous Agreement Part 4: Crusader Agreement and Binding Crusader Agreement'
 date: 2022-04-06 07:11:00 -04:00
 tags:
 - asynchrony
