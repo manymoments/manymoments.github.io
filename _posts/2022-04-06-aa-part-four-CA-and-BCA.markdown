@@ -1,5 +1,6 @@
 ---
-title: 'Asynchronous Agreement Part Four: Crusader Agreement and Binding Crusader Agreement'
+title: 'Asynchronous Agreement Part Four: Crusader Agreement and Binding Crusader
+  Agreement'
 date: 2022-04-06 07:11:00 -04:00
 tags:
 - asynchrony
@@ -7,6 +8,7 @@ tags:
 - research
 author: 'Ittai Abraham, Naama Ben-David, Sravya Yandamuri '
 ---
+
 In this series of posts we explore the marvelous world of consensus in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this post we introduce a key building block in the *Byzantine* Model called **Binding Crusader Agreement**. 
 
 In the three previous posts we (1) [defined the problem]([part1](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/)) and discussed the [FLP theorem](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/); (2) presented [Ben-Or's protocol]([part2](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/)) for crash failures; and (3)  [a modern version]([part3](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/)) for crash failures.
