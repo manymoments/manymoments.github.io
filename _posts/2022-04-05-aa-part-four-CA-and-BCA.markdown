@@ -8,7 +8,7 @@ tags:
 author: 'Ittai Abraham, Naama Ben-David, Sravya Yandamuri '
 ---
 
-In this series of posts we explore the marvelous world of consensus in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this post we introduce a key building block in the *Byzantine* Model called **Binding Crusader Agreement**. We show how to us it in the [next post](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/).
+In this post we introduce a key building block in the *Byzantine* Model called **Binding Crusader Agreement**. We show how to use it in the [next post](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/).
 
 In the three previous posts we (1) [defined the problem](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/) and discussed the [FLP theorem](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/); (2) presented [Ben-Or's protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/) for crash failures; and (3)  [a modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/) for crash failures.
 
@@ -103,7 +103,7 @@ There are two claims about CA + Termination Gadget:
 
 ### Pipelining the Termination Gadget
 
-As we will show in the [next post](...), often multiple Crusader Agreement instances are executed in a sequence $CA_1,CA_2, \dots$.
+As we will show in the [next post](https://twitter.com/ittaia/status/1511665002188574727?s=20&t=gJEZwTvUN72KwbNBJ53eYQ), often multiple Crusader Agreement instances are executed in a sequence $CA_1,CA_2, \dots$.
 
 In this case we can send the `<output x>` message of instance $CA_j$ along with the first message of instance $CA_{j+1}$, saving a communication round. The `<output x>` message of instance $j$ can be used as a signal to garbage collect the previous instance. 
 
@@ -177,4 +177,4 @@ So the total message complexity is $O(n^2)$, with low constants.
 In the next post we show how to use BCA for [Asynchronous Byzantine Agreement](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/).
 
 
-Your thoughts and comments on [Twitter](...). 
+Your thoughts and comments on [Twitter]((https://twitter.com/ittaia/status/1511665005699248136?s=20&t=gJEZwTvUN72KwbNBJ53eYQ). 
