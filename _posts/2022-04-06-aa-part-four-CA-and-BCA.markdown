@@ -17,7 +17,7 @@ In the three previous posts we (1) [defined the problem]([part1](https://decentr
 ## Crusader Agreement (CA) 
 We begin by recalling a useful agreement primitive called Crusader Agreement, first introduced by [Dolev 1981](https://www.cs.huji.ac.il/~dolev/pubs/byz-strike-again.pdf) which we adopt to the asynchronous model following the *BV-broadcast* protocol of [Mostefaoui, Hamouma, Raynal 2015](https://hal.archives-ouvertes.fr/hal-01176110/document).
 
-Crusader agreement is similar to other agreement problems in that each party receives an input, and must eventually decide on an output. However, in crusader agreement, instead of requiring all parties to decide the same value, the agreement property is weakened; parties are allowed to decide a special value $\bot$ despite some others deciding a non-$\bot$ value.
+Crusader agreement is similar to other agreement problems in that each party receives an input, and must eventually decide on an output. However, in crusader agreement, instead of requiring all non-faulty parties to decide the same value, the agreement property is weakened; non-faulty parties are allowed to decide a special value $\bot$ despite some others deciding a non-$\bot$ value.
 
 * **Weak Agreement**: If two non-faulty parties output values $x$ and $y$, then either $x=y$ or one of the values is $\bot$.
 * **Validity**: If all non-faulty parties have the same input, then this is the only possible output. Furthermore, if a non-faulty party outputs $x \neq \bot$, then $x$ was the input of some non-faulty party.

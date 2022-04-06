@@ -7,7 +7,7 @@ tags:
 author: Ittai Abraham, Namma Ben-David, Sravya Yandamuri
 ---
 
-In this series of posts, we explore the marvelous world of consensus in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this post, we present Ben-Or's classic [protocol](https://homepage.cs.uiowa.edu/~ghosh/BenOr.pdf) from 1983. In the next post, we will present a [more modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/).
+We continue to explore the marvelous world of consensus in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this post, we present Ben-Or's classic [protocol](https://homepage.cs.uiowa.edu/~ghosh/BenOr.pdf) from 1983. In the next post, we will present a [more modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/).
 
 In the [previous post](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/) we defined the problem of Asynchronous Agreement, so without further ado, here is Ben-Or's protocol for Binary Asynchronous Agreement with $n=2f+1$ parties assuming the adversary can crash $f$ parties:
 

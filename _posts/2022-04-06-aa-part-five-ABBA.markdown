@@ -8,13 +8,13 @@ tags:
 author: 'Ittai Abraham, Naama Ben-David, Sravya Yandamuri '
 ---
 
-In this series of posts we explore the marvelous world of consensus in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this post we show how to use Binding Crusader Agreement from the previous post, along with a strong common coin to get an simple and efficient  Binary Byzantine Agreement with only an expected $O(n^2)$ message complexity. 
+In this post we show how to use Binding Crusader Agreement from the [previous post](), along with a strong common coin to get a simple and efficient  Binary Byzantine Agreement with only an expected $O(n^2)$ message complexity. 
 
 In the four previous posts we: (1) [defined the problem]([part1](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/)) and discussed the [FLP theorem](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/); (2) [Ben-Or's protocol]([part2](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/)) for crash failures;  (3)  [a modern version]([part3](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/)) for crash failures; and (4) Crusader Agreement and [Binding Crusader Agreement](post4) in the Byzantine Model.
 
 
 
-Over the years, many solutions have been proposed for Asynchronous Binary Byzantine Agreement that use random coin flips. In this post we aim to present existing algorithms for ABA under a common framework, and to make reasoning about such algorithms as simple as possible.
+Over the years, many solutions have been proposed for Asynchronous Binary Byzantine Agreement that use random coin flips. In this post, we aim to present existing algorithms for ABA under a common framework, and to make reasoning about such algorithms as simple as possible.
 
 ## Common Coins
 
