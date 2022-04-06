@@ -8,9 +8,9 @@ tags:
 author: 'Ittai Abraham, Naama Ben-David, Sravya Yandamuri '
 ---
 
-In this series of posts we explore the marvelous world of consensus in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this post we introduce a key building block in the *Byzantine* Model called **Binding Crusader Agreement**. 
+In this series of posts we explore the marvelous world of consensus in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this post we introduce a key building block in the *Byzantine* Model called **Binding Crusader Agreement**. We show how to us it in the [next post](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/).
 
-In the three previous posts we (1) [defined the problem]([part1](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/)) and discussed the [FLP theorem](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/); (2) presented [Ben-Or's protocol]([part2](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/)) for crash failures; and (3)  [a modern version]([part3](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/)) for crash failures.
+In the three previous posts we (1) [defined the problem](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/) and discussed the [FLP theorem](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/); (2) presented [Ben-Or's protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/) for crash failures; and (3)  [a modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/) for crash failures.
 
 
 
@@ -173,6 +173,8 @@ Similarly, if multiple BCA instances are executed serially, then the `<output>` 
 Observe that in CA each non-faulty party sends at most 3 messages (and just 2 if all non-faulty parties have the same input). In BCA each non-faulty party sends at most 4 messages (and just 3 if all non-faulty parties have the same input). Finally, the termination gadget adds one more message, but this message can be pipelined if instances of CA or BCA are run sequentially.
 
 So the total message complexity is $O(n^2)$, with low constants.
+
+In the next post we show how to use BCA for [Asynchronous Byzantine Agreement](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/).
 
 
 Your thoughts and comments on [Twitter](...). 
