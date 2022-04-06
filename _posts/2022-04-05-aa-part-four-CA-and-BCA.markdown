@@ -177,4 +177,4 @@ So the total message complexity is $O(n^2)$, with low constants.
 In the next post we show how to use BCA for [Asynchronous Byzantine Agreement](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/).
 
 
-Your thoughts and comments on [Twitter]((https://twitter.com/ittaia/status/1511665005699248136?s=20&t=gJEZwTvUN72KwbNBJ53eYQ). 
+Your thoughts and comments on [Twitter](https://twitter.com/ittaia/status/1511665005699248136?s=20&t=gJEZwTvUN72KwbNBJ53eYQ). 
