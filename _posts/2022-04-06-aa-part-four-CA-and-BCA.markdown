@@ -1,6 +1,6 @@
 ---
 title: 'Asynchronous Agreement Part 4: Crusader Agreement and Binding Crusader Agreement'
-date: 2022-04-05 07:11:00 -04:00
+date: 2022-04-06 06:11:00 -04:00
 tags:
 - asynchrony
 - dist101
