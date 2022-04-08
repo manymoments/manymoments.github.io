@@ -35,13 +35,13 @@ Commit rule: If some chain is k blocks long, commit the value in the first block
 Observe that there are two simplifications made in the above protocol. First, the input value is added only to the first block (a proposal). Subsequent blocks are empty (which act as votes). Second, we did not discuss how a unique leader is elected uniformly at random each round and how everyone knows that this replica is the leader. For now, we will assume that there is an oracle that provides us with this abstraction.
 
 Let us understand how the protocol under some specific scenarios:
-1. **All replicas are honest.** In this scenario, the first-round leader proposes a value v in the first block, and in the next k rounds, the honest leaders in those rounds extend the only chain that exists.
+- **All replicas are honest.** In this scenario, the first-round leader proposes a value v in the first block, and in the next k rounds, the honest leaders in those rounds extend the only chain that exists.
 
 <p align="center">
 <img src="https://i.imgur.com/6eQNWsB.png" width="512" title="Scenario 1">
 </p>
 
-2. **20% of the replicas are Byzantine, and Byzantine replicas attempt to create a different chain.** Observe that if 20% of the replicas are Byzantine, then in expectation, they will be leaders in 20% of the rounds.
+- **20% of the replicas are Byzantine, and Byzantine replicas attempt to create a different chain.** Observe that if 20% of the replicas are Byzantine, then in expectation, they will be leaders in 20% of the rounds.
 
     For example, we may have HHBBHHHHH... as the sequence of leaders resulting in the chain as follows. 
 
@@ -61,7 +61,7 @@ In this scenario, the orange chain grew longer, and eventually, all replicas com
 
 However, when we achieve consensus on many values instead of just one, a situation where the fraction of Byzantine values committed is higher than the fraction of Byzantine replicas in the system is not ideal. For instance, if all blocks committed are proposed by Byzantine replicas, then we have concerns such as censorship, fairness, etc. This ratio of honest blocks to the total number of blocks is also referred to as *chain quality*. Ideally, we want this ratio to be the same as the fraction of honest replicas. The attack described here will not yield a worse chain quality. However, there exist other attacks to worsen chain quality, e.g., selfish mining attack (described in an earlier [post](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/)).
     
-3. **80% of the replicas are Byzantine, attempting to create a different chain.** In this scenario, Byzantine replicas can easily create a "private chain" of length k before honest replicas do. When honest replicas reach length k, by selectively revealing the private chain to only some honest replicas, the Byzantine replicas can cause a safety violation.
+- **80% of the replicas are Byzantine, attempting to create a different chain.** In this scenario, Byzantine replicas can easily create a "private chain" of length k before honest replicas do. When honest replicas reach length k, by selectively revealing the private chain to only some honest replicas, the Byzantine replicas can cause a safety violation.
 
     As an example, the leader order can be BBHBHBBBHBHBHB.... 
 
@@ -71,7 +71,7 @@ However, when we achieve consensus on many values instead of just one, a situati
 
 Observe that if the Byzantine replicas do not show a chain to honest replicas, an honest leader in the third round can start a new chain instead.
 
-4. **49% of the replicas are Byzantine, attempting to create a different chain.** Byzantine replicas can attempt the same attack as in Scenario 3. The probability with which they win any election is 0.49. Since each of these elections happens independently at random, it can be shown that the probability with which Byzantine chain reaches length $k$ before honest chain is $e^{-O(\text{k})}$. In other words, when Byzantine replicas are in the minority, they will win a private chain attack only with probability exponentially small in $k$.
+- **49% of the replicas are Byzantine, attempting to create a different chain.** Byzantine replicas can attempt the same attack as in Scenario 3. The probability with which they win any election is 0.49. Since each of these elections happens independently at random, it can be shown that the probability with which Byzantine chain reaches length $k$ before honest chain is $e^{-O(\text{k})}$. In other words, when Byzantine replicas are in the minority, they will win a private chain attack only with probability exponentially small in $k$.
 
 Thus, for a sufficiently large $k$ (security parameter), a private chain attack by Byzantine replicas does not succeed against Nakamoto's protocol so far as they are in minority. This was shown using some analytical evaluation in the original [Bitcoin whitepaper](https://bitcoin.org/bitcoin.pdf). We should caution you that this is not a proof of security for the protocol -- it is just a security argument against *one of the attacks*. A proof (of the more generalized version of the protocol) has been shown by [GKL'15](https://eprint.iacr.org/2014/765.pdf), [PSS'17](https://eprint.iacr.org/2016/454.pdf) and more recently by [Ren'19](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/) (with an accompanying [blog post](https://decentralizedthoughts.github.io/2019-11-29-Analysis-Nakamoto/)). Having said that, it has also been shown [recently](https://arxiv.org/pdf/2005.10484.pdf) that a private-chain attack is indeed the worst attack possible when there is no network delay.
 
