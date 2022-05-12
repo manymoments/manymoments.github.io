@@ -5,6 +5,21 @@ layout: page
 
 ## The Decentralization will not be Televised
 
+**Scalability of Decentralized Trust: Some Lessons and some Recent Advances, TPBC21**
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/QX9LAcd459s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+**Tokenomics 2nd Conference - The Blockchain breakthrough through the lens of Game Theory**
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/iHd28rhjxrw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+**Aug 6, 2020  Ittai Abraham (VMWare) presented "Modern Consensus Protocols: Synchronous, Asynchronous, Partially Synchronous" at the IC3 Blockchain Camp 2020**
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=X9ldCg8gkvk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 **[Theory and Practice of Blockchains 2020](https://eventum.upf.edu/51585/section/25185/theory-and-practice-of-blockchains-online-weekly-seminar-series-.html)**
 
