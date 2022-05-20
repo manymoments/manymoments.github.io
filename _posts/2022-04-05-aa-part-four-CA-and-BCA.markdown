@@ -8,7 +8,8 @@ tags:
 author: 'Ittai Abraham, Naama Ben-David, Sravya Yandamuri '
 ---
 
-In this post we introduce a key building block in the *Byzantine* Model called **Binding Crusader Agreement**. We show how to use it in the [next post](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/).
+In this post we introduce a key building block in the *Byzantine* Model called **Binding Crusader Agreement**. We show how to use it in the [next post](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/). 
+
 
 In the three previous posts we (1) [defined the problem](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/) and discussed the [FLP theorem](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/); (2) presented [Ben-Or's protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/) for crash failures; and (3)  [a modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/) for crash failures.
 

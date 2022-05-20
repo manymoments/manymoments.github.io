@@ -100,7 +100,7 @@ To conclude, the first round gives Weak Agreement, the second round gives Bindin
 
 Observe that the binding event happens when the first non-faulty sends echo3, which is one round earlier than the first party ends of the protocol. This will be important when more sophisticated common coins are used. 
 
-In the [next post](post4) we will consider the Byzantine adversary case.
+In the [next post](https://decentralizedthoughts.github.io/2022-04-05-aa-part-four-CA-and-BCA/) we will consider the Byzantine adversary case.
 
 
 Your thoughts and comments on [Twitter](https://twitter.com/ittaia/status/1509241231628505089?s=20&t=fAtKRZZronoJUDA2PtDEWw)
