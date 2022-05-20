@@ -104,7 +104,7 @@ There are two claims about CA + Termination Gadget:
 
 ### Pipelining the Termination Gadget
 
-As we will show in the [next post](https://twitter.com/ittaia/status/1511665002188574727?s=20&t=gJEZwTvUN72KwbNBJ53eYQ), often multiple Crusader Agreement instances are executed in a sequence $CA_1,CA_2, \dots$.
+As we will show in the [next post](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/), often multiple Crusader Agreement instances are executed in a sequence $CA_1,CA_2, \dots$.
 
 In this case we can send the `<output x>` message of instance $CA_j$ along with the first message of instance $CA_{j+1}$, saving a communication round. The `<output x>` message of instance $j$ can be used as a signal to garbage collect the previous instance. 
 
