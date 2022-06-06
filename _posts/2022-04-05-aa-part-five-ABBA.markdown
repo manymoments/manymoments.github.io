@@ -9,7 +9,8 @@ tags:
 author: 'Ittai Abraham, Naama Ben-David, Sravya Yandamuri '
 ---
 
-In this post we show how to use Binding Crusader Agreement from the [previous post](https://decentralizedthoughts.github.io/2022-04-05-aa-part-four-CA-and-BCA/), along with a strong common coin to get a simple and efficient  Binary Byzantine Agreement with only an expected $O(n^2)$ message complexity. 
+In this post we show how to use Binding Crusader Agreement from the [previous post](https://decentralizedthoughts.github.io/2022-04-05-aa-part-four-CA-and-BCA/), along with a strong common coin to get a simple and efficient  Binary Byzantine Agreement with only an expected $O(n^2)$ message complexity. This is a simplified version from our [paper](https://eprint.iacr.org/2022/711.pdf).
+
 
 In the four previous posts we: (1) [defined the problem](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/) and discussed the [FLP theorem](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/); (2) [Ben-Or's protocol]([part2](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/)) for crash failures;  (3)  [a modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/) for crash failures; and (4) Crusader Agreement and [Binding Crusader Agreement](https://decentralizedthoughts.github.io/2022-04-05-aa-part-four-CA-and-BCA/) in the Byzantine Model.
 
