@@ -43,7 +43,7 @@ Each party i broadcasts its input v_i
 
 Assuming synchrony for now, each party gathers a multi-set $V$ of between $n-f$ and $n$ values from the broadcast values. The only question is how does a party extract a single decision value from this multi-set $V$?
 
-What can the adversary do? Intuitively, if the adversary chooses to send values inside the non-faulty convex hull, it wouldn't do us much harm. These values are roughly where they should be. However, it can cause the $f$ parties it controls to post very high or very low inputs. So it is very natural to *trim* (or remove) the $f$ smallest and $f$ largest values from the multi-set $V$. Given a representation of $V$ as an ordered sequence $V=\{v_1,v_2,\dots, v_k\}$, define the **trim** of $V$ by $f$ values as the sub-multi-set formed by removing the lowest $f$ values and the highest $f$ values from the sequence.  
+What can the adversary do? Intuitively, if the adversary chooses to send values inside the non-faulty convex hull, it wouldn't do us much harm. These values are roughly where they should be. However, it can cause the $f$ parties it controls to post very high or very low inputs. So it is very natural to *trim* (or remove) the $f$ smallest and $f$ largest values from the multi-set $V$. Given a representation of $V$ as an ordered sequence $V=\\{v_1,v_2,\dots, v_k\\}$, define the **trim** of $V$ by $f$ values as the sub-multi-set formed by removing the lowest $f$ values and the highest $f$ values from the sequence.  
 
 $$
 T=trim(V)=\{v_{f+1},\dots,v_{k-f}\}
@@ -93,7 +93,7 @@ output (min(T)+max(T))/2
 *Proof:* Termination is immediate. Convex validity follows from Claim 1. What about (approximate) agreement?
 
 
-For example with $n=4$, party A may see $V_1=\{0,0,1,1\}$ from parties A,B,C,D (so it outputs 1/2) and  party D may see $V_2 = \{0,1,1,1\}$ from parties $A,B,C,D$ (so it outputs 1). We don't have agreement, did we make progress? 
+For example with $n=4$, party A may see $V_1=\\{0,0,1,1\\}$ from parties A,B,C,D (so it outputs 1/2) and  party D may see $V_2 = \\{0,1,1,1\\}$ from parties $A,B,C,D$ (so it outputs 1). We don't have agreement, did we make progress? 
 
 Yes! It's time to introduce an important measure for a multi-set of non-faulty parties:
 
@@ -101,7 +101,7 @@ $$
 span(G) = \max(G)-\min(G)
 $$
 
-Let $G$ be the multi-set of input values of the non-faulty parties and $G_1$ be the multi-set of output values of the non-faulty from the protocol (so $G_1=\{\frac{\min(T_i)+\max(T_i)}{2}\}_{i \in G}$):
+Let $G$ be the multi-set of input values of the non-faulty parties and $G_1$ be the multi-set of output values of the non-faulty from the protocol (so $G_1=\\{\frac{\min(T_i)+\max(T_i)}{2}\\}_{i \in G}$):
 
 **Claim 2:** $span(G_1) \leq span(G)/2$.
 
