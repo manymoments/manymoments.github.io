@@ -48,6 +48,7 @@ What can the adversary do? Intuitively, if the adversary chooses to send values 
 $$
 T=trim(V)=\{v_{f+1},\dots,v_{k-f}\}
 $$
+
 Observe that $\|T\| = \|V\|-2f$ so $T$ is only well defined when $\|V\| \geq 2f+1$ (indeed this is why we required $n=3f+1$ and hence assured to see at least $n-f \geq 2f+1$ values). BTW the idea of trimming the outliers is deeply connected to [robust statistics](https://en.wikipedia.org/wiki/Robust_statistics).  
 
 Let $G$ be the multi-set of input values for the non-faulty parties.
