@@ -97,9 +97,13 @@ $$ span(G) = \max(G)-\min(G)$$
 Let $G$ be the multi-set of input values of the non-faulty parties and $G_1$ be the multi-set of output values of the non-faulty from the protocol (so $G_1=\{\frac{\min(T_i)+\max(T_i)}{2}\}_{i \in G}$):
 
 **Claim 2:** $span(G_1) \leq span(G)/2$.
+
 *Proof:*  From Claim 1 we have 
-$$median(G) \leq \max(T) \leq \max(G)$$ and 
-$$\min(G) \leq \min(T) \leq median(G)$$
+$$
+median(G) \leq \max(T) \leq \max(G)$$ and 
+$$
+\min(G) \leq \min(T) \leq median(G)
+$$
 
 Recall that
 $$
@@ -110,6 +114,7 @@ So we have
 $$
 \min(G_1) \geq \frac{\min(G) + median(G)}{2}
 $$ and similarly 
+
 $$
 \max(G_1) \leq \frac{\max(G) + median(G)}{2}
 $$
