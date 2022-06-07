@@ -21,7 +21,7 @@ As in classic Agreement we require:
 
 Unlike classic Agreement, we strengthen the validity property and relax the agreement property:
 * **Convex validity**: if a non-faulty party outputs $v$ then there exists some non-faulty parties with inputs $c_1$ and $c_2$ such that $c_1 \leq v \leq c_2$. More generally, we can say that $v$ must belong to the [convex hull](https://en.wikipedia.org/wiki/Convex_hull) of the non-faulty input values.
-* **$\epsilon$-Approximate consensus**: if two non-faulty parties output $v_i$ and $v_j$  then $|v_j-v_i|<\epsilon$ (or more generally, $d(v_i,v_j)<\epsilon$). In other words, the decisions of all non-faulty are $\epsilon$-close to each other.
+* **$\epsilon$-Approximate consensus**: if two non-faulty parties output $v_i$ and $v_j$  then $\|v_j-v_i\|<\epsilon$ (or more generally, $d(v_i,v_j)<\epsilon$). In other words, the decisions of all non-faulty are $\epsilon$-close to each other.
 
 
 ## Why is Approximate Agreement interesting?
@@ -48,7 +48,7 @@ What can the adversary do? Intuitively, if the adversary chooses to send values 
 $$
 T=trim(V)=\{v_{f+1},\dots,v_{k-f}\}
 $$
-Observe that $|T| = |V|-2f$ so $T$ is only well defined when $|V| \geq 2f+1$ (indeed this is why we required $n=3f+1$ and hence assured to see at least $n-f \geq 2f+1$ values). BTW the idea of trimming the outliers is deeply connected to [robust statistics](https://en.wikipedia.org/wiki/Robust_statistics).  
+Observe that $\|T\| = \|V\|-2f$ so $T$ is only well defined when $\|V\| \geq 2f+1$ (indeed this is why we required $n=3f+1$ and hence assured to see at least $n-f \geq 2f+1$ values). BTW the idea of trimming the outliers is deeply connected to [robust statistics](https://en.wikipedia.org/wiki/Robust_statistics).  
 
 Let $G$ be the multi-set of input values for the non-faulty parties.
 
@@ -59,7 +59,7 @@ We are now ready to state a simple but important fact about $\max(T)$ and $\min(
 
 Recall that $T=trim(V)$ and $V$ is the set of all values that are broadcast. So in particular we have $G \subset V$.
 
-To see that $median(G) \leq \max(T)$ observe that $2f+1 \leq  |G|$ hence even if the top $f$ values will be removed by $T=trim(V)$, the $median(G)$ value will remain.
+To see that $median(G) \leq \max(T)$ observe that $2f+1 \leq  \|G\|$ hence even if the top $f$ values will be removed by $T=trim(V)$, the $median(G)$ value will remain.
 
 The proof for $\min(G) \leq \min(T) \leq median(G)$ is identical.
 
