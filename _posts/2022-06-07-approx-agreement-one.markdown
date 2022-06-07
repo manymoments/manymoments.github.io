@@ -108,9 +108,9 @@ Let $G$ be the multi-set of input values of the non-faulty parties and $G_1$ be 
 $$
 median(G) \leq \max(T) \leq \max(G)
 $$
-
-
+more 
 and 
+
 $$
 \min(G) \leq \min(T) \leq median(G)
 $$
@@ -125,7 +125,9 @@ So we have
 
 $$
 \min(G_1) \geq \frac{\min(G) + median(G)}{2}
-$$ and similarly 
+$$ 
+
+and similarly 
 
 $$
 \max(G_1) \leq \frac{\max(G) + median(G)}{2}
