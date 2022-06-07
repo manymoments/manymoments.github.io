@@ -51,14 +51,14 @@ $$
 
 Observe that $\|T\| = \|V\|-2f$ so $T$ is only well defined when $\|V\| \geq 2f+1$ (indeed this is why we required $n=3f+1$ and hence assured to see at least $n-f \geq 2f+1$ values). BTW the idea of trimming the outliers is deeply connected to [robust statistics](https://en.wikipedia.org/wiki/Robust_statistics).  
 
-Let $G$ be the multi-set of input values for the non-faulty parties.
+Let $G$ be the multi-set of input values of all the non-faulty parties.
 
 We are now ready to state a simple but important fact about $\max(T)$ and $\min(T)$ relative to $\max(G), \min(G)$ and $median(G)$.
 
 **Claim 1:** $median(G) \leq \max(T) \leq \max(G)$ and similarly $\min(G) \leq \min(T) \leq median(G)$.
 *Proof:* to see that $\max(T) \leq \max(G)$ observe that the worst the adversary can do is post $f$ values that are higher than $\max(G)$ but those will be removed by $T=trim(V)$.
 
-Recall that $T=trim(V)$ and $V$ is the set of all values that are broadcast. So in particular we have $G \subset V$.
+Recall that $T=trim(V)$ and $V$ is the set of all values that are broadcast. So in particular we have $G \subseteq V$.
 
 To see that $median(G) \leq \max(T)$ observe that $2f+1 \leq  \|G\|$ hence even if the top $f$ values will be removed by $T=trim(V)$, the $median(G)$ value will remain.
 
@@ -72,7 +72,7 @@ output (max(T)+min(T))/2
 ```
 
 
-*Proof:* Trivially we have termination and (exact) agreement from the broadcast channel assumption. For convex validity the claim above shows that $\min(G) \leq \min(T) \leq \max(T) \leq \max(G)$.
+*Proof:* Trivially we have termination and (exact) agreement from using the powerful the broadcast channel assumption. For convex validity, the claim above shows that $\min(G) \leq \min(T) \leq \max(T) \leq \max(G)$.
 
 Note that any function that outputs a value in the convex hull of $T$ would be fine. For example some oracle services use the median (see [Chainlink](https://research.chain.link/whitepaper-v2.pdf)).
 
