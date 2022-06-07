@@ -9,7 +9,7 @@ author: Ittai Abraham and Gilad Stern
 This post covers the basics of **Approximate Agreement**. We define the problem, explain in what way its an interesting variation of classic [Agreement](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/), and describe the idea behind the robust midpoint protocol.
 
 
-In classic consensus, the space of possible decision values is just a set and the goal is to agree on a decision value that must be the input value if all non-faulty have the same input value. *Approximate Agreement* is a variation, first suggested by [Dolev, Lynch, Pinter, Strk, Weihl, 1985-86](https://groups.csail.mit.edu/tds/papers/Lynch/jacm86.pdf), where the goal is to approximately agree (up to some $<\epsilon$ difference) on a value that is in the convex hull of the non-faulty input values. To make this well defined, in approximate agreement the space of possible decision values is a [convex set](https://en.wikipedia.org/wiki/Convex_set), for this post just assume the rational numbers $\mathcal{R}$. This naturally induced a notion of two values being *close* to each other  and that a value is *in between* two other values.
+In classic consensus, the space of possible decision values is just a set and the goal is to agree on a decision value that must be the input value if all non-faulty have the same input value. *Approximate Agreement* is a variation, first suggested by [Dolev, Lynch, Pinter, Stark, Weihl, 1985-86](https://groups.csail.mit.edu/tds/papers/Lynch/jacm86.pdf), where the goal is to approximately agree (up to some $<\epsilon$ difference) on a value that is in the convex hull of the non-faulty input values. To make this well defined, in approximate agreement the space of possible decision values is a [convex set](https://en.wikipedia.org/wiki/Convex_set), for this post just assume the rational numbers $\mathcal{R}$. This naturally induced a notion of two values being *close* to each other  and that a value is *in between* two other values.
 
 There are many cases where (approximate) agreement on a rational value makes sense. For example, if parties want to reach approximate agreement on the current exchange rate of dollar vs euro, we can naturally define the distance between two exchange rates as say the distance in US cents. Similarly, if parties want to reach approximate agreement on the current temperature, we can naturally define the distance between two measurements as say the distance in degrees of Celsius.
 
@@ -108,7 +108,7 @@ Let $G$ be the multi-set of input values of the non-faulty parties and $G_1$ be 
 $$
 median(G) \leq \max(T) \leq \max(G)
 $$
-more 
+
 and 
 
 $$
@@ -141,7 +141,7 @@ span(G_1) =  \max(G_1) - \min(G_1) \\
 = \frac{\max(G) -\min(G)}{2} = span(G)/2
 $$
 
-Every time we do this calculation we are re-surprised how everything cleans up too nicely :-)
+Every time we do this calculation we are re-surprised how everything cleans up so nicely :-)
 
 So what did we achieve? The robust mid-point protocol allows parties to output values in the convex hull of their inputs, while cutting their span in half!
 
