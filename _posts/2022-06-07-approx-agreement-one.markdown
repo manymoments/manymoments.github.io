@@ -56,7 +56,9 @@ Let $G$ be the multi-set of input values of all the non-faulty parties.
 We are now ready to state a simple but important fact about $\max(T)$ and $\min(T)$ relative to $\max(G), \min(G)$ and $median(G)$.
 
 **Claim 1:** $median(G) \leq \max(T) \leq \max(G)$ and similarly $\min(G) \leq \min(T) \leq median(G)$.
-*Proof:* to see that $\max(T) \leq \max(G)$ observe that the worst the adversary can do is post $f$ values that are higher than $\max(G)$ but those will be removed by $T=trim(V)$.
+
+*Proof:* 
+To see that $\max(T) \leq \max(G)$ observe that the worst the adversary can do is post $f$ values that are higher than $\max(G)$ but those will be removed by $T=trim(V)$.
 
 Recall that $T=trim(V)$ and $V$ is the set of all values that are broadcast. So in particular we have $G \subseteq V$.
 
@@ -103,7 +105,8 @@ Let $G$ be the multi-set of input values of the non-faulty parties and $G_1$ be 
 
 **Claim 2:** $span(G_1) \leq span(G)/2$.
 
-*Proof:*  From Claim 1 we have 
+*Proof:* 
+From Claim 1 we have 
 
 $$
 median(G) \leq \max(T) \leq \max(G)
