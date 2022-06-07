@@ -3,7 +3,7 @@ title: 'Approximate Agreement: definitions and the robust midpoint protocol'
 date: 2022-06-07 07:11:00 -04:00
 tags:
 - dist101
-author: 'Ittai Abraham and Gilad Stern'
+author: Ittai Abraham and Gilad Stern
 ---
 
 This post covers the basics of **Approximate Agreement**. We define the problem, explain in what way its an interesting variation of classic [Agreement](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/), and describe the idea behind the robust midpoint protocol.
