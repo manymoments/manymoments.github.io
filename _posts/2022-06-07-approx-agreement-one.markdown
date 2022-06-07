@@ -19,7 +19,7 @@ As in classic Agreement:
 * **Validity**: if all non-faulty parties have the same value then this is the decision value.
 * **Termination**: all non-faulty decide.
 
-Unlike classic Agreement, Approximate Agreement strengthens the validity property and weakens (relax) the agreement property:
+Unlike classic agreement, *Approximate Agreement* strengthens the validity property and weakens (relaxes) the agreement property:
 * **Convex validity**: if a non-faulty party outputs $v$ then there exists some non-faulty parties with inputs $c_1$ and $c_2$ such that $c_1 \leq v \leq c_2$. More generally, we can say that $v$ must belong to the [convex hull](https://en.wikipedia.org/wiki/Convex_hull) of the non-faulty input values.
 * **$\epsilon$-Approximate consensus**: if two non-faulty parties output $v_i$ and $v_j$  then $\|v_j-v_i\|<\epsilon$ (or more generally, $d(v_i,v_j)<\epsilon$). In other words, the decisions of all non-faulty are $\epsilon$-close to each other.
 
