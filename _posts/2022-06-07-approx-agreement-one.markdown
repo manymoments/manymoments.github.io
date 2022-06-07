@@ -94,24 +94,35 @@ output (min(T)+max(T))/2
 For example with $n=4$, server 1 may see $V_1=\{0,0,1,1\}$ from servers A,B,C,D (so it outputs 1/2) and  server 2 may see $V_2 = \{0,1,1,1\}$ from servers $A,B,C,D$ (so it outputs 1). We don't have agreement, did we make progress? 
 
 Yes! It's time to introduce an important measure for a multi-set of non-faulty parties:
-$$ span(G) = \max(G)-\min(G)$$
+
+$$ 
+span(G) = \max(G)-\min(G)
+$$
+
 Let $G$ be the multi-set of input values of the non-faulty parties and $G_1$ be the multi-set of output values of the non-faulty from the protocol (so $G_1=\{\frac{\min(T_i)+\max(T_i)}{2}\}_{i \in G}$):
 
 **Claim 2:** $span(G_1) \leq span(G)/2$.
 
 *Proof:*  From Claim 1 we have 
+
 $$
-median(G) \leq \max(T) \leq \max(G)$$ and 
+median(G) \leq \max(T) \leq \max(G)
+$$
+
+
+and 
 $$
 \min(G) \leq \min(T) \leq median(G)
 $$
 
 Recall that
+
 $$
 \min(G_1) = \min_{i \in G} \frac{\min(T_i)+\max(T_i)}{2}
 $$ 
 
 So we have
+
 $$
 \min(G_1) \geq \frac{\min(G) + median(G)}{2}
 $$ and similarly 
@@ -121,6 +132,7 @@ $$
 $$
 
 Hence 
+
 $$
 span(G_1) =  \max(G_1) - \min(G_1) \\
 \leq \frac{\max(G) + median(G)}{2} - \frac{\min(G) + median(G)}{2}\\
@@ -135,5 +147,5 @@ In the next posts we will see how repeating this one round protocol can eventual
 
 Cant wait for the follow up post? Let us know if this protocol can also work in asynchrony?
 
-Your thoughts/comments on [Twitter](...).
+Your thoughts/comments on [Twitter](https://twitter.com/ittaia/status/1534074996083109888?s=20&t=ytroU493gGzJind9MeGJKQ).
 
