@@ -53,7 +53,7 @@ In this protocol each party has an input $v \in \{V\}$ and needs to decide on a 
 **(Validity):** If all honest parties have the same input value, then all of them decide this value.
 **(Agreement):** All honest decide on the same value.
 
-Using Gradecast the Phase-King protocol is rather simple. We consider $t+1$ phases, each of which consists of three rounds. In the first two rounds of each phase $i$, we run an instance of Gradecast. In the last round of phase $i$, we consider $P_i$ to be 'king'. The role of the king is to establish agreement in the case that honest parties are split between different values. The king sends their value to all parties, who change their value to $P_i$ unless their grade is 2: 
+Using Gradecast the Phase-King protocol is rather simple. We consider $t+1$ phases, each of which consists of three rounds. In the first two rounds of each phase $i$, we run an instance of Gradecast. In the last round of phase $i$, we consider $P_i$ to be 'king'. The role of the king is to establish agreement in the case that honest parties are split between different values. The king sends their value to all parties, who change their value to $P_i$'s value unless their grade is 2: 
 
 
 ```
@@ -77,4 +77,4 @@ End of round 3(t+1):
 This concludes the proof for the Phase-King protocol. In the next post, we will show how to use it recursively to reduce the bit complexity to the optimal $O(n^2)$.
 
 
-Your thoughts/comments on [Twitter](...).
+Your thoughts/comments on [Twitter](https://twitter.com/ittaia/status/1534873601358368769?s=20&t=h3N-bj0BKuqFb-D5eFreig).
