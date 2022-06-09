@@ -1,6 +1,6 @@
 ---
 title: 'Phase-King through the lens of Gradecast: A simple unauthenticated synchronous Byzantine Agreement protocol'
-date: 2022-06-09 07:11:00 -04:00
+date: 2022-06-09 03:11:00 -04:00
 tags:
 - dist101
 author: 'Ittai Abraham and Andrew Lewis-Pye'
@@ -20,7 +20,7 @@ Gradecast is a key building block where each party has an input $v \in \{V\}$ an
 **(Knowledge of Agreement):** If an honest party outputs a value with grade 2, then all honest parties output this value.
 
 
-Consider the following simple 2 round protocol: 
+Consider the following simple 2 round gradecast protocol: 
 
 ```
 input v
