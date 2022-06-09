@@ -15,9 +15,13 @@ You can start with the definition of [Consensus and Agreement](/2019-06-27-defin
 
 Checkout out our [consensus cheat sheet](https://decentralizedthoughts.github.io/2021-10-29-consensus-cheat-sheet/) for a quick overview of what is possible and impossible.
 
+[Approximate agreement](https://decentralizedthoughts.github.io/2022-06-07-approx-agreement-one/) is a variation that considers rational input values.
+
 ## Synchronous Protocols
 
-Under synchrony, a classic protocol is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/). You can read about more recent protocols such as [Sync HotStuff](/2019-11-12-Sync-HotStuff/), an [optimal optimistically responsive synchronous protocol](/2020-06-12-optimal-optimistic-responsiveness/), and simple streamlined synchronous protocol called [Streamlet](/2020-05-14-streamlet/). For more related work there is a survey of [authenticated protocols under the synchrony assumption](/2019-11-11-authenticated-synchronous-bft/).
+Under synchrony, a classic Byzantine Broadcast protocol is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/). You can read about more recent protocols such as [Sync HotStuff](/2019-11-12-Sync-HotStuff/), an [optimal optimistically responsive synchronous protocol](/2020-06-12-optimal-optimistic-responsiveness/), and simple streamlined synchronous protocol called [Streamlet](/2020-05-14-streamlet/). For more related work there is a survey of [authenticated protocols under the synchrony assumption](/2019-11-11-authenticated-synchronous-bft/).
+
+For a very simple and classic Synchronous Byzantine agreement protocol, checkout [Phase-King](https://decentralizedthoughts.github.io/2022-06-09-phase-king-via-gradecast/).
 
 
 ## Partially Synchronous Protocols
@@ -38,7 +42,7 @@ How do you measure [round complexity in asynchrony](https://decentralizedthought
 
 The multi-leader generalization of reliable broadcast is called [Reliable Gather](https://decentralizedthoughts.github.io/2021-03-26-living-with-asynchrony-the-gather-protocol/). 
 
-Our series on the marvels of Asynchronous Agreement: we (1) [define the problem](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/); (2) present [Ben-Or's protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/); (3) provide a [modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/).
+Our series on the marvels of Asynchronous Agreement: we (1) [define the problem](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/); (2) present [Ben-Or's protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/); (3) provide a [modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/); (4) Introduce [Crusader Agreement and Binding Crusader Agreement](https://decentralizedthoughts.github.io/2022-04-05-aa-part-four-CA-and-BCA/); and (5) use it to efficiently solve [Binary Byzantine Agreement from a strong common coin](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/).
  
 
 
