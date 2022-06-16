@@ -1,8 +1,10 @@
 ---
+title: Safe Permissionless Consensus
 layout: post
-title: Safe Permissionless Consensus 
 subtitle: Youer Pu, Lorenzo Alvisi, and Ittay Eyal
-tags: [consensus, permissionless] 
+tags:
+- consensus
+- permissionless
 comments: false
 ---
 
