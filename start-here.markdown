@@ -21,7 +21,9 @@ Checkout out our [consensus cheat sheet](https://decentralizedthoughts.github.io
 
 Under synchrony, a classic Byzantine Broadcast protocol is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/). You can read about more recent protocols such as [Sync HotStuff](/2019-11-12-Sync-HotStuff/), an [optimal optimistically responsive synchronous protocol](/2020-06-12-optimal-optimistic-responsiveness/), and simple streamlined synchronous protocol called [Streamlet](/2020-05-14-streamlet/). For more related work there is a survey of [authenticated protocols under the synchrony assumption](/2019-11-11-authenticated-synchronous-bft/).
 
-For a very simple and classic Synchronous Byzantine agreement protocol, checkout [Phase-King](https://decentralizedthoughts.github.io/2022-06-09-phase-king-via-gradecast/).
+For a simple and classic Synchronous Byzantine agreement protocol, checkout [Phase-King](https://decentralizedthoughts.github.io/2022-06-09-phase-king-via-gradecast/).
+
+For a simple non-equivocation protocol, checkout [Crusader Broadcast](). 
 
 
 ## Partially Synchronous Protocols
