@@ -67,4 +67,4 @@ Do we actually need $O(n^2)$ messages for such a weak notion of agreement? In th
 ### Scratch your brains
 Can you turn this protocol to *linear*? under what conditions? 
 
-Your thoughts/comments on [Twitter](...).
+Your thoughts/comments on [Twitter](https://twitter.com/ittaia/status/1538486701575782400?s=20&t=tPd5SjTv4rWnFb78CbqJ7Q).
