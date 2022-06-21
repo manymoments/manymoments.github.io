@@ -1,6 +1,6 @@
 ---
 title: Safe Permissionless Consensus
-date: 2022-06-21 16:00:00 +04:00
+date: 2022-06-21 08:00:00 -04:00
 tags:
 - consensus
 - permissionless
