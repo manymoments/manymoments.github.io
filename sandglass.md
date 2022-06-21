@@ -1,6 +1,6 @@
 ---
 title: Safe Permissionless Consensus
-date: 2022-06-21 15:00:00 +03:00
+date: 2022-06-21 08:00:00 -04:00
 author: Youer Pu, Lorenzo Alvisi, and Ittay Eyal
 tags:
 - consensus
