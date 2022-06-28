@@ -1,6 +1,6 @@
 ---
 title: DAG Meets BFT - The Next Generation of BFT Consensus
-date: 2022-06-28 15:00:00 -03:00
+date: 2022-06-28 14:00:00 -04:00
 author: Alexander Spiegelman
 tags:
 - consensus
