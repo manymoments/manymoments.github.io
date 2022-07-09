@@ -1,22 +1,23 @@
 ---
-title: DAG Meets BFT - The Next Generation of BFT Consensus
-date: 2022-06-28 14:00:00 -04:00
+title: DAG Meets BFT: The Next Generation of BFT Consensus 
+date: 2022-06-28 15:00:00 +03:00
 author: Alexander Spiegelman
 tags:
 - consensus
 ---
 
-This post explains in simple words a recent development in the theory and practice of directed acyclic graph-based (DAG-based) Byzantine Fault Tolerance (BFT) consensus, published in three prestigious peer-reviewed conferences, and currently being integrating into several Blockchain companies, e.g., Aptos, Celo, MystenLabs, and Somelier.
+
+This post explains in simple words a recent development in the theory and practice of directed acyclic graph-based (DAG-based) Byzantine Fault Tolerance (BFT) consensus, published in three prestigious peer-reviewed conferences, and currently being implemented by several Blockchain companies, e.g., Aptos, Celo, Mysten Labs, and Somelier.
 
 
 * [DAG-Rider: All You Need Is DAG](https://arxiv.org/abs/2102.08325) (PODC 2021). 
 [I. Keidar,  E. Kokoris-Kogias, O. Naor, A. Spiegelman]
-* [Narwhal&Tusk](https://arxiv.org/abs/2105.11827) (eurosys 2022 **Best paper award**) 
+* [Narwhal&Tusk](https://arxiv.org/abs/2105.11827) (EuroSys 2022 **Best paper award**) 
 [G. Danezis, E. Kokoris-Kogias, A. Sonnino, A. Spiegelman]
 * [Bullshark](https://arxiv.org/abs/2201.05677) (To appear at CCS 2022) 
 [A. Spiegelman, N. Giridharan, A. Sonnino, E. Kokoris-Kogias]
 
-**TL;DR: Decoupling data dissemination from metadata ordering is the key mechanism to allow scalable and high throughput consensus systems. Moreover, using an efficient implementation of a DAG to abstract the network communication layer from the (zero communication overhead) consensus logic allows for embarrassingly simple and efficient implementations (e.g., more than 90x throughput improvement over Hotstuff).**
+**TL;DR: Decoupling data dissemination from metadata ordering is the key mechanism to allow scalable and high throughput consensus systems. Moreover, using an efficient implementation of a DAG to abstract the network communication layer from the (zero communication overhead) consensus logic allows for embarrassingly simple and efficient implementations (e.g., more than one order of magnitude throughput improvement compared to Hotstuff).**
 
 
 ## DAG-based Consensus
@@ -44,7 +45,7 @@ In a round-based DAG (first introduced in [Aleph](https://arxiv.org/abs/1908.051
 
 >Hence, recursively, the vertex's causal history in both local views is exactly the same. 
 
-The non-equivocation property eliminates the ability of Byzantine validators to lie, which drastically simplifies the consensus logic. As we explain shortly, [Narwhal](https://arxiv.org/abs/2105.11827) and [Bullshark](https://arxiv.org/abs/2201.05677) provide an efficient implementation of it.
+The non-equivocation property eliminates the ability of Byzantine validators to lie, which drastically simplifies the consensus logic. As we explain shortly, [Narwhal](https://arxiv.org/abs/2105.11827) and [Bullshark](https://arxiv.org/abs/2201.05677) provide an efficient reliabile broadcast implementation.
 
 
 #### Network speed throughput and chain quality
@@ -57,19 +58,19 @@ Once a vertex $v$ is committed via the consensus protocol, $v$’s entire causal
 * Chain Quality. Since every round in v’s causal history contains at least n-f vertices, at least half (>f) of the vertices ordered in every round were broadcast by honest parties.
 
 
-#### Protocols comparison
+#### Protocol comparison
 
 [DAGRider](https://arxiv.org/abs/2102.08325), [Tusk](https://arxiv.org/abs/2105.11827) , and [Bullshark](https://arxiv.org/abs/2201.05677) are all *zero communication* overhead consensus protocols to order the DAG’s vertices. That is, given a local view of a round-based DAG as described above, these protocols totally order vertices just by  locally interpreting the DAG structure (without sending any additional messages).
 
 The table below summarizes the main differences.  Latency is measured by the number of DAG rounds required in between two commits. All protocols guarantee liveness even against a worst-case asynchronous adversary. Due to the [FLP](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf) lower bound, randomness is required to solve asynchronous consensus, hence the latency is measured in expectation. Fairness means that even slow validators are able to contribute to the sequence of committed vertices (total order). 
 
-|  |   Common case round latency  |  Asynchronous round latency   | Garbage collection | Fairenss |
+|  |   Common case round latency  |  Asynchronous round latency   | Garbage collection | Fairness |
 | -------- | --- | --- | -------- | -------- |
 | [DAGRider](https://arxiv.org/abs/2102.08325)   |  4   |  E(6)   |  no   |   yes                |
 | [Tusk](https://arxiv.org/abs/2105.11827)        |  3   |  E(7)   |  yes  |   no                 |
 | [Bullshark](https://arxiv.org/abs/2201.05677)   |  2   |  E(6)   |  yes  | during synchrony     |
 
-In this post we focus on [Bullshark](https://arxiv.org/abs/2201.05677), which is strictly the best.
+In this post we focus on [Bullshark](https://arxiv.org/abs/2201.05677), which offers better properties compared to the others.
 
 #### Garbage collection
 
@@ -84,11 +85,11 @@ The Narwhal system implements a highly scalable and efficient DAG construction, 
 
 Moreover, since data dissemination is completely symmetric among validators, the system is resilient to faults (a weak spot in many previous systems) -  tps is only affected because faulty validators do not disseminate data. 
 
-Each validator consists of a number of workers and a primary. Workers continuously stream batches of data to each other and forward the digests of the batches to their primaries. The primaries form a round-based DAG on metadata (vertices contain digests). Importantly, the data is disseminated by the workers at network speed regarding the meta-data DAG construction by the primeries. To form the DAG, validators use the following [broadcast protocol](https://link.springer.com/book/10.1007/978-3-642-15260-3) that satisfies reliable broadcast properties with a linear number of messages on the critical path.
+Each validator consists of a number of workers and a primary. Workers continuously stream batches of data to each other and forward the digests of the batches to their primaries. The primaries form a round-based DAG on metadata (vertices contain digests). Importantly, the data is disseminated by the workers at network speed regarding the metadata DAG construction by the primaries. To form the DAG, validators use the follwoing [broadcast protocol](https://link.springer.com/book/10.1007/978-3-642-15260-3) that satisfies reliable broadcast properties with a linear number of messages on the critical path.
 
 In each round (see Figure 2 in [Narwhal&Tusk](https://arxiv.org/abs/2105.11827) for illustration):
 1. Each validator prepares and sends to all other validators a message with the metadata corresponding to the DAG vertex: i.e. batch digests and n-f references to vertices from the previous round.
-1. Upon receiving such a message, a validator replys with a signature if:
+1. Upon receiving such a message, a validator replies with a signature if:
     * Its workers persisted the data corresponding to the digests in the vertex (for data-availability).
     * It has not replied to this validator in this round before (for non-equivocation). 
 1. The sender forms a quorum certificate from n-f such signatures and sends it back to the validators as part of its vertex for this round. 
@@ -101,7 +102,7 @@ The purpose of the quorum certificates is threefold:
 * **Data availability:** since validators sign only if they locally store the data corresponding to the digests in the vertex, when a quorum certificate is formed it is guaranteed that the data will be available for any validator to later retrieve. 
 * **History availability:** since certified blocks contain the certificates of the blocks from the previous round, a certificate of a block guarantees the availability of the entire causal history of the block. A new validator can join by learning the certificates of just the prior round. This simplifies garbage collection.
 
-The separation between data dissemination and the meta-data ordering guarantees network speed throughput regardless of the DAG construction speed or the latency of the consensus used for the ordering. Data is disseminated at network speed by the workers, and the DAG contains digests that refer to all the disseminated data. Once a vertex in the DAG is committed, the vertex's entire causal history (that contains most of the disseminated data) is ordered. 
+The separation between data dissemination and the metadata ordering guarantees network speed throughput regardless of the DAG construction speed or the latency of the consensus used for the ordering. Data is disseminated at network speed by the workers, and the DAG contains digests that refer to all the disseminated data. Once a vertex in the DAG is committed, the vertex's entire causal history (that contains most of the disseminated data) is ordered. 
 
 ## The Bullshark Protocol
 
@@ -109,19 +110,19 @@ The [Bullshark](https://arxiv.org/abs/2201.05677) paper presents two versions of
 
 Compared to previous partially synchronous BFT consensus protocols (e.g., [PBFT](https://moodlearchive.epfl.ch/2020-2021/pluginfile.php/2452092/mod_resource/content/1/castro99practical.pdf), [SBFT](https://www.researchgate.net/profile/Alin-Tomescu/publication/324245804_SBFT_a_Scalable_Decentralized_Trust_Infrastructure_for_Blockchains/links/5ad4b960aca272fdaf7bf982/SBFT-a-Scalable-Decentralized-Trust-Infrastructure-for-Blockchains.pdf), [Tendermint](https://knowen-production.s3.amazonaws.com/uploads/attachment/file/1814/Buchman_Ethan_201606_Msater%2Bthesis.pdf)/[Hotstuff](https://arxiv.org/pdf/1803.05069.pdf)), Bullshark has (arguably) the simplest implementation (200 lines of code on top of the Narwhal system).
  
-When it comes to the simplicity of consensus protocols, the devil is always in the details, in particular, the view-change and view-synchronization mechanisms. Some allegedly simple consensus protocols (e.g., Hotstuff and Raft), present happy path and hide synchronization details. In fact, the Hotstuff protocol was adopted for the Diem project due to its alleged simplicity, but the engineering team soon found out that the Pacemaker black-box (that was magically assumed to synchronized the views in the paper), was quite complex, tricky to actually implement in a production codebase, and is a serious bottleneck when experiencing faults.
+When it comes to the simplicity of consensus protocols, the devil is always in the details, in particular, the view-change and view-synchronization mechanisms. Some allegedly simple consensus protocols (e.g., Hotstuff and Raft), present happy path and hide synchronization details. In fact, the Hotstuff protocol was adopted for the Diem project due to its alleged simplicity, but the engineering team soon found out that the Pacemaker black-box (that was magically assumed to synchronize the views in the paper), was quite complex, tricky to implement in production, and was a serious bottleneck when experiencing faults.
 
 **[Bullshark](https://arxiv.org/abs/2201.05677) needs neither a view-change nor a view-synchronization mechanism!**
 
-Since the DAG encodes full information, there is no need to "agree" on skipping and discarding slow/faulty leaders via timeout complaints. Instead, as explained shortly, once a validator commits an anchor (leader) vertex $v$ on the DAG, it traverses back $v$'s causal history and orders anchors that it previously skipped but could have been committed by other validators. As for synchronization, the all to all communication fashion of constructing the round-based DAG takes care of it.
+Since the DAG encodes full information, there is no need to "agree" on skipping and discarding slow/faulty leaders via timeout complaints. Instead, as explained shortly, once a validator commits an anchor (leader) vertex $v$ on the DAG, it traverses back over $v$'s causal history and orders anchors that it previously skipped but could have been committed by other validators. As for synchronization, the all to all communication nature of constructing the round-based DAG takes care of it.
 
 Moreover, the DAG construction is leaderless and enjoys perfect symmetry and load balancing between validators. DAG vertices are totally ordered without any additional communication among the validators. Instead, each validator locally interprets the structure of its view of the DAG. Below is an illustration of the [Bullshark](https://arxiv.org/abs/2201.05677) protocol with $n=4$ and $f=1$:
 
 
-![](https://i.imgur.com/zu1DbtK.png =x300)
+![](https://i.imgur.com/zu1DbtK.png =x300) 
 
 
-Each odd round in the DAG has a predefined anchor vertex (green fill) and the goal is to first decide which anchors to commit. Then, to totally order all the vertices in the DAG, a validator goes one by one over all the committed anchors and orders their causal histories by some deterministic rule. Anchor 2 causal history is marked in green vertices in the above figure.
+Each odd round in the DAG has a predefined anchor vertex (highlighted in solid green above) and the goal is to first decide which anchors to commit. Then, to totally order all the vertices in the DAG, a validator goes one by one over all the committed anchors and orders their causal histories by some deterministic rule. Anchor 2 causal history is marked by green vertices in the above figure.
 
 ![](https://i.imgur.com/PkiC2vk.png =x300)
 
@@ -166,7 +167,7 @@ The drawback of this approach is garbage collection. In asynchrony it might take
 
 **[Bullshark](https://arxiv.org/abs/2201.05677), on the other hand, establishes a sweet spot between garbage collection and fairness.** The DAG is constantly garbage collected and fairness is guaranteed during synchronous periods.
 
-To accomplish this, validators attach their local time to each vertex they broadcast. Once an anchor is committed and ready for ordering, the anchor’s timestamp is computed as a median of times in its parents’ vertices. Then, while traversing back the anchor’s causal history (to deterministically order it), a timestamp of each round is computed as the median of times in the round vertices. When a round $r$ whose timestamp is smaller than the anchor’s timestamp by more than some predefined $\Delta$ time is reached, then $r$ and all the rounds smaller than $r$ are garbage collected. vertices that have yet been added to the DAG in these rounds will need to be re-broadcast in future rounds. However, it is guaranteed that if a slow validator is able to broadcast its vertex in *delta* time, the vertex will be added to the DAG and totally ordered. 
+To accomplish this, validators attach their local time to each vertex they broadcast. Once an anchor is committed and ready for ordering, the anchor’s timestamp is computed as a median of times in its parents’ vertices. Then, while traversing back over the anchor’s causal history (to deterministically order it), a timestamp of each round is computed as the median of times in the round vertices. When a round $r$ whose timestamp is smaller than the anchor’s timestamp by more than some predefined $\Delta$ time is reached, then $r$ and all the rounds smaller than $r$ are garbage collected. Vertices that have yet been added to the DAG in these rounds will need to be re-broadcast in future rounds. However, it is guaranteed that if a slow validator is able to broadcast its vertex in *delta* time, the vertex will be added to the DAG and totally ordered. 
 
 ![](https://i.imgur.com/bR4XDV2.png =x350)
 
@@ -199,25 +200,25 @@ Note that data is still disseminated in network speed as this is done by the wor
 
 In brief, the idea of separating DAG into physical and logical layers is that the physical DAG keeps advancing in network speed, i.e., validators advance physical rounds immediately after $n-f$ vertices are delivered. The logical DAG is piggybacked on top of the physical DAG - each vertex has an additional bit that indicates whether the vertex belongs to the logical DAG. A logical edge between two logical vertices exists if there is a physical path between them. The timeouts are integrated into the logical DAG similarly to how they are integrated into the physical DAG in the description above. The consensus logic runs on top of the logical DAG and once an anchor is committed, its entire causal history on the physical DAG is ordered.
 
-![](https://i.imgur.com/op3RhOn.jpg)
+![](https://i.imgur.com/KrFQ9oN.jpg)
 
 In the example above, the right figure is the logical DAG that is piggybacked on top of the physical DAG in the left figure. Validator 1 gets vertices 1,2, and 3 in the physical DAG before getting vertex A1. Therefore, it advances to round two in the physical DAG without marking its vertex as logical. Its vertex in round 3, however, is marked as logical even though it does not have a path to A1 because its local timeout expired.
 
 ### Comparison in practice 
 
-One may expect that the logical DAG approach would increase the system throughput because validators never wait for a timeout to broadcast vertices on the physical DAG. However, since [Narwhal](https://arxiv.org/abs/2105.11827) separates data dissemination from meta-data this makes no difference in practice. [Narwhal](https://arxiv.org/abs/2105.11827) workers keep broadcasting batches of transactions at network speed and the DAG contains only metadata information such as batches digests. Therefore, if the DAG construction is slowed down due to a timeout, the next block will simply include more digests. Moreover, the latency in the logical approach may actually increase -- this is because if a logical vertex is not ready to be piggybacked when the physical vertex is broadcast, it will need to wait for the next round.
+One may expect that the logical DAG approach would increase the system throughput because validators never wait for a timeout to broadcast vertices on the physical DAG. However, since [Narwhal](https://arxiv.org/abs/2105.11827) separates data dissemination from metadata this makes no difference in practice. [Narwhal](https://arxiv.org/abs/2105.11827) workers keep broadcasting batches of transactions at network speed and the DAG contains only metadata information such as batches digests. Therefore, if the DAG construction is slowed down due to a timeout, the next block will simply include more digests. Moreover, the latency in the logical approach may actually increase -- this is because if a logical vertex is not ready to be piggybacked when the physical vertex is broadcast, it will need to wait for the next round.
 
 We evaluated and compared both approaches and the physical DAG outperformed the logical DAG. Throughput with the logical DAG was lower perhaps because the logical DAG approach consumes more memory and bandwidth, and latency was higher because of the reason mentioned above. 
 
 
-In general, from our experience, slightly back pressuring the DAG construction leads to maximum performance since the vertices contain more digests. Moreover, the logical DAG approach is likely to require more complex implementation. 
+In general, from our experience, slightly back pressuring (slowing down) the DAG construction leads to maximum performance since the vertices contain more digests. Moreover, the logical DAG approach is likely to require more complex implementation. 
 
 
 ## Bullshark Evaluation
 
 We implemented [Bullshark](https://arxiv.org/abs/2201.05677) in Rust in less than 200 LOC on top of the [Narwhal](https://arxiv.org/abs/2105.11827) DAG system. Our implementation uses tokio for asynchronous networking, ed25519-dalek for elliptic curve-based signatures, and Rocksdb for persistent data storage. BullShark does not require additional protocol messages or cryptographic tools compared to Narwhal. The code, as well as the Amazon web services orchestration scripts and measurement data required to reproduce the results, are [open-sourced](https://github.com/asonnino/narwhal/tree/bullshark). 
 
-We evaluated [Bullshark](https://arxiv.org/abs/2201.05677) against [Tusk](https://arxiv.org/abs/2105.11827) and Hotstuff in a geo-replicated environment. Since the vanilla Hotstuff protocol produces very poor performance in our setting (never exceeds 1,800 tps, see Figure 6 in [Narwhal](https://arxiv.org/abs/2105.11827)), we also implemented an improved version of Hotstuff by applying insight from [Narwhal](https://arxiv.org/abs/2105.11827),i.e.  we separated data dissemination and used HotStuff to order meta-data only. 
+We evaluated [Bullshark](https://arxiv.org/abs/2201.05677) against [Tusk](https://arxiv.org/abs/2105.11827) and Hotstuff in a geo-replicated environment. Since the vanilla Hotstuff protocol produces very poor performance in our setting (never exceeds 1,800 tps, see Figure 6 in [Narwhal](https://arxiv.org/abs/2105.11827)), we also implemented an improved version of Hotstuff by applying insight from [Narwhal](https://arxiv.org/abs/2105.11827), i.e., we separated data dissemination and used HotStuff to order metadata only. 
 
 
 The figure below illustrates the latency and throughput of [Bullshark](https://arxiv.org/abs/2201.05677), [Tusk](https://arxiv.org/abs/2105.11827), and an improved version of HotStuff for varying numbers of validators in the failure-free case:
@@ -230,7 +231,7 @@ The figure below depicts the performance of [Bullshark](https://arxiv.org/abs/22
 
 ![](https://i.imgur.com/i1v9E56.png =x400)
 
-HotStuff suffers a massive degradation in throughput as well as a dramatic increase in latency. For 3 faults, the throughput of HotStuff drops by over 10x and its latency increases by 15x compared to no faults. In contrast, both [Bullshark](https://arxiv.org/abs/2201.05677) and [Tusk](https://arxiv.org/abs/2105.11827) maintain a good level of throughput: the underlying [Narwhal](https://arxiv.org/abs/2105.11827) DAG continues collecting and disseminating transactions despite the crash faults, and is not overly affected by the faulty validators. The reduction in throughput is in great part due to losing the capacity of faulty validators to disseminate transactions. When operating with 3 faults, both [Bullshark](https://arxiv.org/abs/2201.05677) and [Tusk](https://arxiv.org/abs/2105.11827) provide a 10x throughput increase and about 7x latency reduction with respect to HotStuff.
+HotStuff suffers a massive degradation in throughput as well as a dramatic increase in latency. For 3 faults, the throughput of HotStuff drops by over 10x and its latency increases by 15x compared to no faults. In contrast, both [Bullshark](https://arxiv.org/abs/2201.05677) and [Tusk](https://arxiv.org/abs/2105.11827) maintain high throughput: the underlying [Narwhal](https://arxiv.org/abs/2105.11827) DAG continues collecting and disseminating transactions despite the crash faults, and is not overly affected by the faulty validators. The reduction in throughput is in great part due to losing the capacity of faulty validators to disseminate transactions. When operating with 3 faults, both [Bullshark](https://arxiv.org/abs/2201.05677) and [Tusk](https://arxiv.org/abs/2105.11827) provide a 10x throughput increase and about 7x latency reduction with respect to HotStuff.
 
 > Many thanks to Rati Gelashvili, Eleftherios Kokoris-Kogias, and Alberto Sonnino for helping shape this blog post.
 ### 
