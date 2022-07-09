@@ -1,11 +1,6 @@
 ---
-title: DAG Meets BFT: The Next Generation of BFT Consensus 
-date: 2022-06-28 15:00:00 +03:00
-author: Alexander Spiegelman
-tags:
-- consensus
+title: 2022 06 28 Dag Meets Bft
 ---
-
 
 This post explains in simple words a recent development in the theory and practice of directed acyclic graph-based (DAG-based) Byzantine Fault Tolerance (BFT) consensus, published in three prestigious peer-reviewed conferences, and currently being implemented by several Blockchain companies, e.g., Aptos, Celo, Mysten Labs, and Somelier.
 
