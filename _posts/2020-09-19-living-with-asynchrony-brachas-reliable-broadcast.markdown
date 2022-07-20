@@ -7,7 +7,7 @@ tags:
 author: Ittai Abraham
 ---
 
-In this series of posts, we explore what can be done in the Asynchronous model. This model seems challenging because the adversary can delay messages by any bounded time. By the end of this series, you will see that [almost](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) everything that can be done in synchrony can be obtained in asynchrony.
+In this series of posts, we explore what can be done in the Asynchronous model. This model seems challenging because the adversary can delay messages by any bounded time. By the end of this series, you will see that [almost](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) everything that can be done in synchrony can be obtained in asynchrony. The next posts in this series are about [gather](2021-03-26-living-with-asynchrony-the-gather-protocol.markdown), [round complexity](2021-09-29-the-round-complexity-of-reliable-broadcast.markdown), and finally our series on [Asynchronous Agreement](2022-03-30-asynchronous-agreement-part-one-defining-the-problem.markdown).
 
 We begin with [Bracha's Reliable Broadcast from 1987](https://core.ac.uk/download/pdf/82523202.pdf) ([conference version from 1984](https://ecommons.cornell.edu/bitstream/handle/1813/6430/84-590.pdf?sequence=1&isAllowed=y)). This is one of the most important build blocks for [Byzantine Fault Tolerant](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) protocols in the [Asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). In this standard setting there are $n$ parties, where one of them is designated as the *leader*. The malicious [threshold adversary](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/) can control at most $f<n/3$ parties. The leader has some *input value* $v$ and a party that *terminates* needs to *output* a value.
 
@@ -98,13 +98,13 @@ Prove correctness (or provide a counterexample) of the following optimization th
         on receiving <echo, v> from f+1 distinct parties:
            if echo == true:
              send <echo, v> to all parties
-             vote = false
+             echo = false
 
         on receiving <echo, v> from n-f distinct parties:
            deliver v
 
 
-**Acknowledgment.** We would like to thank Kartik Nayak for his help with this post! 
+**Acknowledgment.** We would like to thank Kartik Nayak for his help with this post and [hemengjie](https://twitter.com/VfRy8lQUeL9t4y6) for fixing an error in the exercise. 
 
 
 Please answer/discuss/comment/ask on [Twitter](https://twitter.com/ittaia/status/1307772031954546697?s=20). 
