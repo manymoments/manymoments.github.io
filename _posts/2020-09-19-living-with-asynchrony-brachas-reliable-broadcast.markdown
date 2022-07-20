@@ -1,6 +1,6 @@
 ---
 title: 'Living with Asynchrony: Bracha''s Reliable Broadcast'
-date: 2020-09-19 06:05:00 -07:00
+date: 2020-09-19 09:05:00 -04:00
 tags:
 - dist101
 - asynchrony
