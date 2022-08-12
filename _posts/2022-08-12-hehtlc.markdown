@@ -1,4 +1,11 @@
 ---
+title: He-HTLC - Revisiting Incentives in HTLC
+date: 2022-08-12 00:00:00 -05:00
+tags:
+- blockchain
+- L2
+- incentives
+author: Kartik Nayak, Sarisht Wadhwa, Jannis Stoeter, Fan Zhang
 ---
 
 # He-HTLC: Revisiting Incentives in HTLC
