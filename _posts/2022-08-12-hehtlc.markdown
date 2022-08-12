@@ -87,7 +87,7 @@ It turns out if the miners are actively rational, then there are still opportuni
 #### Success dependent reverse bribery attack (SDRBA)
 If Alice is cheated upon, here are some potential outcomes for each of the parties under two different executions.
 
-![](https://i.imgur.com/n7VsqEt.png =400x)
+<img src="https://i.imgur.com/n7VsqEt.png" width="400">
 
 For some values of $v^{dep}$ and $v^{col}$, the attack scenario is clearly better for both Bob and the miners. Moreover, observe that while we consider the utility due to the collateral contract for the honest execution, we ignore it altogether in the potential attack scenario. Thus, the attack scenario would yield an even better outcome for Bob and/or miners.
 
@@ -135,7 +135,7 @@ We achieve this intuition by requiring Bob to obtain a refund with two transacti
 
 To summarize, our solution, He-HTLC, is as follows:
 
-![](https://i.imgur.com/vAfMEAI.png =500x)
+<img src="https://i.imgur.com/vAfMEAI.png" width="500">
 
 - If Alice reveals $pre_a$, she obtains $v^{dep}$ and Bob is refunded $v^{col}$ through path $dep\text{-}A$. 
 - If Alice is inactive, Bob can obtain $v^{dep} + v^{col}$ through paths $dep\text{-}B + col\text{-}B$ that are $l$ blocks apart. 
