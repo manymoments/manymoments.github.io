@@ -45,7 +45,7 @@ Otherwise, after time $T$, Bob can spend those tokens.
 
 Observe that miners are the ones who decide the "source of truth" of events that happen in the ecosystem, and they do so for some fees that are paid by the users of the system. If Alice and Bob are both honest (altruistic), then the above protocol suffices. However, we may see a different picture when some of these parties are rational.
 
-Miners include Alice's transaction $tx^{dep}_{A}$ for a mining fee. Somehow, if Bob offers them an incentive (e.g., a higher fee) to censor $tx^{dep}_A$, then Bob can redeem $v^{dep}$ for himself. This can be advantageous for both, Bob and the miners. Such attacks are referred to as _bribery attacks_ and have been identified in this context by [Winzer, Herd and Faust](https://eprint.iacr.org/2019/748.pdf), and [Tsabary et al.'20](https://arxiv.org/pdf/2006.12031.pdf).
+Miners include Alice's transaction $tx_{A}^{dep}$ for a mining fee. Somehow, if Bob offers them an incentive (e.g., a higher fee) to censor $tx^{dep}_A$, then Bob can redeem $v^{dep}$ for himself. This can be advantageous for both, Bob and the miners. Such attacks are referred to as _bribery attacks_ and have been identified in this context by [Winzer, Herd and Faust](https://eprint.iacr.org/2019/748.pdf), and [Tsabary et al.'20](https://arxiv.org/pdf/2006.12031.pdf).
 
 We intuitively present two strategies for Bob to bribe miners.
 
