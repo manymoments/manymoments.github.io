@@ -30,6 +30,7 @@ The contract can be represented as the following:
 
 
 ![](https://i.imgur.com/DbWQGFJ.png|width=600px)
+[[https://i.imgur.com/DbWQGFJ.png|width=600px]]
 
 
 A pictorial representation of an example set of events is described below. The figure shows a utility of $v^{dep}$ for Alice, and some mining fees, say $f^{dep}_A$, for miner $M_3$. In the example, we assume there are three miners $M_1, M_2$ and $M_3$, in addition to Alice and Bob.
