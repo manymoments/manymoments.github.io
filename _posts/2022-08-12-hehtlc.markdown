@@ -49,10 +49,8 @@ Miners include Alice's transaction $tx_{A}^{dep}$ for a mining fee. Somehow, if 
 
 We intuitively present two strategies for Bob to bribe miners.
 
-1. **Pay per block strategy \[[WHF'19](https://eprint.iacr.org/2019/748.pdf)\].** In this strategy, Bob sets up a contract to pay every block producer at height $t \leq T$ a fee $> f_A^{dep}$ if Alice's transaction has not been included in the chain at time $t$. This can perhaps be set up in different ways, e.g., the payment being conditional on the success of censoring until time $T$. \[WHF'19\] show that if all the miners are rational, it is strictly advantageous for them to censor Alice's transaction.
-
+1. **Pay per block strategy \[[WHF'19](https://eprint.iacr.org/2019/748.pdf)\].** In this strategy, Bob sets up a contract to pay every block producer at height $t \leq T$ a fee $> f_A^{dep}$ if Alice's transaction has not been included in the chain at time $t$. This can perhaps be set up in different ways, e.g., the payment being conditional on the success of censoring until time $T$. WHF'19 show that if all the miners are rational, it is strictly advantageous for them to censor Alice's transaction.
 ![A graphical depiction of pay per block strategy by Bob](https://i.imgur.com/Jo5P5W4.png)
-
 2. **Probabilistic pay per miner strategy \[[Tsabary et al.'20](https://arxiv.org/pdf/2006.12031.pdf)\].** In this strategy, the authors show that if Bob creates a competing transaction with fee $\frac{f_A^{dep} - f}{\lambda_{\text{min}}} + f$, then miners are better off in expectation to censor Alice's transaction and prefer to wait for the opportunity to add Bob's transaction at time $T$. Here, $f$ denotes highest offered fee by any other mempool transaction and $\lambda_{\text{min}}$ denotes a number representing the minimum computation power (as a fraction) of any miner participating in the network. Thus, all miners with a larger computation power are incentivized. Assuming $\lambda_{\text{min}}$ is set sufficiently low (the authors argue $\lambda_{\text{min}} = 0.01$ is sufficient), most miners can be incentivized to carry out such a censorship.
 
 ## MAD-HTLC: Let's Disincentivize Bribery
@@ -60,7 +58,9 @@ We intuitively present two strategies for Bob to bribe miners.
 In addition to presenting a strategy to bribe, [Tsabary et al.](https://arxiv.org/pdf/2006.12031.pdf) also present an elegant protocol to disincentivize bribery attacks by Bob; they called their protocol MAD-HTLC (where MAD stands for mutually assured destruction). 
 
 MAD-HTLC uses the lack of trust between Bob and miners to disincentivize bribery. Their protocol relies on two key ideas:
+
 (i) **Bribe $\rightarrow$ confiscate.** If Bob attempts to bribe, they introduce a path for miners to confiscate all the deposited tokens. This ensures that Bob has no utility if he attempts to attack.
+
 (ii) **Lose a collateral.** To disincentivize Bob further, they introduce a _collateral contract_ where Bob deposits a collateral $v^{col}$, and loses it if he attempts to bribe.
 
 The deposit and collateral contracts look like the following.
