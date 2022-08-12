@@ -28,9 +28,6 @@ Thus, HTLC is parameterized by the public keys of the payer and payee, the pre-i
 
 The contract can be represented as the following:
 
-
-![](https://i.imgur.com/DbWQGFJ.png|width=600px)
-[[https://i.imgur.com/DbWQGFJ.png|width=600px]]
 <img src="https://i.imgur.com/DbWQGFJ.png" width="600">
 
 
