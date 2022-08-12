@@ -135,7 +135,7 @@ We achieve this intuition by requiring Bob to obtain a refund with two transacti
 
 To summarize, our solution, He-HTLC, is as follows:
 
-<img src="https://i.imgur.com/vAfMEAI.png" width="500">
+<img src="https://i.imgur.com/vAfMEAI.png" width="600">
 
 - If Alice reveals $pre_a$, she obtains $v^{dep}$ and Bob is refunded $v^{col}$ through path $dep\text{-}A$. 
 - If Alice is inactive, Bob can obtain $v^{dep} + v^{col}$ through paths $dep\text{-}B + col\text{-}B$ that are $l$ blocks apart. 
