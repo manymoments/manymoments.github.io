@@ -1,0 +1,151 @@
+---
+title: He-HTLC: Revisiting Incentives in HTLC
+tags:
+- blockchain
+- incentives
+- L2
+author: Kartik Nayak, Sarisht Wadhwa, Jannis Stoeter, Fan Zhang
+---
+
+# He-HTLC: Revisiting Incentives in HTLC
+
+Hashed Time-locked Contracts (HTLC) find many useful applications in the L2 Layer such as the [lightning network](https://lightning.network/lightning-network-paper.pdf) and [atomic swaps](https://arxiv.org/abs/1801.09515#:~:text=An%20atomic%20cross%2Dchain%20swap,example%2C%20trading%20bitcoin%20for%20ether). In this post, we will focus on discussing protocols for implementing HTLC when taking into consideration incentives for parties in the system. We will discuss a line of work --- [WHF'19](https://eprint.iacr.org/2019/748.pdf), [MAD-HTLC](https://arxiv.org/pdf/2006.12031.pdf), [He-HTLC](https://eprint.iacr.org/2022/546.pdf) --- towards developing an HTLC protocol secure in the presence of rational parties.
+
+## TL;DR
+
+Hashed Time-locked Contracts, as is, are not secure under the presence of rational miners. Its successor, [MAD-HTLC](https://arxiv.org/pdf/2006.12031.pdf), solves this concern under the assumption that miners are passive and only maximize their utility in terms of the number of tokens based on transactions available in the mempool. If we consider *active miners*, i.e., miners who may engage in external protocols and actively seek out opportunities in the system, our recent work, [He-HTLC](https://eprint.iacr.org/2022/546.pdf), shows that MAD-HTLC is not secure. We present a new protocol, He-HTLC, that is secure even in the presence of actively rational miners.
+
+Now, for those of you who really want to understand the concerns and the solution, here we go :-)
+
+## What is a Hashed Time-locked Contract?
+
+A hashed time-locked contract allows a conditional transfer of $v^{dep}$ tokens from a payer (Bob) to a payee (Alice) based on two conditions:
+(i) Alice presents a pre-image $pre_a$ of an agreed upon hash value (key to a hash-lock),
+(ii) Alice presents $pre_a$ within time $T$ (time-lock).
+
+If Alice satisfies these two conditions, then she obtains $v^{dep}$ tokens from Bob. Otherwise, after time $T$, Bob can spend these tokens (i.e., obtain a refund). The refund mechanism exists for situations where Alice may be inactive.
+
+Thus, HTLC is parameterized by the public keys of the payer and payee, the pre-image $pre_a$ and the timelock parameter $T$. Note that, when we say, "Alice _presents_ a pre-image $pre_a$", she  includes this in the mempool, and this is picked up by a miner/validator at the L1 layer. Similarly, the time $T$ is defined in terms of number of blocks at the L1 layer.
+
+The contract can be represented as the following:
+
+
+![](https://i.imgur.com/DbWQGFJ.png =600x)
+
+
+A pictorial representation of an example set of events is described below. The figure shows a utility of $v^{dep}$ for Alice, and some mining fees, say $f^{dep}_A$, for miner $M_3$. In the example, we assume there are three miners $M_1, M_2$ and $M_3$, in addition to Alice and Bob.
+
+If Alice provides a signed transaction $tx^{dep}_A$, she spends $v^{dep}$ tokens.
+![](https://i.imgur.com/Xkp4slG.png)
+
+Otherwise, after time $T$, Bob can spend those tokens.
+
+![](https://i.imgur.com/rPdenEb.png)
+
+## Bribery Attacks in HTLC
+
+Observe that miners are the ones who decide the "source of truth" of events that happen in the ecosystem, and they do so for some fees that are paid by the users of the system. If Alice and Bob are both honest (altruistic), then the above protocol suffices. However, we may see a different picture when some of these parties are rational.
+
+Miners include Alice's transaction $tx^{dep}_A$ for a mining fee. Somehow, if Bob offers them an incentive (e.g., a higher fee) to censor $tx^{dep}_A$, then Bob can redeem $v^{dep}$ for himself. This can be advantageous for both, Bob and the miners. Such attacks are referred to as _bribery attacks_ and have been identified in this context by [Winzer, Herd and Faust](https://eprint.iacr.org/2019/748.pdf), and [Tsabary et al.'20](https://arxiv.org/pdf/2006.12031.pdf).
+
+We intuitively present two strategies for Bob to bribe miners.
+
+1. **Pay per block strategy \[[WHF'19](https://eprint.iacr.org/2019/748.pdf)\].** In this strategy, Bob sets up a contract to pay every block producer at height $t \leq T$ a fee $> f^{dep}_A$ if Alice's transaction has not been included in the chain at time $t$. This can perhaps be set up in different ways, e.g., the payment being conditional on the success of censoring until time $T$. \[WHF'19\] show that if all the miners are rational, it is strictly advantageous for them to censor Alice's transaction.
+
+![A graphical depiction of pay per block strategy by Bob](https://i.imgur.com/Jo5P5W4.png)
+
+2. **Probabilistic pay per miner strategy \[[Tsabary et al.'20](https://arxiv.org/pdf/2006.12031.pdf)\].** In this strategy, the authors show that if Bob creates a competing transaction with fee $\frac{f^{dep}_A-f}{\lambda_{\text{min}}} + f$, then miners are better off in expectation to censor Alice's transaction and prefer to wait for the opportunity to add Bob's transaction at time $T$. Here, $f$ denotes highest offered fee by any other mempool transaction and $\lambda_{\text{min}}$ denotes a number representing the minimum computation power (as a fraction) of any miner participating in the network. Thus, all miners with a larger computation power are incentivized. Assuming $\lambda_{\text{min}}$ is set sufficiently low (the authors argue $\lambda_{\text{min}} = 0.01$ is sufficient), most miners can be incentivized to carry out such a censorship.
+
+## MAD-HTLC: Let's Disincentivize Bribery
+
+In addition to presenting a strategy to bribe, [Tsabary et al.](https://arxiv.org/pdf/2006.12031.pdf) also present an elegant protocol to disincentivize bribery attacks by Bob; they called their protocol MAD-HTLC (where MAD stands for mutually assured destruction). 
+
+MAD-HTLC uses the lack of trust between Bob and miners to disincentivize bribery. Their protocol relies on two key ideas:
+(i) **Bribe $\rightarrow$ confiscate.** If Bob attempts to bribe, they introduce a path for miners to confiscate all the deposited tokens. This ensures that Bob has no utility if he attempts to attack.
+(ii) **Lose a collateral.** To disincentivize Bob further, they introduce a _collateral contract_ where Bob deposits a collateral $v^{col}$, and loses it if he attempts to bribe.
+
+The deposit and collateral contracts look like the following.
+![](https://i.imgur.com/DSAjMkY.png)
+
+Compared to the earlier deposit contract, refunding Bob now requires presenting an additional pre-image $pre_b$ in path $dep\text{-}B$. As is, this does not change the honest paths for Alice or Bob. However, if Bob attempts to cheat (e.g., bribe miners and attempt to refund when $pre_a$ is available in the mempool), then the miners can instead redeem $v^{dep}$ using path $dep\text{-}M$ by presenting $(pre_a, pre_b)$. Thus, this additional path acts as a deterrant for Bob to bribe.
+
+The collateral contract requires Bob to deposit an additional amount $v^{col}$. Bob can retrieve the collateral back at any time after $T$. Contrary to the deposit contract, Bob does not need to present pre-image $pre_b$ to do this. This makes sense since the collateral needs to be refunded even if Alice has redeemed the deposit contract through path $dep\text{-}A$. However, if the pre-image $pre_a$ is available and Bob attempts to bribe, miners can confiscate the collateral too.
+
+The following graphic represents an attempted bribery attack by Bob with MAD-HTLC.
+
+
+![](https://i.imgur.com/sCaALsb.png)
+
+## Revisiting Incentives in HTLC
+
+The previous section suggests that we have a situation where following the protocol is the best strategy for all the parties. Is that true? Well, the answer depends on how we model the actions available to miners.
+
+In our recent work, [He-HTLC: Revisiting Incentives in HTLC](https://eprint.iacr.org/2022/546.pdf), we observed that MAD-HTLC is secure only assuming _**passively rational miners**_ where the miners maximize their utility in terms of the number of tokens based on transactions available in the mempool. However, if miners are _**actively rational**_, i.e., if they engage in external protocols and actively seek out opportunities in the system, then they can potentially obtain a higher utility. This exposes a new vector of attacks under which the earlier solution is not secure. Note that considering such actively rational behaviors is not merely a theoretical exposition; as evidenced through the growth of Flashbots, it appears miners are willing to take steps to improve their earnings, if they can.
+
+### Can we still do some bribery in MAD-HTLC?
+
+It turns out if the miners are actively rational, then there are still opportunities for attacks. At a high-level, observe that if Alice is cheated upon, then Bob and miners together may earn more than what they would in an honest execution. In our work, we show three different attacks to achieve this goal -- _a success independent reverse bribery attack (SIRBA), a success dependent reverse bribery attack (SDRBA), and a hybrid bribery attack_. In this post, we will intuitively discuss SDRBA and the hybrid attack.
+
+#### Success dependent reverse bribery attack (SDRBA)
+If Alice is cheated upon, here are some potential outcomes for each of the parties under two different executions.
+
+![](https://i.imgur.com/n7VsqEt.png =400x)
+
+For some values of $v^{dep}$ and $v^{col}$, the attack scenario is clearly better for both Bob and the miners. Moreover, observe that while we consider the utility due to the collateral contract for the honest execution, we ignore it altogether in the potential attack scenario. Thus, the attack scenario would yield an even better outcome for Bob and/or miners.
+
+**How can we reach such an attack outcome?** Well, a miner can obtain $pre_b$ from Bob and confiscate $v^{dep}$ through path $dep\text{-}M$; in exchange, it can bribe Bob with $v^{col} + \epsilon$. We call such a bribery attempt **_reverse bribery_** since the role of Bob and miners have reversed compared to bribery attacks.
+
+The natural question is, how does this fair exchange between a Bob and miner take place? Clearly, if Bob offers the miner with $pre_b$ first, then the miner is not incentivized to bribe Bob. On the other hand, if the miner bribes Bob first, Bob does not have an incentive to share $pre_b$ anymore. Thus, no party would want to make the first move.
+
+There may be multiple ways of solving this problem, we sketch one such approach using a Trusted Execution Environment (TEE) here. Observe that mining a block does not require access to the entire transaction; a hash of the transaction suffices. Thus, Bob can create $tx^{dep}_M$ containing $(pre_a, pre_b)$ and share the hash $h = H(tx^{dep}_M)$ with the miner. However, the miner needs to be convinced that this transaction indeed pays the miner and contains $pre_b$. This guarantee can be provided by a TEE attestation attesting to the correct construction of $tx^{dep}_M$. The miner, on its part, can attempt to mine a block and in addition to $h$, also include a bribe to Bob. If the miner successfully mines the block, the miner shares this block with Bob, who confirms a successful bribe and shares the block along with $tx^{dep}_M$ with everyone.
+
+Note that the above protocol indeed achieves the desired all-or-none property. If the miner does not include a bribe to Bob in the block, Bob would not reveal $tx^{dep}_M$ and the block would be invalid. On the other hand, Bob does not have the option of only obtaining the bribe since the same block contains $tx^{dep}_M$.
+
+A graphical representation of the attack is as follows.
+
+![](https://i.imgur.com/OO0ApDb.png)
+
+In this attack, Bob and $M_3$ perform an exchange and respectively earn $v^{col}+\epsilon$ and $v^{dep}-(v^{col} + \epsilon)$. Since $tx^{col}_M$ can only be redeemed after time $T$, it is redeemed by $M_2$.
+
+We call this a _success-dependent reverse bribery attack_ since in this attack a miner will only pay a bribe to Bob if it has the opportunity to redeem $v^{dep}$ through $dep\text{-}M$. Note that the expected gain for a miner who successfully mines $tx^{dep}_M$ is $v^{dep} + \lambda v^{col}$ out of which Bob is bribed $> v^{col}$ ($\lambda$ is the fraction of the computation power of miner). Thus, the miner is incentivized to perform the attack when $v^{dep} > (1-\lambda) v^{col}$. This also implies that we can defend against this attack using a large enough collateral.
+
+#### Hybrid delay-reverse bribery attack (HyDRA)
+
+SDRBA can be defended by using a large enough collateral. The question then is, can we still perform an attack if the collateral is smaller than the threshold? 
+
+To answer this question, observe that the expected gain of $tx^{dep}_M$ is $v^{dep} + \lambda v^{col}$ happens because $tx^{col}_M$ can only be mined at time $\geq T$. In turn, this constraint necessitates two different transactions for redeeming the deposit and collateral contract if $tx^{dep}_M$ is redeemed at time $< T$. If we can somehow ensure that the two contracts are redeemed by a miner in a single block, then the gain for the miner is $v^{dep} + v^{col}$, thereby not requiring the constraint between $v^{dep}$ and $v^{col}$.
+
+We achieve this using a combination of bribery and reverse bribery where Bob funds the bribery attack until time $T$ based on the future income of a reverse bribery attack. A graphical representation of such an attack is presented below.
+
+![](https://i.imgur.com/Xr2Nr30.png)
+
+## Towards Fixing HTLC (Once Again) with He-HTLC
+
+We will now describe our solution that works correctly even in the presence of actively rational miners. Let us summarize the key reasons for successful attacks on HTLC. 
+- **Disproportionate earnings.** At the highest level, the attack is feasible because some party earns too much if other parties somehow co-operate. In the case of reverse bribery attacks, it is because the miners are overly compensated by MAD-HTLC when Bob attempts to bribe. In the case of bribery attacks, the reason is more fundamental -- HTLC requires for there to be a path where Bob is refunded the entire amount.
+- **Atomic redemption.** There exists a path where Bob or miners can redeem all of the tokens in a single transaction. This transaction can be used in an SDRBA-like attack.
+
+**Disincentivizing reverse bribery.** The easier task is to disincentivize reverse bribery. Note that the miner would be incentivized to confiscate even when it is paid a lower amount. How low should this be? low enough that the miner is not able to afford to bribe Bob. Since Bob obtains $v^{col}$ as a refund, any amount $\leq v^{col}$ can be the confiscation amount.
+
+**Disincentivizing bribery.** This is the harder task since there is always a gap in what Bob can be refunded ($v^{dep} + v^{col}$) and the miner receives as a confiscation amount ($\leq v^{col}$). To address this concern, we utilize the existence of multiple miners and break the atomicity in redemption to somehow ensure that Bob needs to bribe sufficiently many distinct miners a sufficiently large amount before he can obtain his refund.
+
+![](https://i.imgur.com/QfqwBCw.png)
+
+A graphical representation of what we want to achieve is shown above. Intuitively, if Bob wants to censor Alice's transaction, we want him to pay sufficiently many miners a high bribe (e.g., $> v^{col}$). Eventually, this amount would exceed $v^{dep}$ and Bob's net earnings would be $< v^{col}$.
+
+We achieve this intuition by requiring Bob to obtain a refund with two transactions that are at least $l$ blocks apart (thus breaking atomic redemption). In the first transaction, Bob presents $pre_b$ on the chain. This step guarantees that, if $pre_a$ is available on the chain, then Bob's collateral will be confiscated if it is advantageous for miners to do so. Consequently, it also necessitates a bribe $> v^{col}$ for every subsequent miner in the next $l$ blocks to censor confiscation. Assuming there are $\kappa$ distinct miners not colluding with Bob in the next $l$ blocks (we can conservatively estimate $\kappa$), then we need $v^{col} > \frac{v^{dep}}{\kappa - 1}$ to disincentivize bribery. Our approach achieves a time-collateral trade-off for Bob: larger the collateral, faster the refund, and vice versa.
+
+To summarize, our solution, He-HTLC, is as follows:
+
+![](https://i.imgur.com/vAfMEAI.png =500x)
+
+- If Alice reveals $pre_a$, she obtains $v^{dep}$ and Bob is refunded $v^{col}$ through path $dep\text{-}A$. 
+- If Alice is inactive, Bob can obtain $v^{dep} + v^{col}$ through paths $dep\text{-}B + col\text{-}B$ that are $l$ blocks apart. 
+- However, if both $pre_a$ and $pre_b$ are available, the miners can confiscate $v^{col}$ through path $col\text{-}M$.
+
+The only remaining point to be addressed is the fact that $v^{col} \leq v^{dep}$; otherwise, Alice and miners may be incentivized to engage in a reverse bribery and attack Bob through path $col\text{-}M$.
+
+
+### Additional Notes
+
+- Our protocol is called He-HTLC or Helium HTLC since it is a lightweight solution that is inert to any incentive manipulation.
