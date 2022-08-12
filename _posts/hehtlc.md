@@ -1,10 +1,4 @@
 ---
-title: He-HTLC: Revisiting Incentives in HTLC
-tags:
-- blockchain
-- incentives
-- L2
-author: Kartik Nayak, Sarisht Wadhwa, Jannis Stoeter, Fan Zhang
 ---
 
 # He-HTLC: Revisiting Incentives in HTLC
