@@ -54,11 +54,11 @@ Since FT-SMR protocols agree on a sequence of values, practical approaches for S
 
 ### Seperation of concerns
 
-The process of adding a new command to a FT-SMR can be decomposed into three parts:
+The process of adding a new command to a FT-SMR can be decomposed into three tasks:
 
 1. Dissimnating the command 
 2. Committing the command
-3. Executing the command
+3. Executing the command  
 
 Many moden FT-SMR systems have seperate sub-systems for each task. This allows each task to works as a sperate queeues that stream tasks between them. Seperating into sub-systems allows to optimize and tune in one and to better detect bottlnecks. See [this post](https://decentralizedthoughts.github.io/2019-12-06-dce-the-three-scalability-bottlenecks-of-state-machine-replication/) for the basics of SMR task seperation and [this post](https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/) for the modern seperation of the data dissimination stage. 
 
