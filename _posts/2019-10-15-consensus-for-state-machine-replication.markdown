@@ -51,6 +51,20 @@ The requirements for a FT-SMR seem similar to those for BB and BA. Safety is aki
 
 Since FT-SMR protocols agree on a sequence of values, practical approaches for SMR (such as [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf), [Paxos](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf), etc.) use a steady-state-and-view-change approach to architect log replication. In the steady-state, there is a designated leader that drives consensus. Typically, the leader does not change until it fails (e.g., due to network delays) or if Byzantine behavior is detected. If the leader fails, the replicas vote to de-throne the leader and elect a new one. The process of choosing a new leader is called view-change. The presence of a single leader for more extended periods yields simplicity and efficiency when the leader is honest. However, it also reduces the amount of *decentralization* and can cause delays if Byzantine replicas are elected as leaders.
 
-Acknowledgments: thanks to [Maxwill](https://twitter.com/tensorfi) for suggestions to improve the definition of safety and liveness.
+
+### Seperation of concerns
+
+The process of adding a new command to a FT-SMR can be decomposed into three parts:
+
+1. Dissimnating the command 
+2. Committing the command
+3. Executing the command
+
+Many moden FT-SMR systems have seperate sub-systems for each task. This allows each task to works as a sperate queeues that stream tasks between them. Seperating into sub-systems allows to optimize and tune in one and to better detect bottlnecks. See [this post](https://decentralizedthoughts.github.io/2019-12-06-dce-the-three-scalability-bottlenecks-of-state-machine-replication/) for the basics of SMR task seperation and [this post](https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/) for the modern seperation of the data dissimination stage. 
+
+
+### Acknowledgments
+
+thanks to [Maxwill](https://twitter.com/tensorfi) for suggestions to improve the definition of safety and liveness.
 
 Please leave comments on [Twitter](https://twitter.com/kartik1507/status/1185321750881538050?s=20)
