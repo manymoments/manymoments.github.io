@@ -4,24 +4,33 @@ date: 2020-09-21 09:34:00 -04:00
 ---
 
 {: .box-note}
-This page is a dynamically changing index of all posts on Decentralized Thoughts. Over time it will contain material for a graduate course on Blockchains (currently with a focus on consensus, but stay tuned). You can read all the posts chronologically [here](https://decentralizedthoughts.github.io/).
+This page contains material for a graduate course on Blockchains and Distributed Computing with a dash of Cryptography (stay tuned for more). Or read [posts chronologically](https://decentralizedthoughts.github.io/).
 
-We would love to get your feedback and thoughts on [Twitter](https://twitter.com/ittaia/status/1421066572207169544?s=20).
+We would love to get your feedback. If you find a post useful, or have a suggestion to improve, drop us a comment on [Twitter](https://twitter.com/ittaia/status/1421066572207169544?s=20).
 
 
 # Basics, Foundations, and Classics
 
-You can start with the definition of [Consensus and Agreement](/2019-06-27-defining-consensus/). Then learn about the [network model](/2019-06-01-2019-5-31-models/), the [threshold adversary](/2019-06-17-the-threshold-adversary/) model, and the [power of the adversary](/2019-06-07-modeling-the-adversary/). Finally, many protocols need a [trusted setup phase](/2019-07-19-setup-assumptions/). You can learn about different [relaxations of Broadcast](/2019-10-22-flavours-of-broadcast/).
+Start with the definition of [Consensus and Agreement](/2019-06-27-defining-consensus/). Then learn about the [network model](/2019-06-01-2019-5-31-models/), the [threshold adversary](/2019-06-17-the-threshold-adversary/) model, and the [power of the adversary](/2019-06-07-modeling-the-adversary/). Many protocols need a [trusted setup phase](/2019-07-19-setup-assumptions/).
+The [consensus cheat sheet](https://decentralizedthoughts.github.io/2021-10-29-consensus-cheat-sheet/) gives a quick overview of what is possible and impossible. You can build half a course just from the upper bounds and lower bounds linked from it. 
 
-Checkout out our [consensus cheat sheet](https://decentralizedthoughts.github.io/2021-10-29-consensus-cheat-sheet/) for a quick overview of what is possible and impossible.
+## Variants of consensus and broadcast 
 
 [Approximate agreement](https://decentralizedthoughts.github.io/2022-06-07-approx-agreement-one/) is a variation that considers rational input values.
 
+This post surcharge many [relaxations of Broadcast](/2019-10-22-flavours-of-broadcast/).
+
+
+
 ## Synchronous Protocols
 
-Under synchrony, a classic Byzantine Broadcast protocol is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/). You can read about more recent protocols such as [Sync HotStuff](/2019-11-12-Sync-HotStuff/), an [optimal optimistically responsive synchronous protocol](/2020-06-12-optimal-optimistic-responsiveness/), and simple streamlined synchronous protocol called [Streamlet](/2020-05-14-streamlet/). For more related work there is a survey of [authenticated protocols under the synchrony assumption](/2019-11-11-authenticated-synchronous-bft/).
+The Synchronous is a good place to start because protocols are simpler. 
 
 For a simple and classic Synchronous Byzantine agreement protocol, checkout [Phase-King](https://decentralizedthoughts.github.io/2022-06-09-phase-king-via-gradecast/).
+
+Under synchrony, a classic Byzantine Broadcast protocol (with a PKI) is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/). 
+
+More recent State Machine Replication protocols such as [Sync HotStuff](/2019-11-12-Sync-HotStuff/), an [optimal optimistically responsive synchronous protocol](/2020-06-12-optimal-optimistic-responsiveness/), and simple streamlined synchronous protocol called [Streamlet](/2020-05-14-streamlet/). This post provides a survey of [authenticated protocols under the synchrony assumption](/2019-11-11-authenticated-synchronous-bft/).
 
 For a simple non-equivocation protocol, checkout [Crusader Broadcast](). 
 
@@ -32,32 +41,42 @@ For a simple non-equivocation protocol, checkout [Crusader Broadcast]().
 
 Modern variants of the classic protocols of Paxos and Raft are covered in [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/) and [Simplifing Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/). [Log Paxos](https://decentralizedthoughts.github.io/2021-09-30-distributed-consensus-made-simple-for-real-this-time/) is a modern take on multi-Paxos. It's both surprisingly simple and concretely efficient. 
 
-For Byzantine adversaries, checkout [Information Theoretic HotStuff](https://decentralizedthoughts.github.io/2021-09-20-information-theoretic-hotstuff-it-hs-part-one/).
+For Byzantine adversaries, see [Information Theoretic HotStuff](https://decentralizedthoughts.github.io/2021-09-20-information-theoretic-hotstuff-it-hs-part-one/).
 
 ## Asynchronous Protocols
 
 One of the core challenges of distributed computing is tolerating failures in an asynchronous network. The classic [FLP lower bound](/2019-12-15-consensus-model-for-FLP/) is a fundamental result showing the impossibility of consensus under even one crash fault. 
 
-A fundamental building block in asynchrony is the [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/) protocol. 
+A basic building block in asynchrony is the [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/) protocol. 
 
 How do you measure [round complexity in asynchrony](https://decentralizedthoughts.github.io/2021-09-29-the-round-complexity-of-reliable-broadcast/) (and can you improve the round complexity of reliable broadcast)? 
 
 The multi-leader generalization of reliable broadcast is called [Reliable Gather](https://decentralizedthoughts.github.io/2021-03-26-living-with-asynchrony-the-gather-protocol/). 
 
-Our series on the marvels of Asynchronous Agreement: we (1) [define the problem](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/); (2) present [Ben-Or's protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/); (3) provide a [modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/); (4) Introduce [Crusader Agreement and Binding Crusader Agreement](https://decentralizedthoughts.github.io/2022-04-05-aa-part-four-CA-and-BCA/); and (5) use it to efficiently solve [Binary Byzantine Agreement from a strong common coin](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/).
+Series on Asynchronous Agreement: 
+
+1. [define the problem](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/);
+2. present [Ben-Or's protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/);
+3. provide a [modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/);
+4. Introduce [Crusader Agreement and Binding Crusader Agreement](https://decentralizedthoughts.github.io/2022-04-05-aa-part-four-CA-and-BCA/); 
+5. use BCA to efficiently solve [Binary Byzantine Agreement from a strong common coin](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/).
  
 
 
 # State Machine Replication
 
-We begin by defining [state machine replication](/2019-10-15-consensus-for-state-machine-replication/) (SMR) and talk about different degrees of [SMR fault tolerance](/2019-10-25-flavours-of-state-machine-replication/) and the [ideal state machine model and Linearizability](https://decentralizedthoughts.github.io/2021-10-16-the-ideal-state-machine-model-multiple-clients-and-linearizability/). The scalability and performance of a State Machine Replication system is not just about [consensus, but also about data and execution](/2019-12-06-dce-the-three-scalability-bottlenecks-of-state-machine-replication/).
+This post defines [state machine replication](/2019-10-15-consensus-for-state-machine-replication/) (SMR). There are several different levels of [SMR fault tolerance](/2019-10-25-flavours-of-state-machine-replication/). 
 
-Start with a [simple SMR for crash failures](/2019-11-01-primary-backup/). Extend SMR to omission failures. [First via single shot](/2020-09-13-synchronous-consensus-omission-faults/) and then via the [lock-commit](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/) paradigm to [multi-shot consensus](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/).
+This post gives a formal definition of the [ideal state machine model and Linearizability](https://decentralizedthoughts.github.io/2021-10-16-the-ideal-state-machine-model-multiple-clients-and-linearizability/). 
+
+The scalability and performance of a State Machine Replication system is not just about [consensus, but also about data and execution](/2019-12-06-dce-the-three-scalability-bottlenecks-of-state-machine-replication/).
+
+How [DAGs improve the performance of SMR](https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/).
+
+To learn about upper bounds, start with a [simple SMR for crash failures](/2019-11-01-primary-backup/). Then extend SMR to omission failures: [First via single shot](/2020-09-13-synchronous-consensus-omission-faults/) and then via the [lock-commit](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/) paradigm to [multi-shot consensus](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/).
 
 
 In partial synchrony, [Log Paxos](https://decentralizedthoughts.github.io/2021-09-30-distributed-consensus-made-simple-for-real-this-time/) shows how to extend Paxos to multi-Paxos in a straightforward and efficient manner.
-
-
 
 
 # Lower Bounds
@@ -84,22 +103,38 @@ Lower bounds give us powerful tools to understand the fundamental limitations an
 
 # Blockchains
 
-What was the [first blockchain (or how to timestamp a digital document)](/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/)?  Do proof-of-work blockchains need any [setup assumptions?](/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/) What does [checkpointing a blockchain](/2019-09-13-dont-trust-checkpoint/) mean?  What is [Nakamoto Consensus](/2021-10-15-Nakamoto-Consensus/)? How do you [prove it is secure](/2019-11-29-Analysis-Nakamoto/). What is the problem of [selfish mining](/2020-02-26-selfish-mining/)?
+What was the [first blockchain (or how to timestamp a digital document)](/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/)?  
+
+Do proof-of-work blockchains need any [setup assumptions?](/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/)?
+
+What does [checkpointing a blockchain](/2019-09-13-dont-trust-checkpoint/) mean?  
+
+What is [Nakamoto Consensus](/2021-10-15-Nakamoto-Consensus/)? 
+
+How do you [prove it is secure](/2019-11-29-Analysis-Nakamoto/)? 
+
+What is the problem of [selfish mining](/2020-02-26-selfish-mining/)?
 
 The simplest L2 solution is a [payment channel](/2019-10-25-payment-channels-are-just-a-two-person-bfs-smr-systems/).
 
 # Cryptography
 
-Some basics:
+Some important tools:
 
-- [Cryptographic hash function](/2020-08-28-what-is-a-cryptographic-hash-function/) and [Merkle Ttrees](https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/)
+- [Cryptographic hash functions](/2020-08-28-what-is-a-cryptographic-hash-function/).
 
-- [Polynomials over a finite field](/2020-07-17-the-marvels-of-polynomials-over-a-field/) and their use for [Polynomial secret sharing](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) and even [Zero knowledge proofs](https://decentralizedthoughts.github.io/2020-12-08-a-simple-and-succinct-zero-knowledge-proof/)
+- [Merkle Ttrees](https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/).
 
-More advanced:
+- A lightweight mathematical intro to [Polynomials over a finite field](/2020-07-17-the-marvels-of-polynomials-over-a-field/).
+
+- The basics of [Polynomial secret sharing](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/).
+- 
+- A glimpse at [Zero knowledge proofs](https://decentralizedthoughts.github.io/2020-12-08-a-simple-and-succinct-zero-knowledge-proof/)
 
 
-- [Bilinear accumulators](/2020-04-02-bilinear-accumulators-for-cryptocurrency/) and [range proofs](/2020-03-03-range-proofs-from-polynomial-commitments-reexplained/).
+- [Bilinear accumulators](/2020-04-02-bilinear-accumulators-for-cryptocurrency/) from polynomial commitments.
+
+- [range proofs](/2020-03-03-range-proofs-from-polynomial-commitments-reexplained/) from polynomial commmitments.
 
 - Private set intersection: [part 1](/2020-03-29-private-set-intersection-a-soft-introduction/) and [part 2](/2020-07-26-private-set-intersection-2/). Apple is using PSI for [CSAM detection](https://decentralizedthoughts.github.io/2021-08-29-the-private-set-intersection-psi-protocol-of-the-apple-csam-detection-system/).
 
@@ -134,3 +169,9 @@ More advanced:
 - [Colordag: From always-almost to almost-always 50% selfish mining resilience](https://decentralizedthoughts.github.io/2022-03-07-colordag-from-always-almost-to-almost-always-50-percent-selfish-mining-resilience/)
 
 - [Consensus by Dfinity: in synchrony](https://decentralizedthoughts.github.io/2022-03-12-dfinity-synchrony/) and [Consensus by Dfinity - Part II (Internet Computer Consensus): in partial synchrony](https://decentralizedthoughts.github.io/2022-03-12-dfinity-partial-synchrony/) 
+
+- [Sandglass: Safe Permisionless Consensus](https://decentralizedthoughts.github.io/2022-06-21-sandglass/).
+
+- [DAG Meets BFT - The Next Generation of BFT Consensus](https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/).
+
+- [He-HTLC - Revisiting Incentives in HTLC](https://decentralizedthoughts.github.io/2022-08-12-hehtlc/).
