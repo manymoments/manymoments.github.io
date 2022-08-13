@@ -21,7 +21,7 @@ Gradecast is a key building block where each party has an input $v \in \{V\}$ an
 * **(Knowledge of Agreement):** If an honest party outputs a value with grade 2, then all honest parties output this value.
 
 
-Consider the following simple 2 round gradecast protocol: 
+Consider the following two-round gradecast protocol: 
 
 ```
 input v
