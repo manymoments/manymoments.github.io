@@ -1,6 +1,6 @@
 ---
 title: Flavours of Broadcast
-date: 2019-10-22 07:44:00 -07:00
+date: 2019-10-22 10:44:00 -04:00
 author: Ittai Abraham
 ---
 
