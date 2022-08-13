@@ -17,8 +17,8 @@ Each party has an input $v \in \{V\}$ and parties are ordered $P_1,\dots, P_n$. 
 
 Gradecast is a key building block where each party has an input $v \in \{V\}$ and needs to output a  $value \in \{V\}$ and a $grade \in \{0, 1,2\}$ with the following properties:
 
-**(Validity):** If all honest parties have the same input value, then all of them output this value with grade 2.
-**(Knowledge of Agreement):** If an honest party outputs a value with grade 2, then all honest parties output this value.
+* **(Validity):** If all honest parties have the same input value, then all of them output this value with grade 2.
+* **(Knowledge of Agreement):** If an honest party outputs a value with grade 2, then all honest parties output this value.
 
 
 Consider the following simple 2 round gradecast protocol: 
