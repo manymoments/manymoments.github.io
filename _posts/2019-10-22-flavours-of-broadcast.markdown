@@ -51,6 +51,9 @@ A protocol solves the **crusader broadcast** problem:
 1. **Weak Agreement**: If an honest party outputs x, then all honest parties output either x or ⊥.
 2. **Validity**: If the sender is honest, then all honest parties output the sender's value.
 
+
+See [this post](https://decentralizedthoughts.github.io/2022-06-19-crusader-braodcast/) for Crusader Boardcast with $O(n^2)$ words and $O(1)$ rounds, for any $f<n$ given a PKI.
+
 [Feldman and Micali 1988, 1997](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Distributed%20Computation/An%20Optimal%20Probabilistic%20Algorithm%20for%20Byzantine%20Agreement.pdf) strengthened the definition of crusader agreement so the output of the protocol is *both* a decision value and a $grade \in \{0,1,2\}$.
 
 A protocol solves the **Gradecast** problem:
@@ -60,7 +63,7 @@ A protocol solves the **Gradecast** problem:
 
 Gradecast [and its variants](https://eprint.iacr.org/2006/065.pdf) are very important building blocks in many MPC and Byzantine Agreement protocols.
 
-Note on lower bounds: impossibility for $n\leq 3f$ for deterministic protocol was shown by [Dolev 1982](https://www.cse.huji.ac.il/~dolev/pubs/byz-strike-again.pdf). For randomized protocols, even a small constant error is impossible. This extension of the FLM lower bound to crusader agreement is folklore and was first mention by [Goldwasser and Lindell, 2002](https://eprint.iacr.org/2002/040.pdf).
+Note on lower bounds for adversaries that can simulate (for example computationally unbounded adversaries): impossibility for $n\leq 3f$ for deterministic protocol was shown by [Dolev 1982](https://www.cse.huji.ac.il/~dolev/pubs/byz-strike-again.pdf). For randomized protocols, even a small constant error is impossible. This extension of the FLM lower bound to crusader agreement is folklore and was first mention by [Goldwasser and Lindell, 2002](https://eprint.iacr.org/2002/040.pdf), see [this post](https://decentralizedthoughts.github.io/2021-10-04-crusader-agreement-with-dollars-slash-leq-1-slash-3$-error-is-impossible-for-$n-slash-leq-3f$-if-the-adversary-can-simulate/) for more details.
 
 
 ### Broadcast with Abort
