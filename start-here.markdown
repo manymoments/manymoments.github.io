@@ -64,7 +64,7 @@ In partial synchrony, [Log Paxos](https://decentralizedthoughts.github.io/2021-0
 
 Lower bounds give us powerful tools to understand the fundamental limitations and model assumptions. 
 
-- Folklore: [Consensus with Omission failures](/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) requires $f<n/2$.
+- Folklore (aka CAP theorem): [Consensus with Omission failures](/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) requires $f<n/2$.
 
 - Dwork, Lynch, Stockmeyer 1988 ([DLS](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf)) lower bound: [Byzantine Consensus in Partial Synchrony](/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) requires $f<n/3$.
 
@@ -98,7 +98,8 @@ Some basics:
 
 More advanced:
 
-- [Bilinear accumulators](/2020-04-01-bilinear-accumulators-for-cryptocurrency/) and [range proofs](/2020-03-02-range-proofs-from-polynomial-commitments-reexplained/).
+
+- [Bilinear accumulators](/2020-04-02-bilinear-accumulators-for-cryptocurrency/) and [range proofs](/2020-03-03-range-proofs-from-polynomial-commitments-reexplained/).
 
 - Private set intersection: [part 1](/2020-03-29-private-set-intersection-a-soft-introduction/) and [part 2](/2020-07-26-private-set-intersection-2/). Apple is using PSI for [CSAM detection](https://decentralizedthoughts.github.io/2021-08-29-the-private-set-intersection-psi-protocol-of-the-apple-csam-detection-system/).
 
