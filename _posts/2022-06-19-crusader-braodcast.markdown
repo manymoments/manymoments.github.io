@@ -8,7 +8,7 @@ author: Gilad Stern and Ittai Abraham
 
 In  previous posts we showed that the classic [Dolev-Strong](https://decentralizedthoughts.github.io/2019-12-22-dolev-strong/) broadcast protocol takes $O(n^3)$ words and $t+1$ rounds and that [Dolev Reischuk](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/) show that $\Omega(n^2)$ is needed and [it is also known that](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) $t+1$ rounds are needed. So while the number of rounds is optimal, to this day it remains an open question of obtaining $O(n^2)$ broadcast against a strongly adaptive adversary (see [post](https://decentralizedthoughts.github.io/2021-09-20-optimal-communication-complexity-of-authenticated-byzantine-agreement/) for recent progress).
 
-In this post we will show that for a problem that is easier than broadcast, called **Crusader Broadcast**, $O(n^2)$ words and $O(1)$ rounds is doable. In later posts we will ask if $\Omega(n^2)$ words are needed for Crusader Broadcast and tie this result to known [Eclipse style attacks in the world of blockchain, and to new Dolev Reischuk type lower bounds](https://eprint.iacr.org/2022/730.pdf).
+In this post we will show that for a problem that is easier than broadcast, called **Crusader Broadcast**, $O(n^2)$ words and $O(1)$ rounds is doable for any $f<n$ given a PKI. In later posts we will ask if $\Omega(n^2)$ words are needed for Crusader Broadcast and tie this result to known [Eclipse style attacks in the world of blockchain, and to new Dolev Reischuk type lower bounds](https://eprint.iacr.org/2022/730.pdf).
 
 
 ## Crusader Broadcast: from Byzantine to Omission
@@ -21,7 +21,7 @@ For a formal definition, consider a network of $n$ parties with up to $f$ Byzant
 
 A Crusader Broadcast protocol has the following properties:
 
-* **Validity**: If $s$ is nonfaulty, then all nonfaulty parties output $m$.
+* **Validity**: If $s$ is nonfaulty, then all nonfaulty parties output $m$.  
 * **Weak Agreement**: If two nonfaulty parties output $m,m'$ such that $m\neq \bot$ and $m'\neq \bot$, then $m=m'$.
 
 Observing the agreement property closely, we can see that if the sender is faulty, parties are always allowed to output $\bot$. However, if some nonfaulty party outputs $m$, then any other party must either output $m$ or $\bot$.
@@ -44,7 +44,7 @@ Let $\Delta$ be the maximal message delay in the system. The protocol works as f
 This protocol in words: The sender sends its signed message, parties wait for $\Delta$ time, and forward the first message they receive. They then wait for $\Delta$ more time, if they hear of any equivocation by the sender, they output $\bot$ and otherwise they output the value they heard from the sender (if they've heard any value). This protocol is also widely used as a building block in many consensus protocols and  distributed algorithms.
 
 ## Correctness
-Now we'd like to understand why this protocol works. As usual, the validity property is almost obviously true, while the true insight comes in the agreement property.
+As usual, the validity property is almost obviously true, while the true insight comes in the agreement property.
 
 ***Claim 1***: The protocol achieves Validity for any $n>f$.
 
