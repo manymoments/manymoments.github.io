@@ -20,7 +20,7 @@ Note the difference with the (modern view) of the classic Dolev-Reischuk Lower B
 #### Three obvious differences:
 1. DR82 holds even against the weaker *omission* failure adversary, while AS22 holds only against a *Byzantine* failure adversary.
 2. AS22 holds even for the weaker *Crusader Broadcast* problem, while DS82 holds only against the *Broadcast* problem.
-3. AS22 holds only against computationally  bounded adversaries (formally, when the *adversary can simulate*), while DR82 works against even against *unbounded adversaries*.
+3. AS22 holds only against computationally  bounded adversaries (formally, when the *adversary can simulate*), while DR82 works even against *unbounded adversaries*.
 
 
 #### What does this new Lower Bound imply on upper bounds?
@@ -111,4 +111,4 @@ After that, the attacker filters messages to and from the isolated nodes to diff
 
 In general, we hope that noticing the connections between Dolev-Reischuk style attacks and eclipse attacks can lead to a deeper theoretic understanding of eclipse attacks in the wild. This also suggests ways to mitigate eclipse attacks: either make it harder to simulate, have a probabilistic communication graph which cannot be influenced as easily by an attacker, or have a denser communication graph.
 
-Your thoughts on [Twitter]()
+Your thoughts on [Twitter](https://twitter.com/ittaia/status/1558894407843184640?s=21&t=76KYIfKCmlPiP1gHX7ycbw)
