@@ -1,12 +1,11 @@
 ---
-title: A new Dolev-Reischuk style Lower Bound 
-date: 2022-08-14 15:00:00 +03:00
-author: Gilad Stein, Ittai Abraham
+title: A new Dolev-Reischuk style Lower Bound
+date: 2022-08-14 08:00:00 -04:00
 tags:
 - consensus
 - lowerbound
+author: Gilad Stein, Ittai Abraham
 ---
-
 
 In a [previous post](https://decentralizedthoughts.github.io/2022-06-19-crusader-braodcast/) we discussed **Crusader Broadcast** and showed a $O(n^2)$ words, $O(1)$ time solution for $f<n$ and assuming a PKI. In this post, we overview a new [Dolev-Reischuk](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/) style bower bound ([see our full paper](https://eprint.iacr.org/2022/730.pdf)):
 
