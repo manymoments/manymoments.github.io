@@ -2,6 +2,9 @@
 title: The Marvels of Polynomials over a Field
 date: 2020-07-17 13:55:00 -04:00
 author: Ittai Abraham
+tags:
+- secret sharing
+- dist101
 ---
 
 In this series of posts, we explore the mathematical foundations of polynomials over a [field](https://en.wikipedia.org/wiki/Field_(mathematics)). These objects are at the heart of several results in computer science: [secret sharing](https://cs.jhu.edu/~sdoshi/crypto/papers/shamirturing.pdf),

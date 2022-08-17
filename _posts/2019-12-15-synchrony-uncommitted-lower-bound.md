@@ -24,7 +24,7 @@ We use the proof approach of [Aguilera and Toueg](http://citeseerx.ist.psu.edu/v
 
 To prove Theorem 1 we will prove the following two lemmas:
 
-**Lemma 2: Round $(t-1)$ Uncommitted ([Lemma 3 of AT99](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf))**: If $\mathcal{P}$ is tolerant to an adversary that can crash at most one party every round, then there must exist an uncommitted configuration at the end of round $t-1$.
+**Lemma 2: Round $(t-1)$ Uncommitted ([Lemma 3 of AT99](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf))**: If $\mathcal{P}$ solves consensus and is resilient to an adversary that can crash at most one party every round for $t$ rounds, then there must exist an uncommitted configuration at the end of round $t-1$.
 
 Recall the **proof pattern** for showing the existence of an uncommitted configuration:
 1. Proof by *contradiction*: assume all configurations are either 1-committed or 0-committed.
@@ -48,7 +48,7 @@ This concludes the induction proof which shows an uncommitted configuration $C_k
 
 So we reached the end of round $t-1$ with an uncommitted configuration. Can we decide in one round and terminate in round $t$? The following Lemma shows we cannot, and completes Theorem 1:
 
-**Lemma 3: Round $t$ Cannot Always Decide ([Lemma 1 of AT99](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf))**: If $\mathcal{P}$ has an execution that crashes at most one party every round and leads to an uncommitted configuration at the end of round $t-1$, then in that execution $\mathcal{P}$ cannot always commit by the end of round $t$.
+**Lemma 3: Round $t$ Cannot Always Decide ([Lemma 1 of AT99](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf))**: If $\mathcal{P}$ has an execution that crashes at most one party every round for $t$ rounds and leads to an uncommitted configuration at the end of round $t-1$, then in that execution $\mathcal{P}$ cannot always commit by the end of round $t$.
 
 
 **Proof of Lemma 3** is a trivial variation of the **proof pattern** that looks at deciding configurations instead of committed configurations.
@@ -70,7 +70,7 @@ A fascinating observation from this lower bound is that in order to create a lon
 In the next post, we will show that the same proof approach can be used to show that in the *asynchronous* model, there must exist an *infinite* execution even for protocols that are resilient to just one crash failure.
 
 
-**Acknowledgment.** We would like to thank Kartik for helpful feedback on this post.
+**Acknowledgment.** We would like to thank Kartik Nayak for helpful feedback on this post.
 
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1206297946045767680?s=20)
