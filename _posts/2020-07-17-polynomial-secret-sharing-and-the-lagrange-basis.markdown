@@ -1,9 +1,9 @@
 ---
 title: Polynomial Secret Sharing and the Lagrange Basis
 date: 2020-07-17 14:23:00 -04:00
-author: Ittai Abraham, Alin Tomescu
 tags:
 - secret sharing
+author: Ittai Abraham, Alin Tomescu
 ---
 
 In this post, we highlight an amazing result: Shamir's [secret sharing scheme](https://cs.jhu.edu/~sdoshi/crypto/papers/shamirturing.pdf). This is one of the most powerful uses of [polynomials over a finite field](/2020-07-17-the-marvels-of-polynomials-over-a-field) in distributed computing.
