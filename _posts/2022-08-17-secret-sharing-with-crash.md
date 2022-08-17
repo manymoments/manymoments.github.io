@@ -67,12 +67,14 @@ Similarly, Hiding follows since, for any $s$, conditioned on $p(0)=s$, the one-t
 
 Weak Termination follows since the share is non-blocking and the reconstruct only needs $n-f \geq f+1$ shares.
 
-### Note on strong termination to the share protocol
+### Note on strong termination of the share protocol
 
 As written, the dealer may crash in the middle of sending shares and parties have no way of knowing if all non-faulty parties received their phase. So parties need to **reach agreement** on whether the dealer completed or not. In particular all the [lower bounds on agreement](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) must hold.
 
-Another way to overcome this is to abstract it away and assume parties have access to broadcast channel. So the dealer, after sending all the shares, simply broadcasts ```OK```. In this model, the share protocol requires $O(n)$ words sent on private channels and $O(1)$ words of broadcast. The reconstruct protocol requires $O(n^2)$ words.
+One way to handle this is to abstract it away :-). Simply assume parties have access to **broadcast channel**. So the dealer, after sending all the shares, simply broadcasts ```OK```. If parties dont hear an OK, they know the dealer crashed and use 0 as the reconstruct value. 
+
+In this model, the share protocol requires $O(n)$ words to be sent on private channels and $O(1)$ words of broadcast. The reconstruct protocol requires $O(n^2)$ words on private channels.
 
 
 
-Comments on [Twitter]().
+Comments on [Twitter](https://twitter.com/ittaia/status/1559924466687397889?s=21&t=FOnqNyQ4un6Z5PKwNta_cg).
