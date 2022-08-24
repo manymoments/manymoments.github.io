@@ -6,7 +6,7 @@ tags:
 author: Ittai Abraham and Gilad Asharov
 ---
 
-In this post, we present the classic [Ben-or, Goldwasser, and Wigderson, 1988](https://inst.eecs.berkeley.edu/~cs276/fa20/notes/BGW88.pdf) (**BGW**) Verifiable Secret Sharing protocol (**VSS**) with the simplifications of [Feldman](https://dspace.mit.edu/handle/1721.1/14368). The analysis and notation in this post are based on the full proof of the BGW MPC protocol of [Asharov and Lindell](https://eprint.iacr.org/2011/136.pdf). This post is a continuation of our previous posts on secret sharing for [passive](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) and [crash](https://decentralizedthoughts.github.io/2022-08-17-secret-sharing-with-crash/) failures.
+In this post, we present the classic [Ben-or, Goldwasser, and Wigderson, 1988](https://inst.eecs.berkeley.edu/~cs276/fa20/notes/BGW88.pdf) (**BGW**) Verifiable Secret Sharing protocol (**VSS**) with the simplifications of [Feldman, 1988](https://dspace.mit.edu/handle/1721.1/14368). The analysis and notation in this post are based on the full proof of the BGW MPC protocol of [Asharov and Lindell](https://eprint.iacr.org/2011/136.pdf). This post is a continuation of our previous posts on secret sharing for [passive](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) and [crash](https://decentralizedthoughts.github.io/2022-08-17-secret-sharing-with-crash/) failures.
 
 Consider a **malicious adversary** controlling at most $f$ parties. The only restriction on the adversary is that honest parties have **private channels**: the adversary cannot see the content of messages sent between any two honest parties.
 
@@ -103,15 +103,18 @@ In particular, all honest parties are either: non-public and agree with $g$ or p
 
 ### Notes
 
-Complexity: in the Share protocol, the dealer first sends $O(n)$ words to each party. In the second round, each party privately sends $O(n)$ words. In the public complain round, each party broadcasts at most $O(n)$ words. In the resolve round, the dealer broadcasts at most $O(n^2)$ words. Finally in the fifth round, each party broadcasts one word.
+*Complexity*: in the Share protocol, the dealer first sends $O(n)$ words to each party. In the second round, each party privately sends $O(n)$ words. In the public complain round, each party broadcasts at most $O(n)$ words. In the resolve round, the dealer broadcasts at most $O(n^2)$ words. Finally in the fifth round, each party broadcasts one word.
 
 Total of $O(n^2)$ words in private channels and $O(n^2)$ words of broadcast. Note that $O(n^2)$ words of broadcast requires at least $O(n^3)$ words to be received overall. 
 
-Good case: if all parties are honest then we can use [two rounds of silence](https://arxiv.org/abs/1805.07954)
+  
+*Open question*: can the worst case word complexity of VSS in this setting be reduced to  $o(n^3)$ received words?
+
+*Good case complexity*: if all parties are honest then we can use [two rounds of silence](https://arxiv.org/abs/1805.07954)
  to replace the broadcast protocol to indicate the public complain round is empty which implies that the protocol can be optimized to use just two rounds of $O(n^2)$ words followed by two rounds of silence. 
  
  
-Future posts on VSS: we will explore how VSS is the gateway to full MPC, benefits of VSS in the computational setting, how VSS works in asynchrony, how to pack many secrets in a single VSS, and much more.
+*Future posts* on VSS: we will explore how VSS is the gateway to full MPC, benefits of VSS in the computational setting, how VSS works in asynchrony, how to pack many secrets in a single VSS, and much more.
 
 
 
