@@ -45,9 +45,11 @@ The protocol has five rounds: share, exchange sub-shares, publicly complain, pub
 
 1. **Dealer sends rows and columns**: The dealer, given $s$, uniformly chooses coefficients $a_{i,j}$ for all $i,j \in \{0,\dots, f\}$ except for $a_{0,0}$.
     It defines a bi-variate polynomial of degree at most $f$:
+    
     $$
-    p(x,y)=s + \sum_{(i,j) \in \{0,\dots,f \}^2\|(i,j) \neq (0,0)} a_{i,j} x^i y^j .
+    p(x,y) = s + \sum_{(i,j) \in \{0,\dots,f \}^2\mid(i,j) \neq (0,0)} a_{i,j} x^i y^j .
     $$
+    
     It defines projection univariate polynomials: $row_i(x)=p(i, x)$ and $col_i(x)=p(x, i)$, and sends each party $i$ the two polynomials $\langle row_i(x), col_i(x)\rangle$.
     If a party does not receive a valid message, it sets its value to 0.
 2. **Parties exchange sub-shares**: Each party $i$ sends each party $j$ the two values $\langle row_i(j)$, $col_i(j)\rangle$.
