@@ -6,7 +6,7 @@ tags:
 author: Ittai Abraham and Gilad Asharov
 ---
 
-In this post, we present the classic [Ben-or, Goldwasser, and Wigderson]() (**BGW**) Verifiable Secret Sharing protocol (**VSS**) with the simplifications of [Feldman](https://dspace.mit.edu/handle/1721.1/14368). The analysis and notation in this post are based on the full proof of the BGW MPC protocol of [Asharov and Lindell](https://eprint.iacr.org/2011/136.pdf). This post is a continuation of our previous posts on secret sharing for [passive](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) and [crash](https://decentralizedthoughts.github.io/2022-08-17-secret-sharing-with-crash/) failures.
+In this post, we present the classic [Ben-or, Goldwasser, and Wigderson, 1988](https://inst.eecs.berkeley.edu/~cs276/fa20/notes/BGW88.pdf) (**BGW**) Verifiable Secret Sharing protocol (**VSS**) with the simplifications of [Feldman](https://dspace.mit.edu/handle/1721.1/14368). The analysis and notation in this post are based on the full proof of the BGW MPC protocol of [Asharov and Lindell](https://eprint.iacr.org/2011/136.pdf). This post is a continuation of our previous posts on secret sharing for [passive](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) and [crash](https://decentralizedthoughts.github.io/2022-08-17-secret-sharing-with-crash/) failures.
 
 Consider a **malicious adversary** controlling at most $f$ parties. The only restriction on the adversary is that honest parties have **private channels**: the adversary cannot see the content of messages sent between any two honest parties.
 
@@ -46,7 +46,7 @@ The protocol has five rounds: share, exchange sub-shares, publicly complain, pub
 1. **Dealer sends rows and columns**: The dealer, given $s$, uniformly chooses coefficients $a_{i,j}$ for all $i,j \in \{0,\dots, f\}$ except for $a_{0,0}$.
     It defines a bi-variate polynomial of degree at most $f$:
     $$
-    p(x,y)=s + \sum_{(i,j) \in \{0,\dots,f \}^2|(i,j) \neq (0,0)} a_{i,j} x^i y^j .
+    p(x,y)=s + \sum_{(i,j) \in \{0,\dots,f \}^2\|(i,j) \neq (0,0)} a_{i,j} x^i y^j .
     $$
     It defines projection univariate polynomials: $row_i(x)=p(i, x)$ and $col_i(x)=p(x, i)$, and sends each party $i$ the two polynomials $\langle row_i(x), col_i(x)\rangle$.
     If a party does not receive a valid message, it sets its value to 0.
