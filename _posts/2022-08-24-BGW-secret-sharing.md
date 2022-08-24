@@ -118,5 +118,5 @@ Total of $O(n^2)$ words in private channels and $O(n^2)$ words of broadcast. Not
 
 
 
-Comments on [Twitter]().
+Comments on [Twitter](https://twitter.com/ittaia/status/1562449944853614593?s=20&t=5Tmd0Wj6UZtg2ntYgIIHkw).
 
