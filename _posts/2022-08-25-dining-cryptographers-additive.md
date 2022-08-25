@@ -86,4 +86,4 @@ As we will see in later posts, additivity and the linearity of interpolation are
 
 There are many things one may wish to improve on this basic scheme. Can we handle malicious cryptographers? Can we handle asynchrony in communication? What about denial of service? Can we scale to thousands or even millions of cryptographers? Can cryptographic protocols (signatures, zero knowledge proofs, etc) improve the performance and complexity?  Many of the papers mentioned above have made significant advances on these challenges. We will cover some of this in future posts.
 
-Your thoughts on [Twitter](…)
+Your thoughts on [Twitter](https://twitter.com/ittaia/status/1562777337753587712?s=21&t=dilr4XTgVUq0e5Q-10sRtg)
