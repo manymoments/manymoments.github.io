@@ -7,14 +7,14 @@ tags:
 author: Ittai Abraham
 ---
 
-David Chaum’s [dining cryptographer problem](https://en.wikipedia.org/wiki/Dining_cryptographers_problem) is a pioneering work on the foundations of privacy. It shows the amazing power of information theoretic secure multi party computation. The [original paper](https://users.ece.cmu.edu/~adrian/731-sp04/readings/dcnets.html) from 1988 is super accessible and fun to read. Many systems in the last 20 years for anonymity and privacy preserving communication are based on the Dining Cryptographers problem. [Herbivore](https://www.cs.cornell.edu/people/egs/herbivore/documentation.html), [Dissent](https://dedis.cs.yale.edu/dissent/), [Riposte](https://arxiv.org/pdf/1503.06115.pdf), [Blinder](https://eprint.iacr.org/2020/248.pdf), and many others.
+David Chaum’s [dining cryptographer problem](https://en.wikipedia.org/wiki/Dining_cryptographers_problem) is a pioneering work on the foundations of privacy. It shows the amazing power of information-theoretic Secure Multi Party Computation. The [original paper](https://users.ece.cmu.edu/~adrian/731-sp04/readings/dcnets.html) from 1988 is super accessible and fun to read. Many systems in the last 20 years for anonymity and privacy-preserving communication are based on the Dining Cryptographers problem. [Herbivore](https://www.cs.cornell.edu/people/egs/herbivore/documentation.html), [Dissent](https://dedis.cs.yale.edu/dissent/), [Riposte](https://arxiv.org/pdf/1503.06115.pdf), [Blinder](https://eprint.iacr.org/2020/248.pdf), and many others.
 
 Here is a modern version of the story:
 
-> $n$ cryptographers get together and decide to order dinner online. The delivery person arrives with the food and says that the bill was payed *anonymously* and promises that: *the payer is either one of the cryptographers or the [NSA](https://www.nsa.gov)*.
-> The cryptographers want to respect the anonymity of the bill payer if it really is one of the cryptographers - but want to learn **one bit**: is the payer the NSA or one of the cryptographers?
+> $n$ cryptographers get together and decide to order dinner online. The delivery person arrives with the food and says that the bill was paid *anonymously* and promises that: *the payer is either one of the cryptographers or the [NSA](https://www.nsa.gov)*.
+> The cryptographers want to respect the anonymity of the bill payer, if it is one of the cryptographers - but they do want to learn **one bit**: is the payer the NSA or one of the cryptographers?
 
-Importantly, in case its one of the cryptographers, they dont want to reveal who it is!
+Importantly, in case it's one of the cryptographers, they don't want to reveal who it is!
 
 Chaum’s protocol uses [additive secrete sharing](https://www1.cs.columbia.edu/~tal/4261/F19/secretsharingf19.pdf) which we will cover in later posts. Here we adapt Chaum’s protocol to use [polynomial secret sharing](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of our previous post. 
 
@@ -25,7 +25,7 @@ Fixing a finite field larger than $n$, for a secret $\alpha$, let $p(x)$ be a *p
 Let $\ell_i$ be the Lagrange coefficients such that for any $p(1),\dots,p(n)$, $p(0)= \sum_i \ell_i p(i)$. Recall these coefficients [always exist](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/).
 
 
-The cryptographers run the following two round protocol protocol:
+The cryptographers run the following two round protocol:
 ```
 Each party i has an input s_i: either 0 or 1
 Global promise: at most one party has input 1
@@ -50,17 +50,17 @@ Where l_i are the Lagrange interpolation coefficients
 
 The protocol is conceptually very simple: each cryptographer shares its secret bit using polynomial secret sharing, then parties reconstruct the *sum* of the shares.
 
-Miraculously, in this protocol each party outputs the sum of the bits: $0$ if the NSA payed and $1$ if one of the cryptographers payed. Even more miraculously, no subset of cryptographers learn any additional information other than what they can learn from this single bit!
+Miraculously, in this protocol each party outputs the sum of the bits: $0$ if the NSA paid and $1$ if one of the cryptographers paid. Even more miraculously, no subset of cryptographers learn any additional information other than what they can learn from this single bit!
 
-In particular, any subset of $f$ non-paying cryptographers, has no information on which one of the remaining $n-f$ cryptographers is the one that payed.
+In particular, any subset of $f$ non-paying cryptographers has no information on which one of the remaining $n-f$ cryptographers is the one that paid.
 
-How do we define this property formally? How do we prove its correct?
+How do we define this property formally? How do we prove it's correct?
 
 Not surprisingly, we will use the [Validity and Hiding](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) properties of polynomial secret sharing, and use a powerful observation - that polynomial secret sharing is **additive**.
 
 ### Proof of Validity - the power of additivity
 
-We would like to say that the output of this protocol is same as an ideal functionality that takes the inputs from all the parties $s_1,\dots,s_n$ and outputs the sum $s= \sum s_i$.
+We would like to say that the output of this protocol is the same as an ideal functionality that takes the inputs from all the parties $s_1,\dots,s_n$ and outputs the sum $s= \sum s_i$.
 
 This follows from the additive nature of polynomial secret sharing. The one-to-one mapping $F(p_0, \dots,p_{n-1})=p(1),\dots, p(n)$ between the $n$ coefficients of a degree $n-1$ polynomial and its $n$ point evaluation is also an *isomorphism with regard to addition*: $F(\vec{p})+F(\vec{q}) = F(p_0+q_0, \dots, p_{n-1}+q_{n-1})= p(1)+q(1), \dots, p(n)+q(n)$. This follows almost immediately from the additivity of polynomials over a field. 
 
@@ -70,7 +70,7 @@ Clearly, the adversary learns $s=s_1+\dots,s_n$, so the non-trivial case is when
 
 For any $f\leq n-2$ we would like to say that the adversary controlling any subset $F \subset N=\{1,\dots,n\}$ learns nothing other than the sum $s$. Formally, for *any* $\{s_i\}_{i \in N \setminus F}$, other than the value of the sum $s$, the distribution of the view of the adversary is uniformly random.
 
-For the first round this follows directly from the Hiding property for any $f<n$ parties of each of the polynomial secret sharing. 
+For the first round, this follows directly from the Hiding property for any $f<n$ parties of each of the polynomial secret sharing. 
 
 For the second round, the adversary learns $v_1,\dots,v_n$, which corresponds to the polynomial $p=p_1+\dots+p_n$. We again use the isomorphism of addition: for any choice of $\{p_i\}_{i \in F}$ for an adversary controlling the parties in $F$, while the first coefficient of $p$ is $s$, the remaining $n-1$ coefficients of $p$ are uniformly random. This follows because adding a uniformly random value to any known value results in a uniformly random value. Hence round 2 is identical to a secret sharing of $s$ via a uniformly random polynomial $p$ by an honest dealer.
 
@@ -84,6 +84,6 @@ As we will see in later posts, additivity and the linearity of interpolation are
 
 ### Notes
 
-There are many things one may wish to improve on this basic scheme. Can we handle malicious cryptographers? Can we handle asynchrony in communication? What about denial of service? Can we scale to thousands or even millions of cryptographers? Can cryptographic protocols (signatures, zero knowledge proofs, etc) improve the performance and complexity?  Many of the papers above made significance advances on these challenges. We will cover some of this in future posts.
+There are many things one may wish to improve on this basic scheme. Can we handle malicious cryptographers? Can we handle asynchrony in communication? What about denial of service? Can we scale to thousands or even millions of cryptographers? Can cryptographic protocols (signatures, zero knowledge proofs, etc) improve the performance and complexity?  Many of the papers mentioned above have made significant advances on these challenges. We will cover some of this in future posts.
 
 Your thoughts on [Twitter](…)

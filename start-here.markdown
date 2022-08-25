@@ -18,13 +18,13 @@ The [consensus cheat sheet](https://decentralizedthoughts.github.io/2021-10-29-c
 
 [Approximate agreement](https://decentralizedthoughts.github.io/2022-06-07-approx-agreement-one/) is a variation that considers rational input values.
 
-This post surcharge many [relaxations of Broadcast](/2019-10-22-flavours-of-broadcast/).
+This post cover several [relaxations of Broadcast](/2019-10-22-flavours-of-broadcast/).
 
 
 
 ## Synchronous Protocols
 
-The Synchronous is a good place to start because protocols are simpler. 
+The Synchronous model is a good place to start because protocols are simpler. 
 
 For a simple and classic Synchronous Byzantine agreement protocol, checkout [Phase-King](https://decentralizedthoughts.github.io/2022-06-09-phase-king-via-gradecast/).
 
@@ -32,7 +32,7 @@ Under synchrony, a classic Byzantine Broadcast protocol (with a PKI) is the [Dol
 
 More recent State Machine Replication protocols such as [Sync HotStuff](/2019-11-12-Sync-HotStuff/), an [optimal optimistically responsive synchronous protocol](/2020-06-12-optimal-optimistic-responsiveness/), and simple streamlined synchronous protocol called [Streamlet](/2020-05-14-streamlet/). This post provides a survey of [authenticated protocols under the synchrony assumption](/2019-11-11-authenticated-synchronous-bft/).
 
-For a simple non-equivocation protocol, checkout [Crusader Broadcast](). 
+For a simple non-equivocation protocol, see [Crusader Broadcast](https://decentralizedthoughts.github.io/2022-06-19-crusader-braodcast/). 
 
 
 ## Partially Synchronous Protocols
@@ -111,7 +111,7 @@ What does [checkpointing a blockchain](/2019-09-13-dont-trust-checkpoint/) mean?
 
 What is [Nakamoto Consensus](/2021-10-15-Nakamoto-Consensus/)? 
 
-How do you [prove it is secure](/2019-11-29-Analysis-Nakamoto/)? 
+How do you [prove Nakamoto Consensus is secure](/2019-11-29-Analysis-Nakamoto/)? 
 
 What is the problem of [selfish mining](/2020-02-26-selfish-mining/)?
 
@@ -128,15 +128,24 @@ Some important tools:
 - A lightweight mathematical intro to [Polynomials over a finite field](/2020-07-17-the-marvels-of-polynomials-over-a-field/).
 
 - The basics of [Polynomial secret sharing](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/).
-- 
-- A glimpse at [Zero knowledge proofs](https://decentralizedthoughts.github.io/2020-12-08-a-simple-and-succinct-zero-knowledge-proof/)
 
+- A glimpse at [Zero knowledge proofs](https://decentralizedthoughts.github.io/2020-12-08-a-simple-and-succinct-zero-knowledge-proof/)
 
 - [Bilinear accumulators](/2020-04-02-bilinear-accumulators-for-cryptocurrency/) from polynomial commitments.
 
 - [range proofs](/2020-03-03-range-proofs-from-polynomial-commitments-reexplained/) from polynomial commmitments.
 
 - Private set intersection: [part 1](/2020-03-29-private-set-intersection-a-soft-introduction/) and [part 2](/2020-07-26-private-set-intersection-2/). Apple is using PSI for [CSAM detection](https://decentralizedthoughts.github.io/2021-08-29-the-private-set-intersection-psi-protocol-of-the-apple-csam-detection-system/).
+
+## Secret Sharing
+
+Polynomial secret sharing is a base for deep connections between cryptography and distributed computing.
+
+Polynomial secret sharing agains a [passive adversary](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/), against a [crash adversary](https://decentralizedthoughts.github.io/2022-08-17-secret-sharing-with-crash/).
+
+The BGW88 [Verifiable Secret Sharing](https://decentralizedthoughts.github.io/2022-08-24-BGW-secret-sharing/) protocol.
+
+Chaum’s Dining Cryptographers and the additivity of polynomial secret sharing.
 
 # Research oriented posts
 
