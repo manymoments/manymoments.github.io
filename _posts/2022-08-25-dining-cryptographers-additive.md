@@ -23,9 +23,11 @@ There are $n$ parties (cryptographers) and while being **honest**, the cryptogra
 Fixing a finite field larger than $n$, for a secret $\alpha$, let $p(x)$ be a *polynomial secret sharing* of $\alpha$, which has degree at most $n-1$ such that $p(0)=\alpha$ and all the remaining $n-1$ coefficients are chosen uniformly at random.
 
 Let $\ell_i$ be the Lagrange coefficients such that for any $p(1),\dots,p(n)$ of a degree at most $n-1$ polynomial $p$:
+
 $$
 p(0)= \sum_{1 \leq i \leq n} \ell_i p(i)
 $$
+
 Recall these interpolation coefficients are [fixed](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) for all polynomials of a fixed degree. Just to re-emphasize: the $\mathbf{n}$ cryptographers use degree at most $\mathbf{n{-}1}$ polynomials.
 
 
