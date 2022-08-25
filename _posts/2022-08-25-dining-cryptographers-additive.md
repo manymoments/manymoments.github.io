@@ -16,13 +16,17 @@ Here is a modern version of the story:
 
 Importantly, in case it's one of the cryptographers, they don't want to reveal who it is!
 
-Chaum’s protocol uses [additive secrete sharing](https://www1.cs.columbia.edu/~tal/4261/F19/secretsharingf19.pdf) which we will cover in later posts. Here we adapt Chaum’s protocol to use [polynomial secret sharing](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of our previous post. 
+Chaum’s protocol uses [additive secret sharing](https://www1.cs.columbia.edu/~tal/4261/F19/secretsharingf19.pdf) which we will cover in later posts. Here we adapt Chaum’s protocol to use [polynomial secret sharing](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) of our previous post. 
 
 There are $n$ parties (cryptographers) and while being **honest**, the cryptographers are naturally **curious**. Formally, we assume a [passive](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) (aka honest-but-curious) adversary controlling $f<n$ parties. Communication is lock-step (synchrony).
 
 Fixing a finite field larger than $n$, for a secret $\alpha$, let $p(x)$ be a *polynomial secret sharing* of $\alpha$, which has degree at most $n-1$ such that $p(0)=\alpha$ and all the remaining $n-1$ coefficients are chosen uniformly at random.
 
-Let $\ell_i$ be the Lagrange coefficients such that for any $p(1),\dots,p(n)$, $p(0)= \sum_i \ell_i p(i)$. Recall these coefficients [always exist](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/).
+Let $\ell_i$ be the Lagrange coefficients such that for any $p(1),\dots,p(n)$ of a degree at most $n-1$ polynomial $p$:
+$$
+p(0)= \sum_{1 \leq i \leq n} \ell_i p(i)
+$$
+Recall these interpolation coefficients are [fixed](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/) for all polynomials of a fixed degree. Just to re-emphasize: the $\mathbf{n}$ cryptographers use degree at most $\mathbf{n{-}1}$ polynomials.
 
 
 The cryptographers run the following two round protocol:
@@ -44,8 +48,8 @@ Send v_i to all parties
 
 End of round 2:
 Given shares v_1,…,v_n
-Output sum_{1<=j<=n} (l_i v_i)
-Where l_i are the Lagrange interpolation coefficients 
+Output (l_1 * v_1)+…+(l_n * v_n)
+Where l_i are the Lagrange coefficients of eqn (1) above
 ```
 
 The protocol is conceptually very simple: each cryptographer shares its secret bit using polynomial secret sharing, then parties reconstruct the *sum* of the shares.
@@ -85,5 +89,10 @@ As we will see in later posts, additivity and the linearity of interpolation are
 ### Notes
 
 There are many things one may wish to improve on this basic scheme. Can we handle malicious cryptographers? Can we handle asynchrony in communication? What about denial of service? Can we scale to thousands or even millions of cryptographers? Can cryptographic protocols (signatures, zero knowledge proofs, etc) improve the performance and complexity?  Many of the papers mentioned above have made significant advances on these challenges. We will cover some of this in future posts.
+
+#### Acknowledgements
+
+Many thanks to [Thor Kamphefner](https://thork.net) for insightful comments and suggestions. 
+
 
 Your thoughts on [Twitter](https://twitter.com/ittaia/status/1562777337753587712?s=21&t=dilr4XTgVUq0e5Q-10sRtg)
