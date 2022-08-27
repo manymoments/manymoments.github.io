@@ -93,17 +93,24 @@ So the view of the adversary reveals nothing about $s$. Note that whenever the h
   
   Fix a set $I \subset N$ such that $|I|=f$ are the parties controlled by the adversary. Let $V_I=\{p(i,j) \mid i,j \in I\} \cup \{ p(0,i), p(i,0) \mid I \in I\}$ and observe that $V_I$ completely defines the view of the adversary and that $|V_I|=f^2+2f$.
   
+  
 Observe that a bi-variate polynomial where each variable has degree at most $f$ has $(f+1)^2$ coefficients.
 
+
 Fix a secret $s$ and consider the function $\phi: \mathbb{F}^{f^2+2f} \to V_I$ that maps the remaining coefficients of $p$ to the points that the adversary sees. The domain and co-domain have equal cardinality. So in order to prove that $\phi$ is one-to-one all we need is to prove that $\phi$ is a bijection.
+
 
 Assume that $phi(\vec{a})=\phi(\vec{b})$, and consider the bi-variate polynomial $p'$ of degree at most $f$ with coefficients $0, (\vec{a}-\vec{b})$. For any $j \in I \cup \{0\}$, consider the univariate polynomial $p'(j,x)$. Observe that for any $i\in I$ we have $p'(j,i) = 0$ (because $phi(\vec{a})=\phi(\vec{b})$). Hence $p'(j,x)$ is the zero polynomial.
 Similarly, for any $j \in I \cup \{0\}$, $p'(x,j)$ is the zero polynomial.
 
+
 Now consider **any** $k$ and the univariate polynomial $p'(k,x)$. Since $p'(k,i)=0$ for all $i\in I \cup \{0\}$, it follows that $p'(k,x)$ is the zero polynomial.
 Similarly, $p'(x,k)$ is the zero polynomial.
 
+
 Hence $p'$ is the zero polynomial, so $a=b$, and therefore $\phi$ is a bijection.
+
+
 
 Since $\phi$ is one-to-one, then for any secret $s$, the  uniform distribution on the $f^2+2f$ remaining coefficients induces a uniform distribution on $V_I$. 
 </details>
@@ -141,4 +148,12 @@ Total of $O(n^2)$ words in private channels and $O(n^2)$ words of broadcast for 
  to replace the broadcast protocol to indicate the public complain round is empty which implies that the protocol can be optimized to use just two rounds of $O(n^2)$ words followed by two rounds of silence. 
  
  
-*Future posts* on VSS: we will explore how VSS is the gateway to full MPC, benefits of VSS in the computational setting, how VSS works in asynchrony, how to pack many secrets in a single VSS, an
+-*Future posts* on VSS: we will explore how VSS is the gateway to full MPC, benefits of VSS in the computational setting, how VSS works in asynchrony, how to pack many secrets in a single VSS, and much more.
+
+##### Acknowledgements
+
+We would like to thank Gilad Stern for insightful comments and feedback.
+
+
+
+Comments on [Twitter](https://twitter.com/ittaia/status/1562449944853614593?s=20&t=5Tmd0Wj6UZtg2ntYgIIHkw).
