@@ -41,7 +41,7 @@ Instead of sharing some degree-$f$ polynomial $g(x)$, the dealer shares a bi-var
 
 ### The BGW secret sharing protocol (VSS)
 
-The protocol has five rounds: share, exchange sub-shares, publicly complain, publicly resolve, and publicly accept.
+The **Share protocol** has five rounds: share, exchange sub-shares, publicly complain, publicly resolve, and publicly accept.
 
 1. **Dealer sends rows and columns**: The dealer, given $s$, uniformly chooses coefficients $a_{i,j}$ for all $i,j \in \{0,\dots, f\}$ except for $a_{0,0}$.
     It defines a bi-variate polynomial of degree at most $f$:
@@ -52,14 +52,18 @@ The protocol has five rounds: share, exchange sub-shares, publicly complain, pub
     
     It defines projection univariate polynomials: $row_i(x)=p(i, x)$ and $col_i(x)=p(x, i)$, and sends each party $i$ the two polynomials $\langle row_i(x), col_i(x)\rangle$.
     If a party does not receive a valid message, it sets its value to 0.
-2. **Parties exchange sub-shares**: Each party $i$ sends each party $j$ the two values $\langle row_i(j)$, $col_i(j)\rangle$.
+1. **Parties exchange sub-shares**: Each party $i$ sends each party $j$ the two values $\langle row_i(j)$, $col_i(j)\rangle$.
    
-3. **Parties publicly complain**: If a party $i$ receives a pair from party $j$ that is different than its share, it **broadcasts** a complaint with 4 values $\langle i,j,row_i(j), col_i(j)\rangle$.
-1. **Dealer publicly resolves complaints**: if the dealer hears a complaint from party $i$ that does not agree with $p(x,y)$ then it **broadcasts** $\langle row_i(x), col_i(x)\rangle$ of the row and column of party $i$. We call party $i$ *public*.
-2. **Parties publicly accept**: if a non-public party $i$: (1) has row and column shares that agree with all the public parties values and all the non-public parties complaint values; (2) for each two parties $j,k$ with disagreeing complaints, at least one of them is public, then it is *happy* and **broadcasts** $\langle 1 \rangle$. Otherwise it **broadcasts** $\langle 0\rangle$. 
+2. **Parties publicly complain**: If a party $i$ receives a pair from party $j$ that is different than its share, it **broadcasts** a complaint with 4 values $\langle i,j,row_i(j), col_i(j)\rangle$.
+3. **Dealer publicly resolves complaints**: if the dealer hears a complaint from party $i$ that does not agree with $p(x,y)$ then it **broadcasts** $\langle row_i(x), col_i(x)\rangle$ of the row and column of party $i$. We call party $i$ *public*.
+4. **Parties publicly accept**: if a non-public party $i$: (1) has row and column shares that agree with all the public parties values and all the non-public parties complaint values; (2) for each two parties $j,k$ with disagreeing complaints, at least one of them is public, then it is *happy* and **broadcasts** $\langle 1 \rangle$. Otherwise it **broadcasts** $\langle 0\rangle$. 
 
    If less than $2f+1$ parties broadcast $\langle 1\rangle$ then set your shares $row_i(x), col_i(x)$ to be zero.
 
+
+The **Reconstruct protocol** is just robust univariate interpolation using the public values:
+1. Each non-public party $I$ sends $col_i(0)$ to all parties. 
+2. Each party interpolates a degree at most $f$ polynomial with at most $f$ errors using the values  $col_1(0),\dots, col_n(0)$, where $col_j(0)$ uses the public value if party $j$ is public, or the value party  $j$ sent during reconstruct otherwise. If a non-public party sends nothing you can interpret this as 0. 
 
 ### Proof of Validity (when the dealer is honest)
 
@@ -69,7 +73,9 @@ If a corrupt party complains about an honest party or vice versa, then the hones
 
 Finally, if two corrupt parties complain about each other, then the adversary learns no new information and they may become public.
 
-So in the end, all honest parties will remain non-public and will agree with each other privately and agree with the public values. If a pair of corrupted parties send conflicting values, at least one of them will become public. Hence all honest parties will broadcast $\langle 1\rangle$.
+So in the end of the Share protocol, all honest parties will remain non-public and will agree with each other privately and agree with the public values. If a pair of corrupted parties send conflicting values, at least one of them will become public. Hence all honest parties will broadcast $\langle 1\rangle$.
+
+The validity of the Reconstruct protocol follows from the fact that the $n-f \geq 2f+1$ honest parties are enough to error correct any $f$ errors.
 
 ### Proof of Hiding (when the dealer is honest)
 
@@ -81,6 +87,26 @@ As in the univariate case, for any $s$, conditioned on $p(0,0)=s$, there is a on
 The one-to-one mapping means that for any secret $s$, the dealer's uniform distribution over the remaining $f^2+2f$ degrees of freedom induces a uniform distribution over the adversary view. 
 
 So the view of the adversary reveals nothing about $s$. Note that whenever the honest dealer publicly reveals some polynomial, it is a polynomial that is already known to the adversary and the adversary learns nothing new when resolving the complaints. 
+
+<details>
+  <summary><b>More proof details</b>:</summary>
+  
+  Fix a set $I \subset N$ such that $|I|=f$ are the parties controlled by the adversary. Let $V_I=\{p(i,j) \mid i,j \in I\} \cup \{ p(0,i), p(i,0) \mid I \in I\}$ and observe that $V_I$ completely defines the view of the adversary and that $|V_I|=f^2+2f$.
+  
+Observe that a bi-variate polynomial where each variable has degree at most $f$ has $(f+1)^2$ coefficients.
+
+Fix a secret $s$ and consider the function $\phi: \mathbb{F}^{f^2+2f} \to V_I$ that maps the remaining coefficients of $p$ to the points that the adversary sees. The domain and co-domain have equal cardinality. So in order to prove that $\phi$ is one-to-one all we need is to prove that $\phi$ is a bijection.
+
+Assume that $phi(\vec{a})=\phi(\vec{b})$, and consider the bi-variate polynomial $p'$ of degree at most $f$ with coefficients $0, (\vec{a}-\vec{b})$. For any $j \in I \cup \{0\}$, consider the univariate polynomial $p'(j,x)$. Observe that for any $i\in I$ we have $p'(j,i) = 0$ (because $phi(\vec{a})=\phi(\vec{b})$). Hence $p'(j,x)$ is the zero polynomial.
+Similarly, for any $j \in I \cup \{0\}$, $p'(x,j)$ is the zero polynomial.
+
+Now consider **any** $k$ and the univariate polynomial $p'(k,x)$. Since $p'(k,i)=0$ for all $i\in I \cup \{0\}$, it follows that $p'(k,x)$ is the zero polynomial.
+Similarly, $p'(x,k)$ is the zero polynomial.
+
+Hence $p'$ is the zero polynomial, so $a=b$, and therefore $\phi$ is a bijection.
+
+Since $\phi$ is one-to-one, then for any secret $s$, the  uniform distribution on the $f^2+2f$ remaining coefficients induces a uniform distribution on $V_I$. 
+</details>
 
 ### Proof of Binding (when the dealer is corrupt)
 
@@ -105,18 +131,14 @@ In particular, all honest parties are either: non-public and agree with $g$ or p
 
 *Complexity*: in the Share protocol, the dealer first sends $O(n)$ words to each party. In the second round, each party privately sends $O(n)$ words. In the public complain round, each party broadcasts at most $O(n)$ words. In the resolve round, the dealer broadcasts at most $O(n^2)$ words. Finally in the fifth round, each party broadcasts one word.
 
-Total of $O(n^2)$ words in private channels and $O(n^2)$ words of broadcast. Note that $O(n^2)$ words of broadcast requires at least $O(n^3)$ words to be received overall. 
+Total of $O(n^2)$ words in private channels and $O(n^2)$ words of broadcast for the Share protocol. Note that $O(n^2)$ words of broadcast requires at least $O(n^3)$ words to be received overall. 
+
 
   
-*Open question*: can the worst case word complexity of VSS in this setting be reduced to  $o(n^3)$ received words?
+*Open question*: can the worst case word complexity of VSS Share protocol in this setting be reduced to  $o(n^3)$ received words?
 
 *Good case complexity*: if all parties are honest then we can use [two rounds of silence](https://arxiv.org/abs/1805.07954)
  to replace the broadcast protocol to indicate the public complain round is empty which implies that the protocol can be optimized to use just two rounds of $O(n^2)$ words followed by two rounds of silence. 
  
  
-*Future posts* on VSS: we will explore how VSS is the gateway to full MPC, benefits of VSS in the computational setting, how VSS works in asynchrony, how to pack many secrets in a single VSS, and much more.
-
-
-
-Comments on [Twitter](https://twitter.com/ittaia/status/1562449944853614593?s=20&t=5Tmd0Wj6UZtg2ntYgIIHkw).
-
+*Future posts* on VSS: we will explore how VSS is the gateway to full MPC, benefits of VSS in the computational setting, how VSS works in asynchrony, how to pack many secrets in a single VSS, an
