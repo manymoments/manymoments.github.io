@@ -62,8 +62,8 @@ The **Share protocol** has five rounds: share, exchange sub-shares, publicly com
 
 
 The **Reconstruct protocol** is just robust univariate interpolation using the public values:
-1. Each non-public party $I$ sends $col_i(0)$ to all parties. 
-2. Each party interpolates a degree at most $f$ polynomial with at most $f$ errors using the values  $col_1(0),\dots, col_n(0)$, where $col_j(0)$ uses the public value if party $j$ is public, or the value party  $j$ sent during reconstruct otherwise. If a non-public party sends nothing you can interpret this as 0. 
+1. Each non-public party $i$ sends $\langle col_i(0) \rangle$ to all parties. 
+2. Each party interpolates a degree at most $f$ polynomial with at most $f$ errors using the values  $col_1(0),\dots, col_n(0)$, where $col_j(0)$ uses the public value if party $j$ is *public*, or the value party $j$ sent during reconstruct otherwise. If a non-public party sends nothing you can interpret this as 0. 
 
 ### Proof of Validity (when the dealer is honest)
 
@@ -90,6 +90,7 @@ So the view of the adversary reveals nothing about $s$. Note that whenever the h
 
 <details>
   <summary><b>More proof details</b>:</summary>
+  
   
   Fix a set $I \subset N$ such that $|I|=f$ are the parties controlled by the adversary. Let $V_I=\{p(i,j) \mid i,j \in I\} \cup \{ p(0,i), p(i,0) \mid I \in I\}$ and observe that $V_I$ completely defines the view of the adversary and that $|V_I|=f^2+2f$.
   
