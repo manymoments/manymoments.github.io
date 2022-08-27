@@ -89,7 +89,7 @@ The one-to-one mapping means that for any secret $s$, the dealer's uniform distr
 So the view of the adversary reveals nothing about $s$. Note that whenever the honest dealer publicly reveals some polynomial, it is a polynomial that is already known to the adversary and the adversary learns nothing new when resolving the complaints. 
 
 <details>
-  <summary><b>More proof details</b>:</summary>
+  <summary><b>More proof details</b>:</summary> <p>
   
   
   Fix a set $I \subset N$ such that $|I|=f$ are the parties controlled by the adversary. Let $V_I=\{p(i,j) \mid i,j \in I\} \cup \{ p(0,i), p(i,0) \mid I \in I\}$ and observe that $V_I$ completely defines the view of the adversary and that $|V_I|=f^2+2f$.
@@ -114,7 +114,7 @@ Hence $p'$ is the zero polynomial, so $a=b$, and therefore $\phi$ is a bijection
 
 
 Since $\phi$ is one-to-one, then for any secret $s$, the  uniform distribution on the $f^2+2f$ remaining coefficients induces a uniform distribution on $V_I$. 
-</details>
+</p></details>
 
 ### Proof of Binding (when the dealer is corrupt)
 
