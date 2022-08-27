@@ -101,11 +101,11 @@ Observe that a bi-variate polynomial where each variable has degree at most $f$ 
 Fix a secret $s$ and consider the function $\phi: \mathbb{F}^{f^2+2f} \to V_I$ that maps the remaining coefficients of $p$ to the points that the adversary sees. The domain and co-domain have equal cardinality. So in order to prove that $\phi$ is one-to-one all we need is to prove that $\phi$ is a bijection.
 
 
-Assume that $phi(\vec{a})=\phi(\vec{b})$, and consider the bi-variate polynomial $p'$ of degree at most $f$ with coefficients $0, (\vec{a}-\vec{b})$. For any $j \in I \cup \{0\}$, consider the univariate polynomial $p'(j,x)$. Observe that for any $i\in I$ we have $p'(j,i) = 0$ (because $phi(\vec{a})=\phi(\vec{b})$). Hence $p'(j,x)$ is the zero polynomial.
+Assume that $\phi( \vec{a} )=\phi( \vec{b} )$, and consider the bi-variate polynomial $p'$ of degree at most $f$ with coefficients $0, ( \vec{a} - \vec{b} )$. For any $j \in I \cup \{0\}$, consider the univariate polynomial $p'(j,x)$. Observe that for any $i\in I$ we have $p'(j,i) = 0$ (because $\phi( \vec{a} ) = \phi( \vec{b} )$). Hence $p'(j,x)$ is the zero polynomial.
 Similarly, for any $j \in I \cup \{0\}$, $p'(x,j)$ is the zero polynomial.
 
 
-Now consider **any** $k$ and the univariate polynomial $p'(k,x)$. Since $p'(k,i)=0$ for all $i\in I \cup \{0\}$, it follows that $p'(k,x)$ is the zero polynomial.
+Now consider any $k$ and the univariate polynomial $p'(k,x)$. Since $p'(k,i)=0$ for all $i\in I \cup \{0\}$, it follows that $p'(k,x)$ is the zero polynomial.
 Similarly, $p'(x,k)$ is the zero polynomial.
 
 
