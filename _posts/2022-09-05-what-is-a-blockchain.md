@@ -5,6 +5,7 @@ tags:
 - blockchain101
 author: Ittai Abraham
 ---
+
 ## TLDR: a Blockchain is a trusted coordination mechanism;
 Of course, the answer depends on who you ask :-)
 
