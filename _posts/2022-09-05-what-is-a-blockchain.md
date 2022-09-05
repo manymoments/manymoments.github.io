@@ -1,10 +1,10 @@
 ---
 title: What Is A Blockchain
 date: 2022-09-05 00:00:00 -04:00
+tags:
+- blockchain101
+author: Ittai Abraham
 ---
-
-# What is a Blockchain?
-
 ## TLDR: a Blockchain is a trusted coordination mechanism;
 Of course, the answer depends on who you ask :-)
 
