@@ -10,7 +10,7 @@ Of course, the answer depends on who you ask :-)
 
 My 7-word answer: **a blockchain is a trusted coordination mechanism**. 
 
-What is your definition of a blockchain? [Reply with your 7-word answer on Twitter](...). 
+What is your definition of a blockchain? [Reply with your 7-word answer on Twitter](https://twitter.com/ittaia/status/1566870358837321731?s=46&t=VDqZSRpxsraPaBX11I_JaA). 
 
 
 My answer to this question evolved over the years: from a more trust oriented "*a computer with trust*" (inspired by [Ben Horowitz](https://www.youtube.com/watch?v=l7QdIQVTly0)) to adding an economic angle "*trusted coordination mechanism*" (inspired by [Yuval Noah Harari](https://www.ted.com/talks/yuval_noah_harari_what_explains_the_rise_of_humans/transcript?language=en)).
@@ -79,7 +79,7 @@ The second part of *Openness* is about the execution engine (the state machine),
 Openness is not an absolute property, there are often various requirements to limit it or balance it with other values. Regulator pressure could in the future require a more limited form of openness. A recent example is the [US treasury sanctions](https://home.treasury.gov/news/press-releases/jy0916) imposed on the tornado cash mixer, and the resulting [debate on First Amendment rights](https://www.eff.org/deeplinks/2022/08/code-speech-and-tornado-cash-mixer).
 
 
-Another important historical example of the limits of openness is that to update themselves, Blockchains sometime need to hard fork. As an example, [an early Bitcoin hard fork](https://freedom-to-tinker.com/2015/07/28/analyzing-the-2013-bitcoin-fork-centralized-decision-making-saved-the-day/) inadvertently discriminated agains some transactions and caused a perceived [double spend](https://bitcointalk.org/index.php?topic=152348.0). Another famous example is the Ethereum DAO hard fork that caused a form of [discrimination against a presumed attacker](https://blog.slock.it/hard-fork-specification-24b889e70703#.io9ej36yq).
+Another important historical example of the limits of openness is that to update themselves, Blockchains sometime need to hard fork. As an example, [an early Bitcoin hard fork](https://freedom-to-tinker.com/2015/07/28/analyzing-the-2013-bitcoin-fork-centralized-decision-making-saved-the-day/) inadvertently discriminated against some transactions and caused a perceived [double spend](https://bitcointalk.org/index.php?topic=152348.0). Another famous example is the Ethereum DAO hard fork that caused a form of [discrimination against a presumed attacker](https://blog.slock.it/hard-fork-specification-24b889e70703#.io9ej36yq).
 
 
 *Auditability* can be viewed as a strengthening of the ability of external parties to read and in particular to *audit* the system: (1) verify there is no double spend (audit for consensus violations); (2) verify that the execution is valid (audit for execution violations); (3) verify that the data is available (audit for data availability violations). Buterin argues about the importance of allowing [low resource users to be able to audit a Blockchain](https://vitalik.ca/general/2021/05/23/scaling.html).
@@ -111,5 +111,5 @@ Many thanks for Tim Roughgarden for insightful comments and suggestions.
 
 
 
-Your thoughts on [Twitter](...)
+Your thoughts on [Twitter](https://twitter.com/ittaia/status/1566870358837321731?s=46&t=VDqZSRpxsraPaBX11I_JaA)
 
