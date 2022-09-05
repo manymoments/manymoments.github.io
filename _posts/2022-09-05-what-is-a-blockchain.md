@@ -1,3 +1,8 @@
+---
+title: What Is A Blockchain
+date: 2022-09-05 00:00:00 -04:00
+---
+
 # What is a Blockchain?
 
 ## TLDR: a Blockchain is a trusted coordination mechanism;
