@@ -16,7 +16,7 @@ What is your definition of a blockchain? [Reply with your 7-word answer on Twitt
 
 My answer to this question evolved over the years: from a more trust oriented "*a computer with trust*" (inspired by [Ben Horowitz](https://www.youtube.com/watch?v=l7QdIQVTly0)) to adding an economic angle "*trusted coordination mechanism*" (inspired by [Yuval Noah Harari](https://www.ted.com/talks/yuval_noah_harari_what_explains_the_rise_of_humans/transcript?language=en)).
 
-Other very similar answers: [Dan Boneh's](https://berkeley-defi.github.io/assets/material/lec2-dan-tech-intro.pdf)  "*a blockchain provides coordination between many parties, when there is no single trusted party*". [Chris Dixons's]((https://a16z.com/2020/01/27/computers-that-make-commitments/))  "*Blockchains are Computers That Can Make Commitments*",  [Albert Wagner's](https://continuations.com/post/671863718643105792/web3crypto-why-bother) *a blockchain is a database not controlled by a single entity*, and [Tim Roughgarden's](https://timroughgarden.github.io/fob21/l/l1.pdf) "*a programmable computer that lives in the sky, that is not owned by anyone and that anyone can use*" -- which is a great metaphor! but slightly more than 7 words :-).
+Other very similar answers: [Dan Boneh's](https://berkeley-defi.github.io/assets/material/lec2-dan-tech-intro.pdf)  "*a blockchain provides coordination between many parties, when there is no single trusted party*". [Chris Dixons's](https://a16z.com/2020/01/27/computers-that-make-commitments/)  "*Blockchains are Computers That Can Make Commitments*",  [Albert Wagner's](https://continuations.com/post/671863718643105792/web3crypto-why-bother) *a blockchain is a database not controlled by a single entity*, and [Tim Roughgarden's](https://timroughgarden.github.io/fob21/l/l1.pdf) "*a programmable computer that lives in the sky, that is not owned by anyone and that anyone can use*" -- which is a great metaphor! but slightly more than 7 words :-).
 
 All these answers have a common theme, but let's start with the origin of the word "Blockchain"
 
@@ -35,7 +35,7 @@ Emails from [Satoshi](https://plan99.net/~mike/satoshi-emails/thread1.html) in 2
 So what does this "chain of blocks" do? The answer seems clear in [Satoshi Nakamoto's 2008](https://www.metzdowd.com/pipermail/cryptography/2008-November/014849.html) groundbreaking insight:
 > The proof-of-work chain is a solution to the Byzantine Generals' Problem.  I'll try to rephrase it in that context. -- Satoshi Nakamoto
 
-Similarly, [Hal Finney, 2008]((https://www.metzdowd.com/pipermail/cryptography/2008-November/014848.html)) explained that Bitcoin is solving a very hard problem of building a global, massively decentralized database:
+Similarly, [Hal Finney, 2008](https://www.metzdowd.com/pipermail/cryptography/2008-November/014848.html) explained that Bitcoin is solving a very hard problem of building a global, massively decentralized database:
  > ... bitcoin is two independent ideas: a way of ...
 creating a globally consistent but decentralized database; and then using
 it for a system similar to Wei Dai's b-money ... Solving the
