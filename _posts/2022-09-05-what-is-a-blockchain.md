@@ -1,5 +1,5 @@
 ---
-title: What Is A Blockchain
+title: What is a Blockchain?
 date: 2022-09-05 00:00:00 -04:00
 tags:
 - blockchain101
@@ -60,7 +60,7 @@ Viewed through the lens of computer science and distributed computing my answer 
 
 A *trusted coordination mechanism* is a shorthand for the more academic definition of **Byzantine Fault Tolerant State Machine Replication (BFT SMR)**. The State Machine *paradigm* is covered by [Fred Schneider's 1990 tutorial](https://www.cs.cornell.edu/fbs/publications/ibmFault.sm.pdf) and goes back to Lamport's seminal 1978 paper on [Time, Clocks, and the Ordering of Events in a Distributed System](https://lamport.azurewebsites.net/pubs/time-clocks.pdf) (see page 562). The adaptation of the State Machine paradigm to Byzantine Fault tolerance and the emphasis on a *generic* service was pioneered by Barbra Liskov and her group at MIT with [PBFT](https://pmg.csail.mit.edu/papers/osdi99.pdf) and [BASE](http://www.sosp.org/2001/papers/rodrigues.pdf). BASE advocates using *abstraction* and *generality* which is the conceptual precursor to the idea of a *Blockchain computer*. 
 
-The idea of replacing any ideal functionality (state machine) with a replicated service built on mathematical protocols to obtain trust (which includes security and privacy) is at the **core of cryptography**. [Boaz Barak](https://www.boazbarak.org/cs127spring16/chap17_sfe) says it best: "Cryptography is about replacing trust with mathematics". This foundational idea is at the center of [Secure Multi Party Computation](https://u.cs.biu.ac.il/~lindell/MPC-resources.html).
+The idea of replacing any ideal functionality (state machine) with a replicated service built on mathematical protocols to obtain trust (which includes security and privacy) is at the **core of Cryptography**. [Boaz Barak](https://www.boazbarak.org/cs127spring16/chap17_sfe) says it best: "Cryptography is about replacing trust with mathematics". This foundational idea is at the center of [Secure Multi Party Computation](https://u.cs.biu.ac.il/~lindell/MPC-resources.html).
 
 
 ### 2. Openness and Auditability ("coordination")
@@ -88,7 +88,9 @@ Another important historical example of the limits of openness is that to update
 
 
 ### 3. Incentives to provide guarantees ("mechanism")
-Finally, unlike Cryptographic models that assume honest parties and a malicious adversary many blockchain systems focus on a 
+Finally, traditional cryptographic models in computer science assume a binary: *good guys / bad guys* view of the world. These models assume some fraction of parties are inherently honest and the remaining parties are controlled by a malicious adversary whose sole goal is to break the protocol guarntees. 
+
+Arguably, the breakthrough in blockchain systems is going beyond this model and focus on a 
 **Cryptoeconomic model** where most parties are presume to be motivated by rational preferences and incentives.
 
 As Buterin says in his 2019 [talk on Cryptoeconomics](https://youtu.be/GQR1xjQn5Pg):
@@ -99,16 +101,33 @@ To provide a means for trusted coordination, Blockchains need to provide **incen
 
 Taking into account incentives and modeling parties as rational agents is a non-trivial difference between Blockchains and the traditional Cryptographic model of assuming honest parties and a malicious adversary.
 
-For example, instead of just assuming some parties are honest and will maintain safety and liveness, some blockchains explicitly offer incentives to [maintain safety](https://medium.com/@VitalikButerin/minimal-slashing-conditions-20f0b500fc6c) and [maintain liveness](https://eth2book.info/altair/part2/incentives/inactivity#inactivity-leak). 
+Instead of assuming most parties are honest and will follow the consensus protocol to maintain safety and liveness, some blockchains explicitly offer incentives to [maintain safety](https://medium.com/@VitalikButerin/minimal-slashing-conditions-20f0b500fc6c) and [maintain liveness](https://eth2book.info/altair/part2/incentives/inactivity#inactivity-leak).  
+
+The use of punishment strategies to disincentive unwanted behavior is particularly effective when the blockchain system has a native means to force parties to commit economic resources and suffer **slashing** events in case of misbehavior. This is the bases of [optimistic rollups](https://ethereum.org/en/developers/docs/scaling/optimistic-rollups/) and the usability of fraud proofs.
 
 Another key aspect of blockchains is that as a limited resource, they need some way to decide which transactions to include. This is a classic resource allocation problem with limited supply. The cryptoeconomic solution is to have a mechanism that selects the transactions whose users are willing to pay the most. For example the Ethereum [1559 transaction pricing mechanism](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md) whose goal is to incentivize participation from users. As a side effect, these mechanisms also allocate revenue to validators. 
 
 
 Cryptoeconomics and incentive considerations appear in many surprising places across blockchain technologies, from [selfish mining](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/) to the equilibrium between [staking and lending](https://decentralizedthoughts.github.io/2020-02-26-selfish-mining/).
 
+#### What is a Blockchain? Notable responses
+
+**@artofkot**: collusion resistant coordination tool. Also checkout the excellent [full blog post](https://artofkot.xyz/blog/why-blockchains).
+
+**@JoshaTobkin**: a shared immutable ledger 
+
+**@dfren_eth** are states: digital and political
+
+**@yossi_sheriff**: a machine version of cultural trust capital
+
+
+
+
 #### Acknowledgments
 
-Many thanks for Tim Roughgarden for insightful comments and suggestions.
+Many thanks to Tim Roughgarden for insightful comments and suggestions.
+
+
 
 
 
