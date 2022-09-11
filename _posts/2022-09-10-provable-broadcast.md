@@ -123,8 +123,7 @@ Moreover, the new leader, by sending all the $n-f$ certificates it queried as th
     </p></details>
 
 
-*Note 2*: In some protocols, Unique-Lock-Availability is not enough. When using Tendermint style view change, if not using a timeout, the new leader may not be aware of all the Lock-Certificates held by honest parties. This is called the  **hidden lock problem**. HotStuff is a Tendermint style protocol has the property that if any honest party has a Lock-Certificate then the new leader will not miss this lock, even if the new leader just waits for the first $n-f$ responses.
-HotStuff solves this by using Keyed Broadcast.  
+*Note 2*: In some protocols, Unique-Lock-Availability is not enough. When using Tendermint style view change, if not using a timeout, the new leader may not be aware of all the Lock-Certificates held by honest parties. This is called the  **hidden lock problem**. HotStuff is a Tendermint style protocol has the property that if any honest party has a Lock-Certificate then the new leader will not miss this lock, even if the new leader just waits for the first $n-f$ responses. HotStuff solves this by using Keyed Broadcast.  
 
 
 <details>
@@ -133,7 +132,7 @@ HotStuff solves this by using Keyed Broadcast.
   
  
 
-In the Tendermint view change protocol, the new leader only sends $cert_1(v,k)$, but does not prove this is the certificate with the highest view. Instead,  $EV_1$ checks that the proposed value $v$ has a $cert_1(v,k)$ from a view $k$ that is at least as high as the highest $cert_1(v',k’)$ that the validator has ever seen. In a later post we will cover this in detail. For now, it's sufficient to grasp at a high level a problem with this protocol: a new honest leader, that does not use a timeout,  may query $n-f$ parties and observe the highest $cert_1(v,k)$ is from view $k$, but due to it only waiting for the first $n-f$, may miss a $cert_1(v',k’)$ held by an honest party with $k<k’$. This may cause the new leader to fail Termination of its $PB$, and is called the hidden lock problem. 
+In the Tendermint view change protocol, the new leader only sends $cert_1(v,k)$, but does not prove this is the certificate with the highest view. Instead,  $EV_1$ checks that the proposed value $v$ has a $cert_1(v,k)$ from a view $k$ that is at least as high as the highest $cert_1(v',k’)$ that the validator has ever seen. In a later post we will cover this in detail. For now, it's sufficient to grasp at a high level a problem with this protocol: a new honest leader, that does not use a timeout,  may query $n-f$ parties and observe the highest $cert_1(v,k)$ is from view $k$, but due to it only waiting for the first $n-f$, may miss a $cert_1(v',k’)$ held by an honest party with $k<k’$. This may cause the new leader to fail Termination of its $PB$, and is called the *hidden lock problem*. 
     </p></details>
 
 
