@@ -3,7 +3,7 @@ title: Provable Broadcast
 date: 2022-09-10 08:00:00 -04:00
 tags:
 - dist101
-author: Ittai Abraham, Alexander Spiegelman 
+author: Ittai Abraham, Alexander Spiegelman
 ---
 
 # Provable Broadcast
