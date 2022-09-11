@@ -6,9 +6,6 @@ tags:
 author: Ittai Abraham, Alexander Spiegelman 
 ---
 
-# Provable Broadcast
-
-
 We explore a family of broadcast protocols in the authenticated setting in which a designated *sender* wants to create a *delivery-certificate* of its input value. After describing the base protocol we call *Provable Broadcast* ($PB$),  we explore the surprising power of simply running $PB$ two times in a row, then three times, and finally four times in a row. 
 
 These protocols are secure against a [malicious adversary](https://decentralizedthoughts.github.io/2019-06-17-the-threshold-adversary/) controlling $f<n/3$ parties in the [asynchronous model](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/).
@@ -136,7 +133,7 @@ HotStuff solves this by using Keyed Broadcast.
   
  
 
-In the Tendermint view change protocol, the new leader only sends $cert_1(v,k)$, but does not prove this is the certificate with the highest view. Instead,  $EV_1$ checks that the proposed value $v$ has a $cert_1(v,k)$ from a view $k$ that is at least as high as the highest $cert_1(v',k’)$ that the validator has ever seen. In a [later post](Tendermint) we will cover this in detail. For now, it's sufficient to grasp at a high level a problem with this protocol: a new honest leader, that does not use a timeout,  may query $n-f$ parties and observe the highest $cert_1(v,k)$ is from view $k$, but due to it only waiting for the first $n-f$, may miss a $cert_1(v',k’)$ held by an honest party with $k<k’$. This may cause the new leader to fail Termination of its $PB$, and is called the **hidden lock problem**. 
+In the Tendermint view change protocol, the new leader only sends $cert_1(v,k)$, but does not prove this is the certificate with the highest view. Instead,  $EV_1$ checks that the proposed value $v$ has a $cert_1(v,k)$ from a view $k$ that is at least as high as the highest $cert_1(v',k’)$ that the validator has ever seen. In a later post we will cover this in detail. For now, it's sufficient to grasp at a high level a problem with this protocol: a new honest leader, that does not use a timeout,  may query $n-f$ parties and observe the highest $cert_1(v,k)$ is from view $k$, but due to it only waiting for the first $n-f$, may miss a $cert_1(v',k’)$ held by an honest party with $k<k’$. This may cause the new leader to fail Termination of its $PB$, and is called the hidden lock problem. 
     </p></details>
 
 
