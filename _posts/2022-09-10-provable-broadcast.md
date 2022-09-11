@@ -141,7 +141,7 @@ In the Tendermint view change protocol, the new leader only sends $cert_1(v,k)$,
 
 Solving the hidden lock problem is critical for *efficient* solutions in asynchrony and *efficient* solutions obtaining responsiveness in partial synchrony. 
 
-In Keyed Broadcast the sender runs **three** $PB$s consecutively: $PB_1,PB_2, PB_3$. As before, for $PB_1$ we assume for now $EV_1$ just checks the sender signature (in later posts, we will use Key Broadcast as part of a consensus protocol, and add a Tendermint style lock check condition to $EV_1$). As before, $EV_2(v,proof)$ checks that $proof$ is a delivery-certificate on $v$ from $PB_1$. As you can imagine, $EV_3(v,proof)$ just checks that $proof$ is a delivery-certificate on $v$ from $PB_2$. That’s it!
+In Keyed Broadcast the sender runs **three** $PB$s consecutively: $PB_1,PB_2, PB_3$. As before, for $PB_1$ we assume for now $EV_1$ just checks the sender signature (in later posts, we will use Keyed Broadcast as part of a consensus protocol, and add a Tendermint style lock check condition to $EV_1$). As before, $EV_2(v,proof)$ checks that $proof$ is a delivery-certificate on $v$ from $PB_1$. As you can imagine, $EV_3(v,proof)$ just checks that $proof$ is a delivery-certificate on $v$ from $PB_2$. That’s it!
 
 ![](https://i.imgur.com/aK4WmFP.jpg)
 
@@ -186,7 +186,7 @@ Finally, for termination in asynchrony, we want to know that many parties have a
 
 ## Robust Keyed Broadcast and Robust-Delivery
 
-Run **four** consecutive $PB$s, where the fourth $PB$'s goal is to output a robust certificate that indicates that at least $n-2f$ honest parties hold a delivery certificate. A ```Deliver v``` event is explicitly added when a valid delivery-certificate, $cert_3(v)$, is received.
+Run **four** consecutive $PB$s, where the fourth $PB$'s goal is to output a robust-certificate that indicates that at least $n-2f$ honest parties hold a delivery-certificate. A ```Deliver v``` event is explicitly added when a valid delivery-certificate, $cert_3(v)$, is received.
 
 ![](https://i.imgur.com/pVTaCSY.jpg)
 
@@ -245,8 +245,8 @@ All $PB$ protocols have a linear message complexity. When using threshold signat
 In the next posts, we will see how:
 1. Locked Broadcast is the core building block of [two-round-Hotstuff, 2018](https://arxiv.org/pdf/1803.05069v1.pdf).
 2. Keyed Broadcast is the core building block of [Hotstuff, 2018](https://research.vmware.com/files/attachments/0/0/0/0/0/7/7/podc.pdf).
-3. Robust Broadcast is the core building block for obtaining a [VABA, 2018](https://arxiv.org/pdf/1811.01332.pdf). The exposition in this post is based on the *$f+1$-Provable-Broadcast* and *$4$-stage-$f+1$-Provable-Broadcast* of [VABA, 2018](https://arxiv.org/pdf/1811.01332.pdf).
+3. Robust Keyed Broadcast is the core building block for obtaining a [VABA, 2018](https://arxiv.org/pdf/1811.01332.pdf). The exposition in this post is based on the *$f+1$-Provable-Broadcast* and *$4$-stage-$f+1$-Provable-Broadcast* of [VABA, 2018](https://arxiv.org/pdf/1811.01332.pdf).
 
 
 
-Your thoughts and comments on [Twitter]().
+Your thoughts and comments on [Twitter](https://twitter.com/ittaia/status/1569035923668574211?s=21&t=c8iwi-gLXT9wLT-o0wnUbQ).
