@@ -3,7 +3,7 @@ title: Provable Broadcast
 date: 2022-09-10 08:00:00 -04:00
 tags:
 - dist101
-author: Ittai Abraham, Alexander Spiegelman 
+author: Ittai Abraham, Alexander Spiegelman
 ---
 
 We explore a family of broadcast protocols in the authenticated setting in which a designated *sender* wants to create a *delivery-certificate* of its input value. After describing the base protocol we call *Provable Broadcast* ($PB$),  we explore the surprising power of simply running $PB$ two times in a row, then three times, and finally four times in a row. 
