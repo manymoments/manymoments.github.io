@@ -32,7 +32,7 @@ We will prove the theorem by describing two worlds and using indistinguishabilit
   <img src="/uploads/dr-world1.png" width="256" title="DR world 1">
 </p>
 
-In World 1, the adversary corrupts a set $V \subset Q$ of $f/2$ parties that do not include the designated sender. Let $U$ denote the remaining parties (not in $V$). All parties in $V$ run the designated protocol but suffer from omission failures: each $v \in V$ (i) omits the first $f/2$ messages sent to them from parties in $U$, and (ii) omits all messages it sends to and receives to and from parties in $V$. Suppose the non-faulty designated sender has input 0. So from the validity propoerty all non-faulty parties must output 0.
+In World 1, the adversary corrupts a set $V \subset Q$ of $f/2$ parties that do not include the designated sender. Let $U$ denote the remaining parties (not in $V$). All parties in $V$ run the designated protocol but suffer from omission failures: each $v \in V$ (i) omits the first $f/2$ messages sent to them from parties in $U$, and (ii) omits all messages it sends to and receives to and from parties in $V$. Suppose the non-faulty designated sender has input 0. So from the validity property all non-faulty parties must output 0.
 
 **World 2:**
 
@@ -44,7 +44,7 @@ If the protocol has the non-faulty parties send at most $\leq (f/2)^2$ messages,
 messages. In World 2, the adversary does everything as in World 1, except (i) it does not corrupt party $p$, and (ii) it corrupts all parties in $U$ that send messages to $p$ (this may also include the designated sender). Messages sent by these corrupt parties to $p$ are omitted. Since $p$ receives $\leq f/2$ messages in World 1, at most $f$ parties are corrupted in World 2 ($\leq f/2$ senders and $\|V\| = f/2$).
 
 What do honest parties in $U$ output in World 2? We argue that they will output 0. Observe that for the non-faulty parties, the two worlds are indistinguishable. Since the protocol is deterministic, they receive exactly the same messages in both worlds. However, since party $p$ does not receive any messages and $p 
-\in Q$, then it will not output 0, so will either violate the agreement property (if it outputs 1) or violate the termination propoerty (if it does not output anything).
+\in Q$, then it will not output 0, so will either violate the agreement property (if it outputs 1) or violate the termination property (if it does not output anything).
 
 The lower bound uses the fact that the protocol is deterministic. There have been several attempts at circumventing the lower bound using **randomness** and even against an adaptive adversary. Here are a few notable ones:
 - [King-Saia](https://arxiv.org/pdf/1002.4561.pdf): Through a sequence of fascinating new ideas, King and Saia presented a beautiful information-theoretic protocol that broke the quadratic communication complexity. Their protocol uses randomness and assumes that honest parties can erase data - so if they later get corrupt the adversary cannot extract the erased data. 

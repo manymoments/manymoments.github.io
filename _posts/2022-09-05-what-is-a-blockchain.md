@@ -53,7 +53,7 @@ Viewed through the lens of computer science and distributed computing my answer 
 
 1. Byzantine Fault Tolerant State Machine Replication ("trusted"); with
 2. Openness and Auditability ("coordination"), and;
-3. Incentives to provide guarentees ("mechanism").
+3. Incentives to provide guarantees ("mechanism").
 
 
 ### 1. Byzantine Fault Tolerant State Machine Replication ("trusted")
