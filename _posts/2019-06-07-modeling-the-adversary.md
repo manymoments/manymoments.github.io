@@ -22,7 +22,7 @@ In addition to the size of the threshold ($n>f$, $n>2f$, or $n>3f$), there are 4
 
 
 ### 1. Type of corruption
-The next critical aspect is what type of corruption the adversary can inflict on the $f$ parties is can corrupt. There are four classic adversaries: Passive, Crash, Omission, and Byzantine.
+The first fundamental aspect is what type of corruption the adversary can inflict on the $f$ parties is can corrupt. There are four classic adversaries: Passive, Crash, Omission, and Byzantine.
 
 *Passive*: a passively corrupted party must follow the protocol just like an honest party, but it allows the adversary to learn information. A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.org/2011/136.pdf) or [Semi-Honest](http://www.wisdom.weizmann.ac.il/~oded/foc-vol2.html)) does not deviate from the protocol but can learn all possible information from its _view_: i.e., the messages received by parties it controls.
 
@@ -33,7 +33,7 @@ The next critical aspect is what type of corruption the adversary can inflict on
 *Byzantine*: this gives the adversary full power to control the party and take any (arbitrary) action on the corrupted party.
 
 Note that each corruption type subsumes the previous.
-There are other types of corruption (most notable are variants of _Covert_ [adversaries](https://eprint.iacr.org/2007/060.pdf)) that we will cover later. *Covert* adversaries can be used to model rational behavior of fear from punishment.
+There are other types of corruption (most notable are variants of _Covert_ [adversaries](https://eprint.iacr.org/2007/060.pdf)) that we will cover later. *Covert* adversaries can be used to model rational behavior where there is fear (utility loss) from punishment.
 
 
 ### 2. Computational power 
@@ -55,9 +55,9 @@ Adaptivity is the ability of the adversary to corrupt dynamically based on infor
 
 1. *Static*: the adversary has to decide which $f$ parties to corrupt in advance before the execution of the protocol. 
 
-2. *Adaptive*: the adversary can decide dynamically as the protocol progresses who to corrupt based on what the adversary learns over time. The main parameter that still needs to be decided is how long it takes between the adversary _decision_ to corrupt and the _event_ that the control is passed to the adversary. One standard assumption is that this is instantaneous. Another is that it takes an additional round (for example [here](https://web.cs.ucla.edu/~rafail/PUBLIC/05.pdf)). We will later review several other options (for example, see [here](https://users.cs.duke.edu/~kartik/papers/podc2019.pdf)).
+2. *Adaptive*: the adversary can decide dynamically as the protocol progresses who to corrupt based on what the adversary learns over time. The main parameter that still needs to be decided is how long it takes between the adversary _decision_ to corrupt a party and the _event_ that the corruption occurs. One standard assumption is that this is instantaneous. Another is that it takes an additional round (for example [here](https://web.cs.ucla.edu/~rafail/PUBLIC/05.pdf)). We will later review several other options (for example, see [here](https://users.cs.duke.edu/~kartik/papers/podc2019.pdf)).
 
-3. *Mobile*: the adversary can decide dynamically who to corrupt and who to un-corrupt.  The total number of corrupted parties at any given time is at most $f$, but over time the set of corrupted parties may change. It is often required that there is a *gap* between the time the adversary corrupts one party and the time it is allowed to corrupt another. This model was introduced by [Ostrovsky and Yung](https://web.cs.ucla.edu/~rafail/PUBLIC/05.pdf) and exemplified by [proactive secret sharing](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.40.8922&rep=rep1&type=pdf).
+3. *Mobile*: the adversary can decide dynamically corrupt and un-corrupt parties.  The total number of corrupted parties at any given time is at most $f$, but over time the set of corrupted parties may change. It is often required that there is a *gap* between the time the adversary corrupts one party and the time it is allowed to corrupt another. This model was introduced by [Ostrovsky and Yung](https://web.cs.ucla.edu/~rafail/PUBLIC/05.pdf) and exemplified by [proactive secret sharing](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.40.8922&rep=rep1&type=pdf).
 
 ## Acknowledgments
 

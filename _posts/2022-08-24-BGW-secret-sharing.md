@@ -10,7 +10,7 @@ In this post, we present the classic [Ben-or, Goldwasser, and Wigderson, 1988](h
 
 Consider a **malicious adversary** controlling at most $f$ parties. The only restriction on the adversary is that honest parties have **private channels**: the adversary cannot see the content of messages sent between any two honest parties.
 
-For simplicity, we abstract consensus and broadcast away, and assume parties have access to a **Broadcast channel**. We will discuss this in more detail in later posts. Note this [requires](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) to assume $f<n/3$.  
+For simplicity, we abstract consensus and broadcast away, and assume parties have access to a **Broadcast channel**. We will discuss the challenges and concrete costs of broadcast in more detail in later posts. Note for now that broadcast [requires](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) to assume $f<n/3$.  
 
 ### Verifiable Secret Sharing properties
 
@@ -145,8 +145,7 @@ Total of $O(n^2)$ words in private channels and $O(n^2)$ words of broadcast for 
   
 *Open question*: can the worst case word complexity of VSS Share protocol in this setting be reduced to  $o(n^3)$ received words?
 
-*Good case complexity*: if all parties are honest then we can use [two rounds of silence](https://arxiv.org/abs/1805.07954)
- to replace the broadcast protocol to indicate the public complain round is empty which implies that the protocol can be optimized to use just two rounds of $O(n^2)$ words followed by two rounds of silence. 
+*Good case complexity*: if all parties are honest, then we can use [two rounds of silence](https://arxiv.org/abs/1805.07954) to replace the broadcast protocol to indicate the public complain round is empty which implies that the protocol can be optimized to use just two rounds of $O(n^2)$ words followed by two rounds of silence. 
  
  
 -*Future posts* on VSS: we will explore how VSS is the gateway to full MPC, benefits of VSS in the computational setting, how VSS works in asynchrony, how to pack many secrets in a single VSS, and much more.

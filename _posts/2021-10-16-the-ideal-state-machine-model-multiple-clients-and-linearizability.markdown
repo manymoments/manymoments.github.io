@@ -28,7 +28,7 @@ while true
         cmd = command-queue.dequeue()
         send <cmd> to server
         pending = cmd
-    on <response> from server where response maches pending
+    on <response> from server where response matches pending
         response-queue.enqueue(response)
         pending = empty
 ```
@@ -121,7 +121,7 @@ while true
         cmd = command-queue.dequeue()
         send <cmd> to leader
         pending = cmd
-    on <response> where response maches pending
+    on <response> where response matches pending
         response-queue.enqueue(response)
         pending = empty
     on <view change> from Backup
@@ -213,7 +213,7 @@ Finally, after the view change, each command sent to the Backup will get a respo
 
 For a client command, let's define its linearization point as:
 1. **Type 1**: If the Primary sends the command to the Backup then the time it sends is the linearization point.
-2. **Type 2**: Otherwise, the Primary crashed before sending the command so define the linearization point as the time the Backup executes the command.
+2. **Type 2**: Otherwise, the Primary crashed before sending the command to the Backup so define the linearization point as the time the Backup executes the command.
 
 Observe that these points are indeed between the client request and the response and that this definition captures all cases.
 

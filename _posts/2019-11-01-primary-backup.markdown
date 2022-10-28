@@ -25,6 +25,9 @@ while true:
       send output to the client
 ```
 
+Importantly, to avoid duplication of input, we assume the command ```cmd``` includes a unique identifier. Moreover, to avoid duplication of output, the assume the ```output``` includes a unique identifier and also the unique identifier of the ```cmd```.
+
+
 The above state machine can be implemented in practice with a simple primary-backup paradigm. 
 
 **Primary.** The ```primary``` behaves exactly like an ideal state machine until it crashes. However, if it does crash, it needs the backup to takeover the execution and continue serving the client. 
@@ -55,7 +58,7 @@ state = init
 log = []
 view = 0
 while true:
-   on receiving cmd from the primary or a client library:
+   on receiving cmd for the first time from the primary or a client library:
       log.append(cmd)
       state, output = apply(cmd, state)
    if view == 1:
@@ -64,6 +67,9 @@ while true:
       view = 1
       send ("view change", 1) to all client libraries
 ```
+
+Note that in some cases ```cmd``` may arrive twice (from both the primary and the client library), in this case the backup ignores the second time (here we use the fact that ```cmd``` contains a unique identifier.
+
 
 **Client.** In the ideal world, the client needs to interact with only a single state machine. With the primary-backup paradigm, it needs to be aware of their existence and send messages accordingly. Thus, we augment the client with a *client library*. The ```client library``` acts as the required relay between the client in the ideal world and the real world protocol. It implements a mechanism to switch from primary to backup:
 
@@ -75,11 +81,13 @@ replica = [primary, backup]
 while true:
    on receiving cmd from client
       send cmd to replica[view]
-   on receiving output from a replica
+   on receiving output from the first time from a replica
       send output to client
    on receiving ("view change", 1) from backup
       view = 1
 ```
+
+Note that in some cases ```output``` may arrive twice (from both the primary and the backup), in this case the client library ignores the second time (here we use the fact that ```output``` contains a unique identifier.
 
 Due to the invariant maintained by the primary, a client knows that the response it got from a primary must have been sent to the backup. If the backup crashes then the primary will continue to serve the clients. If the primary is faulty and crashes then the backup is guaranteed to have seen any command whose output was returned to the client.
 
