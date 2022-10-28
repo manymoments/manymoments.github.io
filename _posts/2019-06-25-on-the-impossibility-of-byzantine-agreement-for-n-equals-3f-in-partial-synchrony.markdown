@@ -1,6 +1,6 @@
 ---
 title: Byzantine Agreement is impossible for $n \leq 3 f$ under partial synchrony
-date: 2019-06-25 07:06:00 -07:00
+date: 2019-06-25 10:06:00 -04:00
 tags:
 - dist101
 - lowerbound

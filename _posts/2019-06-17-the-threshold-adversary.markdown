@@ -1,6 +1,6 @@
 ---
 title: The threshold adversary
-date: 2019-06-17 06:11:00 -07:00
+date: 2019-06-17 09:11:00 -04:00
 tags:
 - dist101
 - models

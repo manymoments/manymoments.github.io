@@ -1,6 +1,6 @@
 ---
 title: The power of the adversary
-date: 2019-06-07 16:00:00 -11:00
+date: 2019-06-07 23:00:00 -04:00
 tags:
 - dist101
 - models
