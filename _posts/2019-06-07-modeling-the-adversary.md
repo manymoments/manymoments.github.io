@@ -28,7 +28,7 @@ The first fundamental aspect is what type of corruption the adversary can inflic
 
 *Crash*: once the party is corrupted, it stops sending and receiving all messages.
 
-*Omission*: once corrupted, the adversary can decide, for each message sent or received, to either drop or allow it to continue.
+*Omission*: once corrupted, the adversary can decide, for each message sent or received, to either drop or allow it to continue. Note that the party is not informed that it is corrupted.
 
 *Byzantine*: this gives the adversary full power to control the party and take any (arbitrary) action on the corrupted party.
 
