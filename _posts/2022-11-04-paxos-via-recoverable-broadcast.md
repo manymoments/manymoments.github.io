@@ -214,22 +214,22 @@ This concludes the proof of Liveness.
 *Exercise 8: Show that there is no liveness (via an infinite execution) if view $v$ is set be the time interval $[v(2 \Delta),(v+1)(2 \Delta))$. In other words, each $2\Delta$ clock ticks each party triggers increments the view by one.*
 
 
-*Exercise 9: What is the minimal $\alpha$ such that the livness property holds if view $v$ is set be the time interval $[v(\alpha \Delta),(v+1)(\alpha \Delta))$. In other words, each $alpha \Delta$ clock ticks each party triggers increments the view by one. What is the best time complexity you can get (see below)?*
+*Exercise 9: What is the minimal $\alpha$ such that the livness property holds if view $v$ is set be the time interval $[v(\alpha \Delta),(v+1)(\alpha \Delta))$. In other words, each $\alpha \Delta$ clock ticks each party triggers increments the view by one. What is the best time complexity you can get (see below)?*
 
 ### Termination
 
 
-We proved that all non-faulty parties outputs a value, but our protocol never terminates! We add the following *termination gadget*:
+We proved that all non-faulty parties output a value, but our protocol never terminates! For that we add the following *termination gadget*:
 
 ```
 If the consensus protocol outputs p,
-    then send <decide p> to all
+    then send <decide, p> to all
 
-Upon receiving <decide p>
+Upon receiving <decide, p>
     If you did not output yet,
-    Then output p and send <decide p> to all
+    Then output p and send <decide, p> to all
 
-Upon receiving n-f <decide p>
+Upon receiving n-f <decide, p>
     Terminate
 
 ``` 
@@ -238,17 +238,17 @@ Upon receiving n-f <decide p>
 
 ### Validity
 
-Observe that Validity is trivial in this protocols. By induction, the only values used are the inputs of the parties.
+Observe that Validity is trivial in these protocols. By induction, the only values used are the inputs of the parties.
 
-What if a party has several different values (for example it received several different values from several different clients)? This is an example of how the standard validity of consensus does not address the challenged of MEV. More on that in later posts. 
+What if a party has several different values (for example it received several different values from several different clients)? This is an example of how the standard validity of consensus does not address the challenges of MEV. More on that in later posts. 
 
 
-### Complexity
+### Time and Message Complexity
 
-Note that the time and number of rounds before GST can be both unbounded. So here we will just measure the time after GST and the number of messages after GST.
+Note that the time and number of messages before GST can be both unbounded. So for this post we will measure the time and message complexity after GST.
 
-**Time complexity**:  since the Liveness proof waits for the first non-faulty primary after GST this may take $f+1$ views. So all parties will output in at most $(f+1)10 \Delta$ time after GST. We will show [later](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) that $(f+1) \Delta$ is a worst case that cannot be avoided (but can have a small propobaility).
+**Time complexity**:  since the Liveness proof waits for the first non-faulty primary after GST this may take an interrupted view, then $f$ views of faulty primaries, then a good view in the worst case. So all parties will output a value in at most $(f+2)10 \Delta$ time after GST. A more carful analysis can impove the first and the last durations. We will show [later](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) that $(f+1) \Delta$ is a worst case that cannot be avoided (but can have a small probability).
 
-**Message Complexity**: since each round has an all-to-all message exchange, the total number of message sent after GST is $O(f n^2) = O(n^3)$. We will [later](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/) show that $O(n^2)$ is the best you can hope for (against strongly adaptive adversaries).
+**Message Complexity**: since each round has an all-to-all message exchange, the total number of message sent after GST is $O((f+1) \times n^2) = O(n^3)$. We will [later](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/) show that $O(n^2)$ is the best you can hope for (against strongly adaptive adversaries).
 
- *Exercise 11: Modify the protocol above to use just $O(n)$ messages per view. Explain why the proof still works, in particular detail the Liveness proof. Can you get the same bound as in Exercise 9?*
+*Exercise 11: Modify the protocol above to use just $O(n)$ messages per view (so total of $O(n^2)$ after GST. Explain why the proof still works, in particular detail the Liveness proof and the Time complexity. Can you get the same bound as in Exercise 9?*
