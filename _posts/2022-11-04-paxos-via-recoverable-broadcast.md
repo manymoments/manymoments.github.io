@@ -1,12 +1,14 @@
 ---
-title: On Paxos from Recoverable boradcast
+title: On Paxos from Recoverable Broadcast
 date: 2022-11-04 08:00:00 -04:00
 tags:
 - dist101
 author: Ittai Abraham
 ---
 
-There are many ways to learn about the [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol, this post is one more way. The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) with $f<n/2$ [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and the goal is [consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) (see below for exact details). 
+There are many ways to learn about the [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol, this post is one more way. This posts has embedded a set of 11 simple exercise - try to go over them!
+
+The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) with $f<n/2$ [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and the goal is [consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) (see below for exact details). 
 
 
 We appraoch Paxos by starting with two major simplifications:
