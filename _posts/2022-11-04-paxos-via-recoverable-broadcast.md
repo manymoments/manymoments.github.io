@@ -6,7 +6,7 @@ tags:
 author: Ittai Abraham
 ---
 
-There are many ways to learn about the [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol, this post is one more way. This posts has embedded a set of 11 simple exercise - try to go over them!
+There are many ways to learn about the [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol, this post is one more way. This posts has embedded a set of simple exercise - try to go over them!
 
 The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) with $f<n/2$ [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and the goal is [consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) (see below for exact details). 
 
@@ -214,7 +214,7 @@ This concludes the proof of Liveness.
 *Exercise 8: Show that there is no liveness (via an infinite execution) if view $v$ is set be the time interval $[v(2 \Delta),(v+1)(2 \Delta))$. In other words, each $2\Delta$ clock ticks each party triggers increments the view by one.*
 
 
-*Exercise 9: What is the minimal $\alpha$ such that the livness property holds if view $v$ is set be the time interval $[v(\alpha \Delta),(v+1)(\alpha \Delta))$. In other words, each $alpha \Delta$ clock ticks each party triggers increments the view by one.*
+*Exercise 9: What is the minimal $\alpha$ such that the livness property holds if view $v$ is set be the time interval $[v(\alpha \Delta),(v+1)(\alpha \Delta))$. In other words, each $alpha \Delta$ clock ticks each party triggers increments the view by one. What is the best time complexity you can get (see below)?*
 
 ### Termination
 
@@ -251,4 +251,4 @@ Note that the time and number of rounds before GST can be both unbounded. So her
 
 **Message Complexity**: since each round has an all-to-all message exchange, the total number of message sent after GST is $O(f n^2) = O(n^3)$. We will [later](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/) show that $O(n^2)$ is the best you can hope for (against strongly adaptive adversaries).
 
- *Exercise 11: Modify the protocol above to use just $O(n)$ messages per view. Explain why the proof still works, in particular detail the Liveness proof.*
+ *Exercise 11: Modify the protocol above to use just $O(n)$ messages per view. Explain why the proof still works, in particular detail the Liveness proof. Can you get the same bound as in Exercise 9?*
