@@ -179,7 +179,7 @@ This completes the description of the protocol. Lets now prove that the three pr
 
 ### Agreement (Safety)
 
-**Lemma 2**: Let $v^*$ be the first view with $n-f$ echos of $(v^*, x)$, then for any view $v>v^*$ the proposal value of ```Broadcast-in-view (v,x)``` must be $x$.
+**Lemma 2**: Let $v^{\star}$ be the first view with $n-f$ echos of $ (v^\star, x)$, then for any view $v>v^\star$ the proposal value of ```Broadcast-in-view (v,x)``` must be $x$.
 
 *Exercise 7: prove the Agreement property follows from Lemma 2.*
 
@@ -188,15 +188,15 @@ First step hints: Assume two parties decide different values. Prove they could n
 
 We now prove Lemma 2, which is the essence of Paxos.
 
-*Proof of Lemma 2*: consider the set $S$ of the $n-f$ parties that sent ```<echo(v*,x)>``` in view $v^*$.
+*Proof of Lemma 2*: consider the set $S$ of the $n-f$ parties that sent ```<echo(v*,x)>``` in view $v^\star$.
 
-We will prove by induction, that for any view $v\geq v^*$:
+We will prove by induction, that for any view $v\geq v^\star$:
 1. The output of Recover-Max(v) is $x$.
-2. For each party $P_i$ in $S$, the highest view $v'$ of ```<echoed-max(v,v',x)>``` it sends in ```Recover-Max(v)``` is such that: (1) $v' \geq v^*$; (2) and the value is $x$.
+2. For each party $P_i$ in $S$, the highest view $v'$ of ```<echoed-max(v,v',x)>``` it sends in ```Recover-Max(v)``` is such that: (1) $v' \geq v^\star$; (2) and the value is $x$.
 
-For the base case, $v=v^*$ this follows from the definition of $S$. Now suppose the induction statement holds for all views $v^* \leq v$ and consider view $v+1$:
+For the base case, $v=v^\star$ this follows from the definition of $S$. Now suppose the induction statement holds for all views $v^\star \leq v$ and consider view $v+1$:
 
-Recover-Max(v+1) must get a response from $n-f$ parties, and that set must intersect with the set $S$ which is also of size $n-f$ by at least $n-2f>0$ one party. From $(2.)$ of the induction hypothesis on views $\leq v$ it follows that at least this one response will be of view $\geq v^* $ and its value is $x$. From $(1.)$ it follows that any response from view $\geq v^*$  will be of value $x$. Since Recover-Max(v+1) takes the value associated with the highest view, it must output $x$. This proves part $(1.)$ of the induction hypothesis for view $v+1$.
+Recover-Max(v+1) must get a response from $n-f$ parties, and that set must intersect with the set $S$ which is also of size $n-f$ by at least $n-2f>0$ one party. From $(2.)$ of the induction hypothesis on views $\leq v$ it follows that at least this one response will be of view $\geq v^\star $ and its value is $x$. From $(1.)$ it follows that any response from view $\geq v^\star$  will be of value $x$. Since Recover-Max(v+1) takes the value associated with the highest view, it must output $x$. This proves part $(1.)$ of the induction hypothesis for view $v+1$.
 
 Since the primary of view $v+1$ must propose $x$, then each party in $S$ either stays with its previous highest echo (from $(1.)$ of the induction hypothesis for view $\leq v$) or it updates it to the higher $(v+1,x)$. Clearly, in both cases we proved that part $(2.)$ of the  induction hypothesis holds for view $v+1$.
 
