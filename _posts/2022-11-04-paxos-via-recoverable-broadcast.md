@@ -40,7 +40,7 @@ Recoverable Broadcast is a pair of simple protocols: ```Broadcast``` and ```Reco
 
 Recall that there are $n$ parties in total and at most $f<n/2$ can have omission corruptions.
 
-Broadcast protocol:
+```Broadcast``` protocol:
 ```
 leader sends <val> to all
 
@@ -54,7 +54,7 @@ Upon receiving n-f <echo, val>,
 Note that for simplicity, the leader also acts as a regular party. So it also sends ```<val>``` to itself and upon seeing its own message, it sends an ```<echo, val>``` message to all parties (again including sending it to itself).
 
 
-Recover protocol. The output is either a value or a special $\bot$ value:
+```Recover``` protocol. The output is either a value or a special $\bot$ value:
 
 ```
 upon start,
@@ -108,7 +108,7 @@ A natural thing a primary of view >1 can do is call Recover (duh - that's why we
 
 Recall that for *recoverability* we need the output of the Broadcast to happen **before** the Recover starts! Solution: change the Broadcast so it stops when view $v$ ends:
 
-Broadcast-in-view(v,p) has both a view $v$ and a proposal value $p$:
+```Broadcast-in-view(v,p)``` has both a view $v$ and a proposal value $p$:
 
 ```
 Primary of view v sends <propose(v,p)> to all
@@ -126,7 +126,7 @@ Now we can do a Recovery when we enter view $v+1$ and guarantees the recoverabil
 The main Paxos algorithmic insight is:
 > **Choose the recovered value with the maximum view you hear!**
 
-Here is a **Recover-Max** protocol for view $v$ that applies this insight:
+```Recover-Max``` protocol for view $v$ that applies this insight:
 
 ```
 upon start of view v
@@ -154,8 +154,14 @@ We are still not done. But let's analyze the effect of Recover-Max. Assume that 
 So all that remains is to combine the two protocols to make sure the primary uses the result of Recover-Max if its output is not $\bot$. We are finally ready to define the consensus protocol:
 
 
-Primary for view  $v>1$ with input $val$:
+```The consensus protocol```: 
 
+For view 1, the primary of view 1 with input $val$: 
+```
+Broadcast-in-view (1,val)
+```
+
+For view $v>1$, the primary of view $v$ with input $val$:
 ```
 p := Recover-Max(v)
 
@@ -164,6 +170,8 @@ if p = bot then
 otherwise 
    Broadcast-in-view (v,p)
 ```
+
+
 
 In words: the primary will first try to recover the maximal echo. If no echo is seen, the primary is free to choose its own input. Otherwise, it proposes the value associated with the highest view in which is herd there was an echo.
 
@@ -184,7 +192,7 @@ We now prove Lemma 2, which is the essence of Paxos.
 
 We will prove by induction, that for any view $v\geq v^*$:
 1. The output of Recover-Max(v) is $x$.
-2. For each party $P_i$ in $S$, the highest view ```<echoed-max(x,v')>``` it sends in ```Recover-Max(v)``` is such that: (1) $v' \geq v^*$; (2) and the value is $x$.
+2. For each party $P_i$ in $S$, the highest view $v'$ of ```<echoed-max(v,v',x)>``` it sends in ```Recover-Max(v)``` is such that: (1) $v' \geq v^*$; (2) and the value is $x$.
 
 For the base case, $v=v^*$ this follows from the definition of $S$. Now suppose the induction statement holds for all views $v^* \leq v$ and consider view $v+1$:
 
