@@ -17,7 +17,7 @@ In the *ideal model*, there is a single *server* and a set of *clients*. Clients
 
 ### A Sequential Client
 
-The client is modeled as a simple state machine that sends commands to the server and listens to the server responses. Importantly, the client is *sequential*: it waits to receive the response of its previous command before sending a new command. This simplifies the client and in some settings also provides a basic flow control mechanism that bounds the total number of in-flight commands as a function of the number of permissioned clients. We model the client as having an external ```command-queue``` and ```response-queue```. Finally, we assume each command has a unique identifier so that the client can match the response to the request.
+The client is modeled as a simple state machine that sends commands to the server and listens to the server responses. Importantly, the client is *sequential*: it waits to receive the response of its previous command before sending a new command. This simplifies the client and in some settings also provides a basic flow control mechanism that bounds the total number of in-flight commands as a function of the number of permissioned clients. We model the client as having an external ```command-queue``` and ```response-queue```. Finally, we assume each command has a unique identifier, and the output includes this identifier. Hence the client can match the response to the request and avoid duplication.
 
 
 ```
@@ -33,6 +33,7 @@ while true
         pending = empty
 ```
 
+Note that if a ```<response>``` arrives without a matching pending command it is ignored.
 
 ### A batched server implementing a sequential state machine: 
 The state machine is defined by the *transition function*  ```apply()``` that takes the existing state and a new command and outputs the new state and the response: ```(state, response) = apply(state, cmd)```. The server uses a *timer* that ticks every $\Delta$ time to batch client commands into *blocks*. It then executes each block and sends the responses to the relevant clients. 

@@ -24,7 +24,7 @@ In addition to the size of the threshold ($n>f$, $n>2f$, or $n>3f$), there are 4
 ### 1. Type of corruption
 The first fundamental aspect is what type of corruption the adversary can inflict on the $f$ parties is can corrupt. There are four classic adversaries: Passive, Crash, Omission, and Byzantine.
 
-*Passive*: a passively corrupted party must follow the protocol just like an honest party, but it allows the adversary to learn information. A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.org/2011/136.pdf) or [Semi-Honest](http://www.wisdom.weizmann.ac.il/~oded/foc-vol2.html)) does not deviate from the protocol but can learn all possible information from its _view_: i.e., the messages received by parties it controls.
+*Passive*: a passively corrupted party must follow the protocol just like an honest party, but it allows the adversary to learn information. A passive adversary (sometimes called [Honest-But-Curious](https://eprint.iacr.org/2011/136.pdf) or [Semi-Honest](http://www.wisdom.weizmann.ac.il/~oded/foc-vol2.html)) does not deviate from the protocol but can learn all possible information from its _view_: i.e., the messages sent and received by parties it controls.
 
 *Crash*: once the party is corrupted, it stops sending and receiving all messages.
 
@@ -33,8 +33,7 @@ The first fundamental aspect is what type of corruption the adversary can inflic
 *Byzantine*: this gives the adversary full power to control the party and take any (arbitrary) action on the corrupted party.
 
 Note that each corruption type subsumes the previous.
-There are other types of corruption (most notable are variants of _Covert_ [adversaries](https://eprint.iacr.org/2007/060.pdf)) that we will cover later. *Covert* adversaries can be used to model rational behavior where there is fear (utility loss) from punishment.
-
+There are other types of corruption (most notable are variants of *Covert* [adversaries](https://eprint.iacr.org/2007/060.pdf)) that we will cover later. *Covert* adversaries can be used to model rational behavior where there is fear (utility loss) from punishment. 
 
 ### 2. Computational power 
 The computational power of the adversary is the next choice. There are two traditional variants and one newer one:
