@@ -5,9 +5,9 @@ layout: page
 
 <img align="right" height="200" src="../img/alin.png" hspace="20"> 
 
-Alin is a [Postdoctoral Researcher](https://research.vmware.com/researchers/alin-tomescu) at VMware Research.
+Alin is a Research Scientist at Aptos Labs. His broad research interests are in cryptography and its practical applications. 
 
-He does research in applied cryptography, rides [motorcycles](https://alinush.github.io/about.html#the-motorcycle) and, occasionally, has a **decentralized thought**:
+Alin does research in applied cryptography, rides [motorcycles](https://alinush.github.io/about.html#the-motorcycle) and, occasionally, has a **decentralized thought**:
 
  - [What is a Merkle tree?](/2020-12-22-what-is-a-merkle-tree/)
  - [A simple and succinct zero-knowledge proof](/2020-12-08-a-simple-and-succinct-zero-knowledge-proof/)
