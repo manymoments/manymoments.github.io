@@ -76,11 +76,11 @@ We will later detail what triggers starting the Recover protocol. Note that give
 
 **Validity**: The output of broadcast is the leader's input value. The output of Recover is either the leader's input value or  $\bot$.
 
-**Weak Termination of Broadcast**: if the leader is non-faulty then all parties output a value and terminate.
+**Weak Termination of Broadcast**: If the leader is non-faulty then all non-faulty parties output a value and terminate.
 
-**Termination of Recover**: if all parties start Recover, then all parties output a value and terminate.
+**Termination of Recover**: If all parties start Recover, then all non-faulty parties output a value and terminate.
 
-**Recoverability**: if all parties all start Recover *after* some party outputs a value from Broadcast then all parties will output this value in the Recover.
+**Recoverability**: If all parties all start Recover *after* some party outputs a value from Broadcast then all parties will output this value in the Recover.
 
 #### Observe that:
 1. The Broadcast may not terminate.
@@ -89,7 +89,7 @@ We will later detail what triggers starting the Recover protocol. Note that give
 
 *Exercise 1: write down detailed executions that highlight of the three observations above.*
 
-*Exercise 2: Prove Validity and the two Termination propoerties. Explain where you used the assumption that $f<n/2$*
+*Exercise 2: Prove Validity and the two Termination properties. Explain where you used the assumption that $f<n/2$*
 
 *Exercise 3: prove recoverability and explain where you use (1) the assumption that $f<n/2$; (2) the [Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle); (3) and where exactly you use the fact that the recover is started after some party outputs a value from Broadcast.*
 
