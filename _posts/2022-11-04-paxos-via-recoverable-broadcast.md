@@ -11,7 +11,7 @@ There are many ways to learn about the [Paxos](https://lamport.azurewebsites.net
 The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) with $f<n/2$ [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and the goal is [consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) (see below for exact details). 
 
 
-We appraoch Paxos by starting with two major simplifications:
+We approach Paxos by starting with two major simplifications:
 
 1. Use a *simple revolving primary* strategy based on the assumptions of perfectly synchronized clock (later posts will show how to extend to a *stable leader* and how rotate leaders with *responsivness*).
 2. Focus on a *single-shot* consensus (later post will show how to extend to *multi-shot* consensus both as an array and as a linked list).
@@ -89,7 +89,7 @@ We will later detail what triggers starting the Recover protocol. Note that give
 
 *Exercise 1: write down detailed executions that highlight of the three observations above.*
 
-*Exercise 2: Prove Validity and the two Termination properties. Explain where you used the assumption that $f<n/2$*
+*Exercise 2: Prove Validity and the two Termination properties. Explain where you used the assumption that there are at most $f$ failures*
 
 *Exercise 3: prove recoverability and explain where you use (1) the assumption that $f<n/2$; (2) the [Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle); (3) and where exactly you use the fact that the recover is started after some party outputs a value from Broadcast.*
 
