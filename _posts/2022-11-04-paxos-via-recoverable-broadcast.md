@@ -13,15 +13,15 @@ The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06
 
 We approach Paxos by starting with two major simplifications:
 
-1. Use a *simple revolving primary* strategy based on the assumptions of perfectly synchronized clock (later posts will show how to extend to a *stable leader* and how rotate leaders with *responsivness*).
+1. Use a *simple revolving primary* strategy based on the assumptions of perfectly synchronized clocks (later posts will show how to extend to a *stable leader*, how to rotate leaders with *responsivness*, and how not rely on clock synchronization).
 2. Focus on a *single-shot* consensus (later post will show how to extend to *multi-shot* consensus both as an array and as a linked list).
 
 
 ## View based protocol with simple revolving primary
 
-The protocol progresses in **views**. The first view is 1 and view $v+1$ follows view $v$. Each view has a designated **primary** party. For fairness, parties rotate the role of the Primary. For simplicity, the primary of view $v$ is party $v \mod n$. 
+The protocol progresses in **views**. The first view is 1 and view $v+1$ follows view $v$. Each view has a designated **primary** party. For fairness, parties rotate the role of the primary. For simplicity, the primary of view $v$ is party $v \mod n$. 
 
-Clocks are synchronized, and $\Delta$ is known, so set view $v$ is set to be the time interval $[v(10 \Delta),(v+1)(10 \Delta))$. In other words, each $10\Delta$ clock ticks each party triggers a **view change** and increments the view by one. Since clocks are assumed to be perfectly synchronized, all parties mover in and out of each view in complete synchrony.
+Clocks are synchronized, and $\Delta$ is known, so set view $v$ is set to be the time interval $[v(10 \Delta),(v+1)(10 \Delta))$. In other words, each $10\Delta$ clock ticks each party triggers a **view change** and increments the view by one. Since clocks are assumed to be perfectly synchronized, all parties move in and out of each view in complete synchrony.
 
 
 ## Single-shot consensus
@@ -89,7 +89,7 @@ We will later detail what triggers starting the Recover protocol. Note that give
 
 *Exercise 1: write down detailed executions that highlight of the three observations above.*
 
-*Exercise 2: Prove Validity and the two Termination properties. Explain where you used the assumption that there are at most $f$ failures*
+*Exercise 2: Prove Validity and the two Termination properties. Explain where you used the assumption that there are at most $f$ failures.*
 
 *Exercise 3: prove recoverability and explain where you use (1) the assumption that $f<n/2$; (2) the [Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle); (3) and where exactly you use the fact that the recover is started after some party outputs a value from Broadcast.*
 
@@ -100,7 +100,7 @@ We use a variation of Recoverable Broadcast to build a view based consensus prot
 
 Here is a natural path: in view 1 the primary does a Recoverable Broadcast, with its input value. The output of the Broadcast is a consensus decision!
 
-But there is a challenge, what if the first Primary is faulty and only some parties decide (but not all)? For agreement to hold we must make sure that later primaries use the same value!
+But there is a challenge: what if the first Primary is faulty and only some parties decide (but not all)? For agreement to hold we must make sure that later primaries use the same value!
 
 *Exercise 4: If all each primary does in its view is Broadcast its input value - show an execution that has a violation of Agreement.*
 
@@ -121,7 +121,7 @@ Upon receiving n-f <echo(v,p)>,
 
 ```
 
-Now we can do a Recovery when we enter view $v+1$ and guarantees the recoverability properties for all Broadcasts of previous views. Another challenge: what if Recover returns different values from several previous views, which one should the primary use? For example, suppose that at view 10, we recover both a proposal $p'$ from view 4 and a proposal $p''$ from view 6.
+Now we can do a Recovery when we enter view $v+1$ and guarantees the recoverability properties for all Broadcasts of previous views. Another challenge: what if Recover returns different values from several previous views, which one should the primary use? For example, suppose that at view 10, we recover both a proposal $p'$ from view 4 and a proposal $p''$ from view 6, which one should the primary choose?
 
 The main Paxos algorithmic insight is:
 > **Choose the recovered value with the maximum view you hear!**
@@ -145,7 +145,7 @@ We are still not done. But let's analyze the effect of Recover-Max. Assume that 
 
 **Lemma 1**: let $p$ be a value output by Broadcast in some view $v$, then any Recover-Max invocation in any view $>v$ will output some value $p'$ such that $p'$ was proposed at view $\geq v$.
 
-*Exercise 5: prove Lemma 1. Show examples where the Lemma is incorrect if (1) some party sends an echoed-max not of its highest echo but of a lower view; or (2) the primary outputs not the proposal associated with the highest view but of a lower view*
+*Exercise 5: prove Lemma 1. Show examples where the Lemma is incorrect if (1) some party sends an echoed-max not of its highest echo but of a lower view; or (2) the primary outputs not the proposal associated with the highest view but of a lower view.*
 
 *Exercise 6: if each Primary just proposes its own input show an example of why in the lemma above it may happen that $p \neq p'$.*
 
@@ -173,9 +173,9 @@ otherwise
 
 
 
-In words: the primary will first try to recover the maximal echo. If no echo is seen, the primary is free to choose its own input. Otherwise, it proposes the value associated with the highest view in which is herd there was an echo.
+In words: the primary will first try to recover the maximal echo. If no echo is seen, the primary is free to choose its own input. Otherwise, it proposes the value associated with the highest view in which it herd there was an echo.
 
-This completes the description of the protocol. Lets now prove that the three properties of consensus hold.
+This completes the description of the protocol. Lets prove that the three properties of consensus hold.
 
 ### Agreement (Safety)
 
@@ -214,7 +214,7 @@ This concludes the proof of Liveness.
 *Exercise 8: Show that there is no liveness (via an infinite execution) if view $v$ is set be the time interval $[v(2 \Delta),(v+1)(2 \Delta))$. In other words, each $2\Delta$ clock ticks each party triggers increments the view by one.*
 
 
-*Exercise 9: What is the minimal $\alpha$ such that the livness property holds if view $v$ is set be the time interval $[v(\alpha \Delta),(v+1)(\alpha \Delta))$. In other words, each $\alpha \Delta$ clock ticks each party triggers increments the view by one. What is the best time complexity you can get (see below)?*
+*Exercise 9: What is the minimal $\alpha$ such that the liveness property holds if view $v$ is set be the time interval $[v(\alpha \Delta),(v+1)(\alpha \Delta))$. In other words, each $\alpha \Delta$ clock ticks each party triggers increments the view by one. What is the best time complexity you can get (see below)?*
 
 ### Termination
 
