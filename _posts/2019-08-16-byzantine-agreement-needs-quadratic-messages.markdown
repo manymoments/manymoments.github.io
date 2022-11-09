@@ -7,7 +7,7 @@ tags:
 author: Kartik Nayak, Ittai Abraham
 ---
 
-How scalable is Byzantine agreement? Specifically, does solving agreement require the non-faulty parties to send a quadratic number of messages (in the number of potential faults)? In this post, we highlight the [Dolev and Reischuk](http://cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf) lower bound from 1982 that addresses these fundamental questions.
+How scalable is Byzantine agreement? Specifically, does solving agreement require the non-faulty parties to send a quadratic number of messages (in the number of potential faults)? In this post, we highlight the [Dolev and Reischuk](http://cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf) lower bound from 1982 that addresses this fundamental question.
 
 **[Dolev and Reischuk 1982](http://cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf): any deterministic Broadcast protocol that is resilient to $f$ Byzantine failures must have an execution where the non-faulty parties send  $> (f/2)^2$ messages.** 
 
@@ -16,7 +16,7 @@ In fact, we will observe that the result is stronger and holds even for omission
 **[Dolev and Reischuk 1982, (modern)](http://cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf): any deterministic Broadcast protocol that is resilient to $f$** ***omission*** **failures must have an execution where the non-faulty parties send  $> (f/2)^2$ messages.** 
 
 
-In 1980, [PSL](https://lamport.azurewebsites.net/pubs/reaching.pdf) showed the *first* feasibility result for consensus in the presence of Byzantine adversaries. However, their solution had an *exponential* (in $n$, the number of parties) communication complexity. An obvious question then is to figure out the lowest communication complexity that could be obtained. Dolev and Resichuk showed that the barrier to quadratic communication complexity cannot be broken by deterministic protocols.
+In 1980, [PSL](https://lamport.azurewebsites.net/pubs/reaching.pdf) showed the *first* feasibility result for consensus in the presence of Byzantine adversaries. However, their solution had an *exponential* (in $n$, the number of parties) communication complexity. An obvious question then is to figure out the lowest communication complexity that could be obtained. Dolev and Resichuk showed that the barrier to quadratic communication complexity cannot be broken by deterministic protocols. 
 
 At a high level, the Dolev and Resichuk lower bound says that if the non-faulty always send few messages (specifically $< (f/2)^2$), then the adversary can cause some non-faulty party to receive no message! The party that receives no message has no way of reaching agreement with the rest. We use a trivial indistinguishability argument and create a world where a party $p$ receives no message at all. Thus, party $p$ cannot distinguish between a world where the designated sender sends 0 vs a world where it sends 1.
 
@@ -32,7 +32,7 @@ We will prove the theorem by describing two worlds and using indistinguishabilit
   <img src="/uploads/dr-world1.png" width="256" title="DR world 1">
 </p>
 
-In World 1, the adversary corrupts a set $V \subset Q$ of $f/2$ parties that do not include the designated sender. Let $U$ denote the remaining parties (not in $V$). All parties in $V$ run the designated protocol but suffer from omission failures: each $v \in V$ (i) omits the first $f/2$ messages sent to them from parties in $U$, and (ii) omits all messages it sends to and receives to and from parties in $V$. Suppose the non-faulty designated sender has input 0. So from the validity property all non-faulty parties must output 0.
+In World 1, the adversary corrupts a set $V \subset Q$ of $f/2$ parties that do not include the designated sender. Let $U$ denote the remaining parties (not in $V$). All parties in $V$ run the designated protocol but suffer from omission failures: each $v \in V$ (i) omits the first $f/2$ messages sent to them from parties in $U$, and (ii) omits all messages it sends to and receives from parties in $V$. Suppose the non-faulty designated sender has input 0. So from the validity property all non-faulty parties must output 0.
 
 **World 2:**
 
@@ -52,6 +52,10 @@ The lower bound uses the fact that the protocol is deterministic. There have bee
 - In PODC’19, we [generalized this lower bound for randomized protocols](https://arxiv.org/abs/1805.03391).
 
 [Randomized version of Dolev-Reischuk.](https://users.cs.duke.edu/~kartik/papers/podc2019.pdf) Any (possibly randomized) Byzantine Agreement protocol must in expectation incur at least $\Omega(f^2)$ communication in the presence of a strongly adaptive adversary capable of performing "after-the-fact removal", where $f$ denotes the number of corrupt parties.
+
+The work of [Spiegelman, DISC 2021](https://arxiv.org/pdf/2002.06993.pdf) proves a generalization in the early stopping setting: if the actual number  of failures in an execution is $k\leq f$ then $\Omega(f+kf)$ messages are required.
+
+See this [follow up](https://decentralizedthoughts.github.io/2022-08-14-new-DR-LB/) post on new Dolev-Reischuk style lower bounds for Crusader Agreement against a Byzantine adversary.
 
 
 **Remark:**
