@@ -87,11 +87,11 @@ We will later detail what triggers starting the Recover protocol. Note that give
 2. Recover may return a non-$\bot$ value, even if no party has output a value during broadcast!
 3. Recover may return $\bot$, even if some party outputs the value from broadcast!
 
-*Exercise 1: write down detailed executions that highlight of the three observations above.*
+*Exercise 1: write down three detailed executions that highlight each one the the observations above.*
 
 *Exercise 2: Prove Validity and the two Termination properties. Explain where you used the assumption that there are at most $f$ failures.*
 
-*Exercise 3: prove recoverability and explain where you use (1) the assumption that $f<n/2$; (2) the [Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle); (3) and where exactly you use the fact that the recover is started after some party outputs a value from Broadcast.*
+*Exercise 3: prove recoverability and explain where you use (1) the assumption that $f<n/2$; (2) the [Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle); (3) and where exactly you use the fact that the Recover is started after some party outputs a value from Broadcast.*
 
 
 ### Paxos via Recoverable Broadcast
@@ -188,7 +188,7 @@ First step hints: Assume two parties decide different values. Prove they could n
 
 We now prove Lemma 2, which is the essence of Paxos.
 
-*Proof of Lemma 2*: consider the set $S$ of the $n-f$ parties that sent ```<echo(v*,x)>``` in view $v^\star$.
+*Proof of Lemma 2*: consider the set $S$ (for Sentinels) consisting of the $n-f$ parties that sent ```<echo(v*,x)>``` in view $v^\star$. We will call them the *Sentinels*, because they guard safety.
 
 We will prove by induction, that for any view $v\geq v^\star$:
 1. The output of Recover-Max(v) is $x$.
@@ -211,7 +211,7 @@ Consider the view $v^+$ with the *first* non-faulty Primary that started after G
 This concludes the proof of Liveness.
 
 
-*Exercise 8: Show that there is no liveness (via an infinite execution) if view $v$ is set be the time interval $[v(2 \Delta),(v+1)(2 \Delta))$. In other words, each $2\Delta$ clock ticks each party triggers increments the view by one.*
+*Exercise 8: Show that there is no liveness (via an infinite execution) if view $v$ is set be the time interval $[v(2 \Delta),(v+1)(2 \Delta))$. In other words, each $2\Delta$ clock ticks each party triggers an increment of the view by one.*
 
 
 *Exercise 9: What is the minimal $\alpha$ such that the liveness property holds if view $v$ is set be the time interval $[v(\alpha \Delta),(v+1)(\alpha \Delta))$. In other words, each $\alpha \Delta$ clock ticks each party triggers increments the view by one. What is the best time complexity you can get (see below)?*
@@ -251,4 +251,4 @@ Note that the time and number of messages before GST can be both unbounded. So f
 
 **Message Complexity**: since each round has an all-to-all message exchange, the total number of message sent after GST is $O((f+1) \times n^2) = O(n^3)$. We will [later](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/) show that $O(n^2)$ is the best you can hope for (against strongly adaptive adversaries).
 
-*Exercise 11: Modify the protocol above to use just $O(n)$ messages per view (so total of $O(n^2)$ after GST. Explain why the proof still works, in particular detail the Liveness proof and the Time complexity. Can you get the same bound as in Exercise 9?*
+*Exercise 11: Modify the protocol above to use just $O(n)$ messages per view (so total of $O(n^2)$ after GST). Explain why the proof still works, in particular detail the Liveness proof and the Time complexity. Can you get the same bound as in Exercise 9?*
