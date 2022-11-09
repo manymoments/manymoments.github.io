@@ -54,19 +54,18 @@ Upon receiving n-f <echo, val>,
 Example execution with three parties and party $B$ is the leader:
 
 <div class="mermaid"> 
-  graph LR
-    B[leader] -- val --> A2[A]
-    B  --> B2[B]
-    B  --> C2[C]
-    A2 -- echo --> A3[A] 
-    A2 -- echo --> B3[B] 
-    A2 -- echo --> C3[C] 
-    B2  --> A3[A] 
-    B2  --> B3[B] 
-    B2  --> C3[C] 
-    C2  --> A3[A] 
-    C2  --> B3[B] 
-    C2  --> C3[C] 
+  graph LR;    B[leader] -- val --> A2[A];
+    B  --> B2[B];
+    B  --> C2[C];
+    A2 -- echo --> A3[A] ;
+    A2 -- echo --> B3[B] ;
+    A2 -- echo --> C3[C] ;
+    B2  --> A3[A] ;
+    B2  --> B3[B] ;
+    B2  --> C3[C] ;
+    C2  --> A3[A] ;
+    C2  --> B3[B] ;
+    C2  --> C3[C] ;
  </div>
 
 Note that for simplicity, the leader also acts as a regular party. So it also sends ```<val>``` to itself and upon seeing its own message, it sends an ```<echo, val>``` message to all parties (again including sending it to itself).
