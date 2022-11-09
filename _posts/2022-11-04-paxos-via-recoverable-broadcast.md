@@ -52,7 +52,8 @@ Upon receiving n-f <echo, val>,
 ```
 
 Example execution with three parties and party $B$ is the leader:
-```mermaid
+
+<div class="mermaid"> 
   graph LR
     B[leader] -- val --> A2[A]
     B  --> B2[B]
@@ -66,7 +67,7 @@ Example execution with three parties and party $B$ is the leader:
     C2  --> A3[A] 
     C2  --> B3[B] 
     C2  --> C3[C] 
-```
+ </div>
 
 Note that for simplicity, the leader also acts as a regular party. So it also sends ```<val>``` to itself and upon seeing its own message, it sends an ```<echo, val>``` message to all parties (again including sending it to itself).
 
