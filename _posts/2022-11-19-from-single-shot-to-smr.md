@@ -1,11 +1,10 @@
 ---
 title: From Single-Shot Consensus to State Machine Replication
-date: 2022-11-19 05:00:00 -04:00
+date: 2022-11-19 04:00:00 -05:00
 tags:
 - dist101
 author: Ittai Abraham
 ---
-
 
 In this post we explore the path from *Single-Shot Consensus*, via *Write-Once Registers*, to *Log Replication*, and finally to *State Machine Replication*. We begin by defining all four problems assuming *minority omission failures* and *partial synchrony*. This post continues our previous post [On Paxos from Recoverable Broadcast](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/). 
 
