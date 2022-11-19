@@ -1,11 +1,11 @@
 ---
 title: On PBFT from Locked Broadcast
-date: 2022-11-20 04:00:00 -05:00
-published: false
+date: 2022-11-20 05:00:00 -04:00
 tags:
 - dist101
 author: Ittai Abraham
 ---
+
 
 We describe a variation of the authenticated version of [PBFT](https://pmg.csail.mit.edu/papers/osdi99.pdf) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous post on [Paxos using Recoverable Broadcast](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/). I call this protocol **linear PBFT** and variants of it are used by [SBFT](https://arxiv.org/pdf/1804.01626.pdf) and [Tusk](https://arxiv.org/pdf/2105.11827.pdf). A later post will show how to extend this approach for [Two Round HotStuff](https://arxiv.org/pdf/1803.05069v1.pdf)) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) and [Three Round HotStuff](https://arxiv.org/pdf/1803.05069.pdf) using [Keyed Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
 
@@ -14,7 +14,7 @@ The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06
 
 As we did with Paxos, we approach PBFT by starting with two major simplifications:
 
-1. Use a *simple revolving primary* strategy based on the assumptions of perfectly synchronized clocks. This approach follows Section 6 of [Two Round HotStuff](https://arxiv.org/pdf/1803.05069v1.pdf) that then suggests an additional way of doing view synchronization for a total $O(n^2)$ message complexity without clock synchronization.
+1. Use a *simple revolving primary* strategy based on the assumption of perfectly synchronized clocks. This approach follows Section 6 of [Two Round HotStuff](https://arxiv.org/pdf/1803.05069v1.pdf) that then suggests an additional way of doing view synchronization for a total $O(n^2)$ message complexity without clock synchronization.
 2. Focus on a *single-shot* consensus while PBFT is designed as a full State Machine Replication system.
 
 
@@ -57,7 +57,7 @@ For view 1, the primary of view 1 with input $val,proof$:
 LB (1, val, val-proof)
 ```
 
-Once a primary gets a delivery-certificate it sends it to all parties to commit. Recall that a delivery-certificate is valid if it has $n-f$ distinct signatures.
+Once a primary obtains a delivery-certificate it sends it to all parties to commit. Recall that a delivery-certificate is valid if it has $n-f$ distinct signatures.
 
 ```
 Upon delivery-certificate dc for (v,x)
@@ -72,7 +72,7 @@ Upon valid (x,dc)
 
 As in Paxos, what if the first Primary is faulty and only some parties decide (but not all)? For agreement to hold later primaries cannot commit other values! We will show that later primaries cannot even generate lock-certificates for other values! 
 
-Similar to Paxos, the Recover Max Lock ($RML$) will return the highest lock-certificate. Unlike Paxos, $RML$ will also return a ```proof```. We will explain what this proof contains later, intuitively it contains a proof that the primary did indeed chooses the highest lock-certificate it saw.
+Similar to Paxos, the Recover Max Lock ($RML$) will return the highest lock-certificate. Unlike Paxos, $RML$ will also return a ```proof```. We will explain what this proof contains later, intuitively it contains a proof that the primary did indeed choose the highest lock-certificate it saw.
 
 For view $v>1$, the primary of view $v$ with input $val,val-proof$:
 ```
@@ -92,21 +92,24 @@ Much of the magic of Byzantine Fault tolerance is hidden in the Locked Broadcast
 
 ### Recover Max Lock
 
-```Recover-Max-Lock (v)``` protocol for view $v$ finds the highest lock-certificate and returns not only the associated value but also proof that this is indeed the highest lock-certificate among some set of $n-f$ valid responses. 
+```RML(v)``` protocol for view $v$ finds the highest lock-certificate and returns not only the associated value but also proof that this is indeed the highest lock-certificate among some set of $n-f$ valid responses. 
 
 ```
 RML(v):
 
 Party I upon start of view v
-    send <echoed-max(v, v', p, LC(v') )>_i of the highest view v' in which you have a lock-certificate LC for (v',p)
-    or send <echoed-max(v, bot)>_i if you don't have any lock-certificate
+    send <echoed-max(v, v', p, LC(v') )>_i 
+        of the highest view v' in which you have a lock-certificate LC for (v',p)
+    or send <echoed-max(v, bot)>_i 
+        if you don't have any lock-certificate
 
 Primary waits for n-f responses <echoed-max(v,*)> 
     if all are bot then output (bot, responses)
-    otherwise, output the proposal associated with the highest view v' and responses
+    otherwise, output (proposal, responses) 
+        where proposal is associated with the highest view in responses
 ```
 
-So the primary not only outputs the value associated with the highest lock-certificate it also has to send all the $n-f$ lock-certificate responses it saw!
+The primary not only outputs the value associated with the highest lock-certificate it also has to send all the $n-f$ lock-certificate responses it saw!
 
 ### Locked Broadcast 
 
@@ -117,19 +120,19 @@ Recall that [Locked broadcast](https://decentralizedthoughts.github.io/2022-09-1
 * **External Validity**: If there is a *delivery-certificate* on value $v$ and proof $proof$ then $v$ is *externally valid*. So $EV(v,proof)=1$.
 * **Unique-Lock-Availability**: If a  *delivery-certificate* exists for $v$ then there can only exist a *lock-certificate* for $v$ and there are at least $n-2f\geq f+1$ honest parties that hold this *lock-certificate*.
 
-Note that Locked Broadcast needs to define an external validity function $EV_{\text{LB}}$, this defines what messages are allowed to proceed. Note that this is different from the external validity function of the consensus protocol $EV_{\text{consensus}}$. As you may expect, the $EV_{\text{LB}}$ will check the validity of the $RML(v)$ protocol!
+Note that Locked Broadcast needs to define an external validity function $EV_{\text{LB}}$, this defines what messages are allowed to proceed. Note that this is different from the external validity function of the consensus protocol $EV_{\text{consensus}}$. As you may expect, the $EV_{\text{LB}}$ will check the validity of the $RML(v)$ protocol.
 
 ### External Validity for the Locked Broadcast of Linear PBFT
 
-We now define $EV_{\text{LB}}$,
+We now define $EV_{\text{LB}}$:
 
 For view 1, we just use the external validity function of the consensus protocol $EV_{\text{consensus}}$. So $EV_{\text{LB}}(1, val, val-proof)= EV_{\text{consensus}}(val, val-proof)$.
 
 For view $v>1$ there are two cases:
 
-1. We are given a 4-tuple $(v, val, val-proof, p-proof)$, if $p-proof$ consists of $n-f$ distinct $RML(v)$ responses and all have value $\bot$, then output $EV_{\text{consensus}}(val, val-proof)$.
-2. Otherwise, We are given a 3-tuple $(v, p, p-proof)$, check that $p-proof$ consists of $n-f$ distinct valid $RML(v)$ responses:
-    1. An $RML(v)$ message that contains ```<echoed-max(v, v', p, LC(v') )>_i``` is valid if the lock-certificate is valid for view $v'$ and the value associated with this lock-certificate is $p$.
+1. Given a 4-tuple $(v, val, val{-}proof, p{-}proof)$, $p{-}proof$ consists of $n-f$ distinct $RML(v)$ responses and all have value $\bot$, then output $EV_{\text{consensus}}(val, val-proof)$.
+2. Otherwise, given a 3-tuple $(v, p, p{-}proof)$, check that $p{-}proof$ consists of $n-f$ distinct valid $RML(v)$ responses:
+    1. An $RML(v)$ message that contains ```<echoed-max(v, v', p, LC(v') )>_i``` is valid if the lock-certificate $LC(v')$ is valid for view $v'$ and the value associated with $LC(v')$ is $p$.
     2. Let $v^+, LC_{v^+}, p^+$ be the valid ```<echoed-max(v, * )>_i``` response with the highest view $v^+$. 
     3. Output true of $p=p^+$.
 
@@ -138,7 +141,7 @@ In words, we either check all parties saw no lock-certificate and the new value 
 
 
 
-This completes the description of the protocol. Note that we described the protocol in 4 places: the consensus protocol, the recover max lock protocol, the locked broadcast protocol, and finally the external validity of the locked broadcast. Let's prove that the three properties of consensus hold when we combine all of them!
+This completes the description of the full consensus protocol. Note that we described the protocol in 4 places: the consensus protocol, the recover max lock protocol, the locked broadcast protocol, and finally the external validity of the locked broadcast. Let's prove that the three properties of consensus hold:
 
 
 ### Agreement (Safety)
@@ -147,7 +150,7 @@ This completes the description of the protocol. Note that we described the proto
 
 *Exercise: prove the Agreement property follows from Lemma above.*
 
-We now prove the safety Lemma, which is the essence of PBFT.
+We now prove the safety lemma, which is the essence of PBFT.
 
 *Proof of Safety Lemma*: consider the set $S$ (for Sentinels) of **non-faulty** parties among the $n-f$ parties that sent a lock-certificate in the second round of locked broadcast of view $v^\star$. Note that $|S| \geq n-2f \geq f+1$. 
 
@@ -163,9 +166,9 @@ Now suppose the induction statement holds for all views $v^\star \leq v$ and con
 
 Here we will use the *External Validity* property of locked broadcast. To form a lock-certificate, the primary needs $n-2f$ non-faulty parties to view its proposal as valid. 
 
-Observe that any valid $p-proof$ must include a lock-certificate sent by some member of $S$. This is true because $p-proof$ must include $n-f$ distinct and valid lock-certificates. 
+Observe that any valid $p{-}proof$ must include a lock-certificate sent by some member of $S$. This is true because $p{-}proof$ must include $n-f$ distinct and valid lock-certificates. 
 
-We can now use the induction hypothesis: from (2.) and the above $p-proof$ must contain a lock-certificate of view at least $v^* $ and value $x$. From (1.) any lock-certificate in $p-proof$ is either of view $< v^*$ or of value $x$. Hence the value associated with the maximal view lock-certificate in $p-proof$ must be $x$. This concludes the proof of (1.) for $v+1$.
+We can now use the induction hypothesis: from (2.) and the above $p{-}proof$ must contain a lock-certificate of view at least $v^* $ and value $x$. From (1.) any lock-certificate in $p{-}proof$ is either of view $< v^*$ or of value $x$. Hence the value associated with the maximal view lock-certificate in $p{-}proof$ must be $x$. This concludes the proof of (1.) for $v+1$.
 
 Given (1.) for $v+1$, (2.) follows immediately for $v+1$. This concludes the proof of the Safety Lemma.
 
@@ -209,9 +212,9 @@ The time and number of messages before GST can be both unbounded, so we measure 
 
 **Message Complexity**: since each round has a linear message exchange, the total number of messages sent after GST is $O(f \times n) = O(n^2)$. This is asymptotically optimal. 
 
-However, the number of bits in each message is potentially large. The size of a lock-certificate or a delivery-certificate is $O(n)$ bits. More worrisome, the size of a $p-proof$ that is sent in the locked broadcast is $O(n^2)$ bits because it contains $O(n)$ lock-certificates.
+However, the number of bits in each message is potentially large. The size of a lock-certificate or a delivery-certificate is $O(n)$ bits. More worrisome, the size of a $p{-}proof$ that is sent in the locked broadcast is $O(n^2)$ bits because it contains $O(n)$ lock-certificates.
 
-Reducing the size of the lock-certificate is easy by using threshold signatures. Reducing the size of the $p-proof$ requires either more powerful cryptography or a slightly different protocol. We will explore both in future posts.
+Lock-certificates can be reduced to constant size by using threshold signatures. Reducing the size of the $p{-}proof$ below $O(n)$ bits requires either more powerful cryptography or a slightly different protocol. We will explore both in future posts.
 
 
 ## Notes
