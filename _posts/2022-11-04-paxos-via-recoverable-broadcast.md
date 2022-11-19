@@ -6,27 +6,27 @@ tags:
 author: Ittai Abraham
 ---
 
-There are many ways to learn about the [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol, this post is one more way. This posts has embedded a set of simple exercise - try to go over them!
+There are many ways to learn about the [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol, this post is one more way. This post has embedded a set of simple exercises - try to go over them!
 
 The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) with $f<n/2$ [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and the goal is [consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) (see below for exact details). 
 
 
 We approach Paxos by starting with two major simplifications:
 
-1. Use a *simple revolving primary* strategy based on the assumptions of perfectly synchronized clocks (later posts will show how to extend to a *stable leader*, how to rotate leaders with *responsivness*, and how not rely on clock synchronization).
-2. Focus on a *single-shot* consensus (later post will show how to extend to *multi-shot* consensus both as an array and as a linked list).
+1. Use a *simple revolving primary* strategy based on the assumptions of perfectly synchronized clocks (later posts will show how to extend to a *stable leader*, how to rotate leaders with *responsiveness*, and how not to rely on clock synchronization).
+2. Focus on a *single-shot* consensus (a later post will show how to extend to *multi-shot* consensus both as an array and as a linked list).
 
 
-## View based protocol with simple revolving primary
+## View-based protocol with simple revolving primary
 
 The protocol progresses in **views**. The first view is 1 and view $v+1$ follows view $v$. Each view has a designated **primary** party. For fairness, parties rotate the role of the primary. For simplicity, the primary of view $v$ is party $v \mod n$. 
 
-Clocks are synchronized, and $\Delta$ is known, so set view $v$ is set to be the time interval $[v(10 \Delta),(v+1)(10 \Delta))$. In other words, each $10\Delta$ clock ticks each party triggers a **view change** and increments the view by one. Since clocks are assumed to be perfectly synchronized, all parties move in and out of each view in complete synchrony.
+Clocks are perfectly synchronized, and $\Delta$ is known. So view $v$ is set to be the time interval $[v(10 \Delta),(v+1)(10 \Delta))$. In other words, each $10\Delta$ clock ticks each party triggers a **view change** and increments the view by one. Since clocks are assumed to be perfectly synchronized, all parties move in and out of each view in complete synchrony.
 
 
 ## Single-shot consensus
 
-In this setting each party has some *input value* and the goal is to *output a single value* with the following three properties:
+In this setting, each party has some *input value* and the goal is to *output a single value* with the following three properties:
 
 **Uniform Agreement**: all parties that output a value, output the same value. Note that this is a strictly stronger property than **Agreement** which just requires that all *non-faulty* parties that output a value, output the same value.
 
@@ -75,20 +75,20 @@ We will later detail what triggers starting the Recover protocol. Note that give
 
 ### 4 properties of Recoverable Broadcast:
 
-**Validity**: The output of broadcast is the leader's input value. The output of Recover is either the leader's input value or  $\bot$.
+**Validity**: The output of Broadcast is the leader's input value. The output of Recover is either the leader's input value or  $\bot$.
 
 **Weak Termination of Broadcast**: If the leader is non-faulty then all non-faulty parties output a value and terminate.
 
 **Termination of Recover**: If all parties start Recover, then all non-faulty parties output a value and terminate.
 
-**Recoverability**: If all parties all start Recover *after* some party outputs a value from Broadcast then all parties will output this value in the Recover.
+**Recoverability**: If all parties start Recover *after* some party outputs a value from Broadcast then all parties will output this value in the Recover.
 
 #### Observe that:
 1. The Broadcast may not terminate.
 2. Recover may return a non-$\bot$ value, even if no party has output a value during broadcast!
 3. Recover may return $\bot$, even if some party outputs the value from broadcast!
 
-*Exercise 1: write down three detailed executions that highlight each one the the observations above.*
+*Exercise 1: write down three detailed executions that highlight each one the observations above.*
 
 *Exercise 2: Prove Validity and the two Termination properties. Explain where you used the assumption that there are at most $f$ failures.*
 
@@ -97,13 +97,13 @@ We will later detail what triggers starting the Recover protocol. Note that give
 
 ### Paxos via Recoverable Broadcast
 
-We use a variation of Recoverable Broadcast to build a view based consensus protocol. Recall that every $10 \Delta$ the parties change view and rotate the primary. Since clocks are perfectly synchronized this change of view is perfectly synchronized as well.
+We use a variation of Recoverable Broadcast to build a view-based consensus protocol. Recall that every $10 \Delta$ the parties change view and rotate the primary. Since clocks are perfectly synchronized this change of view is perfectly synchronized as well.
 
 Here is a natural path: in view 1 the primary does a Recoverable Broadcast, with its input value. The output of the Broadcast is a consensus decision!
 
 But there is a challenge: what if the first Primary is faulty and only some parties decide (but not all)? For agreement to hold we must make sure that later primaries use the same value!
 
-*Exercise 4: If all each primary does in its view is Broadcast its input value - show an execution that has a violation of Agreement.*
+*Exercise 4: If all each primary does in its view is Broadcast its input value - show an execution that has a violation of the Agreement propoerty.*
 
 A natural thing a primary of view >1 can do is call Recover (duh - that's why we started with Recoverable Broadcast). In particular, if there was a decision in view 1 by some party, then we would like the Recover to notify the new primary. 
 
@@ -140,7 +140,7 @@ Primary waits for n-f responses <echoed-max(v,*)>
 
 ```
 
-This recover protocol needs only to send messages to the primary. 
+This Recover protocol needs only to send messages to the primary. 
 
 We are still not done. But let's analyze the effect of Recover-Max. Assume that in each view, each primary just Broadcasts its own input.
 
@@ -174,9 +174,9 @@ otherwise
 
 
 
-In words: the primary will first try to recover the maximal echo. If no echo is seen, the primary is free to choose its own input. Otherwise, it proposes the value associated with the highest view in which it herd there was an echo.
+In words: the primary will first try to recover the maximal echo. If no echo is seen, the primary is free to choose its own input. Otherwise, it proposes the value associated with the highest view in which it heard there was an echo.
 
-This completes the description of the protocol. Lets prove that the three properties of consensus hold.
+This completes the description of the protocol. Let's prove that the three properties of consensus hold.
 
 ### Agreement (Safety)
 
@@ -184,7 +184,7 @@ This completes the description of the protocol. Lets prove that the three proper
 
 *Exercise 7: prove the Agreement property follows from Lemma 2.*
 
-First step hints: Assume two parties decide different values. Prove they could not have decided in the same view, so ... apply Lemma 2.
+First step hints: Assume two parties decide on different values. Prove they could not have decided in the same view, so ... apply Lemma 2.
 
 
 We now prove Lemma 2, which is the essence of Paxos.
@@ -199,7 +199,7 @@ For the base case, $v=v^\star$ this follows from the definition of $S$. Now supp
 
 Recover-Max(v+1) must get a response from $n-f$ parties, and that set must intersect with the set $S$ which is also of size $n-f$ by at least $n-2f>0$ one party. From $(2.)$ of the induction hypothesis on views $\leq v$ it follows that at least this one response will be of view $\geq v^\star $ and its value is $x$. From $(1.)$ it follows that any response from view $\geq v^\star$  will be of value $x$. Since Recover-Max(v+1) takes the value associated with the highest view, it must output $x$. This proves part $(1.)$ of the induction hypothesis for view $v+1$.
 
-Since the primary of view $v+1$ must propose $x$, then each party in $S$ either stays with its previous highest echo (from $(1.)$ of the induction hypothesis for view $\leq v$) or it updates it to the higher $(v+1,x)$. Clearly, in both cases we proved that part $(2.)$ of the  induction hypothesis holds for view $v+1$.
+Since the primary of view $v+1$ must propose $x$, then each party in $S$ either stays with its previous highest echo (from $(1.)$ of the induction hypothesis for view $\leq v$) or it updates it to the higher $(v+1,x)$. Clearly, in both cases, we proved that part $(2.)$ of the induction hypothesis holds for view $v+1$.
 
 This concludes the proof of Lemma 2.
 
@@ -212,10 +212,10 @@ Consider the view $v^+$ with the *first* non-faulty Primary that started after G
 This concludes the proof of Liveness.
 
 
-*Exercise 8: Show that there is no liveness (via an infinite execution) if view $v$ is set be the time interval $[v(2 \Delta),(v+1)(2 \Delta))$. In other words, each $2\Delta$ clock ticks each party triggers an increment of the view by one.*
+*Exercise 8: Show that there is no liveness (via an infinite execution) if view $v$ is set to be the time interval $[v(2 \Delta),(v+1)(2 \Delta))$. In other words, each $2\Delta$ clock ticks each party triggers an increment of the view by one.*
 
 
-*Exercise 9: What is the minimal $\alpha$ such that the liveness property holds if view $v$ is set be the time interval $[v(\alpha \Delta),(v+1)(\alpha \Delta))$. In other words, each $\alpha \Delta$ clock ticks each party triggers increments the view by one. What is the best time complexity you can get (see below)?*
+*Exercise 9: What is the minimal $\alpha$ such that the liveness property holds if view $v$ is set to be the time interval $[v(\alpha \Delta),(v+1)(\alpha \Delta))$. In other words, each $\alpha \Delta$ clock ticks each party triggers increments the view by one. What is the best time complexity you can get (see below)?*
 
 ### Termination
 
@@ -246,10 +246,10 @@ What if a party has several different values (for example it received several di
 
 ### Time and Message Complexity
 
-Note that the time and number of messages before GST can be both unbounded. So for this post we will measure the time and message complexity after GST.
+Note that the time and number of messages before GST can be both unbounded. So for this post, we will measure the time and message complexity after GST.
 
-**Time complexity**:  since the Liveness proof waits for the first non-faulty primary after GST this may take an interrupted view, then $f$ views of faulty primaries, then a good view in the worst case. So all parties will output a value in at most $(f+2)10 \Delta$ time after GST. A more carful analysis can impove the first and the last durations. We will show [later](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) that $(f+1) \Delta$ is a worst case that cannot be avoided (but can have a small probability).
+**Time complexity**:  since the Liveness proof waits for the first non-faulty primary after GST this may take an interrupted view, then $f$ views of faulty primaries, then a good view in the worst case. So all parties will output a value in at most $(f+2)10 \Delta$ time after GST. A more careful analysis can improve the first and the last durations. We will show [later](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) that $(f+1) \Delta$ is a worst case that cannot be avoided (but can have a small probability).
 
-**Message Complexity**: since each round has an all-to-all message exchange, the total number of message sent after GST is $O((f+1) \times n^2) = O(n^3)$. We will [later](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/) show that $O(n^2)$ is the best you can hope for (against strongly adaptive adversaries).
+**Message Complexity**: since each round has an all-to-all message exchange, the total number of messages sent after GST is $O((f+1) \times n^2) = O(n^3)$. We will [later](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/) show that $O(n^2)$ is the best you can hope for (against strongly adaptive adversaries).
 
-*Exercise 11: Modify the protocol above to use just $O(n)$ messages per view (so total of $O(n^2)$ after GST). Explain why the proof still works, in particular detail the Liveness proof and the Time complexity. Can you get the same bound as in Exercise 9?*
+*Exercise 11: Modify the protocol above to use just $O(n)$ messages per view (so total of $O(n^2)$ after GST). Explain why the proof still works, in particular, detail the Liveness proof and the Time complexity. Can you get the same bound as in Exercise 9?*
