@@ -6,7 +6,7 @@ tags:
 author: Ittai Abraham
 ---
 
-In this post we explore the path from *Single-Shot Consensus*, via *Write-Once Registers*, to *Log Replication*, and finally to *State Machine Replication*. We begin by defining all four problems assuming *minority omission failures* and *partial synchrony*. This post continues our previous post [On Paxos from Recoverable Broadcast](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/). 
+In this post we explore the path from *Single-Shot Consensus*, via *Write-Once Registers*, to *Log Replication*, and finally to *State Machine Replication*. We begin by defining all four problems assuming *minority omission failures* and *partial synchrony*. This post continues our previous post [on Paxos from Recoverable Broadcast](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/). 
 
 ### (Single-Shot) Consensus
 
@@ -32,7 +32,7 @@ For a Write-Once Register there is one type of request: ```write(v)``` which get
 
 **Termination**: If a non-faulty client issues a *request* then it eventually gets a *response*.
 
-**Write-Once Agreement**: If two requests return $x$ and $x'$ then $|x \cup x' \setminus \{\bot \}| \leq 1$, so if $x$ and $x'$ are both not $\bot$ then $x=x'$.
+**Write-Once Agreement**: If two requests return $x$ and $x'$ then $\|x \cup x' \setminus \{\bot \}\| \leq 1$, so if $x$ and $x'$ are both not $\bot$ then $x=x'$.
 
 **Write-Once Validity**: If a request returns a non-$\bot$ value then there was some client write request with this value.
 
