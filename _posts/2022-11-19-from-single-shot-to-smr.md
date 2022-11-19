@@ -1,3 +1,8 @@
+---
+title: From Single Shot To Smr
+date: 2022-11-19 00:00:00 -05:00
+---
+
 # ---
 title: From Single-Shot Consensus to State Machine Replication
 date: 2022-11-19 05:00:00 -04:00
