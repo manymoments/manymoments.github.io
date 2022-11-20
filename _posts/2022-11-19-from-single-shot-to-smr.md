@@ -117,17 +117,17 @@ Instead of replacing leaders, let's keep the same leader and replace it only whe
 
 Note that there is no safety concern, but what about liveness? There is a new hard challenge: we cannot use a fixed time to change views, so we need some new mechanism to decide when to move to a new view and to make sure this move is synchronized.
 
-At a high level, for a specific view $v$ a party can have 3 states: (1) start-view $v$; (2) blame $v$; (3) stop-view $v$. Let's go over each transition:
+For a view $v$ a party can be in one of 3 states: (1) start-view-$v$; (2) blame-$v$; (3) stop-view-$v$. Let's go over each transition:
 
-* From start-view $v$ to blame $v$: this is when a party is not seeing progress in the current view. The first reason to blame is if a heartbeat or message from the current primary does not arrive in $2 \Delta$ from the previous one. The second reason to blame is if a client request arrives but the primary does not reach a decision on it. In any case, when moving to blame $v$, the party sends a ```<blame v>``` message to all parties.
-* Should a party stop processing messages in view $v$ and move to view $v+1$ if you are in blame $v$? Not so fast, maybe you are faulty. To overcome this, wait for $f+1$ distinct ```<blame v>``` before moving to stop-view $v$. When moving to stop-view $v$ the party sends a ```<stop-view v>``` message to all parties. At this point, the party stops responding to view $v$ messages.
-* Should you move to view $v+1$ when you stop-view $v$? Not so fast, maybe you are the only non-faulty that does a stop-view? So we make stop-view contagious! If you hear a ```<stop-view v>``` and you did not sent it yet then send ```<stop-view v>``` to all parties.
-* Now we can trigger start-view $v+1$ (start recover max) when you hear $f+1$ stop-view $v$ messages:
+* From start-view-$v$ to blame-$v$: this is when a party is not seeing progress in the current view. The first reason to blame is if a heartbeat or message from the current primary does not arrive in $2 \Delta$ from the previous one. The second reason to blame is if a client request arrives but the primary does not reach a decision on it in the required time. In either case, when moving to blame-$v$, the party sends a ```<blame v>``` message to all parties.
+* From blame-$v$ to stop-$v$: should a party in blame$v$ stop processing messages in view $v$?  Not so fast, maybe the party is faulty. To overcome this ambiguity, the party waits for $f+1$ distinct ```<blame v>``` messages before moving to stop-view-$v$. When moving to stop-view-$v$ the party sends a ```<stop-view v>``` message to all parties. At this point, the party stops responding to view $v$ messages.
+* From stop-$v$ to start-$v+1$: should the party move to view $v+1$ when it reaches stop-view $v$? Not so fast, maybe the party is the only non-faulty party that reached stop-$v$? So we make stop-$v$ contagious! If a party hears a ```<stop-view v>``` message and it did not sent it yet then it sends ```<stop-view v>``` to all parties.
+* Parties start-view-$v+1$ (start recover max) when they hear $f+1$ stop-view-$v$ messages:
 
 
-**Lemma**: If a party starts view $v+1$, then all non-faulty parties will start $v+1$ in at most $2\Delta$.
+**Lemma**: If a party starts view $v+1$ in time $t$, then all non-faulty parties will start view $v+1$ in at most $t+2\Delta$ time.
 
-With this technique parties can make sure that a non-faulty primary after GST will not be removed, while in case to view change, all parties will be moving in sync. The first property is critical for responsiveness and the second property is critical for the liveness proof.
+With this technique parties can make sure that a non-faulty primary after GST will not be removed (incorrectly blamed), while in any case of a view change, all parties will be moving in sync (up to $2\Delta$). The first property is critical for responsiveness of the stable leader and the second property is critical for the liveness proof.
 
 For multi-shot responsiveness, do we have to use a stable leader? Can we do the same for a sequence of non-faulty rotating leaders?
 
@@ -135,15 +135,16 @@ For multi-shot responsiveness, do we have to use a stable leader? Can we do the 
 
 The idea is to use the $n-f$ echoes as both a commit message and also an implicit report max message for the next view! So once the new primary sees $n-f$ echo messages it can immediately propose the next value. 
 
+Why is recoverability okay even though we did not explicitly send ```<echoed-max>```? We only need the highest echo, and have an echo in view $v$ which is the highest possible (at the beginning of view $v+1$). So safety is maintained and that we obtain the required multi-shot responsiveness. What about liveness?
 
-Why is recoverability okay even though we did not explicitly send ```<echoed-max>```? Because we only need the highest echo, and we are at view $v$ so this is the highest possible (at the beginning of view $v+1$). This shows that we are safe and that we can obtain Multi-Shot responsiveness. What about liveness?
+We again use the three states: (1) start-view-$v$; (2) blame-$v$; (3) stop-view-$v$. The only difference is that this time we can simply use a $10 \Delta$ timer for moving into blame $v$.
 
-We again use the three states: (1) start-view $v$; (2) blame $v$; (3) stop-view $v$. The only difference is that this time we can simply use a $10 \Delta$ timer for moving into blame $v$.
-
-So in the end, a primary of view $v+1$ can skip doing revere max for $v+1$ if it hears $n-f$ echo from view $v$,  otherwise, it runs the regular protocol.
+So a primary of view $v+1$ can skip doing recover max for view $v+1$ if it hears $n-f$ echos from view $v$,  otherwise, it runs the regular protocol.
 
 ### Note on Strong Responsiveness
 
-A stronger property one could ask for: assuming all parties are non-faulty, the time after GST to decide is $O(\delta)$. This property is strictly stronger as it covers the full partial synchrony case.
+**Single Shot Strong Responsiveness**: assuming all parties are non-faulty, the time after GST to decide is $O(\delta)$. 
+
+This property is strictly stronger than Single Shot Responsiveness as it covers any full partial synchrony not just executions that are fully synchronous.
 
 
