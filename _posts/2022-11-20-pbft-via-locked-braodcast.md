@@ -1,10 +1,11 @@
 ---
 title: On PBFT from Locked Broadcast
-date: 2022-11-20 04:00:00 -05:00
+date: 2022-11-20 05:00:00 -04:00
 tags:
 - dist101
 author: Ittai Abraham
 ---
+
 
 We describe a variation of the authenticated version of [PBFT](https://pmg.csail.mit.edu/papers/osdi99.pdf) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous post on [Paxos using Recoverable Broadcast](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/). I call this protocol **linear PBFT** and variants of it are used by [SBFT](https://arxiv.org/pdf/1804.01626.pdf) and [Tusk](https://arxiv.org/pdf/2105.11827.pdf). A later post will show how to extend this approach for [Two Round HotStuff](https://arxiv.org/pdf/1803.05069v1.pdf)) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) and [Three Round HotStuff](https://arxiv.org/pdf/1803.05069.pdf) using [Keyed Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
 
@@ -13,7 +14,7 @@ The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06
 
 As with Paxos, we approach PBFT by starting with two major simplifications:
 
-1. Use a *simple revolving primary* strategy based on the assumption of perfectly synchronized clocks. This approach follows Section 6 of [Two Round HotStuff](https://arxiv.org/pdf/1803.05069v1.pdf).
+1. Use a *simple revolving primary* assuming perfectly synchronized clocks. This approach follows Section 6 of [Two Round HotStuff](https://arxiv.org/pdf/1803.05069v1.pdf).
 2. Focus on a *single-shot* consensus while PBFT is designed as a full State Machine Replication system.
 
 
@@ -28,7 +29,7 @@ Clocks are synchronized, and $\Delta$ is known, so set view $v$ is set to be the
 
 There is some *External Validity* ($EV_{\text{consensus}}$) Boolean predicate that is provided to each party. $EV$ takes as input a value $v$ and a proof $proof$. If $EV(v, proof)=1$ we say that $v$ is *externally valid*. A simple example of external validity is a check that the value is signed by the client that controls the asset. External validity is based on the framework of [Cachin, Kursawe, Petzold, and Shoup, 2001](https://www.iacr.org/archive/crypto2001/21390524.pdf). 
 
-In this setting, each party has some *input value with external validity* and the goal is to *output a single value with a proof* with the following three properties:
+In this setting, each party has some *input values with external validity* and the goal is to *output a single value with a proof* with the following three properties:
 
 **Agreement**: all non-faulty parties output the same value. 
 
@@ -40,9 +41,9 @@ In this setting, each party has some *input value with external validity* and th
 Denote by $EV_{\text{consensus}}$ the external validity function that is given as input to the instance.
 
 
-Linear PBFT is decomposed ti use two building blocks: Locked Broadcast and Recover Max Lock. The exposition will start top-down: defining the high-level protocol first and detailing the building blocks later. 
+Linear PBFT is decomposed to use two building blocks: Locked Broadcast and Recover Max Lock. The exposition will start top-down: defining the high-level protocol first and detailing the building blocks later. 
 
-# Linear PBFT via Locked Broadcast and Recover Max
+# Linear PBFT via Locked Broadcast and Recover Max Lock
 
 Every $10 \Delta$ parties change the view and rotate the primary. Clocks are perfectly synchronized so this change of view is perfectly synchronized as well.
 
@@ -56,7 +57,7 @@ For view 1, the primary of view 1 with input $val, proof$:
 LB (1, val, val-proof)
 ```
 
-Once a primary obtains a delivery-certificate it sends it to all parties to commit. Recall that a delivery-certificate is valid if it has $n-f$ distinct signatures.
+Once a primary obtains a delivery-certificate it sends it to all parties so they can also output a value. Recall that a delivery-certificate is valid if it has $n-f$ distinct signatures.
 
 ```
 Upon delivery-certificate dc for (v,x)
@@ -65,13 +66,13 @@ Upon delivery-certificate dc for (v,x)
 All parties:
 
 Upon valid delivery-certificate dc for (v,x)
-    commit x    
+    output x    
 ```
 
 
-As in Paxos, what if the first Primary is faulty and only some parties decide (but not all)? For agreement to hold later primaries cannot commit other values! In Linear PBFT, later primaries cannot even generate lock-certificates for other values! 
+As in Paxos, what if the first Primary is faulty and only some parties output (but not all)? For agreement to hold later primaries cannot output other values! For safety in Linear PBFT, later primaries cannot even generate lock-certificates for other values! 
 
-Similar to Paxos, the Recover Max Lock protocol ($RML$) will return the highest lock-certificate. Unlike Paxos, $RML$ will also return a ```proof```. We explain what this proof contains later, intuitively it contains way to validate that the primary did indeed choose the highest lock-certificate it saw out of a set of $n-f$ distinct lock-certificated it received.
+Similar to Paxos, the Recover Max Lock protocol ($RML$) will return the highest lock-certificate. Unlike Paxos, $RML$ will also return a ```proof```. We detail what this proof contains later, intuitively it contains a way to validate that the primary did indeed choose the highest lock-certificate it saw out of a set of $n-f$ distinct lock-certificated it received.
 
 For view $v>1$, the primary of view $v$ with input $val, val-proof$:
 ```
@@ -86,12 +87,12 @@ otherwise
 
 In words, the primary first tries to recover the lock-certificate with the maximal view. If no lock-certificate is seen, the primary is free to choose its own externally valid input, but even in that case, it adds the proof from the Recover Max Lock protocol. Otherwise, it proposes the output value from the Recover Max Lock along with its proof.  Note the deep similarity to the Paxos protocol variant of the [previous post](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/).
 
-Much of the magic of Byzantine Fault tolerance is hidden in the Locked Broadcast abstraction, its $EV$ function definition, and the Recover Max Lock protocol. Let's detail them one after the other:
+Much of the magic of Byzantine Fault tolerance is hidden in the Locked Broadcast abstraction, its external validity $EV_{\text{LB}}$ function definition, and the Recover Max Lock protocol. Let's detail these one after the other:
 
 
 ### Recover Max Lock
 
-```RML(v)``` protocol for view $v$ finds the highest lock-certificate and returns not only the associated value but also proof that this is indeed the highest lock-certificate among some set of $n-f$ valid responses. 
+The ```RML(v)``` protocol for view $v$ finds the highest lock-certificate and returns not only the associated value but also the $n-f$ responses that allows one to verify that this is indeed the highest lock-certificate among some set of $n-f$ valid responses. 
 
 ```
 RML(v):
@@ -108,15 +109,13 @@ Primary waits for n-f responses <echoed-max(v,*)>
         where proposal is associated with the highest view in responses
 ```
 
-The primary not only outputs the value associated with the highest lock-certificate it also has to send all the $n-f$ lock-certificate responses it saw!
-
 ### Locked Broadcast 
 
-Recall that [Locked broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) is the application of two provable broadcasts with an *external validity function*, which has the following properties:
+Recall that [Locked broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) is the application of two provable broadcasts with an *external validity function*, $EV_{\text{LB}}$, which has the following properties:
 
 * **Termination**: If the sender is honest and has an *externally valid* input $v$, then after a constant number of rounds the sender will obtain a *delivery-certificate* of $v$. Note that the Termination property requires just the sender to hold the certificate.
 * **Uniqueness**: There can be at most one value that obtains a *delivery-certificate*. So there cannot be two *delivery-certificates* with different values.
-* **External Validity**: If there is a *delivery-certificate* on value $v$ and proof $proof$ then $v$ is *externally valid*. So $EV(v,proof)=1$.
+* **External Validity**: If there is a *delivery-certificate* on value $v$ and proof $proof$ then $v$ is *externally valid*. So $EV_{\text{LB}}(v,proof)=1$.
 * **Unique-Lock-Availability**: If a  *delivery-certificate* exists for $v$ then there can only exist a *lock-certificate* for $v$ and there are at least $n-2f\geq f+1$ honest parties that hold this *lock-certificate*.
 
 Note that Locked Broadcast needs to define an external validity function $EV_{\text{LB}}$, this defines what messages are allowed to proceed. $EV_{\text{LB}}$ is different from the external validity function of the consensus protocol $EV_{\text{consensus}}$. As you may expect, $EV_{\text{LB}}$ essentially checks the validity of the $RML(v)$ protocol.
@@ -129,7 +128,9 @@ For view 1, just use the external validity function of the consensus protocol $E
 
 For view $v>1$ there are two cases:
 
-1. Given a 4-tuple $(v, val, val{-}proof, p{-}proof)$, $p{-}proof$ consists of $n-f$ distinct $RML(v)$ responses and all have value $\bot$, then output $EV_{\text{consensus}}(val, val-proof)$.
+1. Given a 4-tuple $(v, val, val{-}proof, p{-}proof)$, $p{-}proof$ consists of $n-f$ distinct valid $RML(v)$ responses:
+    1. All $n-f$ of the $RML(v)$ responses have value $\bot$.
+    2. Output true if $EV_{\text{consensus}}(val, val-proof)=1$.
 2. Otherwise, given a 3-tuple $(v, p, p{-}proof)$, check that $p{-}proof$ consists of $n-f$ distinct valid $RML(v)$ responses:
     1. An $RML(v)$ message that contains ```<echoed-max(v, v', p, LC(v') )>_i``` is valid if the lock-certificate $LC(v')$ is valid for view $v'$ and the value associated with $LC(v')$ is $p$.
     2. Let $v^+, LC_{v^+}, p^+$ be the valid ```<echoed-max(v, * )>_i``` response with the highest view $v^+$. 
