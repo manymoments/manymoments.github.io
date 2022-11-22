@@ -88,12 +88,12 @@ In words, the primary first tries to recover the lock-certificate with the maxim
 Much of the magic of Byzantine Fault tolerance is hidden in the Locked Broadcast abstraction, its external validity $EV_{\text{LB-PBFT}}$ function definition, and the Recover Max Lock protocol. Let's detail these one after the other:
 
 
-### Recover Max Lock
+### Recover Max Lock for PBFT based protocols
 
-The ```RML(v)``` protocol for view $v$ finds the highest lock-certificate and returns not only the associated value but also the $n-f$ responses that allows one to verify that this is indeed the highest lock-certificate among some set of $n-f$ valid responses. 
+The ```PBFT-RML(v)``` protocol for view $v$ finds the highest lock-certificate and returns not only the associated value but also the $n-f$ responses that allows one to verify that this is indeed the highest lock-certificate among some set of $n-f$ valid responses. 
 
 ```
-RML(v):
+PBFT-RML(v):
 
 Party i upon start of view v
     send <echoed-max(v, v', p, LC(v',p) )>_i 
@@ -130,7 +130,7 @@ For view $v>1$ there are two cases:
     1. All $n-f$ of the $RML(v)$ responses contain ```<echoed-max(v, bot )>```.
     2. Output true if $EV_{\text{consensus}}(val, val-proof)=1$.
 2. Otherwise, given a 3-tuple $(v, p, p{-}proof)$, check that $p{-}proof$ consists of $n-f$ distinct valid $RML(v)$ responses:
-    1. An $RML(v)$ message that contains ```<echoed-max(v, v', p, LC(v') )>_i``` is valid if the lock-certificate $LC(v')$ is valid for view $v'$ and the value associated with $LC(v')$ is $p$.
+    1. An $RML(v)$ message that contains ```<echoed-max(v, v', p, LC(v',p) )>_i``` is valid if the lock-certificate $LC(v')$ is valid for view $v'$ and value $p$.
     2. Let $v^+, LC_{v^+}, p^+$ be the valid ```<echoed-max(v, * )>_i``` response with the highest view $v^+$ in the $RML(v)$ responses. 
     3. Output true of $p=p^+$.
 
