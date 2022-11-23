@@ -68,7 +68,7 @@ Upon valid delivery-certificate dc for (v,x)
 ```
 
 
-As in Paxos, what if the first Primary is faulty and only some parties output (but not all)? For agreement to hold later primaries cannot output delivery certificates for other values! For safety in Linear PBFT, later primaries will not even be able to generate lock-certificates for other values. 
+As in Paxos, what if the first Primary is faulty and only some parties output (but not all)? For agreement to hold later primaries cannot output delivery-certificates for other values! For safety in Linear PBFT, later primaries will not even be able to generate lock-certificates for other values. 
 
 Similar to Paxos, the Recover Max Lock protocol ($RML$) will return the highest lock-certificate it sees. Unlike Paxos, $RML$ will also return a ```proof```. We detail what this proof contains later, intuitively it contains a way to validate that the primary did indeed choose the highest lock-certificate it saw out of a set of $n-f$ distinct lock-certificated it received. The external validity $EV_{\text{LB-PBFT}}$ of the locked broadcast will check this proof.
 
@@ -137,14 +137,14 @@ For view $v>1$ there are two cases:
 
 In words, either check all parties saw no lock-certificate and the new value is externally valid for consensus, or that the primary proposes the value that is associated with the highest lock-certificate in the valid responses set.
 
-Observe that a valid $p{-}proof$ contains $n-f$ distinct valid lock-certificates and each valid lock certificate contains $n-f$ distinct signatures. 
+Observe that a valid $p{-}proof$ contains $n-f$ distinct valid lock-certificates and each valid lock-certificate contains $n-f$ distinct signatures. 
 
 This completes the description of the consensus protocol. The protocol is detailed in 4 places: the linear PBFT consensus protocol, the recover max lock protocol, the locked broadcast protocol, and finally the external validity of the locked broadcast. Let's prove that the three properties of consensus hold:
 
 
 ### Agreement (Safety)
 
-**Safety Lemma**: Let $v^{\star}$ be the first view with a lock-certificate on $(v^\star, x)$, then for any view $v \geq v^\star$ if a lock-certificate forms for view $v$, must be with value $x$.
+**Safety Lemma**: Let $v^{\star}$ be the first view with a commit-certificate on $(v^\star, x)$, then for any view $v \geq v^\star$ if a lock-certificate forms for view $v$, must be with value $x$.
 
 *Exercise: prove the Agreement property follows from Lemma above.*
 
@@ -154,11 +154,11 @@ Let's prove the safety lemma, which is the essence of PBFT.
 
 Induction statement: for any view $v\geq v^\star$:
 1. If there is a lock-certificate for view $v$ then it has value $x$.
-2. For each party in $S$, in view $v$, the lock-certificate with its highest view $v' \leq v$ is such that: 
+2. For each party in $S$, in view $v$, the lock-certificate with highest view $v'$ is such that: 
     1. $v' \geq v^\star$; and
     2. The value of the lock-certificate is $x$.
 
-For the base case, $v=v^\star$ (1.) follows from the *Uniqueness* property of locked broadcast of view $v^*$ and (2.) follows from the *Unique-Lock-Availability* property of locked broadcast.
+For the base case, $v=v^\star$: (1.) follows from the *Uniqueness* property of locked broadcast of view $v^*$ and (2.) follows from the *Unique-Lock-Availability* property of locked broadcast.
 
 Now suppose the induction statement holds for all views $v^\star \leq v$ and consider view $v+1$:
 
@@ -198,7 +198,7 @@ Upon receiving a valid <decide, x, dc>
 
 ### External Validity
 
-External validity is proven by induction on the chain of lock-certificates. For a lock-certificate that is formed with an $EV_{\text{LB-PBFT}}$ check that has no prior lock, external validity is part of the $EV_{\text{LB-PBFT}}$ function check. For a lock-certificate that is formed with an $EV_{\text{LB-PBFT}}$ check that checks a previous lock-certificate, then this new lock certificate must use the same value as the previous lock-certificate. Hence an induction argument shows that any lock-certificate must have an externally valid value.
+External validity is proven by induction on the chain of lock-certificates. For a lock-certificate that is formed with an $EV_{\text{LB-PBFT}}$ check that has no prior lock, external validity is part of the $EV_{\text{LB-PBFT}}$ function check. For a lock-certificate that is formed with an $EV_{\text{LB-PBFT}}$ check that checks a previous lock-certificate, then this new lock-certificate must use the same value as the previous lock-certificate. Hence an induction argument shows that any lock-certificate must have an externally valid value.
 
 
 ### Time and Message Complexity

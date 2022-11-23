@@ -90,6 +90,7 @@ We will later detail what triggers starting the Recover protocol. Note that give
 
 *Exercise 1: write down three detailed executions that highlight each one the observations above.*
 
+
 *Exercise 2: Prove Validity and the two Termination properties. Explain where you used the assumption that there are at most $f$ failures.*
 
 *Exercise 3: prove recoverability and explain where you use (1) the assumption that $f<n/2$; (2) the [Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle); (3) and where exactly you use the fact that the Recover is started after some party outputs a value from Broadcast.*
@@ -103,7 +104,7 @@ Here is a natural path: in view 1 the primary does a Recoverable Broadcast, with
 
 But there is a challenge: what if the first Primary is faulty and only some parties decide (but not all)? For agreement to hold we must make sure that later primaries use the same value!
 
-*Exercise 4: If all each primary does in its view is Broadcast its input value - show an execution that has a violation of the Agreement propoerty.*
+*Exercise 4: If all each primary does in its view is Broadcast its input value - show an execution that has a violation of the Agreement property.*
 
 A natural thing a primary of view >1 can do is call Recover (duh - that's why we started with Recoverable Broadcast). In particular, if there was a decision in view 1 by some party, then we would like the Recover to notify the new primary. 
 
