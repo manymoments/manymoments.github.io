@@ -83,14 +83,14 @@ Primary waits for its least n-f responses <echoed-max(v,*)> and Delta time:
 ```
 
  
-### External Validity for the Locked Broadcast of Linear PBFT
+### External Validity for the Locked Broadcast of Tendermint based protocols
 
 
 $EV_{\text{LB-TNDRMNT}}$ checks the validity relative to the ```TNDRMNT-RML(v)``` protocol. Unlike the $EV_{\text{LB-PBFT}}$ check, the $EV_{\text{LB-TNDRMNT}}$ verification is *stateful*, the check compares the input to the highest lock-certificate that the party has seen.
 
 To be explicit about this, each part maintains state  ```my-lock``` that contains the lock-certificate with the highest view it saw. Denote by ```view(my-lock)``` the view number of this block-certificate. Initially ```my-lock := bot``` and ```view(my-lock) := 0```.
 
-Now define $EV_{\text{LB-TNDRMNT}}$:
+Define $EV_{\text{LB-TNDRMNT}}$:
 
 For view 1, nothing changes, just check external validity of the consensus protocol: $EV_{\text{LB-TNDRMNT}}(1, val, val-proof)= EV_{\text{consensus}}(val, val-proof)$.
 
@@ -108,7 +108,7 @@ For view $v>1$ there are two cases:
 In words: the check makes sure that the proposed value has a valid lock-certificate that has a view that is at least as high as the view of the lock-certificate this server has.
  
  
-Now that ```TNDRMNT-RML(v)```  and $EV_{\text{LB-TNDRMNT}}$ are defined this fully defines the single-shot consensus protocol. Let's prove Agreement and Liveness (the Validity argument is the same as in PBFT).
+The ```TNDRMNT-RML(v)```  and $EV_{\text{LB-TNDRMNT}}$ are defined. This fully defines the single-shot consensus protocol. Let's prove Agreement and Liveness (the Validity argument is the same as in PBFT).
 
 ### Agreement (Safety)
 
@@ -128,7 +128,7 @@ Induction statement: for any view $v\geq v^\star$:
 
 For the base case, $v=v^\star$ (1.) follows from the *Uniqueness* property of locked broadcast of view $v^*$ and (2.) follows from the *Unique-Lock-Availability* property of locked broadcast.
 
-Now suppose the induction statement holds for all views $v^\star \leq v$ and consider view $v+1$:
+Assume the induction statement holds for all views $v^\star \leq v$ and consider view $v+1$:
 
 Here we will use the *External Validity* of Locked Broadcast. To form a lock-certificate, the primary needs $n{-}f$ parties to view its proposal as valid. This set of validators must intersect with at least one party from $S$ (because $S$ is of size at least $f+1$).
 
@@ -159,41 +159,73 @@ The protocol revolves around a data structure which is a chain of blocks and 2-3
 
 A ```block``` $B$ contains a triplet $B=(cmd, view, pointer)$ where *cmd* is an externally valid client command, *view* is the view this block was proposed in, and *pointer* is a link to a previous block (that has a smaller view).
 
-A ```blockchain``` is just a chain of ```block```s that starts with an empty ```genesis block``` of view 0 and empty pointer.
+
+A ```chain``` is just a chain of ```block```s that starts with an empty ```genesis block``` of view 0 and empty pointer. The views in the chain are monotonic but not nessisarily sequential. Some examples:
+```
+(Genesis,0)
+(Genesis,0)<-(c1,1)
+(Genesis,0)<-(c1,1)<-(c2,2)
+(Genesis,0)<-(c1,1)<-(c2,2)<-(c4,4)
+```
 
 The last block which also has the highest view in a chain is called the ```tip```.
 
 A ```block-cert``` for a block $B$ is a set of $n-f$ distinct signatures on $B$. We assume the ```genesis block``` implicitly has a block-certificate.
 
-A ```valid blockchain``` is a blockchain with a ```commit-cert``` and a ```lock-cert```. Both are defined below:
+A ```valid chain``` is a chain of blocks with a ```commit-cert``` and a ```lock-cert```. Both are defined below:
 
-A ```commit-cert``` for a block $B=(cmd, view, pointer)$ on a ```valid blockchain``` that is not the genesis is a ```block-cert``` for $B$, and a second block $B'=(cmd, view+1, pointer{-}to{-}B)$  with a ```block-cert``` for $B'$. Importantly, $B'$ does not have to be part of the ```valid blockchain``` but its view must be exactly one more than $B$'s view. By default, if there is no explicit pair of block-certificates, we say that the ```valid blockchain``` has a ```commit-cert``` on the  ```genesis block```. We call the chain from $B$ to the ```genesis block``` the ```committed blockchain```.
+A ```commit-cert``` for a block $B=(cmd, view, pointer)$ on a ```valid chain``` that is not the genesis is a ```block-cert``` for $B$, and a second block $B'=(cmd, view+1, pointer{-}to{-}B)$  with a ```block-cert``` for $B'$. Importantly, $B'$ does not have to be part of the ```valid chain``` but its view must be exactly one more than $B$'s view. By default, if there is no explicit pair of block-certificates, we say that the ```valid chain``` has a ```commit-cert``` on the  ```genesis block```. We call the chain from $B$ to the ```genesis block``` the ```committed chain```.
 
-The ```lock-cert``` is a ```block-cert``` for a block $L$ that is on the ```valid blockchain``` but not part of the ```committed blockchain```.
+The ```lock-cert``` is a ```block-cert``` for a block $L$ that is on the ```valid chain``` but not part of the ```committed chain```.
  
-Note that the ```lock-cert``` can be the ```block-certificate``` on the second block of the ```commit-cert```. In this case, this second block must be part of the ```valid blockchain```. By default, if there is no explicit block-certificates, we say that the ```valid blockchain``` has a ```lock-cert``` on the  ```genesis block```.
+The ```lock-cert``` can be the ```block-cert``` on the second block of the ```commit-cert```. In this case, this second block must be part of the ```valid chain```. By default, if there is no explicit Lock-certificates, we say that the ```valid chain``` has a ```lock-cert``` on the  ```genesis block```.
 
-Each party stores a ```valid blockchain``` in a variable called  ```my-blockchain``` which stores the valid blockchain with the lock-certificate of highest view.
+Some examples of valid chains:
+```
+(Genesis,0)
+
+(Genesis,0)<-(c1,1)<-(c2,2)<-(c4,4)<-(c5,5)
+Commit-cert on (c1,1), (c2,2). Lock cert on (c2,2)
+
+(Genesis,0)<-(c1,1)<-(c2,2)<-(c3,3)<-(c4,4)<-(c5,5)
+Commit-cert on (c1,1)<-(c2,2). Lock cert on (c4,4)
+
+(Genesis,0)<-(c1,1)<-(c2,2)<-(c4,4)<-(c5,5)
+Commit-cert on (c2,2)<-(c3,3). Lock cert on (c5,5)
+
+```
+
+1. The first example is an empty chain. It implicitly has a commit and lock on the genesis.
+2. Second example shows a commit-cert and lock-cert that share the block-cert of block $(c2,2)$.
+3. Third example shows a lock-cert is on a block of view 4 and there are more blocks after the lock-cert.
+4. Forth example shows a commit-certif that uses a block-cert $(c3,3)$ that supports the block-cert on $(c2,2)$ but this supporting block $(c3,3)$ is **not** on the chain.
+
+
+
+
+## The protocol
+
+Each party stores a ```valid chain``` in a variable called  ```my-chain``` which stores the valid chain with the lock-certificate of highest view.
 
 
 Protocol for view $v$:
 
 
-On the start of view $v$, each party sends its signature on its valid blockchain to the primary:
+On the start of view $v$, each party sends its signature on its valid chain to the primary:
 
 ```
 Party i:
 
 On start view v
-    Send <"start view", v, my-blockchain>_i to view v primary
+    Send <"start view", v, my-chain>_i to view v primary
 ```
 
 The primary of view $v$ waits for both $\Delta$ time and at least $n-f$ valid responses. There are two cases:
-1. If $n-f$ parties send the *same* valid blockchain, and its tip is from view $v-1$ then:
-    1. The primary creates a new lock-certificate for the tip and updates the lock-certificate to be this new block-certificate.
-    2. If there is new commit-certificate (because both the block in view $v-1$ and the block in $v-2$ now have block-certificates) then update the commit-certificate to be this new pair.
+1. If $n-f$ parties send the *same* valid chain, and its tip is from view $v-1$ then:
+    1. The primary creates a new block-cert for the tip and updates the lock-cert to be this new block-certificate ```chain.updateLockCert(tip(chain))```.
+    2. If a new commit-cert is formed (because both the block in view $v-1$ and the block in $v-2$ now have block-certificates) then update the commit-cert to be this new pair ```chain.updateCommitCert()```.
     3. Finally the primary appends its new block as the new tip.
-2. Otherwise the primary chooses the valid blockchain with the lock-certificate of the highest view and appends its new block to it as the new tip.
+2. Otherwise the primary chooses the valid chain with the lock-certificate of the highest view and appends its new block to it as the new tip.
 
 Finally the primary sends this as the proposal for view $v$ to all parties.
 
@@ -202,43 +234,45 @@ Finally the primary sends this as the proposal for view $v$ to all parties.
 Primary of view v:
 
 On at least n-f valid <"start view", v, *> and waiting Delta time
-    If n-f <"start view", v, blockchain> are the same and tip(blockchain).view = v-1
-        blockchain.updateLockCert(block-cert(tip))
+    If n-f <"start view", v, chain> are the same and tip(chain).view = v-1
+        chain.updateLockCert(tip(chain))
         If a new commit-cert created
-            blockchain.updateCommitCert()
-        my-blockchain := blockchain.addBlock(cmd, v, pointer-to-tip)
+            chain.updateCommitCert()
+        chain.addTip(cmd, v)
+        my-chain := chain
     
     Otherwise
-        Let h-blockchain be the valid blockchain 
+        Let h-chain be the valid chain 
             with the lock-cert of highest view in <"start view", v, *> messages
-        my-blockchain := h-blockchain.addBlock(cmd, v, pointer-to-tip)
+        h-chain.addTip(cmd, v)
+        my-chain := h-chain
         
-    Send <"propose", v, my-blockchain> to all
+    Send <"propose", v, my-chain> to all
 ```
 
-When a party sees a proposal blockchain from the view $v$ primary it checks:
+When a party sees a proposal chain from the view $v$ primary it checks:
 1. That its view is still $v$;
 2. That this is the first such message from the primary;
-3. That the proposal is a valid blockchain with a valid lock-certificate and a valid commit-certificate;
-4. That all the blocks after the lock-certificate of the proposed blockchain contain externally valid commands;
-5. That the lock-certificate of the proposed blockchain has a view that is at least as high as the view of the lock-certificate of ```my-blockchain```.
+3. That the proposal is a valid chain with a valid lock-certificate and a valid commit-certificate;
+4. That all the blocks after the lock-certificate of the proposed chain contain externally valid commands;
+5. That the lock-certificate of the proposed chain has a view that is at least as high as the view of the lock-certificate of ```my-chain```.
 6. If all these checks pass, then:
-    1. If the proposed blockchain has a commit-certificate for a higher view than that of  ```my-blockchain``` then execute the blocks in between the previous commit-certificate and the new commit-certificate.
-    2. Update ```my-blockchain``` to the new proposed blockchain so it will be signed at part of the start view of view $v+1$.
+    1. If the proposed chain has a commit-certificate for a higher view than that of  ```my-chain``` then execute the blocks in between the previous commit-certificate and the new commit-certificate.
+    2. Update ```my-chain``` to the new proposed chain so it will be signed at part of the start view of view $v+1$.
 
 ```   
 Party i:
 
-    Upon <"propose", v, blockchain> from primary
+    Upon <"propose", v, chain> from primary
         Check your view is v
         Check this is the first view v proposal
-        Check that blockchain is valid (has valid lock-cert and commit-cert)
-        Check that all blocks after blockchain.lock-cert are externally valid
-        Check that blockchain.lock-cert.view >= my-blockchain.lock-cert.view
+        Check that chain is valid (has valid lock-cert and commit-cert)
+        Check that all blocks after chain.lock-cert are externally valid
+        Check that chain.lock-cert.view >= my-chain.lock-cert.view
         
-        If blockchain.commit-cert.view > my-blockchain.commit-cert.view
+        If chain.commit-cert.view > my-chain.commit-cert.view
             execute commands between the two commit-certs
-        my-blockcain := blockchain 
+        my-chain := chain 
         
         
     If the view v timer expires then start view v+1
@@ -250,19 +284,19 @@ Party i:
 
 
 
-Given a commit-certificate that consists of two block-certificates on two consecutive blocks $B$ and $B'$ of views $v^* $ and $v^* +1$. Let set $S$ be the set of honest parties that signed a blockchain for view $v^* +1$ that included the block-certificate for $B$.
+Given a commit-certificate that consists of two block-certificates on two consecutive blocks $B$ and $B'$ of views $v^* $ and $v^* +1$. Let set $S$ be the set of honest parties that signed a chain for view $v^* +1$ that included the block-certificate for $B$.
 
 **Claim**: for any view $v \geq v^*$,
-1. Any valid blockchain that has a lock-certificate of view $v$ includes block $B$.
-2. The ```my-blockchain``` of any member of $S$ at the beginning of view $v+1$ includes block $B$ and its lock-certificate is at least of view $v^*$.
+1. Any valid chain that has a lock-certificate of view $v$ includes block $B$.
+2. The ```my-chain``` of any member of $S$ at the beginning of view $v+1$ includes block $B$ and its lock-certificate is at least of view $v^*$.
 
 Base case (when $v=v^* $): follows the uniqueness of block-certificate $B$ (because it contains $n-f$ signatures in view $v^* $ and honest parties sign just one message per view). The fact that at least $f+1$ parties out of the $n-f$ parties in the block-certificate for $B'$ are honest defines the set $S$. Indeed members of $S$ at the beginning of view $v^* +1$ have $B$ as their lock-certificate. 
 
-Induction argument, assuming $v\leq v^* $ and proving for $v+1$: The only way to create a lock-certificate in view $v+1$ is if a member of $S$ signs in the start view $v+1$ a blockchain with a tip in view $v$, which that in view $v$ it passed the check that the lock-certificate proposed by the primary had a view that is at least as high as the view of its lock-certificate.
+Induction argument, assuming $v\leq v^* $ and proving for $v+1$: The only way to create a lock-certificate in view $v+1$ is if a member of $S$ signs in the start view $v+1$ a chain with a tip in view $v$, which that in view $v$ it passed the check that the lock-certificate proposed by the primary had a view that is at least as high as the view of its lock-certificate.
 
-Using the induction hypothesis (2.), the members of $S$ have a lock-certificate of view at least $v^* $ hence in order for them to approve the proposal must be of a view of at least $v^*$. We can now apply the induction hypothesis (1.) to say that such a proposal must include the block $B$. Hence the only valid blockchain that has a lock-certificate of view $v+1$ must also include block $B$. This concludes (1.).
+Using the induction hypothesis (2.), the members of $S$ have a lock-certificate of view at least $v^* $ hence in order for them to approve the proposal must be of a view of at least $v^*$. Apply the induction hypothesis (1.) to say that such a proposal must include the block $B$. Hence the only valid chain that has a lock-certificate of view $v+1$ must also include block $B$. This concludes (1.).
 
-For (2.) this follows since in view $v+1$ we can only create a new lock-certificate that extends $B$. So at the beginning of view $v+2$ parties in $S$ either maintain their previous blockchain or update to one which has a higher lock-certificate but in that case from (1.) this new blockchain must still include $B$. This concludes (2.) and the proof.
+For (2.) this follows since in view $v+1$ we can only create a new lock-certificate that extends $B$. So at the beginning of view $v+2$ parties in $S$ either maintain their previous chain or update to one which has a higher lock-certificate but in that case from (1.) this new chain must still include $B$. This concludes (2.) and the proof.
 
 
 ***Liveness***: 
@@ -270,12 +304,12 @@ For (2.) this follows since in view $v+1$ we can only create a new lock-certific
 Highlights:
 
 1. Assuming perfect clock synchronization to obtain view synchronization.
-2. The primary waits for $\Delta$ time so it hears the valid blockchain with the lock-certificate go highest view among all non-faulty parties.
+2. The primary waits for $\Delta$ time so it hears the valid chain with the lock-certificate go highest view among all non-faulty parties.
 3. Need 3 consecutive honest parties so everyone learns the commit-certificate.
 
 
 ## Using an authenticated data structure
 
-The way the protocol is described, parties send back and forth the whole blockchain. This is not bandwidth efficient. Instead, we could view the blockchain as an authenticated data structure. For example, the hash of the tip can be used as a digest of a simple hash chain authenticated structure.
+The way the protocol is described, parties send back and forth the whole chain. This is not bandwidth efficient. Instead, we could view the chain as an authenticated data structure. For example, the hash of the tip can be used as a digest of a simple hash chain authenticated structure.
 
-The protocol can send the digest of the blockchain instead of the blockchain. Any data this is missing for validation can be requested in a separate mechanism along with a proof that this is the correct data relative to the digest.
+The protocol can send the digest of the chain instead of the chain. Any data this is missing for validation can be requested in a separate mechanism along with a proof that this is the correct data relative to the digest.
