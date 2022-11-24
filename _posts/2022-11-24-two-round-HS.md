@@ -118,7 +118,7 @@ The ```TNDRMNT-RML(v)```  and $EV_{\text{LB-TNDRMNT}}$ are defined. This fully d
 
 We now prove the safety Lemma, which is the essence of Tendermint based view change protocols.
 
-*Proof of Safety Lemma*: Let $S$ (for Sentinels) be the set of non-faulty parties among the $n-f$ parties that sent lock-certificate in the second round of locked broadcast of view $v^\star$. Note that $|S| \geq n-2f \geq f+1$. 
+*Proof of Safety Lemma*: Let $S$ (for Sentinels) be the set of non-faulty parties among the $n-f$ parties that sent lock-certificate in the second round of locked broadcast of view $v^\star$. Note that $\|S\| \geq n-2f \geq f+1$. 
 
 Induction statement: for any view $v\geq v^\star$:
 1. If there is a lock-certificate for view $v$ then it has value $x$.
@@ -126,13 +126,13 @@ Induction statement: for any view $v\geq v^\star$:
     1. $v' \geq v^\star$; and
     2. The value of the lock-certificate is $x$.
 
-For the base case, $v=v^\star$ (1.) follows from the *Uniqueness* property of locked broadcast of view $v^*$ and (2.) follows from the *Unique-Lock-Availability* property of locked broadcast.
+For the base case, $v=v^\star$ (1.) follows from the *Uniqueness* property of locked broadcast of view $v^\star$ and (2.) follows from the *Unique-Lock-Availability* property of locked broadcast.
 
 Assume the induction statement holds for all views $v^\star \leq v$ and consider view $v+1$:
 
 Here we will use the *External Validity* of Locked Broadcast. To form a lock-certificate, the primary needs $n{-}f$ parties to view its proposal as valid. This set of validators must intersect with at least one party from $S$ (because $S$ is of size at least $f+1$).
 
-Consider this honest party $s \in S$ and the fact that $EV_{\text{LB-TNDRMNT}}$ requires a proposal with a lock-certificate of a view that is at least as high as $s$'s highest lock-certificate. From (2.) this must be with a view of at least $v^*$. From (1.) we have that any proposal that will be valid for $s$ must have the value $x$. This concludes the proof of part (1.) for view $v+1$.
+Consider this honest party $s \in S$ and the fact that $EV_{\text{LB-TNDRMNT}}$ requires a proposal with a lock-certificate of a view that is at least as high as $s$'s highest lock-certificate. From (2.) this must be with a view of at least $v^$. From (1.) we have that any proposal that will be valid for $s$ must have the value $x$. This concludes the proof of part (1.) for view $v+1$.
 
 For part (2.), since the only lock-certificate that can form in view $v+1$ must have value $x$, then each party in $S$ either stays with its previous lock-certificate (from $(1.)$ of the induction hypothesis for view $\leq v$) or it updates it to the higher view lock-certificate for view $v+1$. In both cases, we proved that part $(2.)$ of the induction hypothesis holds for view $v+1$.
 
@@ -284,17 +284,17 @@ Party i:
 
 
 
-Given a commit-certificate that consists of two block-certificates on two consecutive blocks $B$ and $B'$ of views $v^* $ and $v^* +1$. Let set $S$ be the set of honest parties that signed a chain for view $v^* +1$ that included the block-certificate for $B$.
+Given a commit-certificate that consists of two block-certificates on two consecutive blocks $B$ and $B'$ of views $v^\star$ and $v^\star +1$. Let set $S$ be the set of honest parties that signed a chain for view $v^\star +1$ that included the block-certificate for $B$.
 
-**Claim**: for any view $v \geq v^*$,
+**Claim**: for any view $v \geq v^\star$,
 1. Any valid chain that has a lock-certificate of view $v$ includes block $B$.
-2. The ```my-chain``` of any member of $S$ at the beginning of view $v+1$ includes block $B$ and its lock-certificate is at least of view $v^*$.
+2. The ```my-chain``` of any member of $S$ at the beginning of view $v+1$ includes block $B$ and its lock-certificate is at least of view $v^\star$.
 
-Base case (when $v=v^* $): follows the uniqueness of block-certificate $B$ (because it contains $n-f$ signatures in view $v^* $ and honest parties sign just one message per view). The fact that at least $f+1$ parties out of the $n-f$ parties in the block-certificate for $B'$ are honest defines the set $S$. Indeed members of $S$ at the beginning of view $v^* +1$ have $B$ as their lock-certificate. 
+Base case (when $v=v^\star$): follows the uniqueness of block-certificate $B$ (because it contains $n-f$ signatures in view $v^\star$ and honest parties sign just one message per view). The fact that at least $f+1$ parties out of the $n-f$ parties in the block-certificate for $B'$ are honest defines the set $S$. Indeed members of $S$ at the beginning of view $v^\star+1$ have $B$ as their lock-certificate. 
 
-Induction argument, assuming $v\leq v^* $ and proving for $v+1$: The only way to create a lock-certificate in view $v+1$ is if a member of $S$ signs in the start view $v+1$ a chain with a tip in view $v$, which that in view $v$ it passed the check that the lock-certificate proposed by the primary had a view that is at least as high as the view of its lock-certificate.
+Induction argument, assuming $v\leq v^\star $ and proving for $v+1$: The only way to create a lock-certificate in view $v+1$ is if a member of $S$ signs in the start view $v+1$ a chain with a tip in view $v$, which that in view $v$ it passed the check that the lock-certificate proposed by the primary had a view that is at least as high as the view of its lock-certificate.
 
-Using the induction hypothesis (2.), the members of $S$ have a lock-certificate of view at least $v^* $ hence in order for them to approve the proposal must be of a view of at least $v^*$. Apply the induction hypothesis (1.) to say that such a proposal must include the block $B$. Hence the only valid chain that has a lock-certificate of view $v+1$ must also include block $B$. This concludes (1.).
+Using the induction hypothesis (2.), the members of $S$ have a lock-certificate of view at least $v^\star$ hence in order for them to approve the proposal must be of a view of at least $v^\star$. Apply the induction hypothesis (1.) to say that such a proposal must include the block $B$. Hence the only valid chain that has a lock-certificate of view $v+1$ must also include block $B$. This concludes (1.).
 
 For (2.) this follows since in view $v+1$ we can only create a new lock-certificate that extends $B$. So at the beginning of view $v+2$ parties in $S$ either maintain their previous chain or update to one which has a higher lock-certificate but in that case from (1.) this new chain must still include $B$. This concludes (2.) and the proof.
 
