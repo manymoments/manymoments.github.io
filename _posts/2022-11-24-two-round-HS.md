@@ -1,6 +1,6 @@
 ---
 title: Two Round HotStuff
-date: 2022-11-24 05:00:00 -04:00
+date: 2022-11-24 04:00:00 -05:00
 tags:
 - dist101
 author: Ittai Abraham
