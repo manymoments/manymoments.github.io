@@ -195,12 +195,10 @@ Commit-cert on (c2,2)<-(c3,3). Lock cert on (c5,5)
 
 ```
 
-1. The first example is an empty chain. It implicitly has a commit and lock on the genesis.
-2. Second example shows a commit-cert and lock-cert that share the block-cert of block $(c2,2)$.
-3. Third example shows a lock-cert is on a block of view 4 and there are more blocks after the lock-cert.
-4. Forth example shows a commit-certif that uses a block-cert $(c3,3)$ that supports the block-cert on $(c2,2)$ but this supporting block $(c3,3)$ is **not** on the chain.
-
-
+1. The first example is an empty chain. It implicitly has a commit-cert and lock-cert on the genesis.
+2. Second example shows a commit-cert and lock-cert that share the block-cert of a block from view 2.
+3. Third example shows a lock-cert is on a block of view 4 and there are more blocks after the lock-cert (in this case a block from view 5).
+4. Forth example shows a commit-cert that uses a block-cert $(c3,3)$ that supports the block-cert on $(c2,2)$ but this supporting block $(c3,3)$ is **not** on the chain.
 
 
 ## The protocol
@@ -282,13 +280,23 @@ Party i:
 
 ***Safety***: 
 
+**Theorem**: For any two ```committed chain```, from any two honest parties taken at any two times, one chain is a sub-chain of the other.
+
+We prove this theorem via the following safety lemma:
 
 
-Given a commit-certificate that consists of two block-certificates on two consecutive blocks $B$ and $B'$ of views $v^\star$ and $v^\star +1$. Let set $S$ be the set of honest parties that signed a chain for view $v^\star +1$ that included the block-certificate for $B$.
+**Safety Lemma**: 
 
-**Claim**: for any view $v \geq v^\star$,
+Given a commit-certificate that consists of two block-certificates on two consecutive blocks $B$ and $B'$ of views $v^\star$ and $v^\star +1$. Let set $S$ be the set of honest parties that signed a chain for view $v^\star +1$ that included the block-certificate for $B$. 
+
+For any view $v \geq v^\star$,
 1. Any valid chain that has a lock-certificate of view $v$ includes block $B$.
 2. The ```my-chain``` of any member of $S$ at the beginning of view $v+1$ includes block $B$ and its lock-certificate is at least of view $v^\star$.
+
+*Proof of the theorem from the lemma*: given two ```committed chain```, consider the one with the shorter commit-cert. Apply the safety lemma on it to prove that the longer chain must include it as a sub chain.
+
+
+*proof of the safety lemma*
 
 Base case (when $v=v^\star$): follows the uniqueness of block-certificate $B$ (because it contains $n-f$ signatures in view $v^\star$ and honest parties sign just one message per view). The fact that at least $f+1$ parties out of the $n-f$ parties in the block-certificate for $B'$ are honest defines the set $S$. Indeed members of $S$ at the beginning of view $v^\star+1$ have $B$ as their lock-certificate. 
 
@@ -301,11 +309,12 @@ For (2.) this follows since in view $v+1$ we can only create a new lock-certific
 
 ***Liveness***: 
 
-Highlights:
+**Theorem**: There will be a commit-cert after the first three consecutive honest primaries after GST.
 
+*Proof sketch*
 1. Assuming perfect clock synchronization to obtain view synchronization.
-2. The primary waits for $\Delta$ time so it hears the valid chain with the lock-certificate go highest view among all non-faulty parties.
-3. Need 3 consecutive honest parties so everyone learns the commit-certificate.
+2. The primary waits for $\Delta$ time so it hears the valid chain with the lock-certificate of highest view among all non-faulty parties.
+3. Need 3 consecutive honest parties. The first creates valid proposal; the second creates the block-cert on it;  the third creates the block-cert on the block with one view above it, so a commit cert is formed and sent to all parties.
 
 
 ## Using an authenticated data structure
