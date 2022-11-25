@@ -75,7 +75,7 @@ Party i upon start of view v:
     or send <echoed-max(v, bot)>_i 
         it does not have any lock-certificate
 
-Primary waits for its least n-f responses <echoed-max(v,*)> and Delta time:
+Primary waits for at least n-f responses <echoed-max(v,*)> and Delta time:
     if all are bot then output (bot, bot)
     otherwise, output (proposal, LC(v',proposal)) 
         where proposal is associated with the highest view in responses
@@ -100,19 +100,19 @@ For view $v>1$ there are two cases:
     1. Check that $view(my{-}lock) = 0$.
     2. Output true if $EV_{\text{consensus}}(val, val{-}proof)=1$.
 2. Otherwise, given a 3-tuple $(v, p, p{-}proof)$:
-    1. Check that $p{-}proof$ is a valid lock-certificate $LC(v',p)$ for view $v'$ and value $p'$.
+    1. Check that $p{-}proof$ is a valid lock-certificate $LC(v',p')$ for view $v'$ and value $p'$.
     2. Check that $view(my{-}lock) \leq v'$ 
     3. Output true of $p=p'$.
 
     
-In words: the check makes sure that the proposed value has a valid lock-certificate that has a view that is at least as high as the view of the lock-certificate this server has.
+In words: the check makes sure that the proposed value has a valid lock-certificate that has a view that is at least as high as the view of the lock-certificate this server currently holds.
  
  
 The ```TNDRMNT-RML(v)```  and $EV_{\text{LB-TNDRMNT}}$ are defined. This fully defines the single-shot consensus protocol. Let's prove Agreement and Liveness (the Validity argument is the same as in PBFT).
 
 ### Agreement (accountable safety)
 
-**Accountable safety lemma**: Let $v^{\star}$ be the first view with a commit-certificate on $(v^\star, x)$, then for any view $v\geq v^\star$, if a lock-certificate forms for view $v$ with value $x' \neq x$ then at least $f+1$ parties can be detected as malicious.
+**Accountable safety lemma**: Let $v^{\star}$ be the first view with a commit-certificate, say on $(v^\star, x)$, then for any view $v\geq v^\star$, if a lock-certificate forms for view $v$ with value $x' \neq x$ then at least $f+1$ parties can be detected as malicious.
 
 *Note: this is stronger than proving Agreement assuming at most $f$ corruptions. It also says that no matter how many corruptions the adversary can do, if it breaks Agreement then at least $f+1$ parties can be detected (and perhaps punished).*
 
@@ -160,9 +160,9 @@ A ```block-cert``` for a block $B$ is a set of $n-f$ distinct signatures on $B$.
 
 A ```valid chain``` is a chain of blocks with a ```commit-cert``` and a ```lock-cert```. Both are defined below:
 
-A ```commit-cert``` for a block $B=(cmd, view, pointer)$ on a ```valid chain``` that is not the genesis is a ```block-cert``` for $B$, and a second block $B'=(cmd, view+1, pointer{-}to{-}B)$  with a ```block-cert``` for $B'$. Importantly, $B'$ does not have to be part of the ```valid chain``` but its view must be exactly one more than $B$'s view. By default, if there is no explicit pair of block-certificates, we say that the ```valid chain``` has a ```commit-cert``` on the  ```genesis block```. We call the chain from $B$ to the ```genesis block``` the ```committed chain```.
+A ```commit-cert``` for a block $B=(cmd, view, pointer)$ on a ```valid chain``` that is not the genesis is a ```block-cert``` for $B$, and a second block $B'=(cmd, view+1, pointer{-}to{-}B)$  with a ```block-cert``` for $B'$. Importantly, $B'$ does not have to be part of the ```valid chain``` but its view must be exactly one more than $B$'s view. By default, if there is no explicit pair of block-certificates, we say that the ```valid chain``` has a ```commit-cert``` on the  ```genesis block```. Given a ```commit-cert``` for block $B$, we call the chain from $B$ to the ```genesis block``` the ```committed chain```.
 
-The ```lock-cert``` is a ```block-cert``` for a block $L$ that is on the ```valid chain``` but not part of the ```committed chain```.
+The ```lock-cert``` is a ```block-cert``` for a block $B$ that is on the ```valid chain``` but not part of the ```committed chain```.
  
 The ```lock-cert``` can be the ```block-cert``` on the second block of the ```commit-cert```. In this case, this second block must be part of the ```valid chain```. By default, if there is no explicit Lock-certificates, we say that the ```valid chain``` has a ```lock-cert``` on the  ```genesis block```.
 
@@ -171,13 +171,13 @@ Some examples of valid chains:
 (Genesis,0)
 
 (Genesis,0)<-(c1,1)<-(c2,2)<-(c4,4)<-(c5,5)
-Commit-cert on (c1,1), (c2,2). Lock cert on (c2,2)
+Commit-cert on (c1,1), (c2,2). Lock-cert on (c2,2)
 
 (Genesis,0)<-(c1,1)<-(c2,2)<-(c3,3)<-(c4,4)<-(c5,5)
-Commit-cert on (c1,1)<-(c2,2). Lock cert on (c4,4)
+Commit-cert on (c1,1)<-(c2,2). Lock-cert on (c4,4)
 
 (Genesis,0)<-(c1,1)<-(c2,2)<-(c4,4)<-(c5,5)
-Commit-cert on (c2,2)<-(c3,3). Lock cert on (c5,5)
+Commit-cert on (c2,2)<-(c3,3). Lock-cert on (c5,5)
 
 ```
 
@@ -264,21 +264,21 @@ Party i:
 ```
 
 
-***Accountable Safety***: 
+### Accountable Safety
 
-**Theorem**: Assuming $f<n/2$, for any two ```committed chain```, from any two honest parties taken at any two times, one chain is a sub-chain of the other.
+**Theorem**: Assuming $f<n/3$, for any two ```committed chain```s, taken at any two times, one chain is a sub-chain of the other.
 
 We prove this theorem via the following accountable safety lemma which is a stronger statement. It shows that even if the adversary controls more than $f$ parties, if agreement is violated then at least $f+1$ parties can be detected (and potentially punished). 
 
 
-**Accountable safety lemma**: If there is a commit-cert that consists of two block-cert on two blocks $B_1$ and $B_2$ of consecutive views $v^\star$ and $v^\star +1$ and a lock-cert on block $B_3$ in view $v \geq v^\star$ such that $B_1$ is not a prefix of $B_3$ then at least $f+1$ parties can be detected as malicious.
+**Accountable safety lemma**: If there is a commit-cert that consists of two block-certs on two blocks $B_1$ and $B_2$ of consecutive views $v^\star$ and $v^\star +1$ and a lock-cert on block $B_3$ in view $v \geq v^\star$ such that $B_1$ is not a prefix of $B_3$ then at least $f+1$ parties can be detected as malicious.
 
 
 *Proof of the accountable safety lemma:*
 
 Let $v^-$ be the *first* view after view $v^\star$ for which there is a block-cert for a block $B'$ such that $B_1$ is not a prefix of $B'$. Let $L$ be the set of $n-f$ parties that singed the block-cert for $B'$.
 
-Let set $S_1$ be the set of $n-f$ parties that singed the block-cert for $B_1$, $S_2$ be the set of $n-f$ parties that singed the block-cert for $B_$.
+Let set $S_1$ be the set of $n-f$ parties that singed the block-cert for $B_1$, $S_2$ be the set of $n-f$ parties that singed the block-cert for $B_2$.
 
 
 The first case is if $v^- = v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_1 \cap L$ that must have violated the protocol by signing two different blocks in the same view. The two lock-certs from $S_1$ and $L$ contain irrefutable cryptographic evidence of their misbehavior.
@@ -294,10 +294,10 @@ L = Lock cert on (c4,2)
 
 
 
-The second case is if $v^- > v^\star$, here we use the minimality assumption on $v^-$ to ensure the only blocks with a lock-cert that do not contain $B_1$  must be for a view that is less than $v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_2 \cap L$ that must have violated the protocol by signing on a proposal in view $v^- > v^\star$ that has a lock-cert whose view is smaller than $v^\star$, but they signed in view $v^\star +1$ (as members of $S_2$) that they had a lock-certificate in view $v^\star$. The delivery certificate from $S_2$ and the lock certificate from $L$ contain irrefutable cryptographic evidence of their misbehavior.
+The second case is if $v^- > v^\star$, here we use the minimality assumption on $v^-$ to ensure the only blocks with a lock-cert that do not contain $B_1$  must be for a view that is less than $v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_2 \cap L$ that must have violated the protocol by signing on a proposal chain in view $v^- > v^\star$ that has a lock-cert whose view is smaller than $v^\star$, but they signed in view $v^\star +1$ (as members of $S_2$) that they had a lock-cert in view $v^\star$. The delivery certificate from $S_2$ and the lock certificate from $L$ contain irrefutable cryptographic evidence of their misbehavior.
 
 
-An example of this violation, the members of $L\cap S_2$: in view $3$ they declared their highest lock-cert is from view 2, but in view 5 they validated a proposal using a strictly lower lock (either 0 or block-cert on view 1).
+An example of this violation, the members of $L\cap S_2$: in view $3$ they declared their highest lock-cert is from view 2, but in view 5 they validated a chain that has a strictly lower view lock-cert (either 0 or block-cert on view 1).
 ```
 (Genesis,0)<-(c1,1)<-(c2,2)<-(c3,3)
 (Genesis,0)<-(c1,1)<-(c5,5)
@@ -312,7 +312,7 @@ L = Lock cert on (c5,5)
 This concludes the proof of Safety Lemma.
 
 
-***Liveness***: 
+### Liveness
 
 **Theorem**: There will be a commit-cert after the first three consecutive honest primaries after GST.
 
@@ -322,7 +322,7 @@ This concludes the proof of Safety Lemma.
 3. Need 3 consecutive honest parties. The first creates valid proposal; the second creates the first block-cert on it;  the third creates the second block-cert on the block with one view above it, so a commit cert is formed and sent to all parties.
 
 
-## Using an authenticated data structure
+### Using an authenticated data structure
 
 The way the protocol is described, parties send back and forth the whole chain. This is not bandwidth efficient. Instead, we could view the chain as an authenticated data structure. For example, the hash of the tip can be used as a digest of a simple hash chain authenticated structure.
 
