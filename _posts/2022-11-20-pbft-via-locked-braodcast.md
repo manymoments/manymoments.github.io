@@ -43,7 +43,7 @@ Linear PBFT is decomposed to use two building blocks: *Locked Broadcast* and *Re
 
 # Linear PBFT via Locked Broadcast and Recover Max Lock
 
-Every $10 \Delta$ parties change the view and rotate the primary. Clocks are perfectly synchronized so this change of view is perfectly synchronized as well.
+Every $10 \Delta$ clock ticks the parties change the view and rotate the primary. Clocks are perfectly synchronized so this change of view is perfectly synchronized as well.
 
 In view 1 the primary does a locked broadcast ($LB$), with its validated input value and the view (which is 1). The delivery-certificate output of the Locked Broadcast is a consensus decision!
 
@@ -218,5 +218,5 @@ Lock-certificates can be reduced to a single signatures by using threshold signa
 ## Notes
 
 
-In later posts, we will show the accountability improvements suggested by [Casper FFG](https://arxiv.org/pdf/1710.09437.pdf), simple view synchronization based on Reliable Broadcast, and HotStuff which also provides responsiveness.
+In later posts, we will show other view synchronization solutions, and HotStuff which also provides responsiveness.
 

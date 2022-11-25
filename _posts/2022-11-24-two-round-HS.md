@@ -11,10 +11,10 @@ In the first part of this post we describe a single-shot variation of Two Round 
 
 The simplified single-shot Two Round HotStuff variation captures the essence of the [Tendermint](https://tendermint.com/static/docs/tendermint.pdf) view change protocol (also see more recent [Tendermint paper](https://arxiv.org/pdf/1807.04938.pdf)) which reduces the size of the view change messages relative PBFT.
 
-The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) with $f<n/3$ [Byzantine failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/).
+The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). We assume the standard $f<n/3$ [Byzantine failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/), but for safety we prove an even stronger **accountable safety** statement inspired by [Casper FFG](https://arxiv.org/abs/1710.09437).
 
 
-# Part one: single shot with rotating leaders.
+# Part one: single shot with rotating leaders
 
 Here we use the same view based framework as in the [PBFT post](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/):
 
@@ -110,37 +110,23 @@ In words: the check makes sure that the proposed value has a valid lock-certific
  
 The ```TNDRMNT-RML(v)```  and $EV_{\text{LB-TNDRMNT}}$ are defined. This fully defines the single-shot consensus protocol. Let's prove Agreement and Liveness (the Validity argument is the same as in PBFT).
 
-### Agreement (Safety)
+### Agreement (accountable safety)
 
-**Safety Lemma**: Let $v^{\star}$ be the first view with a commit-certificate on $(v^\star, x)$, then for any view $v\geq v^\star$, if a lock-certificate forms for view $v$ then it must be with value $x$.
+**Accountable safety lemma**: Let $v^{\star}$ be the first view with a commit-certificate on $(v^\star, x)$, then for any view $v\geq v^\star$, if a lock-certificate forms for view $v$ with value $x' \neq x$ then at least $f+1$ parties can be detected as malicious.
 
-*Exercise: prove the Agreement property follows from Lemma above.*
+*Note: this is stronger than proving Agreement assuming at most $f$ corruptions. It also says that no matter how many corruptions the adversary can do, if it breaks Agreement then at least $f+1$ parties can be detected (and perhaps punished).*
 
-We now prove the safety Lemma, which is the essence of Tendermint based view change protocols.
 
-*Proof of Safety Lemma*: Let $S$ (for Sentinels) be the set of non-faulty parties among the $n-f$ parties that sent lock-certificate in the second round of locked broadcast of view $v^\star$. Note that $\|S\| \geq n-2f \geq f+1$. 
+*Proof of accountable safety lemma*: Let $S_1$ be the set of $n-f$ parties that signed the lock-certificate for $v^\star$ and $S_2$ be the set of $n-f$ parties that signed the delivery-certificate for view $v^\star$. Let $v^-$ be the *first* view after view $v^\star$ for which there is a lock-certificate for a value $x' \neq x$. Let $L$ be the set of parties that signed this lock-certificates.
 
-Induction statement: for any view $v\geq v^\star$:
-1. If there is a lock-certificate for view $v$ then it has value $x$.
-2. For each party in $S$, in view $v$, the lock-certificate with the highest view has view $v' \leq v$ such that: 
-    1. $v' \geq v^\star$; and
-    2. The value of the lock-certificate is $x$.
+The first case is if $v^- = v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_1 \cap L$ that must have violated the protocol by signing two different values in the same view. The two lock-certificates from $S_1$ and $L$ contain irrefutable cryptographic evidence of their misbehavior.
 
-For the base case, $v=v^\star$ (1.) follows from the *Uniqueness* property of locked broadcast of view $v^\star$ and (2.) follows from the *Unique-Lock-Availability* property of locked broadcast.
-
-Assume the induction statement holds for all views $v^\star \leq v$ and consider view $v+1$:
-
-Here we will use the *External Validity* of Locked Broadcast. To form a lock-certificate, the primary needs $n{-}f$ parties to view its proposal as valid. This set of validators must intersect with at least one party from $S$ (because $S$ is of size at least $f+1$).
-
-Consider this honest party $s \in S$ and the fact that $EV_{\text{LB-TNDRMNT}}$ requires a proposal with a lock-certificate of a view that is at least as high as $s$'s highest lock-certificate. From (2.) this must be with a view of at least $v^$. From (1.) we have that any proposal that will be valid for $s$ must have the value $x$. This concludes the proof of part (1.) for view $v+1$.
-
-For part (2.), since the only lock-certificate that can form in view $v+1$ must have value $x$, then each party in $S$ either stays with its previous lock-certificate (from $(1.)$ of the induction hypothesis for view $\leq v$) or it updates it to the higher view lock-certificate for view $v+1$. In both cases, we proved that part $(2.)$ of the induction hypothesis holds for view $v+1$.
-
+The second case is if $v^- > v^\star$, here we use the minimality assumption on $v^-$ to ensure the only non-$x$ lock-certificates must be for a view that is less than $v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_2 \cap L$ that must have violated the protocol $EV_{\text{LB-TNDRMNT}}$ by accepting (and signing) on a proposal in view $v^- > v^\star$ that has a lock-certificate whose view is smaller than $v^\star$, but they signed (as members of $S_2$) that they had a lock-certificate in view $v^\star$. The delivery certificate from $S_2$ and the lock certificate from $L$ contain irrefutable cryptographic evidence of their misbehavior. 
 This concludes the proof of Safety Lemma.
 
 ### Liveness
 
-The only difference relative the Liveness proof for [PBFT](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/) is that we need to show that all non-faulty parties will verify $EV_{\text{LB-TNDRMNT}}$ on the honest primary proposal. This is where the additional wait for $\Delta$ time in the gathering phase of ```TNDRMNT-RML(v)``` is required - it guarantees that after GST, by waiting for $\Delta$ time, the primary will hear from all non-faulty parties, hence is guaranteed to choose the lock-certificate that is high enough to verify $EV_{\text{LB-TNDRMNT}}$ for all non-faulty parties. 
+The only difference relative the Liveness proof for [PBFT](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/) is that we need to show that all non-faulty parties will verify $EV_{\text{LB-TNDRMNT}}$ on the honest primary proposal. This is where the additional wait for $\Delta$ time in the gathering phase of ```TNDRMNT-RML(v)``` is required - it guarantees that after GST, by waiting for $\Delta$ time, the primary will hear from all non-faulty parties, to chooses the lock-certificate that is high enough to verify $EV_{\text{LB-TNDRMNT}}$ for all non-faulty parties. 
 
 This concludes the proof of Liveness.
 
@@ -251,12 +237,12 @@ On at least n-f valid <"start view", v, *> and waiting Delta time
 When a party sees a proposal chain from the view $v$ primary it checks:
 1. That its view is still $v$;
 2. That this is the first such message from the primary;
-3. That the proposal is a valid chain with a valid lock-certificate and a valid commit-certificate;
-4. That all the blocks after the lock-certificate of the proposed chain contain externally valid commands;
-5. That the lock-certificate of the proposed chain has a view that is at least as high as the view of the lock-certificate of ```my-chain```.
+3. That the proposal is a valid chain with a valid lock-cert and a valid commit-cert;
+4. That all the blocks after the lock-cert of the proposed chain contain externally valid commands;
+5. That the lock-cert of the proposed chain has a view that is at least as high as the view of the lock-cert of ```my-chain```.
 6. If all these checks pass, then:
-    1. If the proposed chain has a commit-certificate for a higher view than that of  ```my-chain``` then execute the blocks in between the previous commit-certificate and the new commit-certificate.
-    2. Update ```my-chain``` to the new proposed chain so it will be signed at part of the start view of view $v+1$.
+    1. If the proposed chain has a commit-cert for a higher view than that of  ```my-chain``` then execute the blocks in between the previous commit-cert and the new commit-cert.
+    2. Update ```my-chain``` to the new proposed chain so it will be signed as part of the "start view" of view $v+1$.
 
 ```   
 Party i:
@@ -278,33 +264,52 @@ Party i:
 ```
 
 
-***Safety***: 
+***Accountable Safety***: 
 
-**Theorem**: For any two ```committed chain```, from any two honest parties taken at any two times, one chain is a sub-chain of the other.
+**Theorem**: Assuming $f<n/2$, for any two ```committed chain```, from any two honest parties taken at any two times, one chain is a sub-chain of the other.
 
-We prove this theorem via the following safety lemma:
-
-
-**Safety Lemma**: 
-
-Given a commit-certificate that consists of two block-certificates on two consecutive blocks $B$ and $B'$ of views $v^\star$ and $v^\star +1$. Let set $S$ be the set of honest parties that signed a chain for view $v^\star +1$ that included the block-certificate for $B$. 
-
-For any view $v \geq v^\star$,
-1. Any valid chain that has a lock-certificate of view $v$ includes block $B$.
-2. The ```my-chain``` of any member of $S$ at the beginning of view $v+1$ includes block $B$ and its lock-certificate is at least of view $v^\star$.
-
-*Proof of the theorem from the lemma*: given two ```committed chain```, consider the one with the shorter commit-cert. Apply the safety lemma on it to prove that the longer chain must include it as a sub chain.
+We prove this theorem via the following accountable safety lemma which is a stronger statement. It shows that even if the adversary controls more than $f$ parties, if agreement is violated then at least $f+1$ parties can be detected (and potentially punished). 
 
 
-*proof of the safety lemma*
+**Accountable safety lemma**: If there is a commit-cert that consists of two block-cert on two blocks $B_1$ and $B_2$ of consecutive views $v^\star$ and $v^\star +1$ and a lock-cert on block $B_3$ in view $v \geq v^\star$ such that $B_1$ is not a prefix of $B_3$ then at least $f+1$ parties can be detected as malicious.
 
-Base case (when $v=v^\star$): follows the uniqueness of block-certificate $B$ (because it contains $n-f$ signatures in view $v^\star$ and honest parties sign just one message per view). The fact that at least $f+1$ parties out of the $n-f$ parties in the block-certificate for $B'$ are honest defines the set $S$. Indeed members of $S$ at the beginning of view $v^\star+1$ have $B$ as their lock-certificate. 
 
-Induction argument, assuming $v\leq v^\star $ and proving for $v+1$: The only way to create a lock-certificate in view $v+1$ is if a member of $S$ signs in the start view $v+1$ a chain with a tip in view $v$, which that in view $v$ it passed the check that the lock-certificate proposed by the primary had a view that is at least as high as the view of its lock-certificate.
+*Proof of the accountable safety lemma:*
 
-Using the induction hypothesis (2.), the members of $S$ have a lock-certificate of view at least $v^\star$ hence in order for them to approve the proposal must be of a view of at least $v^\star$. Apply the induction hypothesis (1.) to say that such a proposal must include the block $B$. Hence the only valid chain that has a lock-certificate of view $v+1$ must also include block $B$. This concludes (1.).
+Let $v^-$ be the *first* view after view $v^\star$ for which there is a block-cert for a block $B'$ such that $B_1$ is not a prefix of $B'$. Let $L$ be the set of $n-f$ parties that singed the block-cert for $B'$.
 
-For (2.) this follows since in view $v+1$ we can only create a new lock-certificate that extends $B$. So at the beginning of view $v+2$ parties in $S$ either maintain their previous chain or update to one which has a higher lock-certificate but in that case from (1.) this new chain must still include $B$. This concludes (2.) and the proof.
+Let set $S_1$ be the set of $n-f$ parties that singed the block-cert for $B_1$, $S_2$ be the set of $n-f$ parties that singed the block-cert for $B_$.
+
+
+The first case is if $v^- = v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_1 \cap L$ that must have violated the protocol by signing two different blocks in the same view. The two lock-certs from $S_1$ and $L$ contain irrefutable cryptographic evidence of their misbehavior.
+
+An example of this violation, members of $S_1 \cap L$ signed in view 2 on both $c2$ and $c4$.
+```
+(Genesis,0)<-(c1,1)<-(c2,2)<-(c3,3)
+(Genesis,0)<-(c1,1)<-(c4,2)
+                     
+(B1,B2) = Commit-cert on (c2,2)<-(c3,3)
+L = Lock cert on (c4,2)
+```
+
+
+
+The second case is if $v^- > v^\star$, here we use the minimality assumption on $v^-$ to ensure the only blocks with a lock-cert that do not contain $B_1$  must be for a view that is less than $v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_2 \cap L$ that must have violated the protocol by signing on a proposal in view $v^- > v^\star$ that has a lock-cert whose view is smaller than $v^\star$, but they signed in view $v^\star +1$ (as members of $S_2$) that they had a lock-certificate in view $v^\star$. The delivery certificate from $S_2$ and the lock certificate from $L$ contain irrefutable cryptographic evidence of their misbehavior.
+
+
+An example of this violation, the members of $L\cap S_2$: in view $3$ they declared their highest lock-cert is from view 2, but in view 5 they validated a proposal using a strictly lower lock (either 0 or block-cert on view 1).
+```
+(Genesis,0)<-(c1,1)<-(c2,2)<-(c3,3)
+(Genesis,0)<-(c1,1)<-(c5,5)
+                     
+(B1,B2) = Commit-cert on (c2,2)<-(c3,3)
+L = Lock cert on (c5,5)
+```
+
+
+
+ 
+This concludes the proof of Safety Lemma.
 
 
 ***Liveness***: 
@@ -314,7 +319,7 @@ For (2.) this follows since in view $v+1$ we can only create a new lock-certific
 *Proof sketch*
 1. Assuming perfect clock synchronization to obtain view synchronization.
 2. The primary waits for $\Delta$ time so it hears the valid chain with the lock-certificate of highest view among all non-faulty parties.
-3. Need 3 consecutive honest parties. The first creates valid proposal; the second creates the block-cert on it;  the third creates the block-cert on the block with one view above it, so a commit cert is formed and sent to all parties.
+3. Need 3 consecutive honest parties. The first creates valid proposal; the second creates the first block-cert on it;  the third creates the second block-cert on the block with one view above it, so a commit cert is formed and sent to all parties.
 
 
 ## Using an authenticated data structure
