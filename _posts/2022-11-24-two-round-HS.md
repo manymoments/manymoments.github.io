@@ -88,11 +88,11 @@ Primary waits for at least n-f responses <echoed-max(v,*)> and Delta time:
 
 $EV_{\text{LB-TNDRMNT}}$ checks the validity relative to the ```TNDRMNT-RML(v)``` protocol. Unlike the $EV_{\text{LB-PBFT}}$ check, the $EV_{\text{LB-TNDRMNT}}$ verification is *stateful*, the check compares the input to the highest lock-certificate that the party has seen.
 
-To be explicit about this, each part maintains state  ```my-lock``` that contains the lock-certificate with the highest view it saw. Denote by ```view(my-lock)``` the view number of this block-certificate. Initially ```my-lock := bot``` and ```view(my-lock) := 0```.
+To be explicit about this, each part maintains state  ```my-lock``` that contains the lock-certificate with the highest view it saw. Denote by ```view(my-lock)``` the view number of this lock-certificate. Initially ```my-lock := bot``` and ```view(my-lock) := 0```.
 
 Define $EV_{\text{LB-TNDRMNT}}$:
 
-For view 1, nothing changes, just check external validity of the consensus protocol: $EV_{\text{LB-TNDRMNT}}(1, val, val-proof)= EV_{\text{consensus}}(val, val-proof)$.
+For view 1, nothing changes, just check external validity of the consensus protocol: $EV_{\text{LB-TNDRMNT}}(1, val, val{-}proof)= EV_{\text{consensus}}(val, val{-}proof)$.
 
 For view $v>1$ there are two cases:
 
@@ -117,7 +117,7 @@ The ```TNDRMNT-RML(v)```  and $EV_{\text{LB-TNDRMNT}}$ are defined. This fully d
 *Note: this is stronger than proving Agreement assuming at most $f$ corruptions. It also says that no matter how many corruptions the adversary can do, if it breaks Agreement then at least $f+1$ parties can be detected (and perhaps punished).*
 
 
-*Proof of accountable safety lemma*: Let $S_1$ be the set of $n-f$ parties that signed the lock-certificate for $v^\star$ and $S_2$ be the set of $n-f$ parties that signed the delivery-certificate for view $v^\star$. Let $v^-$ be the *first* view after view $v^\star$ for which there is a lock-certificate for a value $x' \neq x$. Let $L$ be the set of parties that signed this lock-certificates.
+*Proof of accountable safety lemma*: Let $S_1$ be the set of $n-f$ parties that signed the lock-certificate for $v^\star$ and $S_2$ be the set of $n-f$ parties that signed the delivery-certificate for view $v^\star$. Let $v^-$ be the *first* view after view $v^\star$ for which there is a lock-certificate for a value $x' \neq x$. Let $L$ be the set of parties that signed this lock-certificate.
 
 The first case is if $v^- = v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_1 \cap L$ that must have violated the protocol by signing two different values in the same view. The two lock-certificates from $S_1$ and $L$ contain irrefutable cryptographic evidence of their misbehavior.
 
@@ -146,7 +146,7 @@ The protocol revolves around a data structure which is a chain of blocks and 2-3
 A ```block``` $B$ contains a triplet $B=(cmd, view, pointer)$ where *cmd* is an externally valid client command, *view* is the view this block was proposed in, and *pointer* is a link to a previous block (that has a smaller view).
 
 
-A ```chain``` is just a chain of ```block```s that starts with an empty ```genesis block``` of view 0 and empty pointer. The views in the chain are monotonic but not nessisarily sequential. Some examples:
+A ```chain``` is just a chain of ```block```s that starts with an empty ```genesis block``` of view 0 and empty pointer. The views in the chain are monotonic but not necessarily sequential. Some examples:
 ```
 (Genesis,0)
 (Genesis,0)<-(c1,1)
@@ -174,10 +174,10 @@ Some examples of valid chains:
 Commit-cert on (c1,1), (c2,2). Lock-cert on (c2,2)
 
 (Genesis,0)<-(c1,1)<-(c2,2)<-(c3,3)<-(c4,4)<-(c5,5)
-Commit-cert on (c1,1)<-(c2,2). Lock-cert on (c4,4)
+Commit-cert on (c1,1), (c2,2). Lock-cert on (c4,4)
 
 (Genesis,0)<-(c1,1)<-(c2,2)<-(c4,4)<-(c5,5)
-Commit-cert on (c2,2)<-(c3,3). Lock-cert on (c5,5)
+Commit-cert on (c2,2),(c3,3). Lock-cert on (c5,5)
 
 ```
 
@@ -281,7 +281,7 @@ Let $v^-$ be the *first* view after view $v^\star$ for which there is a block-ce
 Let set $S_1$ be the set of $n-f$ parties that singed the block-cert for $B_1$, $S_2$ be the set of $n-f$ parties that singed the block-cert for $B_2$.
 
 
-The first case is if $v^- = v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_1 \cap L$ that must have violated the protocol by signing two different blocks in the same view. The two lock-certs from $S_1$ and $L$ contain irrefutable cryptographic evidence of their misbehavior.
+The first case is if $v^- = v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_1 \cap L$ that must have violated the protocol by signing two different blocks in the same view $v^\star$. The two block-certs from $S_1$ and $L$ contain irrefutable cryptographic evidence of at least $f+1$ parties that misbehaved.
 
 An example of this violation, members of $S_1 \cap L$ signed in view 2 on both $c2$ and $c4$.
 ```
@@ -293,11 +293,22 @@ L = Lock cert on (c4,2)
 ```
 
 
+The second case is if $v^- = v^\star +1$. This case is identical to the first case but with the sets $S2$ and $L$. There are at least $n-2f \geq f+1$ parties in the intersection of $S_2 \cap L$ that must have violated the protocol by signing two different blocks in the same view $v^\star +1$.
 
-The second case is if $v^- > v^\star$, here we use the minimality assumption on $v^-$ to ensure the only blocks with a lock-cert that do not contain $B_1$  must be for a view that is less than $v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_2 \cap L$ that must have violated the protocol by signing on a proposal chain in view $v^- > v^\star$ that has a lock-cert whose view is smaller than $v^\star$, but they signed in view $v^\star +1$ (as members of $S_2$) that they had a lock-cert in view $v^\star$. The delivery certificate from $S_2$ and the lock certificate from $L$ contain irrefutable cryptographic evidence of their misbehavior.
+An example of this violation, members of $S_2 \cap L$ signed in view 3 on both $c3$ and $c4$.
+```
+(Genesis,0)<-(c1,1)<-(c2,2)<-(c3,3)
+(Genesis,0)<-(c1,1)<-(c4,3)
+                     
+(B1,B2) = Commit-cert on (c2,2)<-(c3,3)
+L = Lock cert on (c4,3)
+```
 
 
-An example of this violation, the members of $L\cap S_2$: in view $3$ they declared their highest lock-cert is from view 2, but in view 5 they validated a chain that has a strictly lower view lock-cert (either 0 or block-cert on view 1).
+The third case is if $v^- > v^\star + 1$, here we use the minimality assumption on $v^-$ to ensure the only blocks with a lock-cert that do not contain $B_1$  must be for a view that is less than $v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_2 \cap L$ that must have violated the protocol by signing on a proposal chain in view $v^- > v^\star +1$ that has a lock-cert whose view is smaller than $v^\star$, but as members of $S_2$, they previously signed (in view $v^\star +1$) that they had a valid chain with a lock-cert of a block of view $v^\star$. The delivery certificate from $S_2$ and the lock certificate from $L$ contain irrefutable cryptographic evidence of their misbehavior.
+
+
+An example of this violation, the members of $L \cap S_2$: in view $3$ they declared their highest lock-cert is from view 2, but in view 5 they signed a proposed chain that has a strictly lower view lock-cert (either 0 or block-cert on view 1) that created a lock-cert on a view 5 block at view 6.
 ```
 (Genesis,0)<-(c1,1)<-(c2,2)<-(c3,3)
 (Genesis,0)<-(c1,1)<-(c5,5)
@@ -307,8 +318,6 @@ L = Lock cert on (c5,5)
 ```
 
 
-
- 
 This concludes the proof of Safety Lemma.
 
 

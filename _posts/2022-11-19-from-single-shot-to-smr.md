@@ -22,7 +22,7 @@ We interchangeably call this problem Consensus and Agreement. Note that [Agreeme
 
 ### Write-Once Register State Machine Replication
 
-Instead of just $n$ parties, we have two types of entities: some *clients* and $n$ *servers* (sometimes also called *replicas*). A minority of the servers and *any* number of clients may have omission failures.
+Instead of just $n$ parties, there are two types of entities: some *clients* and $n$ *servers* (sometimes also called *replicas*). A minority of the servers and *any* number of clients may have omission failures.
 
 Each client has a *local* component called a **client library**. The client interacts with the client library and the library interacts with the servers. Essentially, the client library provides the client with the illusion of talking to a single (ideal) entity. 
 
@@ -42,9 +42,11 @@ To make the problem non-trivial, we also require the system to return a non-$\bo
 
 *Exercise 1: show how to implement a fault-tolerant Write-Once Register given a consensus protocol. You will need to implement the client library.*
 
+An alternative way to define a Write-Once Register is that it abstracts an *ideal functionality* that writes down the first value it hears (literally a register that only writes once).
+
 ### Log Replication
 
-The setting is the same as above with clients and $n$ servers. Clients have two types of requests: ```read``` which now returns a response that is a **log of values** (or $\bot$ for the empty log) and ```write(v)``` which gets an input value and also returns a response that is a log of values.
+The setting is the same as above: some clients and $n$ servers. Clients can make two types of requests: ```read``` which now returns a **log of values** (or $\bot$ for the empty log)  as a response; and ```write(v)``` which gets an input value and also returns a response that is a log of values.
 
 Clients can have multiple input values at different times. 
 
@@ -57,6 +59,8 @@ Clients can have multiple input values at different times.
 **Log Correctness**: If there is a write request with the value $v$ that gets a response at time $t$, then any request that starts after $t$ returns a log of values that includes $v$.
 
 The ```read``` request may not scale well because the log may have an unbounded size. A more refined read request can ask for parts of the log. We choose this generic interface for simplicity.
+
+An alternative way to define Log Replication is that it abstracts an *ideal functionality* that adds write commands to a log.
 
 
 ### State Machine Replication
@@ -102,7 +106,6 @@ There are two main ways to obtain Log Replication from Write-Once Registers:
 As we have seen, in the worst case, even one single-shot consensus can take $O(f \Delta)$ time. But what about the good case when the system is in synchrony and the primary is non-faulty? The following definition captures the best-case guarantees that we would like to obtain:
 
 **Single-Shot Responsiveness**: if the systems is in synchrony, the primary is non-faulty and each message arrives after $\delta << \Delta$ time then the time to terminate is $O(\delta)$.
-
 
 What about multi-shot? The obvious path is to do one consensus per view. With this approach, using our $10\Delta$ timeout to switch views, to do $k$ consensus instances, even if the system is in synchrony, and even if all the primaries are non-faulty, would take $O(\Delta k)$. A natural goal would be to try to obtain a better bound:
 
