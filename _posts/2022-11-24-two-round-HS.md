@@ -9,21 +9,20 @@ author: Ittai Abraham
 In the first part of this post we describe a single-shot variation of Two Round HotStuff (see the [HotStuff v1 paper](https://arxiv.org/pdf/1803.05069v1.pdf)) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous post on [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/) and [Linear PBFT](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/). In the second part, we describe a fully pipelined multi-shot State Machine Replication version of Two Round HotStuff that is similar to [Casper FFG](https://arxiv.org/abs/1710.09437) and [Streamlet](https://decentralizedthoughts.github.io/2020-05-14-streamlet/).
 
 
-The simplified single-shot Two Round HotStuff variation captures the essence of the [Tendermint](https://tendermint.com/static/docs/tendermint.pdf) view change protocol (also see more recent [Tendermint paper](https://arxiv.org/pdf/1807.04938.pdf)) which reduces the size of the view change messages relative PBFT.
+The simplified single-shot Two Round HotStuff variation captures the essence of the [Tendermint](https://tendermint.com/static/docs/tendermint.pdf) view change protocol (also see more recent [Tendermint paper](https://arxiv.org/pdf/1807.04938.pdf)) which reduces the size of the view change messages relative to PBFT.
 
-The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). We assume the standard $f<n/3$ [Byzantine failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/), but for safety we prove an even stronger **accountable safety** statement inspired by [Casper FFG](https://arxiv.org/abs/1710.09437).
+The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). We assume the standard $f<n/3$ [Byzantine failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). For safety we prove an even stronger **accountable safety** statement inspired by [Casper FFG](https://arxiv.org/abs/1710.09437).
 
 
-# Part one: single shot with rotating leaders
+# Part one: single shot two round HotStuff with rotating leaders
 
-Here we use the same view based framework as in the [PBFT post](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/):
+The same view based framework as in the [PBFT post](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/):
 
 1. The goal in this part is Single-shot Consensus with External Validity.
-2. We use a view based protocol where view $v$ is the time interval $[v(10 \Delta),(v+1)(10 \Delta))$.
+2. Using a view based protocol where view $v$ is the time interval $[v(10 \Delta),(v+1)(10 \Delta))$.
 3. The protocol uses [Locked broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
 
 Here is the pseudocode which is (almost) the same as the [PBFT post](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/):
-
 
 
 ```
@@ -53,7 +52,7 @@ Upon valid delivery-certificate dc for (v,x)
 A minor difference is that when $p= \bot$ then $p{-}proof$ is not sent.
 
 
-Two major differences in the sub-protocols $RML$ and external validity of $LB$:
+The two major differences are in the $RML$ sub-protocol and external validity of $LB$ sub-protocol:
 1. *Recover Max Lock* protocol: Instead of using ```PBFT-RML(v)``` which returns a set of $n-f$ lock-certificates, we use ```TNDRMNT-RML(v)``` which returns only **one** lock-certificate. This is where Tendermint based protocols (like Two Round HotStuff) save on message size.
 2. The *external validity* of the *Locked broadcast* $EV_{\text{LB}}$ is changed from $EV_{\text{LB-PBFT}}$ to $EV_{\text{LB-TNDRMNT}}$ to work with the change above in the Recover Max Lock protocol.
 
