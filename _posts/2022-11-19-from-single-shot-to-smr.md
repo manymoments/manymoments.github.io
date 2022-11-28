@@ -66,7 +66,11 @@ An alternative way to define Log Replication is that it abstracts an *ideal func
 ### State Machine Replication
 
 There is a state machine which is a function that takes input and current state and returns the output and the next state:
-$$SM(cmd, S)=(out,S')$$
+
+$$
+SM(cmd, S)=(out,S')
+$$
+
 The state machine has some *genesis state* $S_0$.
 Note that this is a very general definition. Clients can submit requests  ```cmd``` (can define ```read``` and ```write``` commands via the state machine).  Given a log $L=c_1,\dots,c_k$, naturally define $SM(L)=(out,S)$ as the sequential application of the log of commands $L$ on $SM$ starting with $S_0$. 
 
