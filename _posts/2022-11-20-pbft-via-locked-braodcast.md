@@ -9,7 +9,7 @@ author: Ittai Abraham
 We describe a variation of the authenticated version of [PBFT](https://pmg.csail.mit.edu/papers/osdi99.pdf) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous post on [Paxos using Recoverable Broadcast](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/). I call this protocol **linear PBFT** and variants of it are used by [SBFT](https://arxiv.org/pdf/1804.01626.pdf) and [Tusk](https://arxiv.org/pdf/2105.11827.pdf). A later post will show how to extend this approach for [Two Round HotStuff](https://arxiv.org/pdf/1803.05069v1.pdf) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) and [Three Round HotStuff](https://arxiv.org/pdf/1803.05069.pdf) using [Keyed Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
 
 
-The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) with $f<n/3$ [Byzantine failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and the goal is *consensus with external validity* (see below for exact details). 
+The model is [partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) with $f<n/3$ [Byzantine failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and the goal is *consensus with external validity* (see below for exact details). 
 
 As with Paxos, we approach PBFT by starting with two major simplifications:
 
@@ -19,9 +19,9 @@ As with Paxos, we approach PBFT by starting with two major simplifications:
 
 ## View-based protocol with simple rotating primary
 
-The protocol progresses in **views**. The first view is 1 and view $v+1$ follows view $v$. Each view has a designated **primary** party. For fairness, parties rotate the role of the primary. For simplicity, the primary of view $v$ is party $v \mod n$. 
+Just as in [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/), the protocol progresses in **views**, each view has a designated **primary** party. For simplicity, the primary of view $v$ is party $v \mod n$. 
 
-Clocks are synchronized, and $\Delta$ is known, so set view $v$ to be the time interval $[v(10 \Delta),(v+1)(10 \Delta))$. In other words, each $10\Delta$ clock ticks each party triggers a **view change** and increments the view by one. Since clocks are assumed to be perfectly synchronized, all parties move in and out of each view in complete synchrony.
+Clocks are synchronized, and $\Delta$ (the delay after GST) is known, so set view $v$ to be the time interval $[v(10 \Delta),(v+1)(10 \Delta))$. In other words, each $10\Delta$ clock ticks each party triggers a **view change** and increments the view by one. Since clocks are assumed to be perfectly synchronized, all parties move in and out of each view in complete synchrony.
 
 
 ## Single-shot Consensus with External Validity
@@ -37,13 +37,25 @@ In this setting, each party has some externally valid *input values* (one or mor
 **External Validity**: the output is externally valid. 
 
 
-Denote by $EV_{\text{consensus}}$ the external validity function that is given as input to the consenesu instance.
+Denote by $EV_{\text{consensus}}$ the external validity function that is given as input to the consensus instance.
 
-Linear PBFT is decomposed to use two building blocks: *Locked Broadcast* and *Recover Max Lock*. The exposition will start top-down: defining the high-level protocol first and detailing the building blocks later. 
+Linear PBFT is decomposed to use two building blocks: *Locked Broadcast* and *Recover Max Lock*. The exposition will start with a reminder of the properties of Locked Broadcast sub-protocol, then defining the high-level protocol, then the Recover Max Lock sub-protocol, and finally defining the external validity check we use inside the Locked Broadcast.
+
+## Locked Broadcast 
+
+[Locked broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) is the application of two provable broadcasts with an *external validity function*, $EV_{\text{LB}}$, which obtains the following properties:
+
+* **Termination**: If the sender is honest and has an *externally valid* input $v$, then after a constant number of rounds the sender will obtain a *delivery-certificate* of $v$. Note that the Termination property requires just the sender to hold the certificate.
+* **Uniqueness**: There can be at most one value that obtains a *delivery-certificate*. So there cannot be two *delivery-certificates* with different values.
+* **External Validity**: If there is a *delivery-certificate* on value $v$ and proof $proof$ then $v$ is *externally valid*. So $EV_{\text{LB}}(v, proof)=1$.
+* **Unique-Lock-Availability**: If a  *delivery-certificate* exists for $v$ then there can only exist a *lock-certificate* for $v$ and there are at least $n-2f\geq f+1$ honest parties that hold this *lock-certificate*.
+
+Note that Locked Broadcast needs to define an external validity function $EV_{\text{LB}}$, which controls what outputs are allowed. $EV_{\text{LB}}$ is different from $EV_{\text{consensus}}$ (the external validity function of the underlying consensus protocol). 
+
 
 # Linear PBFT via Locked Broadcast and Recover Max Lock
 
-Every $10 \Delta$ clock ticks the parties change the view and rotate the primary. Clocks are perfectly synchronized so this change of view is perfectly synchronized as well.
+Every $10 \Delta$ clock ticks the parties change the view and rotate the primary (the choice of constant 10 is done for simplicity). Clocks are perfectly synchronized so this change of view is perfectly synchronized as well.
 
 In view 1 the primary does a locked broadcast ($LB$), with its validated input value and the view (which is 1). The delivery-certificate output of the Locked Broadcast is a consensus decision!
 
@@ -85,42 +97,39 @@ otherwise
 
 In words, the primary first tries to recover the lock-certificate with the maximal view. If no lock-certificate is seen, the primary is free to choose its own externally valid input, but even in that case, it adds the proof from the Recover Max Lock protocol. Otherwise, it proposes the output value from the Recover Max Lock along with its proof.  Note the deep similarity to the Paxos protocol variant of the [previous post](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/).
 
-Much of the magic of Byzantine Fault tolerance is hidden in the Locked Broadcast abstraction, its external validity $EV_{\text{LB-PBFT}}$ function definition, and the Recover Max Lock protocol. Let's detail these one after the other:
 
+We are left with defining the Recover Max Lock sub-protocol and the external validity $EV_{\text{LB-PBFT}}$  using in the Locked Broadcast sub-protocol.
 
 ### Recover Max Lock for PBFT based protocols
 
-The ```PBFT-RML(v)``` protocol for view $v$ finds the highest lock-certificate and returns not only the associated value but also the $n-f$ responses that allows one to verify that this is indeed the highest lock-certificate among some set of $n-f$ valid responses. 
+The ```PBFT-RML(v)``` protocol for view $v$ finds the highest lock-certificate and returns not only the associated value but also the $n-f$ responses that allows one to verify that this is indeed the highest lock-certificate among some set of $n-f$ valid responses. A valid response is a response which includes a valid lock-certificate, and a valid lock-certificate includes $n-f$ distinct signatures.
 
 ```
 PBFT-RML(v):
 
 Party i upon start of view v
-    send <echoed-max(v, v', p, LC(v',p) )>_i 
-        of the highest view v' it has a lock-certificate LC(v',p)
-    or send <echoed-max(v, bot)>_i 
-        It does not have any lock-certificate
+    send to view i primary:
+        <echoed-max(v, v', p, LC(v',p) )>
+            of the highest view v' it has a lock-certificate LC(v',p)
+        Or <echoed-max(v, bot)>_i 
+            If it does not have any lock-certificate
 
-Primary waits for n-f responses <echoed-max(v,*)> 
+Primary waits for n-f valid responses <echoed-max(v,*)> 
     if all are bot then output (bot, responses)
     otherwise, output (proposal, responses) 
         where proposal is associated with the highest view in responses
 ```
 
-### Locked Broadcast 
 
-[Locked broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) is the application of two provable broadcasts with an *external validity function*, $EV_{\text{LB}}$, which obtains the following properties:
-
-* **Termination**: If the sender is honest and has an *externally valid* input $v$, then after a constant number of rounds the sender will obtain a *delivery-certificate* of $v$. Note that the Termination property requires just the sender to hold the certificate.
-* **Uniqueness**: There can be at most one value that obtains a *delivery-certificate*. So there cannot be two *delivery-certificates* with different values.
-* **External Validity**: If there is a *delivery-certificate* on value $v$ and proof $proof$ then $v$ is *externally valid*. So $EV_{\text{LB}}(v, proof)=1$.
-* **Unique-Lock-Availability**: If a  *delivery-certificate* exists for $v$ then there can only exist a *lock-certificate* for $v$ and there are at least $n-2f\geq f+1$ honest parties that hold this *lock-certificate*.
-
-Note that Locked Broadcast needs to define an external validity function $EV_{\text{LB}}$, which controls what outputs are allowed. $EV_{\text{LB}}$ is different from $EV_{\text{consensus}}$ (the external validity function of the underlying consensus protocol). 
 
 ### External Validity for the Locked Broadcast of Linear PBFT
 
-As you may expect, $EV_{\text{LB-PBFT}}$ checks the validity of the $RML(v)$ protocol and uses $EV_{\text{consensus}}$. Define $EV_{\text{LB-PBFT}}$:
+As you may expect, $EV_{\text{LB-PBFT}}$ checks the validity of the $RML(v)$ protocol and uses $EV_{\text{consensus}}$. 
+
+Informally, $EV_{\text{LB-PBFT}}$, either checks that $n-f$ parties say they saw no lock-certificate and the new value is externally valid for consensus; or that the primary proposes the value that is associated with a lock-certificate and the view of this lock-certificate is the highest one among a set of $n-f$  valid ```<echoed-max(v, v', p, LC(v',p) )>``` messages.
+
+
+Formally define $EV_{\text{LB-PBFT}}$:
 
 For view 1, just use the external validity function of the consensus protocol $EV_{\text{consensus}}$. So $EV_{\text{LB-PBFT}}(1, val, val-proof)= EV_{\text{consensus}}(val, val-proof)$.
 
@@ -130,12 +139,11 @@ For view $v>1$ there are two cases:
     1. All $n-f$ of the $RML(v)$ responses contain ```<echoed-max(v, bot )>```.
     2. Output true if $EV_{\text{consensus}}(val, val-proof)=1$.
 2. Otherwise, given a 3-tuple $(v, p, p{-}proof)$, check that $p{-}proof$ consists of $n-f$ distinct valid $RML(v)$ responses:
-    1. An $RML(v)$ message that contains ```<echoed-max(v, v', p, LC(v',p) )>_i``` is valid if the lock-certificate $LC(v')$ is valid for view $v'$ and value $p$.
-    2. Let $v^+, LC_{v^+}, p^+$ be the valid ```<echoed-max(v, * )>_i``` response with the highest view $v^+$ in the $RML(v)$ responses. 
+    1. An $RML(v)$ message that contains ```<echoed-max(v, v', p, LC(v',p) )>``` is valid if the lock-certificate $LC(v')$ is valid for view $v'$ and value $p$.
+    2. Let $v^+, LC_{v^+}, p^+$ be the valid ```<echoed-max(v, * )>``` response with the highest view $v^+$ in the $RML(v)$ responses. 
     3. Output true of $p=p^+$.
 
 
-In words, either check all parties saw no lock-certificate and the new value is externally valid for consensus, or that the primary proposes the value that is associated with the highest lock-certificate in the valid responses set.
 
 Observe that a valid $p{-}proof$ contains $n-f$ distinct valid lock-certificates and each valid lock-certificate contains $n-f$ distinct signatures. 
 
@@ -158,7 +166,7 @@ Induction statement: for any view $v\geq v^\star$:
     1. $v' \geq v^\star$; and
     2. The value of the lock-certificate is $x$.
 
-For the base case, $v=v^\star$: (1.) follows from the *Uniqueness* property of locked broadcast of view $v^*$ and (2.) follows from the *Unique-Lock-Availability* property of locked broadcast.
+For the base case, $v=v^\star$: (1.) follows from the *Uniqueness* property of locked broadcast of view $v^\star$ and (2.) follows from the *Unique-Lock-Availability* property of locked broadcast.
 
 Now suppose the induction statement holds for all views $v^\star \leq v$ and consider view $v+1$:
 
@@ -166,13 +174,13 @@ Use the *External Validity* property of locked broadcast and the definition of $
 
 Observe that by definition of $EV_{\text{LB-PBFT}}$ for view $v+1$: any valid $p{-}proof$ must include a lock-certificate sent by some member of $S$ for view $v+1$. This is true because $p{-}proof$ must include $n-f$ distinct and valid lock-certificates. 
 
-Use the induction hypothesis on views all views $v^\star \leq v$: from (2.) and the above argument, $p{-}proof$ must contain a lock-certificate of view at least $v^* $ and value $x$. From (1.) any lock-certificate in $p{-}proof$ is either of view $< v^*$ or of value $x$. Hence the value associated with the maximal view lock-certificate in $p{-}proof$ must be $x$. This concludes the proof of (1.) for view $v+1$.
+Use the induction hypothesis on views all views $v^\star \leq v$: from (2.) and the above argument, $p{-}proof$ must contain a lock-certificate of view at least $v^\star $ and value $x$. From (1.) any lock-certificate in $p{-}proof$ is either of view $< v^\star$ or of value $x$. Hence the value associated with the maximal view lock-certificate in $p{-}proof$ must be $x$. This concludes the proof of (1.) for view $v+1$.
 
 Given (1.) for view $v+1$, (2.) follows immediately, the only thing that may happen is that some members is $S$ see a lock-certificate for view $v+1$ and update their highest lock-certificate. The value will remain $x$. This concludes the proof of the Safety Lemma.
 
 ### Liveness
 
-Consider the view $v^+$ with the *first* non-faulty Primary that started after GST at time $T$. Due to clock synchronization and being after GST, then on or before time $T+ \Delta$ the primary will receive ```<echoed-max(v+,*)>``` from all non-faulty parties (at least $n-f$ parties). Hence the non-faulty will send a value $LB(v^+, *)$ that (1) will arrive at all non-faulty parties on or before time $T+2\Delta$ and (2) will have a $proof$ that is valid. Hence all non-faulty parties will pass the $EV_{\text{LB-PBFT}}$ condition for view $v^* $ (they are still in view $v^+$). So the primary will obtain a delivery-certificate on or before time $T+5\Delta$ (locked broadcast takes at most $4 \Delta$) and all non-faulty will decide on or before time $T+6\Delta$.
+Consider the view $v^+$ with the *first* non-faulty Primary that started after GST at time $T$. Due to clock synchronization and being after GST, then on or before time $T+ \Delta$ the primary will receive ```<echoed-max(v+,*)>``` from all non-faulty parties (at least $n-f$ parties). Hence the non-faulty will send a value $LB(v^+, *)$ that (1) will arrive at all non-faulty parties on or before time $T+2\Delta$ and (2) will have a $proof$ that is valid. Hence all non-faulty parties will pass the $EV_{\text{LB-PBFT}}$ condition for view $v^+ $ (they are still in view $v^+$). So the primary will obtain a delivery-certificate on or before time $T+5\Delta$ (locked broadcast takes at most $4 \Delta$) and all non-faulty will decide on or before time $T+6\Delta$.
 
 This concludes the proof of Liveness.
 
@@ -192,7 +200,7 @@ Upon receiving a valid <decide, x, dc>
     Terminate
 ``` 
 
-*Exercise: if a non-faulty party terminates, then eventually all non-faulty parties terminate.*
+*Exercise: Prove that if a non-faulty party terminates, then eventually all non-faulty parties terminate.*
 
 
 
@@ -220,3 +228,7 @@ Lock-certificates can be reduced to a single signatures by using threshold signa
 
 In later posts, we will show other view synchronization solutions, and HotStuff which also provides responsiveness.
 
+## Acknowledgments
+
+
+Many thanks to Kartik Nayak for insightful comments.
