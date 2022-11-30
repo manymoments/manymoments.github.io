@@ -20,7 +20,7 @@ The modern interpretation of these lower bounds is the following:
 
 1. In this *first* post, we provide key *definitions* and prove an important *Lemma* about having some initial uncommitted configuration. This lemma shows that any consensus protocol has some initial input where the adversary has control over the decision value (it can cause it to be either 0 or 1). This lemma will then be used in both lower bounds.
 
-2. In the [second post](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/), we use the approach of [Aguilera and Toueg \[1999\]](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) to prove that any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds. The proof uses the definitions and the lemma in this post.
+2. In the [second post](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/), we use the approach of [Aguilera and Toueg \[1999\]](https://ecommons.cornell.edu/bitstream/handle/1813/7355/98-1701.pdf?sequence=1&isAllowed=y) to prove that any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds. The proof uses the definitions and the lemma in this post.
 
 3. In the [third post](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/), we prove the celebrated [Fischer, Lynch, and Patterson \[1985\]](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf) result that any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution. The proof uses the same definitions and the lemma in this post.
 
@@ -29,7 +29,7 @@ The modern interpretation of these lower bounds is the following:
 
 ### Definitions
 
-#### The goal: Consensus
+#### The goal: Binary Agreement with crash failures
 We assume $n$ parties. Each party is a state machine that has some *initial input* $\in \{0,1\}$. The state machine has a special *decide* action that irrevocably sets its *decision* $\in \{0,1\}$.
 
 We say that a protocol $\mathcal{P}$ solves *agreement against $t$ crash failures* if in any execution with at most $t$ crash failures:
@@ -39,10 +39,10 @@ We say that a protocol $\mathcal{P}$ solves *agreement against $t$ crash failure
 
 #### Parties as State Machines
 We model each party as a deterministic state machine, and model randomness by giving the state machine read-only access to a tape of random bits.
-Each state machine has access to an immutable *input* register, a read-only *incoming-messages* queue, and a write-only *outgoing-messages* queue. At any given moment, the *local state* of a party is fully defined by the state of its state machine and the content of it input register and local message queues.
+Each state machine has access to an immutable *input* register, a read-only *incoming-messages* queue, and a write-only *outgoing-messages* queue. At any given moment, the *local state* of a party is fully defined by the state of its state machine and the content of it input register and local message queues. A **protocol**, $\mathcal{P}$, for $n$ parties is a set of $n$ state machines.
 
-#### Protocol and message passing
-A **protocol** for $n$ parties is a set of $n$ state machines. When a party wishes to send a message $m$ to a recipient party $p$, it locally writes $(m,p)$ on its outgoing-messages queue. The system then adds this event $e=(m,p)$ to a *global* set of *pending messages*. Once an event enters the pending messages set, the adversary can divide when to *deliver* the message (with some constraints that depend on the network model: synchrony or asynchrony). When event $e=(m,p)$ is delivered, the system adds the message $m$ to the local incoming-messages queue of party $p$.
+#### Message passing
+When a party wishes to send a message $m$ to a recipient party $p$, it locally writes $(m,p)$ on its outgoing-messages queue. The system then adds this event $e=(m,p)$ to a *global* set of *pending messages*. Once an event enters the pending messages set, the adversary can divide when to *deliver* the message (with some constraints that depend on the network model: synchrony or asynchrony). When event $e=(m,p)$ is delivered, the system adds the message $m$ to the local incoming-messages queue of party $p$.
 
 
 #### Configuration

@@ -9,22 +9,21 @@ author: Ittai Abraham
 
 In this second post, we show the fundamental lower bound on the number of rounds for consensus protocols in the synchronous model.
 
-**Theorem 1**: Any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds.
+**Theorem 1**: Any protocol solving consensus in the *synchronous* model for $n$ parties that is resilient to $n-2 \geq t \geq 1$ crash failures must have an execution with at least $t+1$ rounds.
 
 
 * **Bad news**: Deterministic synchronous consensus is *slow*. Even for crash failures, it requires $\Omega(n)$ rounds when the number of failures is any constant fraction of $n$.
 * **Good news**: With randomization, synchronous consensus is possible in constant expected time (even against a strongly adaptive adversary). See [this post](https://decentralizedthoughts.github.io/2019-11-11-authenticated-synchronous-bft/) for a survey. Note that randomization does not circumvent the existence of an execution that takes $t+1$ rounds, it just (exponentially) reduces the probability of this event.
 
 
-We use the proof approach of [Aguilera and Toueg](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf) that is based on uncommitted (bivalent) configurations. Recall that an **uncommitted configuration** is a configuration where no party can decide because the adversary can still change the decision value. We assume you are familiar with the [definitions in the previous post](https://decentralizedthoughts.github.io/2019-12-15-consensus-model-for-FLP/) and with  Lemma 1 of that previous post:
+We use the proof approach of [Aguilera and Toueg](https://ecommons.cornell.edu/bitstream/handle/1813/7355/98-1701.pdf?sequence=1&isAllowed=y) that is based on uncommitted (bivalent) configurations. Recall that an **uncommitted configuration** is a configuration where no party can decide because the adversary can still change the decision value. We assume you are familiar with the [definitions in the previous post](https://decentralizedthoughts.github.io/2019-12-15-consensus-model-for-FLP/) and with  Lemma 1 of that previous post:
 
-**Lemma 1: ([Lemma 2 of FLP85](https://lamport.azurewebsites.net/pubs/trans.pdf))**: $\mathcal{P}$ has an initial uncommitted configuration.
+**Lemma 1: ([Lemma 2 of FLP85](https://lamport.azurewebsites.net/pubs/trans.pdf))**: Any protocol that solves consensus, resilient to one crash failure, must have an initial configuration that is an uncommitted configuration.
 
 
+To prove Theorem 1 above we prove the following two lemmas:
 
-To prove Theorem 1 we will prove the following two lemmas:
-
-**Lemma 2: Round $(t-1)$ Uncommitted ([Lemma 3 of AT99](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf))**: If $\mathcal{P}$ solves consensus and is resilient to an adversary that can crash at most one party every round for $t$ rounds, then there must exist an uncommitted configuration at the end of round $t-1$.
+**Lemma 2: Round $(t{-}1)$ Uncommitted ([Lemma 3 of AT98](https://ecommons.cornell.edu/bitstream/handle/1813/7355/98-1701.pdf?sequence=1&isAllowed=y))**: If $\mathcal{P}$ solves consensus and is resilient to an adversary that can crash at most one party every round for $t$ rounds, then there must exist an uncommitted configuration at the end of round $t{-}1$.
 
 Recall the **proof pattern** for showing the existence of an uncommitted configuration:
 1. Proof by *contradiction*: assume all configurations are either 1-committed or 0-committed.
@@ -48,7 +47,7 @@ This concludes the induction proof which shows an uncommitted configuration $C_k
 
 So we reached the end of round $t-1$ with an uncommitted configuration. Can we decide in one round and terminate in round $t$? The following Lemma shows we cannot, and completes Theorem 1:
 
-**Lemma 3: Round $t$ Cannot Always Decide ([Lemma 1 of AT99](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.402&rep=rep1&type=pdf))**: If $\mathcal{P}$ has an execution that crashes at most one party every round for $t$ rounds and leads to an uncommitted configuration at the end of round $t-1$, then in that execution $\mathcal{P}$ cannot always commit by the end of round $t$.
+**Lemma 3: Round $t$ Cannot Always Decide ([Lemma 1 of AT99](https://ecommons.cornell.edu/bitstream/handle/1813/7355/98-1701.pdf?sequence=1&isAllowed=y))**: If $\mathcal{P}$ has an execution that crashes at most one party every round for $t$ rounds and leads to an uncommitted configuration at the end of round $t-1$, then in that execution $\mathcal{P}$ cannot always commit by the end of round $t$.
 
 
 **Proof of Lemma 3** is a trivial variation of the **proof pattern** that looks at deciding configurations instead of committed configurations.
@@ -67,10 +66,12 @@ The proof started with an initial uncommitted configuration (Lemma 1) and then s
 
 A fascinating observation from this lower bound is that in order to create a long execution the adversary must corrupt parties *gradually*: just one party every round. This fact is critical for some upper bounds and will be discussed in later posts.
 
-In the next post, we will show that the same proof approach can be used to show that in the *asynchronous* model, there must exist an *infinite* execution even for protocols that are resilient to just one crash failure.
+In the [next post](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/), we use the same proof approach to prove that in the *asynchronous* model, there must exist an *infinite* execution even for protocols that are resilient to just one crash failure.
 
 
-**Acknowledgment.** We would like to thank Kartik Nayak for helpful feedback on this post.
+### Acknowledgment
+Many thanks to thank Kartik Nayak for valuable feedback on this post.
+
 
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1206297946045767680?s=20)
