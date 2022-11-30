@@ -64,11 +64,28 @@ We choose to use new names to these definitions, which we feel provide a more in
 
 #### Transitioning from one configuration to another
 
-* We write **$C \rightarrow C'$**: If in configuration $C$ there is a pending message $e$ (or all undelivered messages $E$ in the synchronous model) such that configuration $C$ changes to configuration $C'$ by delivering $e$ (or delivering all $E$ in the synchronous model). 
-When a pending message $e=(m,p)$ is *delivered*, then party $p$ receives message $m$ and locally processes it fully according to $\mathcal{P}$. Since the system is asynchronous, the full local processing will assume that all timers expire (for example, if $\mathcal{P}$ instructs $p$ to wait for 2 hours, then we wait for this timer to expire).
-So the difference between $C$ and $C'$ is: (1) in the state of party $p$ after fully completing the processing of $e$; and (2) in the sent of pending messages of $C'$, $e$ is removed, and may contain new messages that are sent by $p$ to other parties due to the processing of $m$. 
+We write **$C \rightarrow C'$**: If in configuration $C$ there exists a pending message $e$ (or all undelivered messages $E$ in the synchronous model) such that configuration $C$ changes to configuration $C'$ by delivering $e$ (or delivering all $E$ in the synchronous model) and *fully locally processing*. 
+When a pending message $e=(m,p)$ is delivered, then party $p$ receives message $m$ in its incoming-messages tape and then it fully locally processes it according to $\mathcal{P}$. In the asynchronous model, the full local processing assumes that all local timers expire (for example, if $\mathcal{P}$ instructs $p$ to wait for 2 hours, then we wait for this timer to expire).
 
-* We write **$C \rightsquigarrow C'$**: If there exists a sequence $C = C_1 \rightarrow C_2 \rightarrow \dots \rightarrow C_k=C'$ ($\rightsquigarrow$ is the [transitive closure](https://en.wikipedia.org/wiki/Transitive_closure) of $\rightarrow$).
+
+We write **$C \xrightarrow{e=(p,m)} C'$** when we are explicit about the event $e$ causing the transition.
+
+The difference between $C$ and $C'$ are:
+1. The local state of party $p$ after fully completing the local processing of $e$;
+2. The set of pending messages $C'_M$ of configuration $C'$:
+    1. $e$ is removed from $C'_M$; 
+    2. $C'_M$ may contain new messages that are sent by $p$ to other parties due to its local processing of $m$. 
+
+Observe that the local state of any party that is not $p$ is exactly the same in $C$ and in $C'$!
+
+
+We write **$C \rightsquigarrow C'$**: If there exists a sequence $C = C_1 \rightarrow C_2 \rightarrow \dots \rightarrow C_k=C'$ ($\rightsquigarrow$ is the [transitive closure](https://en.wikipedia.org/wiki/Transitive_closure) of $\rightarrow$). For a sequence of events $\pi=e_1,\dots,e_{k-1}$ we write $C \stackrel{\pi}{\rightsquigarrow}  C'$.
+
+
+
+
+
+
 
 
 
