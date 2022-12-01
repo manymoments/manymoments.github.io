@@ -53,22 +53,22 @@ The *contradiction* of the statement of Lemma 2 is that: there exists a configur
 ![](https://i.imgur.com/6eb3I6t.jpg)
 
 
-Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{e'=(p',m')} X'$ and $e'$ is a pending message in $X$.
+Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{T', e'=(p',m')} X'$ and $e'$ is a pending message in $X$.
 
-**Claim**: there must exist two adjacent configurations $Y \xrightarrow{e'} Y'$ and a pending message $e'=(p',m')$ in $Y$ such that:
+**Claim**: there must exist two adjacent configurations $Y \xrightarrow{T', e'} Y'$ and a pending message $e'=(p',m')$ in $Y$ such that:
     1. $C \rightsquigarrow Y \xrightarrow{e} Z$ and Z is 1-committed.
-    2. $C \rightsquigarrow Y \xrightarrow{e'} Y' \xrightarrow{e} Z'$ and $Z'$ is 0-committed.
+    2. $C \rightsquigarrow Y \xrightarrow{T', e'} Y' \xrightarrow{e} Z'$ and $Z'$ is 0-committed.
 
 **Proof of claim**: Since $C$ is an uncommitted configuration, there must exist two sequences $\tau_0$ and $\tau_1$ such that $C \stackrel{\tau_0}{\rightsquigarrow}  D_0$ and $C \stackrel{\tau_1}{\rightsquigarrow}  D_1$, where $D_0$ is 0-committed and $D_1$ is 1-committed. 
 
 For each $i \in \{0,1\}$, let $\pi_i$ be the longest prefix of $\tau_i$ that does not contain $e$. Let  $C \stackrel{\pi_0}{\rightsquigarrow}  C_0 \xrightarrow{e} C'_0$ and $C \stackrel{\pi_1}{\rightsquigarrow}  C_1 \xrightarrow{e} C'_1$. It follows from the assumption that $C'_0,C'_1$ must be committed and from $\tau_0,\tau_1$ that $C'_0$ is 0-committed and $C'_1$ is 1-committed.
 
-Since $\pi_0,\pi_1$ start from the same configuration $C$, let $G$ be the least common ansenstor configuration of $\pi_0,\pi_1$ and assume without loss of generality that $G\xrightarrow{e} G'$ is such that $G'$ is 1-committed. 
+Since $\pi_0,\pi_1$ start from the same configuration $C$, let $G$ be the least common ancestor configuration of $\pi_0,\pi_1$ and assume without loss of generality that $G\xrightarrow{e} G'$ is such that $G'$ is 1-committed. 
 
 ![](https://i.imgur.com/sZWp2VU.jpg)
 
 
-Now examine the sub-sequence $G=Y_1,\dots,Y_k=C_0$ of $\pi_0$ from $G$ to $C_0$. Let $G'=Z_1,\dots,Z_k=C'_0$ be such that $Y_i \xrightarrow{e} Z_i$. Since $Z_1=G'$ is 1-committed and $Z_k=C'_0$ is 0-commiteed then clearly there must exist two *adjacent* configurations $Y \xrightarrow{e'} Y'$  (in the path $Y_1,\dots,Y_k$) such that that $Z$ is 1-committed and $Z'$ is 0-committed where $Y \xrightarrow{e} Z$ and $Y' \xrightarrow{e} Z'$. Note that this follows from the [discrete version of the intermediate value theorem](https://en.wikipedia.org/wiki/Sperner%27s_lemma#One-dimensional_case).
+Now examine the sub-sequence $G=Y_1,\dots,Y_k=C_0$ of $\pi_0$ from $G$ to $C_0$. Let $G'=Z_1,\dots,Z_k=C'_0$ be such that $Y_i \xrightarrow{e} Z_i$. Since $Z_1=G'$ is 1-committed and $Z_k=C'_0$ is 0-commiteed then clearly there must exist two *adjacent* configurations $Y \xrightarrow{T', e'} Y'$  (in the path $Y_1,\dots,Y_k$) such that that $Z$ is 1-committed and $Z'$ is 0-committed where $Y \xrightarrow{e} Z$ and $Y' \xrightarrow{e} Z'$. Note that this follows from the [discrete version of the intermediate value theorem](https://en.wikipedia.org/wiki/Sperner%27s_lemma#One-dimensional_case).
 
 
 ![](https://i.imgur.com/TLWm47j.jpg)
@@ -77,32 +77,35 @@ Now examine the sub-sequence $G=Y_1,\dots,Y_k=C_0$ of $\pi_0$ from $G$ to $C_0$.
 
 Let $Y,Y'$ be these two adjacent configurations. There are two cases to consider about $e=(p,m)$ and $e'=(p',m')$:
 
-1. Case 1 (trivial case): $p \neq p'$. This implies that processing $e$ and then $e'$ will lead to a different outcome than processing $e'$ and only then $e$. But since $e,e'$ reach different parties there is no way to distinguish these two worlds.
+1. Case 1 (trivial case): $p \neq p'$. This implies that processing $e$ and then $T',e'$ will lead to a different outcome than processing $T',e'$ and only then $e$. But since $e$ and $e'$ reach different parties there is no way to distinguish these two worlds.
 
-    Formally $Y \xrightarrow{e=(p,m)} Z$ is 1-committed and so  $Y \xrightarrow{e=(p,m)} Z \xrightarrow{e'=(p',m')} Z''$ is  1-committed. But $Y \xrightarrow{e'=(p',m')} Y' \xrightarrow{e=(p,m)} Z'$ is 0-committed. This is a contradiction because $Z''$ and $Z'$ have exactly the same configuration and pending messages.
-
-
-2. Case 2:  $p=p'$. This implies that the committed value must change between the world where $p$ receives $m$ before it receives $m'$ relative to the world where $p$ receives $m'$ before it receives $m$! But what if $p$ crashes? These two worlds will be indistinguishable to the rest of the parties! Moreover, $p$ does not need to crash; it can just be slow!
-
-    Formally, consider some execution where party $p$ crashes at $Y$.  So there must be some $Y \stackrel{\sigma}{\rightsquigarrow} D$ where $D$ is a deciding configuration and $\sigma$ does not contain party $p$. But if party $p$ was just slow then $Y \stackrel{\sigma}{\rightsquigarrow} D \xrightarrow{e} D'$ must be a configuration where all parties other than $p$ have decided.
-
-    Since $Y \xrightarrow{e} Z$ is 1-committed then $Y \xrightarrow{e} Z \stackrel{\sigma}{\rightsquigarrow} D'$ must be 1-committed.
+    Formally, $Y \xrightarrow{e=(p,m)} Z$ is 1-committed and so  $Y \xrightarrow{e=(p,m)} Z \xrightarrow{T', e'=(p',m')} Z''$ is  1-committed. But $Y \xrightarrow{T', e'=(p',m')} Y' \xrightarrow{e=(p,m)} Z'$ is 0-committed. This is a contradiction because $Z''$ and $Z'$ have exactly the same configuration and pending messages.
 
 
-    Since $Y \xrightarrow{e'} Y' \xrightarrow{e} Z'$ is 0-committed then  $Y \xrightarrow{e'} Y' \xrightarrow{e} Z' \stackrel{\sigma}{\rightsquigarrow} D''$ must be 0-committed.
+2. Case 2:  $p=p'$. This implies that the committed value must change between the world where $p$ receives $m$ fort and $m'$ later elative to the world where $p$ receives $m'$ before it receives $m$! But what if $p$ crashes? These two worlds will be indistinguishable to the rest of the parties! Moreover, $p$ does not need to crash; it can just be slow!
 
-    For parties other than $p$, $D'$ and $D''$ are indistinguishable. This is a contradiction.
+    Formally, consider some execution where party $p$ crashes at $Y$. Now add a delay $T'$, so $Y \xrightarrow{T'} U$.  There must be some $U \stackrel{\sigma}{\rightsquigarrow} D$ where $D$ is a deciding configuration and $\sigma$ does not contain party $p$. 
+    
+    
+   If party $p$ was just slow then $Y \xrightarrow{T'} U \stackrel{\sigma}{\rightsquigarrow}  D$ is indistinguishable from  $Y \xrightarrow{e} Z \xrightarrow{T'} Z'' \stackrel{\sigma}{\rightsquigarrow}  D'$ expect for party $p$. Note that by the claim assumption, $D'$ must be 0-committed. Also, $D'$ must be decided at least for all parties but $p$. Note that we added a delay of $T'$ before $\sigma$ to obtain this indistinguishability.  
+    
+    
+    On the other hand consider $Y \xrightarrow{T',e'} Y'  \xrightarrow{e} Z' \stackrel{\sigma}{\rightsquigarrow}  D''$, this is indistinguishable from $D$ except for party $p$. By the claim assumptions, $Z'$ is 0-committed, and the parties in $D''$ must be decided due to indistinguishability with $D$.  
+    
+    
+   This is a contradiction because the parties that are not $p$ have decided and see the same view in $D,D',D''$, however $D'$ is 1-committed and $D''$ is 0-committed. 
 
 This completes the proof of Lemma 2, and that completes the proof of the FLP Theorem.
 
 
 
-**Discussion.**
+### Discussion
 We started from an uncommitted configuration (Lemma 1) and then showed that we could extend this to another uncommitted configuration infinitely many times and do this while eventually delivering every pending message  (Lemma 2).
 
 This proof is non-constructive; it shows that an infinite execution must exist. Using randomization, there are protocols that are *almost surely terminating* (their probability measure of terminating is one). There exist asynchronous consensus protocols that terminate in an expected constant number of rounds. More on that in later posts.
 
-**Acknowledgment.** We would like to thank Nancy Lynch, Kartik Nayak, Ling Ren, [Nibesh Shrestha](https://twitter.com/NibeshShrestha1), Sravya Yandamuri for helpful feedback on this post.
+### Acknowledgments
+We would like to thank Nancy Lynch, Kartik Nayak, Ling Ren, [Nibesh Shrestha](https://twitter.com/NibeshShrestha1), Sravya Yandamuri for valuable feedback on this post.
 
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1206298743823355905?s=20)
