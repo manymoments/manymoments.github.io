@@ -56,8 +56,8 @@ The *contradiction* of the statement of Lemma 2 is that: there exists a configur
 Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{T', e'=(p',m')} X'$ and $e'$ is a pending message in $X$.
 
 **Claim**: there must exist two adjacent configurations $Y \xrightarrow{T', e'} Y'$ and a pending message $e'=(p',m')$ in $Y$ such that:
-    1. $C \rightsquigarrow Y \xrightarrow{e} Z$ and Z is 1-committed.
-    2. $C \rightsquigarrow Y \xrightarrow{T', e'} Y' \xrightarrow{e} Z'$ and $Z'$ is 0-committed.
+1. $C \rightsquigarrow Y \xrightarrow{e} Z$ and Z is 1-committed.
+2. $C \rightsquigarrow Y \xrightarrow{T', e'} Y' \xrightarrow{e} Z'$ and $Z'$ is 0-committed.
 
 **Proof of claim**: Since $C$ is an uncommitted configuration, there must exist two sequences $\tau_0$ and $\tau_1$ such that $C \stackrel{\tau_0}{\rightsquigarrow}  D_0$ and $C \stackrel{\tau_1}{\rightsquigarrow}  D_1$, where $D_0$ is 0-committed and $D_1$ is 1-committed. 
 
