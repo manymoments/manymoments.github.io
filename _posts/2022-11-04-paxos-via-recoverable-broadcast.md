@@ -6,7 +6,7 @@ tags:
 author: Ittai Abraham
 ---
 
-There are many ways to learn about the [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol, this post is one more way. This post has embedded a set of simple exercises - try to go over them!
+There are many ways to learn about the [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol, this post is one more way. This post has embedded a set of simple exercises - try to go over them and [post your answers]().
 
 The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) with $f<n/2$ [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and the goal is [consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) (see below for exact details). 
 
@@ -210,7 +210,7 @@ We proved Agreement, now let's prove that eventually all *non-faulty* parties ou
 
 Consider the view $v^+$ with the *first* non-faulty Primary that started after GST at time $T$. Since we are after GST, then on or before time $T+ \Delta$ the primary will receive ```<echoed-max(v+,*)>``` from all non-faulty parties (at least $n-f$). Hence will send a ```<propose(v+,p)>``` that will arrive at all non-faulty parties on or before time $T+2\Delta$. Hence all non-faulty parties will send ```<echo(v+,p)>``` (because they are still in view $v^+$). So all non-faulty parties will hear $n-f$  ```<echo(v+,p)>``` on or before time $T+3\Delta$. So all non-faulty will decide $p$ because they are still in view $v^+$.
 
-This concludes the proof of Liveness.
+This concludes the liveness proof.
 
 
 *Exercise 8: Show that there is no liveness (via an infinite execution) if view $v$ is set to be the time interval $[v(2 \Delta),(v+1)(2 \Delta))$. In other words, each $2\Delta$ clock ticks each party triggers an increment of the view by one.*
@@ -249,8 +249,15 @@ What if a party has several different values (for example it received several di
 
 Note that the time and number of messages before GST can be both unbounded. So for this post, we will measure the time and message complexity after GST.
 
-**Time complexity**:  since the Liveness proof waits for the first non-faulty primary after GST this may take an interrupted view, then $f$ views of faulty primaries, then a good view in the worst case. So all parties will output a value in at most $(f+2)10 \Delta$ time after GST. A more careful analysis can improve the first and the last durations. We will show [later](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) that $(f+1) \Delta$ is a worst case that cannot be avoided (but can have a small probability).
+**Time complexity**:  since the Liveness proof waits for the first non-faulty primary that starts after GST this may take in the worst case: almost one "interrupted" view, then $f$ views of faulty primaries, then a view of a non-faulty party. So all parties will output a value in at most $(f+2)10 \Delta$ time after GST. A more careful analysis can improve the first and the last durations. We show [here](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) that $(f+1) \Delta$ is a worst case that cannot be avoided (but can have a small probability when using randomization).
 
-**Message Complexity**: since each round has an all-to-all message exchange, the total number of messages sent after GST is $O((f+1) \times n^2) = O(n^3)$. We will [later](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/) show that $O(n^2)$ is the best you can hope for (against strongly adaptive adversaries).
+**Message Complexity**: since each round has an all-to-all message exchange, the total number of messages sent after GST is $O((f+1) \times n^2) = O(n^3)$. We show [here](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/) that $O(n^2)$ is the best you can hope for (for deterministic protocols or against strongly adaptive adversaries).
 
 *Exercise 11: Modify the protocol above to use just $O(n)$ messages per view (so total of $O(n^2)$ after GST). Explain why the proof still works, in particular, detail the Liveness proof and the Time complexity. Can you get the same bound as in Exercise 9?*
+
+
+## Acknowledgments
+Many thanks to Kartik Nayak for insightful comments.
+
+
+Your comments on [Twitter]().
