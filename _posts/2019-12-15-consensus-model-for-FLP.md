@@ -84,10 +84,7 @@ We write **$C \rightsquigarrow C'$**: If there exists a sequence $C = C_1 \right
 For a sequence of delays and events $\pi=T_1,e_1,\dots,T_{k}, e_{k}$ we write $C \stackrel{\pi}{\rightsquigarrow}  C'$.
 
 
-
-
-
-
+**Discussion**: Note that in [FLP JACM 85](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf) a step is defined as a receiving of an event $e$ and immediately sending a finite set of messages. This model does not explicitly allow using timeouts or sending an unbounded number of messages over time. We assume a global clock model and model a step as first an amount of global time $T$ that passes and then the receiving event $e$. This explicitly captures the use of timeouts. Note that this means that during a transition $C \xrightarrow{T} C''$ the state of all parties may change and the proof needs to take this into account when arguing for indistinguishability. 
 
 
 

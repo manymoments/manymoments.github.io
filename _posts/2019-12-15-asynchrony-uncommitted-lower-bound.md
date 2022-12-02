@@ -59,6 +59,7 @@ Define two configurations $X,X'$ as *adjacent* if $X \xrightarrow{T', e'=(p',m')
 1. $C \rightsquigarrow Y \xrightarrow{e} Z$ and Z is 1-committed.
 2. $C \rightsquigarrow Y \xrightarrow{T', e'} Y' \xrightarrow{e} Z'$ and $Z'$ is 0-committed.
 
+
 **Proof of claim**: Since $C$ is an uncommitted configuration, there must exist two sequences $\tau_0$ and $\tau_1$ such that $C \stackrel{\tau_0}{\rightsquigarrow}  D_0$ and $C \stackrel{\tau_1}{\rightsquigarrow}  D_1$, where $D_0$ is 0-committed and $D_1$ is 1-committed. 
 
 For each $i \in \{0,1\}$, let $\pi_i$ be the longest prefix of $\tau_i$ that does not contain $e$. Let  $C \stackrel{\pi_0}{\rightsquigarrow}  C_0 \xrightarrow{e} C'_0$ and $C \stackrel{\pi_1}{\rightsquigarrow}  C_1 \xrightarrow{e} C'_1$. It follows from the assumption that $C'_0,C'_1$ must be committed and from $\tau_0,\tau_1$ that $C'_0$ is 0-committed and $C'_1$ is 1-committed.
@@ -68,7 +69,7 @@ Since $\pi_0,\pi_1$ start from the same configuration $C$, let $G$ be the least 
 ![](https://i.imgur.com/sZWp2VU.jpg)
 
 
-Now examine the sub-sequence $G=Y_1,\dots,Y_k=C_0$ of $\pi_0$ from $G$ to $C_0$. Let $G'=Z_1,\dots,Z_k=C'_0$ be such that $Y_i \xrightarrow{e} Z_i$. Since $Z_1=G'$ is 1-committed and $Z_k=C'_0$ is 0-commiteed then clearly there must exist two *adjacent* configurations $Y \xrightarrow{T', e'} Y'$  (in the path $Y_1,\dots,Y_k$) such that that $Z$ is 1-committed and $Z'$ is 0-committed where $Y \xrightarrow{e} Z$ and $Y' \xrightarrow{e} Z'$. Note that this follows from the [discrete version of the intermediate value theorem](https://en.wikipedia.org/wiki/Sperner%27s_lemma#One-dimensional_case).
+Now examine the sub-sequence $G=Y_1,\dots,Y_k=C_0$ of $\pi_0$ from $G$ to $C_0$. Let $G'=Z_1,\dots,Z_k=C'_0$ be such that $Y_i \xrightarrow{e} Z_i$. Since $Z_1=G'$ is 1-committed and $Z_k=C'_0$ is 0-committed then clearly there must exist two *adjacent* configurations $Y \xrightarrow{T', e'} Y'$  (in the path $Y_1,\dots,Y_k$) such that that $Z$ is 1-committed and $Z'$ is 0-committed where $Y \xrightarrow{e} Z$ and $Y' \xrightarrow{e} Z'$. Note that this follows from the [discrete version of the intermediate value theorem](https://en.wikipedia.org/wiki/Sperner%27s_lemma#One-dimensional_case).
 
 
 ![](https://i.imgur.com/TLWm47j.jpg)
