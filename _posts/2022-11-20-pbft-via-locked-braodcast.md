@@ -156,7 +156,7 @@ This completes the description of the consensus protocol. The protocol is detail
 
 Let's prove the safety lemma, which is the essence of PBFT.
 
-*Proof of Safety Lemma*: consider the set $S$ (for Sentinels) of **non-faulty** parties among the $n{-}f$ parties that sent a lock-certificate in the second round of locked broadcast of view $v^\star$. Note that $|S| \geq n{-}2f \geq f{+}1$. 
+*Proof of Safety Lemma*: consider the set $S$ (for Sentinels) of **non-faulty** parties among the $n{-}f$ parties that sent a lock-certificate in the second round of locked broadcast of view $v^\star$. Note that $\|S\| \geq n{-}2f \geq f{+}1$. 
 
 Induction statement: for any view $v\geq v^\star$:
 1. If there is a lock-certificate for view $v$ then it has value $x$.
