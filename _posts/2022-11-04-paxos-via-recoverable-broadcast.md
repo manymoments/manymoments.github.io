@@ -8,7 +8,7 @@ author: Ittai Abraham
 
 There are so many ways to learn about the [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol (see [Lampson](https://www.microsoft.com/en-us/research/publication/the-abcds-of-paxos/), [Cachin](https://cachin.com/cc/papers/pax.pdf), [Howard](https://www.youtube.com/watch?v=0K6kt39wyH0) [Howard 2](https://www.youtube.com/watch?v=s8JqcZtvnsM), [Guerraoui](https://www.youtube.com/watch?v=WX4gjowx45E), [Kladov](https://matklad.github.io/2020/11/01/notes-on-paxos.html), [Krzyzanowski](https://people.cs.rutgers.edu/~pxk/417/notes/paxos.html), [Lamport](https://www.youtube.com/watch?v=tw3gsBms-f8), [Wikipedia](https://en.wikipedia.org/wiki/Paxos_(computer_science)) and many more), this post is one more way. The emphasis of this post is on a decomposition of Paxos for omission failures that will later help when we do a similar decomposition in the Byzantine failure case (for PBFT and HotStuff).
 
-This post has embedded a set of 11 simple exercises - try to go over them and [post your answers]().
+This post has embedded a set of 11 simple exercises - try to go over them and [post your answers](https://twitter.com/ittaia/status/1599150007697182720?s=20&t=JiegXa5IVUUcfNM6ZietBA).
 
 The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) with $f<n/2$ [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and the goal is [consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) (see below for exact details). 
 
@@ -25,16 +25,16 @@ We approach Paxos by starting with two major simplifications:
 
 ## View-based protocol with simple revolving primary
 
-The protocol progresses in **views**. The first view is 1 and view $v+1$ follows view $v$. Each view has a designated **primary** party. For fairness, parties rotate the role of the primary. For simplicity, the primary of view $v$ is party $v \mod n$. 
+The protocol progresses in **views**, each view has a designated **primary** party. The role of the primary is rotated. For simplicity, the primary of view $v$ is party $v \bmod n$. 
 
-Clocks are perfectly synchronized, and $\Delta$ is known. So view $v$ is set to be the time interval $[v(10 \Delta),(v+1)(10 \Delta))$. In other words, each $10\Delta$ clock ticks each party triggers a **view change** and increments the view by one. Since clocks are assumed to be perfectly synchronized, all parties move in and out of each view in complete synchrony.
+Clocks are perfectly synchronized, and $\Delta$ (the maximum message delay after GST) is known. View $v$ is set to be the time interval $[v(10 \Delta),(v+1)(10 \Delta))$. In other words, each $10\Delta$ clock ticks each party triggers a **view change** and increments the view by one. Clocks are assumed to be perfectly synchronized, so all parties move in and out of each view in complete synchrony (lock step).
 
 
 ## Single-shot consensus
 
 In this setting, each party has some *input value* and the goal is to *output a single value* with the following three properties:
 
-**Uniform Agreement**: all parties that output a value, output the same value. Note that this is a strictly stronger property than **Agreement** which just requires that all *non-faulty* parties that output a value, output the same value.
+**Uniform Agreement**: if any two parties output $v$ and $v'$ then $v=v'$. Note that this is a strictly stronger property than **Agreement** which just requires that all *non-faulty* parties that output a value, output the same value.
 
 **Termination**: all non-faulty parties eventually output a value and terminate. Note that this is a strictly stronger property than **Liveness** which just requires that all non-faulty parties eventually output a value.
 
@@ -42,7 +42,7 @@ In this setting, each party has some *input value* and the goal is to *output a 
 
 ## Recoverable Broadcast protocol
 
-Recoverable Broadcast is a pair of simple protocols: ```Broadcast``` and ```Recover```. The Broadcast protocol has a designated *leader* party that has an *input value* ```val```. 
+Recoverable Broadcast is a pair of simple protocols: ```Broadcast``` and ```Recover```. The Broadcast protocol has a designated *leader* party that has an *input value* ```val``` (we the term *leader* to indicate it does nor have to be the *primary*, but in our case it will be). 
 
 Recall that there are $n$ parties in total and at most $f<n/2$ can have omission corruptions.
 
@@ -61,7 +61,7 @@ Upon receiving n-f <echo, val>,
 Note that for simplicity, the leader also acts as a regular party. So it also sends ```<val>``` to itself and upon seeing its own message, it sends an ```<echo, val>``` message to all parties (again including sending it to itself).
 
 
-```Recover``` protocol. The output is either a value or a special $\bot$ value:
+```Recover``` protocol. The output is either a value or a special $\bot$ value (which we write as ```bot``` in pseudo-code):
 
 ```
 upon start,
@@ -81,7 +81,7 @@ We will later detail what triggers starting the Recover protocol. Note that give
 
 ### 4 properties of Recoverable Broadcast:
 
-**Validity**: The output of Broadcast is the leader's input value. The output of Recover is either the leader's input value or  $\bot$.
+**Validity**: If a party outputs a value in Broadcast then it is the leader's input value. If a party outputs a value in Recover then it is either the leader's input value or  $\bot$.
 
 **Weak Termination of Broadcast**: If the leader is non-faulty then all non-faulty parties output a value and terminate.
 
@@ -94,12 +94,12 @@ We will later detail what triggers starting the Recover protocol. Note that give
 2. Recover may return a non-$\bot$ value, even if no party has output a value during broadcast!
 3. Recover may return $\bot$, even if some party outputs the value from broadcast!
 
-*Exercise 1: write down three detailed executions that highlight each one the observations above.*
+*Exercise 1: Write down three detailed executions, each one highlighting one of the observations above.*
 
 
 *Exercise 2: Prove Validity and the two Termination properties. Explain where you used the assumption that there are at most $f$ failures.*
 
-*Exercise 3: prove recoverability and explain where you use (1) the assumption that $f<n/2$; (2) the [Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle); (3) and where exactly you use the fact that the Recover is started after some party outputs a value from Broadcast.*
+*Exercise 3: Prove recoverability and explain where you use (1) the assumption that $f<n/2$; (2) the [Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle); (3) and where exactly you use the fact that the Recover is started after some party outputs a value from Broadcast.*
 
 
 ### Paxos via Recoverable Broadcast
@@ -108,9 +108,9 @@ We use a variation of Recoverable Broadcast to build a view-based consensus prot
 
 Here is a natural path: in view 1 the primary does a Recoverable Broadcast, with its input value. The output of the Broadcast is a consensus decision!
 
-But there is a challenge: what if the first Primary is faulty and only some parties decide (but not all)? For agreement to hold we must make sure that later primaries use the same value!
+But there is a challenge: what if the first Primary is faulty and only some parties decide, but not all? For agreement to hold we must make sure that later primaries use the same value!
 
-*Exercise 4: If all each primary does in its view is Broadcast its input value - show an execution that has a violation of the Agreement property.*
+*Exercise 4: If all that each primary does in its view is Broadcast its input value - show an execution that has a violation of the Agreement property.*
 
 A natural thing a primary of view >1 can do is call Recover (duh - that's why we started with Recoverable Broadcast). In particular, if there was a decision in view 1 by some party, then we would like the Recover to notify the new primary. 
 
@@ -129,10 +129,12 @@ Upon receiving n-f <echo(v,p)>,
 
 ```
 
-Now we can do a Recovery when we enter view $v+1$ and guarantees the recoverability properties for all Broadcasts of previous views. Another challenge: what if Recover returns different values from several previous views, which one should the primary use? For example, suppose that at view 10, we recover both a proposal $p'$ from view 4 and a proposal $p''$ from view 6, which one should the primary choose?
+So we can run Recover when we enter view $v+1$ and thus guarantee the recoverability properties for all Broadcasts of previous views. 
+
+Another challenge: what if Recover returns different values from several previous views, which one should the primary use? For example, suppose that at view 10, we recover both a proposal $p'$ from view 4 and a proposal $p''$ from view 6, which one should the primary choose?
 
 The main Paxos algorithmic insight is:
-> **Choose the recovered value with the maximum view you hear!**
+> **Choose the recovered value with the most recent view you hear!**
 
 ```Recover-Max``` protocol for view $v$ that applies this insight:
 
@@ -153,9 +155,9 @@ We are still not done. But let's analyze the effect of Recover-Max. Assume that 
 
 **Lemma 1**: let $p$ be a value output by Broadcast in some view $v$, then any Recover-Max invocation in any view $>v$ will output some value $p'$ such that $p'$ was proposed at view $\geq v$.
 
-*Exercise 5: prove Lemma 1. Show examples where the Lemma is incorrect if (1) some party sends an echoed-max not of its highest echo but of a lower view; or (2) the primary outputs not the proposal associated with the highest view but of a lower view.*
+*Exercise 5: Prove Lemma 1. Show two examples where the Lemma is false: (1) If some party sends an echoed-max not of its highest echo but of a lower view; (2) or if the primary outputs not the proposal associated with the highest view but of a lower view.*
 
-*Exercise 6: if each Primary just proposes its own input show an example of why in the lemma above it may happen that $p \neq p'$.*
+*Exercise 6: If each Primary just proposes its own input, show an example of why in the lemma above it may happen that $p \neq p'$.*
 
 
 
@@ -189,7 +191,7 @@ This completes the description of the protocol. Let's prove that the three prope
 
 **Lemma 2**: Let $v^{\star}$ be the first view with $n-f$ echos of $ (v^\star, x)$, then for any view $v>v^\star$ the proposal value of ```Broadcast-in-view (v,x)``` must be $x$.
 
-*Exercise 7: prove the Agreement property follows from Lemma 2.*
+*Exercise 7: Prove the Agreement property follows from Lemma 2.*
 
 First step hints: Assume two parties decide on different values. Prove they could not have decided in the same view, so ... apply Lemma 2.
 
@@ -241,7 +243,7 @@ Upon receiving n-f <decide, p>
     Terminate
 
 ``` 
-*Exercise 10: prove termination - that the termination gadget causes all non-faulty parties to eventually terminate.*
+*Exercise 10: Prove termination - that the termination gadget causes all non-faulty parties to eventually terminate.*
 
 
 ### Validity
@@ -266,4 +268,4 @@ Note that the time and number of messages before GST can be both unbounded. So f
 Many thanks to Kartik Nayak for insightful comments.
 
 
-Your comments on [Twitter]().
+Your comments on [Twitter](https://twitter.com/ittaia/status/1599150005432250368?s=20&t=JiegXa5IVUUcfNM6ZietBA).
