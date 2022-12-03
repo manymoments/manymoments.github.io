@@ -90,9 +90,9 @@ We will later detail what triggers starting the Recover protocol. Note that give
 **Recoverability**: If all parties start Recover *after* some party outputs a value from Broadcast then all parties will output this value in the Recover.
 
 #### Observe that:
-1. The Broadcast may not terminate.
-2. Recover may return a non-$\bot$ value, even if no party has output a value during broadcast!
-3. Recover may return $\bot$, even if some party outputs the value from broadcast!
+1. Broadcast may not terminate!
+2. Recover may return a non-$\bot$ value, even if no party has yet output a value during Broadcast!
+3. Recover may return $\bot$, even if some party outputs the value from Broadcast!
 
 *Exercise 1: Write down three detailed executions, each one highlighting one of the observations above.*
 
@@ -134,7 +134,7 @@ So we can run Recover when we enter view $v+1$ and thus guarantee the recoverabi
 Another challenge: what if Recover returns different values from several previous views, which one should the primary use? For example, suppose that at view 10, we recover both a proposal $p'$ from view 4 and a proposal $p''$ from view 6, which one should the primary choose?
 
 The main Paxos algorithmic insight is:
-> **Choose the recovered value with the most recent view you hear!**
+> **Choose the recovered value associated with the most recent view you hear!**
 
 ```Recover-Max``` protocol for view $v$ that applies this insight:
 
@@ -148,6 +148,7 @@ Primary waits for n-f responses <echoed-max(v,*)>
     otherwise output the proposal p associated with the highest view v'
 
 ```
+
 
 This Recover protocol needs only to send messages to the primary. 
 
@@ -207,6 +208,11 @@ We will prove by induction, that for any view $v\geq v^\star$:
 For the base case, $v=v^\star$ this follows from the definition of $S$. Now suppose the induction statement holds for all views $v^\star \leq v$ and consider view $v+1$:
 
 Recover-Max(v+1) must get a response from $n-f$ parties, and that set must intersect with the set $S$ which is also of size $n-f$ by at least $n-2f>0$ one party. From $(2.)$ of the induction hypothesis on views $\leq v$ it follows that at least this one response will be of view $\geq v^\star $ and its value is $x$. From $(1.)$ it follows that any response from view $\geq v^\star$  will be of value $x$. Since Recover-Max(v+1) takes the value associated with the highest view, it must output $x$. This proves part $(1.)$ of the induction hypothesis for view $v+1$.
+
+Observe that this is exactly the point in the proof where we used the main Paxos algorithmic insight:
+> **Choose the recovered value associated with the most recent view you hear!**
+
+The reminder of the proof is to show that given the above, part $(2.)$ of the induction claim also holds:
 
 Since the primary of view $v+1$ must propose $x$, then each party in $S$ either stays with its previous highest echo (from $(1.)$ of the induction hypothesis for view $\leq v$) or it updates it to the higher $(v+1,x)$. Clearly, in both cases, we proved that part $(2.)$ of the induction hypothesis holds for view $v+1$.
 
