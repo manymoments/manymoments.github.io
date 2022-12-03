@@ -6,38 +6,38 @@ tags:
 author: Ittai Abraham
 ---
 
-In the first part of this post we describe a single-shot variation of Two Round HotStuff (see the [HotStuff v1 paper](https://arxiv.org/pdf/1803.05069v1.pdf)) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous post on [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/) and [Linear PBFT](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/). In the second part, we describe a fully pipelined multi-shot State Machine Replication version of Two Round HotStuff that is similar to [Casper FFG](https://arxiv.org/abs/1710.09437) and [Streamlet](https://decentralizedthoughts.github.io/2020-05-14-streamlet/).
+In the first part of this post we describe a single-shot variation of Two Round HotStuff (see the [HotStuff v1 paper](https://arxiv.org/pdf/1803.05069v1.pdf) and [this post](https://malkhi.com/posts/2018/03/bft-lens-casper/)) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous post on [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/) and [Linear PBFT](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/). In the second part, we describe a fully pipelined multi-shot State Machine Replication version of Two Round HotStuff that is similar to [Casper FFG](https://arxiv.org/abs/1710.09437) and [Streamlet](https://decentralizedthoughts.github.io/2020-05-14-streamlet/).
 
 
 The simplified single-shot Two Round HotStuff variation captures the essence of the [Tendermint](https://tendermint.com/static/docs/tendermint.pdf) view change protocol (also see more recent [Tendermint paper](https://arxiv.org/pdf/1807.04938.pdf)) which reduces the size of the view change messages relative to PBFT.
 
-The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). We assume the standard $f<n/3$ [Byzantine failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). For safety we prove an even stronger **accountable safety** statement inspired by [Casper FFG](https://arxiv.org/abs/1710.09437).
+The model is [partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). We assume the standard $f<n/3$ [Byzantine failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). For safety we prove an even stronger **accountable safety** statement inspired by [Casper FFG](https://arxiv.org/abs/1710.09437).
 
 
 # Part one: single shot two round HotStuff with rotating leaders
 
 The same view based framework as in the [PBFT post](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/):
 
-1. The goal in this part is Single-shot Consensus with External Validity.
-2. Using a view based protocol where view $v$ is the time interval $[v(10 \Delta),(v+1)(10 \Delta))$.
-3. The protocol uses [Locked broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
+1. The goal in this part is single-shot agreement with external validity.
+2. Using a view based protocol where view $v$ has primary $v \bmod n$ and is the time interval $[v(10 \Delta),(v+1)(10 \Delta))$.
+3. As in PBFT, the protocol uses [Locked broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
 
-Here is the pseudocode which is (almost) the same as the [PBFT post](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/):
+Here is the outer-shell pseudocode which is (almost) the same as the [PBFT post](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/):
 
 
 ```
-Two Round HotStuff single-shot consensus protocol
+Two round HotStuff single-shot consensus protocol
 
 View 1 primary:
-    LB(1, val, val-proof)
+    TNDRMNT-LB(1, val, val-proof)
 
 View v>1 primary:
-    (p, p-proof) := RML(v)
+    (p, p-proof) := TNDRMNT-RML(v)
 
     if p = bot then 
-        LB(v, val, val-proof)
+        TNDRMNT-LB(v, val, val-proof)
     otherwise 
-        LB(v, p, p-proof)
+        TNDRMNT-LB(v, p, p-proof)
         
 
 Upon delivery-certificate dc for (v,x)
@@ -52,7 +52,7 @@ Upon valid delivery-certificate dc for (v,x)
 A minor difference is that when $p= \bot$ then $p{-}proof$ is not sent.
 
 
-The two major differences are in the $RML$ sub-protocol and external validity of $LB$ sub-protocol:
+The two major differences are in the $TNDRMNT-RML$ sub-protocol and external validity of $TNDRMNT-LB$ sub-protocol:
 1. *Recover Max Lock* protocol: Instead of using ```PBFT-RML(v)``` which returns a set of $n-f$ lock-certificates, we use ```TNDRMNT-RML(v)``` which returns only **one** lock-certificate. This is where Tendermint based protocols (like Two Round HotStuff) save on message size.
 2. The *external validity* of the *Locked broadcast* $EV_{\text{LB}}$ is changed from $EV_{\text{LB-PBFT}}$ to $EV_{\text{LB-TNDRMNT}}$ to work with the change above in the Recover Max Lock protocol.
 
@@ -97,14 +97,14 @@ For view $v>1$ there are two cases:
 
 1. Given a 3-tuple $(v, val, val{-}proof$:
     1. Check that $view(my{-}lock) = 0$.
-    2. Output true if $EV_{\text{consensus}}(val, val{-}proof)=1$.
+    2. Check that $EV_{\text{consensus}}(val, val{-}proof)=1$.
 2. Otherwise, given a 3-tuple $(v, p, p{-}proof)$:
     1. Check that $p{-}proof$ is a valid lock-certificate $LC(v',p')$ for view $v'$ and value $p'$.
     2. Check that $view(my{-}lock) \leq v'$ 
-    3. Output true of $p=p'$.
+    3. Check that of $p=p'$.
 
     
-In words: the check makes sure that the proposed value has a valid lock-certificate that has a view that is at least as high as the view of the lock-certificate this server currently holds.
+In words: the external validity check (inside the locked broadcast) makes sure that the proposed value has a valid lock-certificate that has a view that is at least as high as the view of the lock-certificate this server currently holds.
  
  
 The ```TNDRMNT-RML(v)```  and $EV_{\text{LB-TNDRMNT}}$ are defined. This fully defines the single-shot consensus protocol. Let's prove Agreement and Liveness (the Validity argument is the same as in PBFT).
@@ -140,7 +140,7 @@ Unlike PBFT, the size of a proposal message is just one lock-certificate instead
 
 # Part two: pipelined multi-shot State Machine Replication version of Two Round HotStuff
 
-The protocol revolves around a data structure which is a chain of blocks and 2-3 certificates (each certificate is a set of $n-f$ signatures on the block). Lets define:
+The protocol revolves around a data structure which is a chain of blocks and three certificates (each certificate is a set of $n-f$ signatures on the block). Lets define:
 
 A ```block``` $B$ contains a triplet $B=(cmd, view, pointer)$ where *cmd* is an externally valid client command, *view* is the view this block was proposed in, and *pointer* is a link to a previous block (that has a smaller view).
 
@@ -153,17 +153,23 @@ A ```chain``` is just a chain of ```block```s that starts with an empty ```genes
 (Genesis,0)<-(c1,1)<-(c2,2)<-(c4,4)
 ```
 
-The last block which also has the highest view in a chain is called the ```tip```.
+The last block which also has the highest view in a chain is called the ```tip``` of the chain.
 
-A ```block-cert``` for a block $B$ is a set of $n-f$ distinct signatures on $B$. We assume the ```genesis block``` implicitly has a block-certificate.
+A ```block-cert``` for a block $B$ is a set of $n-f$ distinct signatures on $B$. We assume the ```genesis block``` implicitly has a block-cert.
 
 A ```valid chain``` is a chain of blocks with a ```commit-cert``` and a ```lock-cert```. Both are defined below:
 
-A ```commit-cert``` for a block $B=(cmd, view, pointer)$ on a ```valid chain``` that is not the genesis is a ```block-cert``` for $B$, and a second block $B'=(cmd, view+1, pointer{-}to{-}B)$  with a ```block-cert``` for $B'$. Importantly, $B'$ does not have to be part of the ```valid chain``` but its view must be exactly one more than $B$'s view. By default, if there is no explicit pair of block-certificates, we say that the ```valid chain``` has a ```commit-cert``` on the  ```genesis block```. Given a ```commit-cert``` for block $B$, we call the chain from $B$ to the ```genesis block``` the ```committed chain```.
+A ```commit-cert``` for a block $B=(cmd, view, pointer)$ on a ```valid chain``` that is not the genesis is:
+1. A ```block-cert``` for $B$; and
+2. A second block $B'=(cmd, view+1, pointer{-}to{-}B)$  with a ```block-cert``` for $B'$. 
+
+Importantly, $B'$ does not have to be part of the ```valid chain``` but its view must be exactly one more than $B$'s view. 
+
+By default, if there is no explicit pair of block-certificates, we say that the ```valid chain``` has a ```commit-cert``` on the  ```genesis block```. Given a ```commit-cert``` for block $B$, we call the chain from $B$ to the ```genesis block``` the ```committed chain```.
 
 The ```lock-cert``` is a ```block-cert``` for a block $B$ that is on the ```valid chain``` but not part of the ```committed chain```.
  
-The ```lock-cert``` can be the ```block-cert``` on the second block of the ```commit-cert```. In this case, this second block must be part of the ```valid chain```. By default, if there is no explicit Lock-certificates, we say that the ```valid chain``` has a ```lock-cert``` on the  ```genesis block```.
+The ```lock-cert``` can be the ```block-cert``` on the second block of the ```commit-cert```. In this case, this second block must be part of the ```valid chain```. By default, if there is no explicit lock-cert, we say that the ```valid chain``` has a ```lock-cert``` on the  ```genesis block```.
 
 Some examples of valid chains:
 ```
@@ -194,7 +200,7 @@ Each party stores a ```valid chain``` in a variable called  ```my-chain``` which
 Protocol for view $v$:
 
 
-On the start of view $v$, each party sends its signature on its valid chain to the primary:
+On the start of view $v$, each party sends its signature on its valid chain to the primary of view $v$:
 
 ```
 Party i:
@@ -205,7 +211,7 @@ On start view v
 
 The primary of view $v$ waits for both $\Delta$ time and at least $n-f$ valid responses. There are two cases:
 1. If $n-f$ parties send the *same* valid chain, and its tip is from view $v-1$ then:
-    1. The primary creates a new block-cert for the tip and updates the lock-cert to be this new block-certificate ```chain.updateLockCert(tip(chain))```.
+    1. The primary creates a *new* block-cert for the tip and updates the lock-cert to be this new block-certificate ```chain.updateLockCert(tip(chain))```.
     2. If a new commit-cert is formed (because both the block in view $v-1$ and the block in $v-2$ now have block-certificates) then update the commit-cert to be this new pair ```chain.updateCommitCert()```.
     3. Finally the primary appends its new block as the new tip.
 2. Otherwise the primary chooses the valid chain with the lock-certificate of the highest view and appends its new block to it as the new tip.
@@ -332,6 +338,6 @@ This concludes the proof of Safety Lemma.
 
 ### Using an authenticated data structure
 
-The way the protocol is described, parties send back and forth the whole chain. This is not bandwidth efficient. Instead, we could view the chain as an authenticated data structure. For example, the hash of the tip can be used as a digest of a simple hash chain authenticated structure.
+The way the protocol is described, parties send back and forth the whole chain. This is not bandwidth efficient. Instead, we view the chain as an authenticated data structure. For example, the hash of the tip can be used as a digest of a simple hash chain authenticated structure.
 
-The protocol can send the digest of the chain instead of the chain. Any data this is missing for validation can be requested in a separate mechanism along with a proof that this is the correct data relative to the digest.
+The protocol can send the *digest* of the chain instead of the chain. Any data this is missing for validation can be requested in a separate mechanism along with a proof that this is the correct data relative to the digest.
