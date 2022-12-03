@@ -6,15 +6,21 @@ tags:
 author: Ittai Abraham
 ---
 
-There are many ways to learn about the [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol, this post is one more way. This post has embedded a set of simple exercises - try to go over them and [post your answers]().
+There are so many ways to learn about the [Paxos](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf) protocol (see [Lampson](https://www.microsoft.com/en-us/research/publication/the-abcds-of-paxos/), [Cachin](https://cachin.com/cc/papers/pax.pdf), [Howard](https://www.youtube.com/watch?v=0K6kt39wyH0) [Howard 2](https://www.youtube.com/watch?v=s8JqcZtvnsM), [Guerraoui](https://www.youtube.com/watch?v=WX4gjowx45E), [Kladov](https://matklad.github.io/2020/11/01/notes-on-paxos.html), [Krzyzanowski](https://people.cs.rutgers.edu/~pxk/417/notes/paxos.html), [Lamport](https://www.youtube.com/watch?v=tw3gsBms-f8), [Wikipedia](https://en.wikipedia.org/wiki/Paxos_(computer_science)) and many more), this post is one more way. The emphasis of this post is on a decomposition of Paxos for omission failures that will later help when we do a similar decomposition in the Byzantine failure case (for PBFT and HotStuff).
+
+This post has embedded a set of 11 simple exercises - try to go over them and [post your answers]().
 
 The model is [Partial Synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) with $f<n/2$ [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and the goal is [consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) (see below for exact details). 
+
+>  The Paxon parliament’s protocol provides a new way of implementing the state-machine approach to the design of distributed systems. [Lamport, The Part-Time Parliament](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf).
 
 
 We approach Paxos by starting with two major simplifications:
 
-1. Use a *simple revolving primary* strategy based on the assumptions of perfectly synchronized clocks (later posts will show how to extend to a *stable leader*, how to rotate leaders with *responsiveness*, and how not to rely on clock synchronization).
-2. Focus on a *single-shot* consensus (a later post will show how to extend to *multi-shot* consensus both as an array and as a linked list).
+1. Use a *simple revolving primary* strategy based on the assumptions of perfectly synchronized clocks. A later posts shows how to extend to a *stable leader*, how to rotate leaders with *responsiveness*, and how not to rely on clock synchronization.
+2. Focus on a *single-shot* consensus. A [later post](https://decentralizedthoughts.github.io/2022-11-19-from-single-shot-to-smr/) shows how to extend to *multi-shot* consensus and *state machine replication*.
+
+
 
 
 ## View-based protocol with simple revolving primary
