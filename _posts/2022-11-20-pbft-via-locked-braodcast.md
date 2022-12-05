@@ -6,7 +6,9 @@ tags:
 author: Ittai Abraham
 ---
 
-We describe a variation of the authenticated version of [PBFT](https://pmg.csail.mit.edu/papers/osdi99.pdf) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous post on [Paxos using Recoverable Broadcast](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/). I call this protocol **linear PBFT** because the number of messages per view is $O(n)$. However, the size of the view change message is large. We will impove this in later post on [Two Round HotStuff](https://arxiv.org/pdf/1803.05069v1.pdf) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) and [Three Round HotStuff](https://arxiv.org/pdf/1803.05069.pdf) using [Keyed Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
+[PBFT](https://pmg.csail.mit.edu/bft/) is a foundational multi-year project lead by [Barbara Liskov](https://pmg.csail.mit.edu/~liskov/) and her students, obtaining major advances in both the theory and practice of Byzantine Fault Tolerance. The PBFT [conference version](https://pmg.csail.mit.edu/papers/osdi99.pdf), [journal version](https://pmg.csail.mit.edu/papers/bft-tocs.pdf), Castro's [thesis](https://pmg.csail.mit.edu/~castro/thesis.pdf), Liskov's [talk](https://www.youtube.com/watch?v=Uj638eFIWg8), and follow up work on [BASE](http://www.sosp.org/2001/papers/rodrigues.pdf) are all required reading for anyone who wants to deeply understand BFT systems.
+
+In this post we describe a variation of the authenticated version of [PBFT](https://pmg.csail.mit.edu/papers/osdi99.pdf) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous post on [Paxos using Recoverable Broadcast](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/). I call this protocol **linear PBFT** because the number of messages per view is $O(n)$. However, the size of the view change message is large. We will impove this in later post on [Two Round HotStuff](https://arxiv.org/pdf/1803.05069v1.pdf) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) and [Three Round HotStuff](https://arxiv.org/pdf/1803.05069.pdf) using [Keyed Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
 
 Variants of the linear PBFT protocol are used by [SBFT](https://arxiv.org/pdf/1804.01626.pdf) and [Tusk](https://arxiv.org/pdf/2105.11827.pdf).
 
@@ -230,3 +232,5 @@ In later posts, we will show other view synchronization solutions, and HotStuff 
 
 
 Many thanks to Kartik Nayak for insightful comments.
+
+Your comments on [Twitter]().

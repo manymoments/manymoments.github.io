@@ -66,12 +66,14 @@ So we reached the end of round $t{-}1$ with an uncommitted configuration. Can we
 
 This concludes the proof of Lemma 3, which concludes the proof of Theorem 1.
 
-**Discussion.**
+### Discussion
 The proof started with an initial uncommitted configuration (Lemma 1) and then showed that we could continue for $t-1$ rounds to reach an uncommitted configuration (Lemma 2) at the end of round $t-1$. Finally, we used one more crash to show that we cannot always decide at the end of $t$ rounds (Lemma 3). Note that the theorem is non-constructive, and all it shows is that a $t+1$ round execution must exist (but does not say what is the probability measure of this event).
 
 A fascinating observation from this lower bound is that in order to create a long execution the adversary must corrupt parties *gradually*: just one party every round. This fact is critical for some upper bounds and will be discussed in later posts.
 
-Note that for $n=t{-}1$ we can still apply Lemma 2 and show that a $t$ round execution must exist.
+For Lemma 3 we needed $n>t+1$. For $n=t{+}1$ we can still apply Lemma 2 and show that a $t=n-1$ round execution must exist.
+
+A slight modification of Lemma 2 also provides a lower bound for *early stopping*.  No protocol can always termiate in $f$ rounds, in executions with at most $f< t$ failures. Hence at least $f+1$ rounds are needed for early stopping protocols. We show in a later post that for *uniform* consensus the lower bound is $\min \{f+2,t+1\}$.
 
 In the [next post](https://decentralizedthoughts.github.io/2019-12-15-asynchrony-uncommitted-lower-bound/), we use the same proof approach to prove that in the *asynchronous* model, there must exist an *infinite* execution even for protocols that are resilient to just one crash failure.
 
