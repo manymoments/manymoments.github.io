@@ -6,27 +6,26 @@ tags:
 author: Ittai Abraham
 ---
 
-In the first part of this post we describe a single-shot variation of Two Round HotStuff (see the [HotStuff v1 paper](https://arxiv.org/pdf/1803.05069v1.pdf) and [this post](https://malkhi.com/posts/2018/03/bft-lens-casper/)) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous post on [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/) and [Linear PBFT](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/). In the second part, we describe a fully pipelined multi-shot State Machine Replication version of Two Round HotStuff that is similar to [Casper FFG](https://arxiv.org/abs/1710.09437) and [Streamlet](https://decentralizedthoughts.github.io/2020-05-14-streamlet/).
+In the first part of this post we describe a single-shot variation of Two Round HotStuff (see the [HotStuff v1 paper](https://arxiv.org/pdf/1803.05069v1.pdf) and [this post](https://malkhi.com/posts/2018/03/bft-lens-casper/)) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous posts on [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/) and [Linear PBFT](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/). In the second part, we describe a fully pipelined multi-shot State Machine Replication version of Two Round HotStuff that is similar to [Casper FFG](https://arxiv.org/abs/1710.09437) and [Streamlet](https://decentralizedthoughts.github.io/2020-05-14-streamlet/). For safety we prove a stronger **accountable safety** statement inspired by [Casper FFG](https://arxiv.org/abs/1710.09437).
 
-
-The simplified single-shot Two Round HotStuff variation captures the essence of the [Tendermint](https://tendermint.com/static/docs/tendermint.pdf) view change protocol (also see more recent [Tendermint paper](https://arxiv.org/pdf/1807.04938.pdf)) which reduces the size of the view change messages relative to PBFT.
-
-The model is [partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/). We assume the standard $f<n/3$ [Byzantine failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). For safety we prove an even stronger **accountable safety** statement inspired by [Casper FFG](https://arxiv.org/abs/1710.09437).
+The model is [partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) and $f<n/3$ [Byzantine failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). 
 
 
 # Part one: single shot two round HotStuff with rotating leaders
 
-The same view based framework as in the [PBFT post](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/):
+The simplified single-shot Two Round HotStuff variation captures the essence of the [Tendermint](https://tendermint.com/static/docs/tendermint.pdf) view change protocol (also see more recent [Tendermint paper](https://arxiv.org/pdf/1807.04938.pdf)) which reduces the size of the view change messages relative to PBFT.
+
+We use the same view based framework as in the [PBFT post](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/):
 
 1. The goal in this part is single-shot agreement with external validity.
 2. Using a view based protocol where view $v$ has primary $v \bmod n$ and is the time interval $[v(10 \Delta),(v+1)(10 \Delta))$.
 3. As in PBFT, the protocol uses [Locked broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
 
-Here is the outer-shell pseudocode which is (almost) the same as the [PBFT post](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/):
+Here is the outer-shell pseudocode which is (almost) the same as the outer-shell pseudocode in the [PBFT post](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/):
 
 
 ```
-Two round HotStuff single-shot consensus protocol
+Two round HotStuff single-shot protocol
 
 View 1 primary:
     TNDRMNT-LB(1, val, val-proof)
@@ -49,11 +48,11 @@ Upon valid delivery-certificate dc for (v,x)
     output x    
 ```
 
-A minor difference is that when $p= \bot$ then $p{-}proof$ is not sent.
+A minor difference is that when $p= \bot$ then $p{-}proof$ is not sent in the Locked Broadcast.
 
 
 The two major differences are in the $TNDRMNT-RML$ sub-protocol and external validity of $TNDRMNT-LB$ sub-protocol:
-1. *Recover Max Lock* protocol: Instead of using ```PBFT-RML(v)``` which returns a set of $n-f$ lock-certificates, we use ```TNDRMNT-RML(v)``` which returns only **one** lock-certificate. This is where Tendermint based protocols (like Two Round HotStuff) save on message size.
+1. *Recover Max Lock* protocol: Instead of using ```PBFT-RML(v)``` which returns a set of $n-f$ lock-certificates, HS uses ```TNDRMNT-RML(v)``` which returns only **one** lock-certificate. This is where Tendermint based protocols (like Two Round HotStuff) save on message size.
 2. The *external validity* of the *Locked broadcast* $EV_{\text{LB}}$ is changed from $EV_{\text{LB-PBFT}}$ to $EV_{\text{LB-TNDRMNT}}$ to work with the change above in the Recover Max Lock protocol.
 
 We go over these changes in more detail:
@@ -271,7 +270,7 @@ Party i:
 
 ### Accountable Safety
 
-**Theorem**: Assuming $f<n/3$, for any two ```committed chain```s, taken at any two times, one chain is a sub-chain of the other.
+**Theorem**: Assuming $f<n/3$, for any two valid ```committed chain```, one chain is a sub-chain of the other.
 
 We prove this theorem via the following accountable safety lemma which is a stronger statement. It shows that even if the adversary controls more than $f$ parties, if agreement is violated then at least $f+1$ parties can be detected (and potentially punished). 
 
@@ -283,7 +282,7 @@ We prove this theorem via the following accountable safety lemma which is a stro
 
 Let $v^-$ be the *first* view after view $v^\star$ for which there is a block-cert for a block $B'$ such that $B_1$ is not a prefix of $B'$. Let $L$ be the set of $n-f$ parties that singed the block-cert for $B'$.
 
-Let set $S_1$ be the set of $n-f$ parties that singed the block-cert for $B_1$, $S_2$ be the set of $n-f$ parties that singed the block-cert for $B_2$.
+Let set $S_1$ be the set of $n-f$ parties that singed the block-cert for $B_1$ and $S_2$ be the set of $n-f$ parties that singed the block-cert for $B_2$.
 
 
 The first case is if $v^- = v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_1 \cap L$ that must have violated the protocol by signing two different blocks in the same view $v^\star$. The two block-certs from $S_1$ and $L$ contain irrefutable cryptographic evidence of at least $f+1$ parties that misbehaved.
@@ -323,7 +322,7 @@ L = Lock cert on (c5,5)
 ```
 
 
-This concludes the proof of Safety Lemma.
+This concludes the proof of accountable safety.
 
 
 ### Liveness
@@ -332,8 +331,10 @@ This concludes the proof of Safety Lemma.
 
 *Proof sketch*
 1. Assuming perfect clock synchronization to obtain view synchronization.
-2. The primary waits for $\Delta$ time so it hears the valid chain with the lock-certificate of highest view among all non-faulty parties.
+2. The first honest primary waits for $\Delta$ time so it hears the valid chain with the lock-certificate of highest view among all non-faulty parties.
 3. Need 3 consecutive honest parties. The first creates valid proposal; the second creates the first block-cert on it;  the third creates the second block-cert on the block with one view above it, so a commit cert is formed and sent to all parties.
+
+We will show in later posts how to use other mechanisms for view synchronization.
 
 
 ### Using an authenticated data structure

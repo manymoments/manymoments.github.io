@@ -23,7 +23,7 @@ As with Paxos, we approach PBFT by starting with two major simplifications:
 
 ## View-based protocol with simple rotating primary
 
-Just as in [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/), the protocol progresses in **views**, each view has a designated **primary** party. For simplicity, the primary of view $v$ is party $v \mod n$. 
+Just as in [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/), the protocol progresses in **views**, each view has a designated **primary** party. For simplicity, the primary of view $v$ is party $v \bmod n$. 
 
 Clocks are synchronized, and $\Delta$ (the delay after GST) is known, so set view $v$ to be the time interval $[v(10 \Delta),(v+1)(10 \Delta))$. In other words, each $10\Delta$ clock ticks each party triggers a **view change** and increments the view by one. Since clocks are assumed to be perfectly synchronized, all parties move in and out of each view in complete synchrony.
 
@@ -233,4 +233,4 @@ In later posts, we will show other view synchronization solutions, and HotStuff 
 
 Many thanks to Kartik Nayak for insightful comments.
 
-Your comments on [Twitter]().
+Your comments on [Twitter](https://twitter.com/ittaia/status/1599893500866088961?s=20&t=RUTyrxNgaIvudyiV5O5IAA).
