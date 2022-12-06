@@ -208,7 +208,7 @@ On start view v
     Send <"start view", v, my-chain>_i to view v primary
 ```
 
-The primary of view $v$ waits for both $\Delta$ time and at least $n-f$ valid responses. There are two cases:
+The primary of view $v$ waits for least $n-f$ valid responses and if they are not the same then also waits $\Delta$ time. There are two cases:
 1. If $n-f$ parties send the *same* valid chain, and its tip is from view $v-1$ then:
     1. The primary creates a *new* block-cert for the tip and updates the lock-cert to be this new block-certificate ```chain.updateLockCert(tip(chain))```.
     2. If a new commit-cert is formed (because both the block in view $v-1$ and the block in $v-2$ now have block-certificates) then update the commit-cert to be this new pair ```chain.updateCommitCert()```.
@@ -221,21 +221,24 @@ Finally the primary sends this as the proposal for view $v$ to all parties.
 ```    
 Primary of view v:
 
-On at least n-f valid <"start view", v, *> and waiting Delta time
-    If n-f <"start view", v, chain> are the same and tip(chain).view = v-1
-        chain.updateLockCert(tip(chain))
-        If a new commit-cert created
-            chain.updateCommitCert()
-        chain.addTip(cmd, v)
-        my-chain := chain
+Wait for either:
+    1. n-f <"start view", v, chain> are the same and tip(chain).view = v-1; or
+    2. n-f valid <"start view", v, *> and waiting Delta time
+
+If n-f <"start view", v, chain> are the same and tip(chain).view = v-1
+    chain.updateLockCert(tip(chain))
+    If a new commit-cert created
+        chain.updateCommitCert()
+    chain.addTip(cmd, v)
+    my-chain := chain
     
-    Otherwise
-        Let h-chain be the valid chain 
-            with the lock-cert of highest view in <"start view", v, *> messages
-        h-chain.addTip(cmd, v)
-        my-chain := h-chain
+Otherwise
+    Let h-chain be the valid chain 
+        with the lock-cert of highest view in <"start view", v, *> messages
+    h-chain.addTip(cmd, v)
+    my-chain := h-chain
         
-    Send <"propose", v, my-chain> to all
+Send <"propose", v, my-chain> to all
 ```
 
 When a party sees a proposal chain from the view $v$ primary it checks:
@@ -331,7 +334,7 @@ This concludes the proof of accountable safety.
 
 *Proof sketch*
 1. Assuming perfect clock synchronization to obtain view synchronization.
-2. The first honest primary waits for $\Delta$ time so it hears the valid chain with the lock-certificate of highest view among all non-faulty parties.
+2. In the worst case the first honest primary will wait for $\Delta$ time so it hears the valid chain with the lock-certificate of highest view among all non-faulty parties.
 3. Need 3 consecutive honest parties. The first creates valid proposal; the second creates the first block-cert on it;  the third creates the second block-cert on the block with one view above it, so a commit cert is formed and sent to all parties.
 
 We will show in later posts how to use other mechanisms for view synchronization.
