@@ -6,7 +6,7 @@ tags:
 author: Ittai Abraham
 ---
 
-In the first part of this post we describe a single-shot variation of Two Round HotStuff (see the [HotStuff v1 paper](https://arxiv.org/pdf/1803.05069v1.pdf) and [this post](https://malkhi.com/posts/2018/03/bft-lens-casper/)) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous posts on [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/) and [Linear PBFT](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/). In the second part, we describe a fully pipelined multi-shot State Machine Replication version of Two Round HotStuff that is similar to [Casper FFG](https://arxiv.org/abs/1710.09437) and [Streamlet](https://decentralizedthoughts.github.io/2020-05-14-streamlet/). For safety we prove a stronger **accountable safety** statement inspired by [Casper FFG](https://arxiv.org/abs/1710.09437).
+In the first part of this post we describe a single-shot variation of Two Round HotStuff (see [HotStuff v1 paper, march 2018](https://arxiv.org/pdf/1803.05069v1.pdf) and [this march 2018 post](https://malkhi.com/posts/2018/03/bft-lens-casper/)) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous posts on [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/) and [Linear PBFT](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/). In the second part, we describe a fully pipelined multi-shot State Machine Replication version of Two Round HotStuff that is similar to [Casper FFG](https://arxiv.org/abs/1710.09437) and [Streamlet](https://decentralizedthoughts.github.io/2020-05-14-streamlet/). For safety we prove a stronger **accountable safety** statement inspired by [Casper FFG](https://arxiv.org/abs/1710.09437).
 
 The model is [partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) and $f<n/3$ [Byzantine failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/). 
 
@@ -137,7 +137,7 @@ Unlike PBFT, the size of a proposal message is just one lock-certificate instead
 
 
 
-# Part two: pipelined multi-shot State Machine Replication version of Two Round HotStuff
+# Part two: pipelined multi-shot State Machine Replication two round HotStuff
 
 The protocol revolves around a data structure which is a chain of blocks and three certificates (each certificate is a set of $n-f$ signatures on the block). Lets define:
 
@@ -342,3 +342,5 @@ We will show in later posts how to use other mechanisms for view synchronization
 The way the protocol is described, parties send back and forth the whole chain. This is not bandwidth efficient. Instead, we view the chain as an authenticated data structure. For example, the hash of the tip can be used as a digest of a simple hash chain authenticated structure.
 
 The protocol can send the *digest* of the chain instead of the chain. Any data this is missing for validation can be requested in a separate mechanism along with a proof that this is the correct data relative to the digest.
+
+Comments on [Twitter](https://twitter.com/ittaia/status/1599913117965725696?s=20&t=RUTyrxNgaIvudyiV5O5IAA).
