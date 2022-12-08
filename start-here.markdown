@@ -41,6 +41,11 @@ For a simple non-equivocation protocol, see [Crusader Broadcast](https://decentr
 
 Modern variants of the classic protocols of Paxos and Raft are covered in [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/) and [Simplifing Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/). [Log Paxos](https://decentralizedthoughts.github.io/2021-09-30-distributed-consensus-made-simple-for-real-this-time/) is a modern take on multi-Paxos. It's both surprisingly simple and concretely efficient. 
 
+An important building block is [provable broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
+
+
+Single shot [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/), followed by single shot [PBFT](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/), followed by [Two Round HotStuff](https://decentralizedthoughts.github.io/2022-11-24-two-round-HS/). The path from single shot to SMR is covered [here](https://decentralizedthoughts.github.io/2022-11-19-from-single-shot-to-smr/).
+
 For Byzantine adversaries, see [Information Theoretic HotStuff](https://decentralizedthoughts.github.io/2021-09-20-information-theoretic-hotstuff-it-hs-part-one/).
 
 ## Asynchronous Protocols
@@ -102,6 +107,8 @@ Lower bounds give us powerful tools to understand the fundamental limitations an
 - CJKR lower bound: Neither Non-equivocation nor Transferability alone is enough for [tolerating minority corruptions in asynchrony](https://decentralizedthoughts.github.io/2021-06-14-neither-non-equivocation-nor-transferability-alone-is-enough-for-tolerating-minority-corruptions-in-asynchrony/).
 
 # Blockchains
+
+What is a [blockchain?](https://decentralizedthoughts.github.io/2022-09-05-what-is-a-blockchain/)
 
 What was the [first blockchain (or how to timestamp a digital document)](/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/)?  
 
