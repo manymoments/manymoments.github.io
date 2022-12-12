@@ -7,9 +7,10 @@ tags:
 author: Ittai Abraham and Cristian Cachin
 ---
 
+
 Perhaps the architipical [trilemma](https://twitter.com/el33th4xor/status/1191820205456023552?s=20&t=RcutJw0wQUsTmrO0OXzpXw) is **consensus** - it requires three properties: **agreement**, **liveness**, and **validity**. Getting any two is easy, but all three together is what makes consensus such a facinating problem that continues to create new challenges even after 40 years of research.
 
-A lot of research focuses on *agreement* and *liveness* properties. In this series of posts, we highlight some classic and some more recent research on **Validity** in the context of consensus and blockchain protocols. 
+A lot of research focuses on *agreement* and *liveness* properties. In this series of posts, we highlight some classic and some more recent research on **validity** in the context of consensus and blockchain protocols. 
 
 ## Classic validity vs External validity
 
@@ -48,7 +49,7 @@ Note that Neiger called this problem *Strong Consensus* but we choose to use a m
 
 **Theorem [[Neiger, 1994]((https://smartech.gatech.edu/bitstream/handle/1853/6776/GIT-CC-93-45.pdf))]**: Consensus with honest input validity and $m$ possible input values cannot be solved in *synchrony* for $n \leq \max(3, m) f$ and a malicious adversary controlling $f$ parties.
 
-***Proof idea***: $n \leq 3f$ is the [standard FLM impossibility](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/). 
+*Proof idea*: $n \leq 3f$ is the [standard FLM impossibility](https://decentralizedthoughts.github.io/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/). 
 
 
 Neiger's original proof was for determisitic protocols, here we present a modern version that covers even randomized protocols.
@@ -90,7 +91,7 @@ In 2002 [Fitzi and Garay](https://eprint.iacr.org/2002/085) extended this result
 
 **Theorem [[Fitzi and Garay, 2002](https://eprint.iacr.org/2002/085)]**: Consensus with honest input validity and $m$ possible input values cannot be solved in *asynchrony* for $n \leq (m+1) f$ and a malicious adversary controlling $f$ parties.
 
-***Proof idea*** consider $n=(m+1)f$ and partition the parties into sets of size $f$: $S_1,\dots,S_m,S_{m+1}$. 
+*Proof idea*: consider $n=(m+1)f$ and partition the parties into sets of size $f$: $S_1,\dots,S_m,S_{m+1}$. 
 
 In world A, there are no malicious parties, parties in $S_i$ for $i\leq m$, have input $i$, and parties in $S_{m+1}$ have input $m$ and are slow. Assuming the protocol is randomized then without loss of generality assume that with probability at least $1/m$, the output in world $1$ is value $1$. 
 
@@ -126,7 +127,7 @@ One way to slightly relax validity with honest input validity is to allow a defa
 Note that [Cachin,  Guerraoui, Rodrigues, 2011](https://www.distributedprogramming.net) called this problem *Strong Validity* but we choose to use a more explicit name here to avoid overloading the term *strong*.
 
 
-It is interesting to note that this variation does not suffer from stronger lower bounds than regular consensus. See exercise 5.11 in [CGR11](https://www.distributedprogramming.net) for how to solve consensus with honest-input-or-default validity. In a nutshll, this is done again via a reduction to consensus with external validity (where the validity condition is that at least $f+1$ parties sent this input).
+Note that this variation does not suffer from stronger lower bounds than regular consensus. See exercise 5.11 in [CGR11](https://www.distributedprogramming.net) for how to solve consensus with honest-input-or-default validity. In a nutshll, this is done again via a reduction to consensus with external validity (where the validity condition is that at least $f+1$ parties sent this input).
 
 ### Majority validity and advantaged validity
 
@@ -145,7 +146,7 @@ Indeed, [Fitzi and Garay](https://eprint.iacr.org/2002/085) prove that even a we
 
 Consider the requirement to output the unique mode only if it has **at least $k$ honest votes more** than the honest votes of any other value. 
 
-**$k$-advantaged Validity**: *If the unique mode of the honest parties has *at least $k$ honest votes more* than the number of honest votes for any other value, then this is the output.*
+**$k$-advantaged Validity**: *If the unique mode of the honest parties has at least $k$ honest votes more than the number of honest votes for any other value, then this is the output.*
 
 #### Impossibility of $2f$-advantaged validity in asynchrony
 
@@ -154,7 +155,7 @@ Consider the requirement to output the unique mode only if it has **at least $k$
 
 
 
-*Proof idea* suppose $G_1$ honest parties have the value 1 and $G_0$  honest parties have the value 0 and $\|G_1\|=\|G_0\|+2f$, but $f$ parties in $G_1$ are slow and the adversaries uses the value 0 as input for the $f$ malicious parties.
+*Proof idea*: suppose $G_1$ honest parties have the value 1 and $G_0$  honest parties have the value 0 and $\|G_1\|=\|G_0\|+2f$, but $f$ parties in $G_1$ are slow and the adversaries uses the value 0 as input for the $f$ malicious parties.
 
 So parties will hear  $\|G_1\| -f$ parties with 1 and $\|G_0\|+f$ parties with 0.  The protocol may be randomized, so without loss of generality assume the decision will be 0 with probability at least 1/2. 
 
