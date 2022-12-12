@@ -57,13 +57,12 @@ Seeking a contradiction, assume $n=mf$ and $n > 3f$. So there must be $m>3$ poss
 
 
 
-Consider two worlds. In world 1, there are no malicious parties. If the protocol is deterministic then assume without loss of generality it outputs value 1. Even if the protocol is randomized, there must be some value, that with probability at least $1/m$ is the output in world 1. Without loss of generality assume this is value 1.
+Consider two worlds. In world A, there are no malicious parties. If the protocol is deterministic then assume without loss of generality it outputs value 1. Even if the protocol is randomized, there must be some value, that with probability at least $1/m$ is the output in world A. Without loss of generality assume this is value 1.
 
 
-Consider world 2, where the adversary corrupts parties in $S_1$ and acts as if they have input $1$. The honest parties in the protocol have no way to distinguish
-between world 1 and world 2. So just as in world 1, in world 2 the output will be $1$ (which is not an input of honest parties) with a probability of at least $1/m$.
+Consider world B, where the adversary corrupts parties in $S_1$ and acts as if they have input $1$. The honest parties in the protocol have no way to distinguish between world A and world B. So just as in world A, in world B the output will be $1$ (which is not an input of honest parties) with a probability of at least $1/m$.
 
-However, the non-faulty parties have input values $2,\dots,m$, hence honest input validity is violated with probability at least $1/m$.
+However, in world B the non-faulty parties have input values $2,\dots,m$, hence honest input validity is violated with probability at least $1/m$.
 
 ### A tight upper bound for honest input validity in synchrony
 
@@ -93,14 +92,14 @@ In 2002 [Fitzi and Garay](https://eprint.iacr.org/2002/085) extended this result
 
 ***Proof idea*** consider $n=(m+1)f$ and partition the parties into sets of size $f$: $S_1,\dots,S_m,S_{m+1}$. 
 
-In world 1, there are no malicious parties, parties in $S_i$ for $i\leq m$, have input $i$, and parties in $S_{m+1}$ have input $m$ and are slow. Assuming the protocol is randomized then without loss of generality assume that with probability at least $1/m$, the output in world $1$ is value $1$. 
+In world A, there are no malicious parties, parties in $S_i$ for $i\leq m$, have input $i$, and parties in $S_{m+1}$ have input $m$ and are slow. Assuming the protocol is randomized then without loss of generality assume that with probability at least $1/m$, the output in world $1$ is value $1$. 
 
-Consider world 2, where the adversary corrupts parties in $S_1$ and acts as if they have input $1$. Just as in world 1, parties in $S_{m+1}$ are slow. Due to indistinguishability, in world 2, the output of honest parties will be $1$ (which is not an input of any honest parties) with a probability of at least $1/m$.
+Consider world B, where the adversary corrupts parties in $S_1$ and acts as if they have input $1$. Just as in world A, parties in $S_{m+1}$ are slow. Due to indistinguishability, in world B, the output of honest parties will be $1$ (which is not an input of any honest parties) with a probability of at least $1/m$.
 
 #### A tight upper bound for honest input validity in asynchrony
 
 
-Consensus with honest input validity in asynchrony (for $m=2$ possible values assuming $n>3f$ and for $m>2$ possible values assuming $n>(m+1)f$) is possible.
+Consensus with honest input validity in asynchrony for $m=2$ possible values assuming $n>3f$ and for $m>2$ possible values assuming $n>(m+1)f$ is possible.
 
 Again it's a reduction: from consensus with honest input validity to reliable broadcast and consensus with external validity.
 
@@ -127,7 +126,7 @@ One way to slightly relax validity with honest input validity is to allow a defa
 Note that [Cachin,  Guerraoui, Rodrigues, 2011](https://www.distributedprogramming.net) called this problem *Strong Validity* but we choose to use a more explicit name here to avoid overloading the term *strong*.
 
 
-It is interesting to note that this variation does not suffer from stronger lower bounds than regular consensus. See exercise 5.11 in [CGR11](https://www.distributedprogramming.net) for how to solve consensus with honest input or default validity. In a nutshll, this is done again via a reduction to consensus with external validity (where the validity condition is that at least $f+1$ parties sent this input).
+It is interesting to note that this variation does not suffer from stronger lower bounds than regular consensus. See exercise 5.11 in [CGR11](https://www.distributedprogramming.net) for how to solve consensus with honest-input-or-default validity. In a nutshll, this is done again via a reduction to consensus with external validity (where the validity condition is that at least $f+1$ parties sent this input).
 
 ### Majority validity and advantaged validity
 
