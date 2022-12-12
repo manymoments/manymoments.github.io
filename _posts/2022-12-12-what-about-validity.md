@@ -7,7 +7,6 @@ tags:
 author: Ittai Abraham and Cristian Cachin
 ---
 
-
 Perhaps the architipical [trilemma](https://twitter.com/el33th4xor/status/1191820205456023552?s=20&t=RcutJw0wQUsTmrO0OXzpXw) is **consensus** - it requires three properties: **agreement**, **liveness**, and **validity**. Getting any two is easy, but all three together is what makes consensus such a facinating problem that continues to create new challenges even after 40 years of research.
 
 A lot of research focuses on *agreement* and *liveness* properties. In this series of posts, we highlight some classic and some more recent research on **validity** in the context of consensus and blockchain protocols. 
