@@ -176,5 +176,5 @@ This post discusses lower bounds that show that even for this simple binary deci
 
 Note that for $n=3f+1$, the problem of $2f+1$ advantaged consensus is basically weak validity. This motivates looking at higher thresholds like $n>4f$.
 
-Your thoughts on [Twitter]().
+Your thoughts on [Twitter](https://twitter.com/ittaia/status/1602310854510256128?s=20&t=w9YoXZkVX71peaPS1UN62g).
 
