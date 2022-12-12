@@ -137,7 +137,7 @@ In cases where we view consensus as a **voting scheme** this seems too weak. If 
 The natural way to capture this is via a validity requirement, that the output must be the majority value of the **honest** parties' inputs. More generally, for $m>2$, the [mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of the **honest** parties inputs.
 
 
-**Majority Validity**: *The output is the *mode* of the input of the *honest* parties. Note that for $m=2$, this is equivalent to saying that the output is the *majority* of the input values of the honest parties.*
+**Majority Validity**: *The output is the mode of the input of the *honest* parties. Note that for $m=2$, this is equivalent to saying that the output is the *majority* of the input values of the honest parties.*
 
 Majority consensus feels very hard to obtain, perhaps it's impossible? How can we learn the mode of the honest parties if the malicious parties **and** asynchrony are colluding against us?
 
