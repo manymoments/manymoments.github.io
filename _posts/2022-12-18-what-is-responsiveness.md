@@ -6,7 +6,7 @@ tags:
 author: Ittai Abraham and Kartik Nayak
 ---
 
-In asynchronous protocols, latency to commit is a function of the actual maximum network delay $\delta$. In synchronous protocols, message delay is bounded by $\Delta$, and for $n/3 \le f<n/2$, the $\Delta$ bound is used to obtain both safety and liveness. In partial synchrony, message delay is bounded by $\Delta$ after GST, and the $\Delta$ bound is used to obtain liveness.
+In asynchronous protocols, latency to commit is a function of the actual maximum network delay $\delta$. In synchronous protocols, message delay is bounded by $\Delta$, and for $n/3 \leq f < n/2$, the $\Delta$ bound is used to obtain both safety and liveness. In partial synchrony, message delay is bounded by $\Delta$ after GST, and the $\Delta$ bound is used to obtain liveness.
 
 
 What if the *actual* network delay in an execution is  $\delta << \Delta$? Can a protocol provide bounds that are a function of $O(\delta)$ instead of $O(\Delta)$? This type of performance is sometimes called "network speed" because it guarantees progress as fast as the network delays allow. 
@@ -57,7 +57,7 @@ In words, omission failure resilient protocols can be  responsive in executions 
 These protocols have the maximal resilience and in addition provide responsiveness is some subset of optimistic executions.
 
 #### Responsiveness in the multi-shot case
-When designing protocols for multi-shot consensus, the conditions for responsiveness are a function of exactly how the protocol is designed. For a view-based protocol that performs one consensus per view and switches views, every say $10\Delta$ timeout, then to do $k$ decisions, even if all parties are non-faulty, would take $O(\Delta k)$ time even if the actual network delays are $<< \Delta$. The question naturally extends to whether we can achieve responsive log replication.
+When designing protocols for multi-shot consensus, the conditions for responsiveness are a function of exactly how the protocol is designed. For a view-based protocol that performs one consensus per view and switches views, every say $10\Delta$ timeout, then to do $k$ decisions, even if all parties are non-faulty, would take $O(\Delta k)$ time even if the actual network delays are $<< \Delta$. The question naturally extends to whether we can achieve responsive [log replication](https://decentralizedthoughts.github.io/2022-11-19-from-single-shot-to-smr/).
 
 **Responsiveness for log replication**: an execution is responsive if the actual network delays are at most $\delta$ then to drive $k$ decisions the total latency is $O(k \delta)$.
 
