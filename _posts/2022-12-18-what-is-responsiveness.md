@@ -1,5 +1,5 @@
 ---
-title: What is Responsiveness? 
+title: What is Responsiveness?
 date: 2022-12-18 04:00:00 -05:00
 tags:
 - dist101
