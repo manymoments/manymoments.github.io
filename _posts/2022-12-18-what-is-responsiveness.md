@@ -9,16 +9,16 @@ author: Ittai Abraham and Kartik Nayak
 In asynchronous protocols, latency to commit is a function of the actual maximum network delay $\delta$. In synchronous protocols, message delay is bounded by $\Delta$, and for $n/3 \le f<n/2$, the $\Delta$ bound is used to obtain both safety and liveness. In partial synchrony, message delay is bounded by $\Delta$ after GST, and the $\Delta$ bound is used to obtain liveness.
 
 
-What if the *actual* network delay in an execution is  $\delta << \Delta$? Can a protocol provide bounds that are a function of $O(\delta)$ instead of $O(\Delta)$? This type of performance is sometimes called "network speed" because it guarantees progress as fast as the network delays allow. 
+What if the *actual* network delay $\delta$ in an execution is much smaller than the maximum delay $\Delta$? Can a protocol provide bounds that are a function of $O(\delta)$ instead of $O(\Delta)$? This type of performance is called “responsiveness” and sometimes "network speed" because it guarantees progress as fast as the actual network delays allow.  
 
 
 Here is a definition of a responsive execution:
 
->  **Responsiveness** [[Attiya, Dwork, Lynch, Stockmeyer 1991](https://groups.csail.mit.edu/tds/papers/Lynch/stoc91.pdf)], [[Hertzberg, Kutten, 2000](https://www.researchgate.net/publication/220618470_Early_Detection_of_Message_Forwarding_Faults)], [[Pass, Shi, 2016](https://eprint.iacr.org/2016/917.pdf)]: an execution is *responsive* if the total latency is only a function of the actual network delays, i.e., if the actual network delays are at most $\delta$, the total latency is $O(\delta)$.
+>  **Responsive execution** [[Attiya, Dwork, Lynch, Stockmeyer 1991](https://groups.csail.mit.edu/tds/papers/Lynch/stoc91.pdf)], [[Hertzberg, Kutten, 2000](https://www.researchgate.net/publication/220618470_Early_Detection_of_Message_Forwarding_Faults)], [[Pass, Shi, 2016](https://eprint.iacr.org/2016/917.pdf)]: an execution is *responsive* if the total latency is only a function of the actual network delays, i.e., if the actual network delays are at most $\delta$, the total latency is $O(\delta)$.
 
 For partial synchrony it is natural to define an eventually responsive execution:
 
-> **Eventual responsiveness**: an execution is eventually responsive if for any time $T$, such that from time $T$ and onward the network delays are at most $\delta$, then the completion time is at most $T+O(\delta)$.
+> **Eventual responsive execution**: an execution is eventually responsive if for any time $T$, such that from time $T$ and onward the network delays are at most $\delta$, then the completion time is at most $T+O(\delta)$.
 
 
 Can we obtain responsiveness for every execution of consensus in the synchronous and partially synchronous models? In general, no! As we have [seen](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/), in the worst case, even one single-shot consensus can take $O(f \Delta)$ time even if the actual network delays are $\delta \ll \Delta$. Pass and Shi ask the following natural question:
@@ -57,7 +57,7 @@ In words, omission failure resilient protocols can be  responsive in executions 
 These protocols have the maximal resilience and in addition provide responsiveness is some subset of optimistic executions.
 
 #### Responsiveness in the multi-shot case
-When designing protocols for multi-shot consensus, the conditions for responsiveness are a function of exactly how the protocol is designed. For a view-based protocol that performs one consensus per view and switches views, every say $10\Delta$ timeout, then to do $k$ decisions, even if all parties are non-faulty, would take $O(\Delta k)$ time even if the actual network delays are $<< \Delta$. The question naturally extends to whether we can achieve responsive log replication.
+When designing protocols for multi-shot consensus, the conditions for responsiveness are a function of exactly how the protocol is designed. For a view-based protocol that performs one consensus per view and switches views, every say $10\Delta$ timeout, then to do $k$ decisions, even if all parties are non-faulty, would take $O(\Delta k)$ time even if the actual network delays are $\ll \Delta$. The question naturally extends to whether we can achieve responsive log replication.
 
 **Responsiveness for log replication**: an execution is responsive if the actual network delays are at most $\delta$ then to drive $k$ decisions the total latency is $O(k \delta)$.
 
@@ -80,5 +80,5 @@ For $f<n/3$ a counterargument against responsiveness is that by using randomizat
 In contrast, responsive protocol can obtain eventual responsiveness in partial synchrony and require just a linear message complexity (after GST) under the condition that the leader is non-faulty.
 
 
-Your thoughts on [Twitter]().
+Your thoughts on [Twitter](https://twitter.com/kartik1507/status/1604498852006211584?s=61&t=65S2XC6f0QGX_9FlxpLbyg).
 
