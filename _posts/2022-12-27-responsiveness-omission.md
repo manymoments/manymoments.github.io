@@ -1,5 +1,5 @@
 ---
-title: Responsiveness under omission failures 
+title: Responsiveness under omission failures
 date: 2022-12-27 08:00:00 -05:00
 tags:
 - dist101
@@ -7,7 +7,6 @@ tags:
 - responsiveness
 author: Ittai Abraham and Kartik Nayak
 ---
-
 
 In this post, we discuss log replication [responsiveness](https://decentralizedthoughts.github.io/2022-12-18-what-is-responsiveness/) in the context of omission failures. We show how to transform the protocol in our [previous post](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/) to a multi-shot version of Paxos for omission faults. The Byzantine failure case uses similar ideas and is covered in the next post of this series.
 
