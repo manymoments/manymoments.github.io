@@ -27,7 +27,7 @@ while (true)
     mark newCommand as committed 
 ```
 
-Note the first iteration uses ```Recover-Max``` and appends the new command to it, all later iterations use the previous committed log and addend the new command to it.
+Note the first iteration uses ```Recover-Max``` and appends the new command to it, all the later iterations use the previous committed log and appends the new command to it.
 
 
 This protocol obtains multi-shot responsiveness. When the stable leader is non-faulty, there are no timeouts between proposals.
@@ -86,5 +86,5 @@ We again use the three states: (1) ```start-view-v```; (2) ```blame-v```; (3) ``
 For liveness, the pessimistic path is similar to the stable leader case. For the optimistic case, the decision is driven by a primary that synchronizes all parties. Note that a primary can only make progress if the previous primary's echo reached $n-f$ parties.
 
 
-Your thoughts on [Twitter]().
+Your thoughts on [Twitter](https://twitter.com/kartik1507/status/1607756048575909890?s=61&t=m3prllqHF_JFxgGe6bfMnw).
 

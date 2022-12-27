@@ -3,6 +3,7 @@ title: From Single-Shot Agreement to State Machine Replication
 date: 2022-11-19 04:00:00 -05:00
 tags:
 - dist101
+- omission
 author: Ittai Abraham and Kartik Nayak
 ---
 
