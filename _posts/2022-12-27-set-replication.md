@@ -16,7 +16,7 @@ There is considerable research in ways to relax total ordering requirements to g
 
 It turns out that in many natural use cases, in particular the canonical simple token payment use case, do not need total ordering. As a concrete example, suppose Alice is transferring a token to Bob and Carol is transferring a token to Dan. There is no need to totally order these two transactions. 
 
-This approach is taken by [FastPay](https://arxiv.org/pdf/2003.11506.pdf), [Guerraoui et al, 2019](https://arxiv.org/pdf/1906.05574), [Sliwinski and Wattenhofer, 2019](https://arxiv.org/abs/1909.10926), applied to privacy preserving transactions (see [UTT](https://eprint.iacr.org/2022/452.pdf) and [Zef](https://eprint.iacr.org/2022/083.pdf)) and is planned to be used in the [Sui platform](https://github.com/MystenLabs/sui/blob/main/doc/paper/sui.pdf).
+This approach is taken by [FastPay](https://arxiv.org/pdf/2003.11506.pdf), [Guerraoui et al, 2019](https://arxiv.org/pdf/1906.05574), [Sliwinski and Wattenhofer, 2019](https://arxiv.org/abs/1909.10926), applied to privacy preserving transactions (see [UTT](https://eprint.iacr.org/2022/452.pdf) and [Zef](https://eprint.iacr.org/2022/083.pdf)), planned to be used in the [Sui platform](https://github.com/MystenLabs/sui/blob/main/doc/paper/sui.pdf) and in [Linera](https://linera.io/whitepaper).
 
 In a totally ordered system, clients write to and read from the same *ordered log* of transactions. Here we just want to write to and read from the same *unordered set* of transactions. Let's start with a refresh of *log replication* and then define *set replication*.
 
