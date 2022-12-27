@@ -1,9 +1,9 @@
 ---
-title: Set Replication - fault tolerance without total ordering via locked broadcast
+title: “Set Replication: fault tolerance without total ordering via locked broadcast”
 date: 2022-12-27 04:00:00 -05:00
 tags:
 - dist101
-author: 
+author: Ittai Abraham
 ---
 
 While state machine replication is the gold standard for implementing any ideal functionality, its power comes at the cost of needing to totally order all transactions and as a consequence solve (Byzantine) agreement. In some cases this overhead is unnecessary.
@@ -28,8 +28,11 @@ Clients and $n$ servers. Clients can make two types of requests: ```read``` whic
 Clients can have multiple input values at different times. 
 
 **Termination**: If a non-faulty client issues a *request* then it eventually receives a *response*.
+
 **Agreement**: Any two requests return logs then one is a prefix of the other.
+
 **Validity**: Each value in the log can be uniquely mapped to a valid write request.
+
 **Correctness**: For a write request with value $v$, its response, and any response from a request that started after this write response, returns a log of values that includes $v$.
 
 We simply **remove the agreement property** to get ***set replication***.
@@ -39,12 +42,14 @@ We simply **remove the agreement property** to get ***set replication***.
 Clients and $n$ servers. Clients can make two types of requests: ```read``` which returns a **set of values** (or $\bot$ for the empty set)  as a response; and ```write(v)``` which gets an input value and also returns a response that is a set of values.
 
 **Termination**: If a non-faulty client issues a valid *request* then it eventually receives a *response*.
+
 **Validity**: Each value in the set can be uniquely mapped to a valid write request.
+
 **Correctness**: For a write request with value $v$, its response, and any response from a request that started after this write response, returns a set of values that includes $v$.
 
 ### Discussion: no difference for a single writer
 
-Observe that when there is a just a single writer client there is no difference between log replication and set replication - the client can sequentially submit commands by adding a sequence number to its operations and implement a log of its commands on top of the set abstraction.
+Observe that when there is a just a single writer client there is no difference between log replication and set replication - the (single writer) client can sequentially submit commands by adding a sequence number to its operations and implement a log of its commands on top of the set abstraction.
 
 
 In fact set replication is solving multi-shot consensus for single writer objects (see [Guerraoui et al, 2019](https://arxiv.org/pdf/1906.05574)).
