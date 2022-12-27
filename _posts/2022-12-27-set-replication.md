@@ -1,24 +1,24 @@
 ---
-title: Set Replication - fault tolerance without total ordering via locked broadcast
+title: Set Replication - fault tolerance without total ordering
 date: 2022-12-27 04:00:00 -05:00
 tags:
 - dist101
 author: Ittai Abraham
 ---
 
-While state machine replication is the gold standard for implementing any ideal functionality, its power comes at the cost of needing to totally order all transactions and as a consequence solve (Byzantine) agreement. In some cases this overhead is unnecessary.
+While state machine replication is the gold standard for implementing any (public) ideal functionality, its power comes at the cost of needing to totally order all transactions and as a consequence solve (Byzantine) agreement. In some cases this overhead is unnecessary.
 
 In the non-byzantine setting, the *fundamental* observation that sometimes a weaker problem than consensus needs to be solved goes back to the foundational work of [Lamport 2005](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2005-33.pdf):
 
 > Consensus has been regarded as the fundamental problem that must be solved to implement a fault-tolerant distributed system. However, only a weaker problem than traditional consensus need be solved. We generalize the consensus problem to include both traditional consensus and this weaker version. --[Generalized Consensus and Paxos, 2005](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2005-33.pdf)
 
-Many works study ways to relax the total ordering to gain better performance. For example see [EPaxos](https://www.cs.cmu.edu/~dga/papers/epaxos-sosp2013.pdf) (and also [EPaxos Revisited](https://www.usenix.org/conference/nsdi21/presentation/tollman)). The first works that tried to relax the total order requirements in the blockchain space are from [Lewenberg, Sompolinsky, and Zohar, 2015](https://fc15.ifca.ai/preproceedings/paper_101.pdf) and their follow-up work [Specture, 2016](https://eprint.iacr.org/2016/1159.pdf). See this post on [DAG-based protocols](https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/) for advances in recent years and how DAG-based protocols are emerging as a powerful tool for getting better throughput mempools and BFT.
+There is considerable research in ways to relax total ordering requirements to gain better performance. For example, see [EPaxos](https://www.cs.cmu.edu/~dga/papers/epaxos-sosp2013.pdf) (and also [EPaxos Revisited](https://www.usenix.org/conference/nsdi21/presentation/tollman)). The first work that aimed to relax the total order requirements in the blockchain space is by [Lewenberg, Sompolinsky, and Zohar, 2015](https://fc15.ifca.ai/preproceedings/paper_101.pdf) and it’s follow-up work [Specture, 2016](https://eprint.iacr.org/2016/1159.pdf). See this post on [DAG-based protocols](https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/) for advances in recent years and how DAG-based protocols are emerging as a powerful tool for getting better throughput mempools and BFT.
 
 It turns out that in many natural use cases, in particular the canonical simple token payment use case, do not need total ordering. As a concrete example, suppose Alice is transferring a token to Bob and Carol is transferring a token to Dan. There is no need to totally order these two transactions. 
 
 This approach is taken by [FastPay](https://arxiv.org/pdf/2003.11506.pdf), [Guerraoui et al, 2019](https://arxiv.org/pdf/1906.05574), [Sliwinski and Wattenhofer, 2019](https://arxiv.org/abs/1909.10926), applied to privacy preserving transactions (see [UTT](https://eprint.iacr.org/2022/452.pdf) and [Zef](https://eprint.iacr.org/2022/083.pdf)) and is planned to be used in the [Sui platform](https://github.com/MystenLabs/sui/blob/main/doc/paper/sui.pdf).
 
-In a totally ordered system, the property we wanted is that anyone can write to and read from the same *ordered log* of transactions. Here we just want to write to and read from the same *unordered set* of transactions. Let's start with a refresh of *log replication* and then define *set replication*.
+In a totally ordered system, clients write to and read from the same *ordered log* of transactions. Here we just want to write to and read from the same *unordered set* of transactions. Let's start with a refresh of *log replication* and then define *set replication*.
 
 ### Reminder: definition of Log Replication
 
@@ -55,7 +55,7 @@ Observe that when there is a just a single writer client there is no difference 
 In fact set replication is solving multi-shot consensus for single writer objects (see [Guerraoui et al, 2019](https://arxiv.org/pdf/1906.05574)).
 
 
-Moreover, if you partition the space into objects, and allow each object to be written to by a single client (the owner of the private key associated with the object's public key) then you can allow multiple clients to transact in parallel as long as each one is writing to a different object.
+Moreover, the space is partitioned into objects, and each object can be written to by a single client (the owner of the private key associated with the object's public key) then multiple clients can transact in parallel as long as each one is writing to a different object.
 
 The difference between log replication and set replication can be seen when there are two or more writers. For example if two writers need to decide which one wrote first (say they both want to swap money on an [AMM](https://arxiv.org/pdf/2102.11350.pdf)) then log replication will provide an ordering of these two transactions but set replication cannot do this. 
 
@@ -99,7 +99,7 @@ A simple example for using set replication is to maintain a *UTXO* set (a set of
 
 This means that each token is essentially a write-once object. A transaction marks an active token as spent and creates a new active token in the UTXO set.
 
-Real systems also need to implement more efficient read operations via indexing and timestamping and of course check-pointing and garbage collection. Reads can also be made linearizable by and additional round. It is also possible to carefully *combine* log replication with set replication to get the best of both worlds (fulfilling Lamport’s vision). We plan to cover this in future posts.
+Real systems also need to implement more efficient read operations via indexing and times tamping, add check-pointing and garbage collection. Reads can also be made linearizable by adding an additional round. It is also possible to carefully *combine* log replication with set replication to get the best of both worlds (fulfilling Lamport’s vision). We plan to cover this in future posts.
 
 
 ### Set Replication and Data Availability
@@ -108,7 +108,7 @@ Set replication is a formal way to define some of the requirements that are ofte
 
 > Data availability is the guarantee that the block proposer published all transaction data for a block and that the transaction data is available to other network participants.  --[ethereum](https://ethereum.org/en/developers/docs/data-availability/)
 
-In later posts, we will also discuss how to obtain better guarantees for set replication. In particular, how lightweight clients can efficiently **audit** a set of replicas and punish them for misbehaving (claiming to store the set but censoring read requests). See [Al-Bassam, Sonnino, and Buterin, 2019](https://arxiv.org/abs/1809.09044) and stay tuned for future posts.
+In later posts, we will discuss how to obtain better guarantees for set replication. In particular, how lightweight clients can efficiently **audit** a set of replicas and punish them for misbehaving (claiming to store the set but censoring read requests). See [Al-Bassam, Sonnino, and Buterin, 2019](https://arxiv.org/abs/1809.09044) and stay tuned for future posts.
 
 ### Acknowledgments
 
@@ -116,4 +116,4 @@ Many thanks to Adithya Baht and Kartik Nayak for insightful comments.
 
 
 
-Your thoughts on [Twitter]()
+Your thoughts on [Twitter](https://twitter.com/ittaia/status/1607674657397694465?s=61&t=5e3KM2Kmf3CDaCNUuFLing).
