@@ -1,9 +1,5 @@
 ---
-title: “Set Replication: fault tolerance without total ordering via locked broadcast”
-date: 2022-12-27 04:00:00 -05:00
-tags:
-- dist101
-author: Ittai Abraham
+title: 2022 12 27 Set Replication
 ---
 
 While state machine replication is the gold standard for implementing any ideal functionality, its power comes at the cost of needing to totally order all transactions and as a consequence solve (Byzantine) agreement. In some cases this overhead is unnecessary.
