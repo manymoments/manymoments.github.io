@@ -13,10 +13,14 @@ In this post we explore the path from *Single-Shot Agreement*, via *Write-Once R
 In *Agreement* (interchangeably called *Consensus*) there are $n$ parties that each have an input value, and the goal is to output a value such that:
 
 **Uniform Agreement**: Any two parties that output values, these values are equal. 
+(*) In the Byzantine case **Agreement**: Any two non-faulty parties output the same value.
 
 **Termination**: All non-faulty parties eventually output a value and terminate.
 
 **Validity**: The output is an input of one of the parties.
+(*) In the authenticated Byzantine case **External Validity**: The output is externally valid.
+
+
 
 Note that [Agreement and Broadcast](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) are [deeply connected](https://decentralizedthoughts.github.io/2020-09-14-broadcast-from-agreement-and-agreement-from-broadcast/) in this setting.
 
@@ -36,9 +40,12 @@ For a Write-Once Register there are two types of requests: ```write(v)``` which 
 
 **Write-Once Validity**: If a request returns a non-$\bot$ value then there was some client write request with this value.
 
-We also require the system to return a non-$\bot$ value after any write. Moreover, if there was just one write, this must be the returned value:
+We also require the system to return a non-$\bot$ value after any write.
 
-**Write-Once Correctness**: If there is a write request $W$ with the value $v$ that receives a response at time $t$, then any request $R$ that starts after $t$ returns a non-$\bot$ value. Moreover, if $W$ is the only write request that started before $t$, the value returned from $R$ is $v$.
+**Write-Once Correctness**: Any write response, or any response from a request that started after a write response must return a non-$\bot$ value.
+
+
+Note that if there is just one write request with value $v$, then from correctness and validity the response must be $v$.
 
 *Exercise 1: Show how to implement a fault-tolerant Write-Once Register given an agreement protocol. You will need to implement the client library.*
 
@@ -56,7 +63,7 @@ Clients can have multiple input values at different times.
 
 **Log Validity**: Each value in the log can be uniquely mapped to a write request.
 
-**Log Correctness**: If there is a write request with the value $v$ that receives a response at time $t$, then any request that starts after $t$ returns a log of values that includes $v$.
+**Log Correctness**: For a write request with value $v$, its response, and any response from a request that started after this write response, returns a log of values that includes $v$.
 
 The ```read``` request may not scale well because the log may have an unbounded size. A more refined read request can ask for parts of the log. We choose this generic interface for simplicity.
 
@@ -86,7 +93,8 @@ The properties of Termination, Agreement, Validity, and Correctness are all as i
 
 **SMR Validity**:  The request returns $out$ which is the output of some $SM(L)$ and each value in $L$ can be mapped uniquely to a client request.
 
-**SMR Correctness**: If there is a request with the value $cmd$ that gets a response at time $t$, then any request that starts after time $t$ returns the output of some $SM(L)$ such that $L$ includes $cmd$.
+**SMR Correctness**: For a request with value $cmd$, its response, and any response from a request that started after this response for $cmd$, returns the output of some $SM(L)$ such that $L$ includes $cmd$.
+
 
 Note that SMR replication can implement *any* state machine. In particular, it can also (trivially) implement Log Replication. See this [post](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) and [Schneider's classic](https://www.cs.cornell.edu/fbs/publications/ibmFault.sm.pdf) for more. 
 
