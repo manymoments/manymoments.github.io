@@ -99,7 +99,7 @@ A simple example for using set replication is to maintain a *UTXO* set (a set of
 
 This means that each token is essentially a write-once object. A transaction marks an active token as spent and creates a new active token in the UTXO set.
 
-Real systems also need to implement more efficient read operations via indexing and times tamping, add check-pointing and garbage collection. Reads can also be made linearizable by adding an additional round. It is also possible to carefully *combine* log replication with set replication to get the best of both worlds (fulfilling Lamport’s vision). We plan to cover this in future posts.
+Real systems also need to implement more efficient read operations via indexing and times tamping, add check-pointing and garbage collection. Reads can also be made linearizable by adding an additional round. It is also possible to carefully *combine* log replication with set replication to get the best of both worlds (fulfilling Lamport’s vision). See [Kuznetsov, Pignolet, Ponomarev, Tonkikh, 2022](https://arxiv.org/pdf/2212.04895.pdf). We plan to cover this in future posts.
 
 
 ### Set Replication and Data Availability
