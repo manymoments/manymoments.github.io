@@ -30,26 +30,14 @@ We say that $a \in K$ is a *root* of $P \in K[X]$ if $P(a)=0$ and say that $P$ h
 For example, consider the polynomial $P=2X-4$. It is clearly a polynomial of degree one and we all know that, over the rational field $K=\mathbb{Q}$, it has just one root (at $2$).  Now, consider that same polynomial over the finite field $K=\mathbb{Z}_7$, which are just the integers modulo 7: i.e., $\\{0,1,2,\dots,6\\}$.
 Then, a quick check shows that $2$ is still the only root of $P$. In other words, the equation $2X=4 \pmod 7$ has exactly one solution: $2$.
 
-Note that if instead of a field $K=\mathbb{Z}\_7$ we chose a _ring_ $K=\mathbb{Z}_{12}$, then the equation $2X=4 \pmod {12}$ would have 2 (!) solutions: $2$ (because $2\times 2 - 4 = 0$) and $8$ (because $2\times 8 - 4 = 16 - 4 = 12$, which is equal to 0 modulo 12). In other words, $P$ has more roots (two) than its degree (one)!
+Note that if instead of a field $K=\mathbb{Z}\_7$ we chose the _ring_ $K=\mathbb{Z}_{12}$, then the equation $2X=4 \pmod {12}$ would have 2 (!) solutions: $2$ (because $2\times 2 - 4 = 0$) and $8$ (because $2\times 8 - 4 = 16 - 4 = 12$, which is equal to 0 modulo 12). In other words, $P$ has more roots (two) than its degree (one)!
 
-**Proof of the Theorem:**
-Not surprisingly, the proof will be via induction on $d$. 
-
-For $d=0$, since $P$ is non-trivial, we have $p_0 \neq 0$ and hence $P$ has no roots (as it should be).
-
-For $d=1$, as exemplified above, we will use the fact that $K$ is a field. 
-Note that the unique root of $P=p_0+p_1 X$ (for $p_1 \neq 0$) is the *unique* element $-p_0/p_1 = -(p_0) (p_1)^{-1}$. This follows from the uniqueness of the inverse for both addition and multiplication in a field. 
-In particular, if $K$ were just a ring and not a field (e.g., $K=\mathbb{Z}_{12}$), then the inverse of $p_1$ may not exist or, more worrisome, may not be unique!
-
-For $d\geq 2$, we will use an induction step. There are two cases.
-First, if $P$ has no roots, then we are done.
-Otherwise, let $a \in K$ be such that $P(a)=0$. Suppose that we could prove that there exists a polynomial $Q$ of degree $<d$ such that $P=(X-a) Q$. Since $deg(Q)<d$ we use the induction hypothesis on $Q$. So $P$ can have at most $d-1$ roots from $Q$ and at most one more root (at $a$) from the degree one polynomial $(X-a)$.
-
-So to complete the induction argument we need to prove the existence of such $Q$ using the following claim:
+## Proof
+To prove the theorem, we prove an important claim:
 
 **Claim: If $deg(P)\geq 1$ and $P(a)=0$ then there exists $Q$ such that $P=(X-a)Q$ and $deg(Q)<deg(P)$.**
 
-Not surprisingly, we prove this claim by induction as well. For $d=1$, we again use the fact that $K$ is a field and can set $a= (p_0) (p_1)^{-1}$ and $Q=p_1$ is a non-trivial degree zero polynomial such that $P=(X-a) Q$.
+The proof is by induction on $d$. For $d=1$, we again use the fact that $K$ is a field and can set $a= (p_0) (p_1)^{-1}$ and $Q=p_1$ is a non-trivial degree zero polynomial such that $P=(X-a) Q$.
 
 For $d>1$, define a new polynomial $P' = P - p_d X^{d-1} (X-a)$, note that $p_d$ is the largest coefficient of $P$. Lets make a few observations:
 1. The degree of $P'$ is smaller than $d$. This is because the $d$th coefficient of $p_d X^{d-1} (X-a)$ equals $p_d$, so it will cancel out.
@@ -72,11 +60,24 @@ $$
 Hence, we have proved that:
 
 $$
-P = (X-a)Q\ \text{with}\ Q=Q'+p_d X^{d-1}
+P = (X-a)Q\ \text{with}\ Q=Q'+
 $$
 
-It is direct to see that $Q$ has degree at most $d-1$.
+Since $deg(Q) \leq \max \{ deg(Q'), deg(p_d X^{d-1})\}$ then $Q$ has degree at most $d-1$. This completes the proof of the claim.
 
+
+**Proof of the Theorem**
+
+The proof is by induction on $d$. For $d=0$, since $P$ is non-trivial, we have $p_0 \neq 0$ and hence $P$ has no roots (as it should be).
+
+For $d=1$, we use the fact that $K$ is a field. 
+The unique root of $P=p_0+p_1 X$ (for $p_1 \neq 0$) is the *unique* element $-p_0/p_1 = -(p_0) (p_1)^{-1}$. This follows from the uniqueness of the inverse for both addition and multiplication in a field (if $K$ were just a ring and not a field (e.g., $K=\mathbb{Z}_{12}$), then the inverse of $p_1$ may not exist or, more worrisome, may not be unique!).
+
+For $d\geq 2$, we use an induction step. There are two cases.
+If $P$ has no roots, then we are done.
+Otherwise, let $a \in K$ be such that $P(a)=0$. Using the claim above, there exists a polynomial $Q$ of degree $<d$ such that $P=(X-a) Q$. Since $deg(Q)<d$ we use the induction hypothesis on $Q$. So $P$ can have at most $d-1$ roots from $Q$ and at most one more root (at $a$) from the degree one polynomial $(X-a)$.
+
+### Discussion
 In the next posts, we will use this very useful fact about roots of polynomials over finite fields.
 First, we will use it as the foundation for [secret sharing](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis) and then as the foundation for Zero Knowledge Proofs.
 
