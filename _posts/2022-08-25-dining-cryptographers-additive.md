@@ -68,17 +68,17 @@ Not surprisingly, we will use the [Validity and Hiding](https://decentralizedtho
 
 We would like to say that the output of this protocol is the same as an ideal functionality that takes the inputs from all the parties $s_1,\dots,s_n$ and outputs the sum $s= \sum s_i$.
 
-This follows from the additive nature of polynomial secret sharing. The one-to-one mapping $F(p_0, \dots,p_{n-1})=p(1),\dots, p(n)$ between the $n$ coefficients of a degree $n-1$ polynomial and its $n$ point evaluation is also an *isomorphism with regard to addition*: $F(\vec{p})+F(\vec{q}) = F(p_0+q_0, \dots, p_{n-1}+q_{n-1})= p(1)+q(1), \dots, p(n)+q(n)$. This follows almost immediately from the additivity of polynomials over a field. 
+This follows from the additive nature of polynomial secret sharing. The one-to-one mapping $F(p_0, \dots,p_{n-1})=p(1),\dots, p(n)$ between the $n$ coefficients of a degree $n-1$ polynomial and its $n$ point evaluation is also an *isomorphism with regard to addition*: $F( \vec{p} )+F( \vec{q} ) = F(p_0+q_0, \dots, p_{n-1}+q_{n-1})= p(1)+q(1), \dots, p(n)+q(n)$. This follows almost immediately from the additivity of polynomials over a field. 
 
 ### Proof of Hiding - the adversary learns nothing other than the output of the ideal functionality
 
 Clearly, the adversary learns $s=s_1+\dots,s_n$, so the non-trivial case is when  $f \leq n-2$ because for $f=n-1$, once $s$ is revealed, the adversary knows exactly who payed (even in the ideal world).
 
-For any $f\leq n-2$ we would like to say that the adversary controlling any subset $F \subset N=\{1,\dots,n\}$ learns nothing other than the sum $s$. Formally, for *any* $\{s_i\}_{i \in N \setminus F}$, other than the value of the sum $s$, the distribution of the view of the adversary is uniformly random.
+For any $f\leq n-2$ we would like to say that the adversary controlling any subset $F \subset N= \{ 1,\dots,n \}$ with $|F|=f$ learns nothing other than the sum $s$. Formally, for *any* $\{ s_i \}_{i \in N \setminus F}$, other than the value of the sum $s$, the distribution of the view of the adversary is uniformly random.
 
 For the first round, this follows directly from the Hiding property for any $f<n$ parties of each of the polynomial secret sharing. 
 
-For the second round, the adversary learns $v_1,\dots,v_n$, which corresponds to the polynomial $p=p_1+\dots+p_n$. We again use the isomorphism of addition: for any choice of $\{p_i\}_{i \in F}$ for an adversary controlling the parties in $F$, while the first coefficient of $p$ is $s$, the remaining $n-1$ coefficients of $p$ are uniformly random. This follows because adding a uniformly random value to any known value results in a uniformly random value. Hence round 2 is identical to a secret sharing of $s$ via a uniformly random polynomial $p$ by an honest dealer.
+For the second round, the adversary learns $v_1,\dots,v_n$, which corresponds to the polynomial $p=p_1+\dots+p_n$. We again use the isomorphism of addition: for any choice of $\{ p_i \}_{i \in F}$ for an adversary controlling the parties in $F$, while the first coefficient of $p$ is $s$, the remaining $n-1$ coefficients of $p$ are uniformly random. This follows because adding a uniformly random value to any known value results in a uniformly random value. Hence round 2 is identical to a secret sharing of $s$ via a uniformly random polynomial $p$ by an honest dealer.
 
 ### What else can we do with the additivity of polynomial secret sharing?
 
