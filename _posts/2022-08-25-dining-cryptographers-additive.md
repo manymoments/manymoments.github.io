@@ -74,11 +74,11 @@ This follows from the additive nature of polynomial secret sharing. The one-to-o
 
 Clearly, the adversary learns $s=s_1+\dots,s_n$, so the non-trivial case is when  $f \leq n-2$ because for $f=n-1$, once $s$ is revealed, the adversary knows exactly who payed (even in the ideal world).
 
-For any $f\leq n-2$ we would like to say that the adversary controlling any subset $F \subset N= \{ 1,\dots,n \}$ with $\|F\|=f$ learns nothing other than the sum $s$. Formally, for *any* $\{ s_i \}_{i \in N \setminus F}$, other than the value of the sum $s$, the distribution of the view of the adversary is uniformly random.
+For any $f\leq n-2$ we would like to say that the adversary controlling any subset $F \subset N= \lbrace 1,\dots,n \rbrace$ with $\|F\|=f$ learns nothing other than the sum $s$. Formally, for *any* $\lbrace s_i \rbrace_{i \in N \setminus F}$, other than the value of the sum $s$, the distribution of the view of the adversary is uniformly random.
 
 For the first round, this follows directly from the Hiding property for any $f<n$ parties of each of the polynomial secret sharing. 
 
-For the second round, the adversary learns $v_1,\dots,v_n$, which corresponds to the polynomial $p=p_1+\dots+p_n$. We again use the isomorphism of addition: for any choice of $\{ p_i \}_{i \in F}$ for an adversary controlling the parties in $F$, while the first coefficient of $p$ is $s$, the remaining $n-1$ coefficients of $p$ are uniformly random. This follows because adding a uniformly random value to any known value results in a uniformly random value. Hence round 2 is identical to a secret sharing of $s$ via a uniformly random polynomial $p$ by an honest dealer.
+For the second round, the adversary learns $v_1,\dots,v_n$, which corresponds to the polynomial $p=p_1+\dots+p_n$. We again use the isomorphism of addition: for any choice of $\lbrace p_i \rbrace_{i \in F}$ for an adversary controlling the parties in $F$, while the first coefficient of $p$ is $s$, the remaining $n-1$ coefficients of $p$ are uniformly random. This follows because adding a uniformly random value to any known value results in a uniformly random value. Hence round 2 is identical to a secret sharing of $s$ via a uniformly random polynomial $p$ by an honest dealer.
 
 ### What else can we do with the additivity of polynomial secret sharing?
 
