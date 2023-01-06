@@ -1,10 +1,4 @@
 ---
-title: Player Replaceability I
-date: 2023-01-06 00:00:00 -05:00
----
-
-
----
 title: Player Replaceability - Towards Adaptive Security and Sub-quadratic Communication Simultaneously (Part I)
 date: 2023-01-05 00:00:00 -05:00
 author: Kartik Nayak
