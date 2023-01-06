@@ -1,9 +1,6 @@
 ---
-title: Player Replaceability: Towards Adaptive Security and Sub-quadratic Communication Simultaneously (Part I)
-date: 2023-01-05 00:00:00 -05:00
-author: Kartik Nayak
-tags:
-- blockchain
+title: 2023 01 06 Player Replaceability I
+date: 2023-01-06 17:26:12.330000000 -05:00
 ---
 
 This is part I of a two-part post on the concept of player-replaceability.
