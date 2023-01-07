@@ -39,4 +39,4 @@ Some additional pointers:
 - **Leader election challenges:** In the above protocol, parties, including the leader, may not be sure of who the leader is. In practice, it may be beneficial if there is a single secret leader who can prove to the world that it is indeed the leader. This primitive is called [Single Secret Leader Election (or SSLE)](https://eprint.iacr.org/2020/025.pdf).
 - We used HotStuff as an example in this post to achieve sub-quadratic communication. In general, if we replace this by any protocol where the number of rounds and message sizes are (sub-)linear (or even polynomial) in the number of parties, we can potentially convert it into its player-replaceable counterpart.
 
-**Acknowledgment.** Thanks to Ittai for insightful comments on this post.
+**Acknowledgment.** Thanks to Ittai Abraham and Dahlia Malkhi for insightful comments on this post.
