@@ -40,3 +40,5 @@ Some additional pointers:
 - We used HotStuff as an example in this post to achieve sub-quadratic communication. In general, if we replace this by any protocol where the number of rounds and message sizes are (sub-)linear (or even polynomial) in the number of parties, we can potentially convert it into its player-replaceable counterpart.
 
 **Acknowledgment.** Thanks to Ittai Abraham and Dahlia Malkhi for insightful comments on this post.
+
+Please add your thoughts and comments on [Twitter](https://twitter.com/kartik1507/status/1611756421561057281?s=20)!
