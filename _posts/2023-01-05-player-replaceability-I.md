@@ -70,4 +70,6 @@ No, its not free lunch. There are trade-offs:
 </figure>
 
 - Second, observe that the communication complexity of this protocol does not contradict the [Dolev-Reischuk lower bound](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/). In particular, this protocol makes use of randomness to elect the committee whereas the lower bound only applies to deterministic protocols. However, at the same time, we do add an additional [setup assumption](https://decentralizedthoughts.github.io/2019-07-19-setup-assumptions/) of an agreed upon random value. Currently, all known protocols to generate this random value require $\text{poly}(n)$ communication. Nevertheless, once this random value is generated, all subsequent communication is sub-quadratic in $n$, and this can be used for consensus on multiple values too.
-- Finally, an adaptive adversary can corrupt the entire committee, rendering all of the efficiency gains useless. We describe how to address this concern in the next section.
+- Finally, an adaptive adversary can corrupt the entire committee, rendering all of the efficiency gains useless. We describe how to address this concern in the next [post](https://decentralizedthoughts.github.io/2023-01-05-player-replaceability-II/).
+
+Please add your thoughts and comments on [Twitter](https://twitter.com/kartik1507/status/1611756421561057281?s=20)!
