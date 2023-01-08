@@ -82,25 +82,27 @@ Pedersen commitments have amazing properties:
     * the new commitment is uniformly, independently distributed in $\mathbb{G}$ (in particular, independent of $cm$)
 
 Re-randomization of a Pedersen commitment is easy:
-\begin{align*}
+$$
 r' \gets \mathsf{Rand}(\mathbb{F})\\
 cm' \gets cm \cdot g^ {r'}
-\end{align*}
-and denote this operation as
-$$cm' \gets \mathsf{CM.Rerand}(cm; r')$$
+$$and denote this operation as
+$$
+cm' \gets \mathsf{CM.Rerand}(cm; r')
+$$
 
-Observe that $cm'= \mathsf{Commit}(\vec{\mathbf{m}}; r+r') and the re-randomization above is a special case of a more general property:
+Observe that $cm'= \mathsf{Commit}(\vec{\mathbf{m}}; r+r')$ and the re-randomization above is a special case of a more general property:
 
 * **Homorphism**: given  $cm_1 = \mathsf{Commit}(\vec{\mathbf{m_1}}; r_1)$ and $cm_2 = \mathsf{Commit}(\vec{\mathbf{m_2}}; r_2)$, one can simply multiply them and get:
 
-$$ cm_1\cdot cm_2= \mathsf{Commit}(\vec{\mathbf{m_1}}+\vec{\mathbf{m_2}}; r_1+r_2)$$.
+$$ cm_1\cdot cm_2= \mathsf{Commit}(\vec{\mathbf{m_1}}+\vec{\mathbf{m_2}}; r_1+r_2). $$
 
 
 ### 2. Dual commitments
 
 
 
-We will be working over pairing-friendly groups $\mathbb{G},\widetilde{\mathbb{G}}$ and $\mathbb{G}_T$. See this post for [more about pairings](https://alinush.github.io/2022/12/31/pairings-or-bilinear-maps.html). The important fact about pairing-friendly groups, is the existence of a map $e: \mathbb{G} \times \widetilde{\mathbb{G}} \to \mathbb{G}_T$ such that for any elements $a \in \mathbb{G}, \tilde{a} \in \widetilde{\mathbb{G}}$ and field elements $x,y \in \mathbb{F}$:
+We will be working over pairing-friendly groups $\mathbb{G},\widetilde{\mathbb{G}}$ and $\mathbb{G}_T$. See this post for [more about pairings](https://alinush.github.io/2022/12/31/pairings-or-bilinear-maps.html). The important fact about pairing-friendly groups, is the existence of a map $ e: \mathbb{G} \times \widetilde{\mathbb{G}} \to \mathbb{G}_T $ such that for any elements $a \in \mathbb{G}, \tilde{a} \in \widetilde{\mathbb{G}}$ and field elements $x,y \in \mathbb{F}$:
+
 $$
 e(a^x,\tilde{a}^y)=e(a,\tilde{a})^{xy}
 $$
@@ -108,32 +110,40 @@ $$
 
 Given this, it will be beneficial to use dual commitments computed over both $\mathbb{G}$ and $\widetilde{\mathbb{G}}$ that have a *correlated* base.
 
-So, instead of having just $\ell+1$ generators in $\mathbb{G}$ that are derived from $g \in \mathbb{G}$ and the $\ell$ secret field elements in $\vec{\mathbf{y}}$, also choose a random generator $\tilde{g}$ in $\widetilde{\mathbb{G}}$ and use an additional $\ell+1$ generators in $\widetilde{\mathbb{G}}$ denoted $(\tilde{g}, \vec{\mathbf{\tilde{g}}} = \langle \tilde{g_1},\dots,\tilde{g_\ell}\rangle)$.
+So, instead of having just $\ell+1$ generators in $\mathbb{G}$ that are derived from $ g \in \mathbb{G} $ and the $\ell$ secret field elements in $\vec{\mathbf{y}}$, also choose a random generator $\tilde{g}$ in $\widetilde{\mathbb{G}}$ and use an additional $\ell+1$ generators in $\widetilde{\mathbb{G}}$ denoted $ (\tilde{g}, \vec{\mathbf{\tilde{g}}} = \langle \tilde{g_1},\dots,\tilde{g_\ell}\rangle)$.
 
 Just as $g_i=g^{y_i}$, also set $\tilde{g}_i=\tilde{g}^{y_i}$.
 
 Given these dual bases, a commitment for $\vec{\mathbf{m}}$:
 
-$$r \gets \mathsf{Rand}(\mathbb{F})$$
+$$
+r \gets \mathsf{Rand}(\mathbb{F})
+$$
 
-$$cm \gets g^r \prod_{1\le i\le \ell} g_i^{m_i}$$
+$$
+cm \gets g^r \prod_{1\le i\le \ell} g_i^{m_i}
+$$
 
-$$\widetilde{cm} \gets \tilde{g}^r \prod_{1\le i\le \ell} \tilde{g}_i^{m_i}$$
+$$
+\widetilde{cm} \gets \tilde{g}^r \prod_{1\le i\le \ell} \tilde{g}_i^{m_i}
+$$
 
 
 and denote this operation as:
 
-$$(cm, \widetilde{cm}) \gets \mathsf{DualCommit}([m_1,\dots,m_\ell]; r)$$
+$$
+(cm, \widetilde{cm}) \gets \mathsf{DualCommit}([m_1,\dots,m_\ell]; r)
+$$
 
 
 
 Clearly, any dual commitment $(cm,\widetilde{cm})$ can be *re-randomized* to $(cm',\widetilde{cm}')$:
 
-\begin{align*}
-r' &\gets \mathsf{Rand}(\mathbb{F})\\
-cm' &\gets cm \cdot g^ {r'} \\
-\widetilde{cm}' &\gets \widetilde{cm}\cdot \tilde{g}^ {r'} 
-\end{align*}
+$$
+r' \gets \mathsf{Rand}(\mathbb{F})\\
+cm' \gets cm \cdot g^ {r'} \\
+\widetilde{cm}'  \gets \widetilde{cm}\cdot \tilde{g}^ {r'} 
+$$
 
 Finally, to make sure that a dual commitment $(cm,\widetilde{cm})$ is **valid**, meaning both the $\mathbb{G}$ and $\widetilde{\mathbb{G}}$ components commit to the same message $\vec{\mathbf{m}}$, you can check that:
 
@@ -151,9 +161,13 @@ We use the *re-randomizable signature (RS) scheme* by [Pointcheval and Sanders](
 Given two uniformly random generators $g \in \mathbb{G}$, $\tilde{g} \in \widetilde{\mathbb{G}}$, the scheme uses a secret key consisting of $\ell+1$ field elements $(x,\vec{\mathbf{y}} = \langle y_1,\dots,y_\ell \rangle)\in \mathbb{F}^{\ell+1}$.
 
 The public key consists of (1) a **verification key**
-$$vk=\widetilde{X}=\tilde{g}^x\in \widetilde{\mathbb{G}}$$ 
+$$
+vk=\widetilde{X}=\tilde{g}^x\in \widetilde{\mathbb{G}}
+$$ 
 and (2) the commitment key $\mathbf{ck}$ from above, consisting of $2 \ell+2$ group elements:
-$$\mathbf{ck} = \langle g,\vec{\mathbf{g}}, \tilde{g}, \vec{\mathbf{\tilde{g}}}\rangle\in\mathbb{G}\times\mathbb{G}^\ell\times\widetilde{\mathbb{G}}\times\widetilde{\mathbb{G}}^\ell$$
+$$
+\mathbf{ck} = \langle g,\vec{\mathbf{g}}, \tilde{g}, \vec{\mathbf{\tilde{g}}}\rangle\in\mathbb{G}\times\mathbb{G}^\ell\times\widetilde{\mathbb{G}}\times\widetilde{\mathbb{G}}^\ell
+$$
 
 Where $g_i=g^{y_i}$ and $\tilde{g}_i=\tilde{g}^{y_i}$ for each $1\le i \le \ell$
 
@@ -165,11 +179,10 @@ $$
 
 and only sign the $cm$ part as:
 
-\begin{align*}
-u &\gets \mathsf{Rand}(\mathbb{F})\\
-\sigma &= \mathsf{RS}.\mathsf{Sign}_{\mathbf{ck}}(sk, cm; u) \stackrel{\mathsf{def}}{=} (g^u, (sk \cdot cm)^u) \stackrel{\mathsf{def}}{=} (\sigma_1, \sigma_2)
-\end{align*}
-
+$$
+u \gets \mathsf{Rand}(\mathbb{F})\\
+\sigma = \mathsf{RS}.\mathsf{Sign}_{\mathbf{ck}}(sk, cm; u) \stackrel{\mathsf{def}}{=} (g^u, (sk \cdot cm)^u) \stackrel{\mathsf{def}}{=} (\sigma_1, \sigma_2)
+$$
 Crucially, the commitment $cm$ must be computed under the same  $\mathbf{ck}$ commitment key from the verification key above.
 
 To verify a signature $\sigma=(\sigma_1,\sigma_2)$ for a dual commitment $(cm,\widetilde{cm})$, the  verification algorithm $\mathsf{RS}.\mathsf{Verify}_{\mathbf{ck}}(vk, (cm,\widetilde{cm}), \sigma)$ needs $\widetilde{cm}\in\widetilde{\mathbb{G}}$ and, of course, the *verification key* $vk =\widetilde{X}$.
@@ -185,27 +198,41 @@ It is crucial not to reuse the same value $u$ for two different signatures, whic
 
 ### 4. Re-randomizing a credential
 
-Given a credential $c$ that consists of a commitment $cm$ with a signature $\sigma$ we would like to re-randomize $c$ into a new credential $c'$ that could not be linked back to $c$.
+Given a credential $c$ that consists of a commitment $cm$ with a signature $\sigma$ we would like to re-randomize $c$ into a new credential $ c' $ that could not be linked back to $c$.
 
 This is done by *re-randomizing* $\sigma$ into a new signature $\sigma'$ on a re-randomized commitment $cm'$ defined below:
 $$
 cm'= \mathsf{CM.Rerand}(cm; r')
 $$
 via 
-$$ \sigma' = \mathsf{RS.Rerand}(\sigma, r', u')$$
+$$
+\sigma' = \mathsf{RS.Rerand}(\sigma, r', u')
+$$
 as follows:
 
-$$r' \gets  \mathsf{Rand}(\mathbb{F})$$
+$$
+r' \gets  \mathsf{Rand}(\mathbb{F})
+$$
 
-$$cm' \gets  \mathsf{CM.Rerand}(cm; r') = cm \cdot g^{r'}$$
+$$
+cm' \gets  \mathsf{CM.Rerand}(cm; r') = cm \cdot g^{r'}
+$$
 
-$$\widetilde{cm'} \gets \mathsf{CM.Rerand}(\widetilde{cm}; r') = \widetilde{cm} \cdot g^{r'}$$
+$$
+\widetilde{cm'} \gets \mathsf{CM.Rerand}(\widetilde{cm}; r') = \widetilde{cm} \cdot g^{r'}
+$$
 
-$$u' \gets \mathsf{Rand}(\mathbb{F})$$
+$$
+u' \gets \mathsf{Rand}(\mathbb{F})
+$$
 
-$$\sigma_1' \gets (\sigma_1)^{u'}$$
+$$
+\sigma_1' \gets (\sigma_1)^{u'}
+$$
 
-$$\sigma_2' \gets \left(\sigma_2 \cdot (\sigma_1)^{r'}\right)^{u'}$$
+$$
+\sigma_2' \gets \left(\sigma_2 \cdot (\sigma_1)^{r'}\right)^{u'}
+$$
 
 
 
@@ -213,19 +240,18 @@ As a consequence, a signer cannot link the old, known credential $(cm,\sigma)$ w
 
 However, note that $(cm',\sigma')$ verifies for $\vec{\mathbf{m}}$ because $\mathsf{RS.Verify}_\mathbf{ck}(vk, (cm', \widetilde{cm}'), \sigma')$ still passes: 
 
-\begin{align*}
-e\left(\sigma_1', \widetilde{X}\cdot \widetilde{cm'}\right) 
- &= e\left(\sigma_2', \tilde{g}\right) \Leftrightarrow\\
+$$ 
+e \left(\sigma_1', \widetilde{X}\cdot \widetilde{cm'}\right) 
+= e\left(\sigma_2', \tilde{g}\right) \Leftrightarrow\\
 %
-e\left(\sigma_1^{u'}, \left(\widetilde{X} \cdot \widetilde{cm} \cdot \tilde{g}^{r'}\right)\right) &= e\left( (\sigma_2 \cdot (\sigma_1)^{r'})^{u'}, \tilde{g}\right)\Leftrightarrow\\
+e\left(\sigma_1^{u'}, \left(\widetilde{X} \cdot \widetilde{cm} \cdot \tilde{g}^{r'}\right)\right) = e\left( (\sigma_2 \cdot (\sigma_1)^{r'})^{u'}, \tilde{g}\right)\Leftrightarrow\\
 %
-e\left(\sigma_1, \left(\widetilde{X} \cdot \widetilde{cm} \cdot \tilde{g}^{r'}\right)\right) &= e\left( \sigma_2 \cdot (\sigma_1)^{r'}, \tilde{g}\right)\Leftrightarrow\\
+e\left(\sigma_1, \left(\widetilde{X} \cdot \widetilde{cm} \cdot \tilde{g}^{r'}\right)\right) = e\left( \sigma_2 \cdot (\sigma_1)^{r'}, \tilde{g}\right)\Leftrightarrow\\
 %
-e\left(\sigma_1, \widetilde{X} \cdot \widetilde{cm} \right) e\left(\sigma_1, \tilde{g}^{r'}\right) &= e\left(\sigma_2, \tilde{g}\right)\cdot e\left((\sigma_1)^{r'}, \tilde{g}\right)\Leftrightarrow\\
+e\left(\sigma_1, \widetilde{X} \cdot \widetilde{cm} \right) e\left(\sigma_1, \tilde{g}^{r'}\right) = e\left(\sigma_2, \tilde{g}\right)\cdot e\left((\sigma_1)^{r'}, \tilde{g}\right)\Leftrightarrow\\
 %
-e\left(\sigma_1, \widetilde{X} \cdot \widetilde{cm} \right)  &= e\left(\sigma_2, \tilde{g}\right)
-%
-\end{align*}
+e\left(\sigma_1, \widetilde{X} \cdot \widetilde{cm} \right)  = e\left(\sigma_2, \tilde{g}\right)
+$$
 
 Note that this last equation is exactly the verification equation of the original signature $\sigma$ on $(cm,\widetilde{cm})$ before re-randomization.
 
