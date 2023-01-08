@@ -162,11 +162,11 @@ Given two uniformly random generators $g \in \mathbb{G}$, $\tilde{g} \in \wideti
 
 The public key consists of (1) a **verification key**
 $$
-vk=\widetilde{X}=\tilde{g}^x\in \widetilde{\mathbb{G}}
+vk = \widetilde{X} = \tilde{g}^x \in \widetilde{\mathbb{G}}
 $$ 
 and (2) the commitment key $\mathbf{ck}$ from above, consisting of $2 \ell+2$ group elements:
 $$
-\mathbf{ck} = \langle g,\vec{\mathbf{g}}, \tilde{g}, \vec{\mathbf{\tilde{g}}}\rangle\in\mathbb{G}\times\mathbb{G}^\ell\times\widetilde{\mathbb{G}}\times\widetilde{\mathbb{G}}^\ell
+\mathbf{ck} = \langle g,\vec{\mathbf{g}}, \tilde{g}, \vec{\mathbf{\tilde{g}}} \rangle \in \mathbb{G} \times \mathbb{G}^\ell \times \widetilde{\mathbb{G}}\times \widetilde{\mathbb{G}}^\ell
 $$
 
 Where $g_i=g^{y_i}$ and $\tilde{g}_i=\tilde{g}^{y_i}$ for each $1\le i \le \ell$
@@ -174,7 +174,7 @@ Where $g_i=g^{y_i}$ and $\tilde{g}_i=\tilde{g}^{y_i}$ for each $1\le i \le \ell$
 
 To sign a dual commitment, we compute a secret key: 
 $$
-sk=X=g^x\in\mathbb{G}
+sk = X = g^x \in \mathbb{G}
 $$
 
 and only sign the $cm$ part as:
