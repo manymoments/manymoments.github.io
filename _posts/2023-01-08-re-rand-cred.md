@@ -101,18 +101,18 @@ $$ cm_1\cdot cm_2= \mathsf{Commit}(\vec{\mathbf{m_1}}+\vec{\mathbf{m_2}}; r_1+r_
 
 
 
-We will be working over pairing-friendly groups $\mathbb{G},\widetilde{\mathbb{G}}$ and $\mathbb{G}_T$. See this post for [more about pairings](https://alinush.github.io/2022/12/31/pairings-or-bilinear-maps.html). The important fact about pairing-friendly groups, is the existence of a map $ e: \mathbb{G} \times \widetilde{\mathbb{G}} \to \mathbb{G}_T $ such that for any elements $a \in \mathbb{G}, \tilde{a} \in \widetilde{\mathbb{G}}$ and field elements $x,y \in \mathbb{F}$:
+We will be working over pairing-friendly groups $\mathbb{G},\widetilde{\mathbb{G}}$ and $\mathbb{G}_T$. See this post for [more about pairings](https://alinush.github.io/2022/12/31/pairings-or-bilinear-maps.html). The important fact about pairing-friendly groups, is the existence of a map $ e: \mathbb{G} \times \widetilde{\mathbb{G}} \to \mathbb{G}_T $ such that for any elements $a \in \mathbb{G}, \widetilde{a} \in \widetilde{\mathbb{G}}$ and field elements $x,y \in \mathbb{F}$:
 
 $$
-e(a^x,\tilde{a}^y)=e(a,\tilde{a})^{xy}
+e(a^x,\widetilde{a}^y)=e(a,\widetilde{a})^{xy}
 $$
 
 
 Given this, it will be beneficial to use dual commitments computed over both $\mathbb{G}$ and $\widetilde{\mathbb{G}}$ that have a *correlated* base.
 
-So, instead of having just $\ell+1$ generators in $\mathbb{G}$ that are derived from $ g \in \mathbb{G} $ and the $\ell$ secret field elements in $\vec{\mathbf{y}}$, also choose a random generator $\tilde{g}$ in $\widetilde{\mathbb{G}}$ and use an additional $\ell+1$ generators in $\widetilde{\mathbb{G}}$ denoted $ (\tilde{g}, \vec{\mathbf{\tilde{g}}} = \langle \tilde{g_1},\dots,\tilde{g_\ell}\rangle)$.
+So, instead of having just $\ell+1$ generators in $\mathbb{G}$ that are derived from $ g \in \mathbb{G} $ and the $\ell$ secret field elements in $\vec{\mathbf{y}}$, also choose a random generator $\widetilde{g}$ in $\widetilde{\mathbb{G}}$ and use an additional $\ell+1$ generators in $\widetilde{\mathbb{G}}$ denoted $ (\widetilde{g}, \vec{\mathbf{\widetilde{g}}} = \langle \widetilde{g_1},\dots,\widetilde{g_\ell}\rangle)$.
 
-Just as $g_i=g^{y_i}$, also set $\tilde{g}_i=\tilde{g}^{y_i}$.
+Just as $g_i=g^{y_i}$, also set $\widetilde{g_i}=\widetilde{g}^{y_i}$.
 
 Given these dual bases, a commitment for $\vec{\mathbf{m}}$:
 
@@ -125,7 +125,7 @@ cm \gets g^r \prod_{1\le i\le \ell} g_i^{m_i}
 $$
 
 $$
-\widetilde{cm} \gets \tilde{g}^r \prod_{1\le i\le \ell} \tilde{g}_i^{m_i}
+\widetilde{cm} \gets \widetilde{g}^r \prod_{1\le i\le \ell} \widetilde{g}_i^{m_i}
 $$
 
 
@@ -142,37 +142,37 @@ Clearly, any dual commitment $(cm,\widetilde{cm})$ can be *re-randomized* to $(c
 $$
 r' \gets \mathsf{Rand}(\mathbb{F})\\
 cm' \gets cm \cdot g^ {r'} \\
-\widetilde{cm}'  \gets \widetilde{cm}\cdot \tilde{g}^ {r'} 
+\widetilde{cm}'  \gets \widetilde{cm}\cdot \widetilde{g}^{r'} 
 $$
 
 Finally, to make sure that a dual commitment $(cm,\widetilde{cm})$ is **valid**, meaning both the $\mathbb{G}$ and $\widetilde{\mathbb{G}}$ components commit to the same message $\vec{\mathbf{m}}$, you can check that:
 
 $$
-e(cm,\tilde{g})=e(g,\widetilde{cm})
+e(cm,\widetilde{g})=e(g,\widetilde{cm})
 $$
 
 
 ### 3. Re-randomizable signatures
 
-We now show a way to create a signature scheme that allows signing dual Pedersen commitments computed under the **commitment key**  $\mathbf{ck}=\langle g,\vec{\mathbf{g}}, \tilde{g}, \vec{\mathbf{\tilde{g}}}\rangle$ from above.
+We now show a way to create a signature scheme that allows signing dual Pedersen commitments computed under the **commitment key**  $\mathbf{ck}=\langle g,\vec{\mathbf{g}}, \widetilde{g}, \vec{\mathbf{\widetilde{g}}}\rangle$ from above.
 
 We use the *re-randomizable signature (RS) scheme* by [Pointcheval and Sanders](https://eprint.iacr.org/2015/525.pdf)[^PS16].
 
-Given two uniformly random generators $g \in \mathbb{G}$, $\tilde{g} \in \widetilde{\mathbb{G}}$, the scheme uses a secret key consisting of $\ell+1$ field elements $(x,\vec{\mathbf{y}} = \langle y_1,\dots,y_\ell \rangle)\in \mathbb{F}^{\ell+1}$.
+Given two uniformly random generators $g \in \mathbb{G}$, $\widetilde{g} \in \widetilde{\mathbb{G}}$, the scheme uses a secret key consisting of $\ell+1$ field elements $(x,\vec{\mathbf{y}} = \langle y_1,\dots,y_\ell \rangle)\in \mathbb{F}^{\ell+1}$.
 
 The public key consists of (1) a **verification key**
 
 $$
-vk = \widetilde{X} = \tilde{g}^x \in \widetilde{\mathbb{G}}
+vk = \widetilde{X} = \widetilde{g}^x \in \widetilde{\mathbb{G}}
 $$ 
 
 and (2) the commitment key $\mathbf{ck}$ from above, consisting of $2 \ell+2$ group elements:
 
 $$
-\mathbf{ck} = \langle g,\vec{\mathbf{g}}, \tilde{g}, \vec{\mathbf{\tilde{g}}} \rangle \in \mathbb{G} \times \mathbb{G}^\ell \times \widetilde{\mathbb{G}}\times \widetilde{\mathbb{G}}^\ell
+\mathbf{ck} = \langle g,\vec{\mathbf{g}}, \widetilde{g}, \vec{\mathbf{\widetilde{g}}} \rangle \in \mathbb{G} \times \mathbb{G}^\ell \times \widetilde{\mathbb{G}}\times \widetilde{\mathbb{G}}^\ell
 $$
 
-Where $g_i=g^{y_i}$ and $\tilde{g}_i=\tilde{g}^{y_i}$ for each $1\le i \le \ell$
+Where $g_i=g^{y_i}$ and $\widetilde{g}_i=\widetilde{g}^{y_i}$ for each $1\le i \le \ell$
 
 
 To sign a dual commitment, we compute a secret key: 
@@ -199,7 +199,7 @@ To verify a signature $\sigma=(\sigma_1,\sigma_2)$ for a dual commitment $(cm,\w
 The verification algorithm checks that $\sigma_1 \neq 1_{\mathbb{G}}$ and that:
 
 $$
-e(\sigma_1, \widetilde{X}\cdot \widetilde{cm})=e(\sigma_2, \tilde{g})
+e(\sigma_1, \widetilde{X}\cdot \widetilde{cm})=e(\sigma_2, \widetilde{g})
 $$
 
 It is crucial not to reuse the same value $u$ for two different signatures, which would lead to a forgery.
@@ -255,15 +255,15 @@ However, note that $(cm',\sigma')$ verifies for $\vec{\mathbf{m}}$ because $\mat
 
 $$ 
 e \left(\sigma_1', \widetilde{X}\cdot \widetilde{cm'}\right) 
-= e\left(\sigma_2', \tilde{g}\right) \Leftrightarrow\\
+= e\left(\sigma_2', \widetilde{g}\right) \Leftrightarrow\\
 %
-e\left(\sigma_1^{u'}, \left(\widetilde{X} \cdot \widetilde{cm} \cdot \tilde{g}^{r'}\right)\right) = e\left( (\sigma_2 \cdot (\sigma_1)^{r'})^{u'}, \tilde{g}\right)\Leftrightarrow\\
+e\left(\sigma_1^{u'}, \left(\widetilde{X} \cdot \widetilde{cm} \cdot \widetilde{g}^{r'}\right)\right) = e\left( (\sigma_2 \cdot (\sigma_1)^{r'})^{u'}, \widetilde{g}\right)\Leftrightarrow\\
 %
-e\left(\sigma_1, \left(\widetilde{X} \cdot \widetilde{cm} \cdot \tilde{g}^{r'}\right)\right) = e\left( \sigma_2 \cdot (\sigma_1)^{r'}, \tilde{g}\right)\Leftrightarrow\\
+e\left(\sigma_1, \left(\widetilde{X} \cdot \widetilde{cm} \cdot \widetilde{g}^{r'}\right)\right) = e\left( \sigma_2 \cdot (\sigma_1)^{r'}, \widetilde{g}\right)\Leftrightarrow\\
 %
-e\left(\sigma_1, \widetilde{X} \cdot \widetilde{cm} \right) e\left(\sigma_1, \widetilde{g}^{r'}\right) = e\left(\sigma_2, \widetilde{g}\right)\cdot e\left((\sigma_1)^{r'}, \tilde{g}\right)\Leftrightarrow\\
+e\left(\sigma_1, \widetilde{X} \cdot \widetilde{cm} \right) e\left(\sigma_1, \widetilde{g}^{r'}\right) = e\left(\sigma_2, \widetilde{g}\right)\cdot e\left((\sigma_1)^{r'}, \widetilde{g}\right)\Leftrightarrow\\
 %
-e\left(\sigma_1, \widetilde{X} \cdot \widetilde{cm} \right)  = e\left(\sigma_2, \tilde{g}\right)
+e\left(\sigma_1, \widetilde{X} \cdot \widetilde{cm} \right)  = e\left(\sigma_2, \widetilde{g}\right)
 $$
 
 Note that this last equation is exactly the verification equation of the original signature $\sigma$ on $(cm,\widetilde{cm})$ before re-randomization.
