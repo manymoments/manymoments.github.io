@@ -161,10 +161,13 @@ We use the *re-randomizable signature (RS) scheme* by [Pointcheval and Sanders](
 Given two uniformly random generators $g \in \mathbb{G}$, $\tilde{g} \in \widetilde{\mathbb{G}}$, the scheme uses a secret key consisting of $\ell+1$ field elements $(x,\vec{\mathbf{y}} = \langle y_1,\dots,y_\ell \rangle)\in \mathbb{F}^{\ell+1}$.
 
 The public key consists of (1) a **verification key**
+
 $$
 vk = \widetilde{X} = \tilde{g}^x \in \widetilde{\mathbb{G}}
 $$ 
+
 and (2) the commitment key $\mathbf{ck}$ from above, consisting of $2 \ell+2$ group elements:
+
 $$
 \mathbf{ck} = \langle g,\vec{\mathbf{g}}, \tilde{g}, \vec{\mathbf{\tilde{g}}} \rangle \in \mathbb{G} \times \mathbb{G}^\ell \times \widetilde{\mathbb{G}}\times \widetilde{\mathbb{G}}^\ell
 $$
@@ -173,6 +176,7 @@ Where $g_i=g^{y_i}$ and $\tilde{g}_i=\tilde{g}^{y_i}$ for each $1\le i \le \ell$
 
 
 To sign a dual commitment, we compute a secret key: 
+
 $$
 sk = X = g^x \in \mathbb{G}
 $$
@@ -189,6 +193,7 @@ To verify a signature $\sigma=(\sigma_1,\sigma_2)$ for a dual commitment $(cm,\w
 
 
 The verification algorithm checks that $\sigma_1 \neq 1_{\mathbb{G}}$ and that:
+
 $$
 e(\sigma_1, \widetilde{X}\cdot \widetilde{cm})=e(\sigma_2, \tilde{g})
 $$
@@ -201,13 +206,17 @@ It is crucial not to reuse the same value $u$ for two different signatures, whic
 Given a credential $c$ that consists of a commitment $cm$ with a signature $\sigma$ we would like to re-randomize $c$ into a new credential $ c' $ that could not be linked back to $c$.
 
 This is done by *re-randomizing* $\sigma$ into a new signature $\sigma'$ on a re-randomized commitment $cm'$ defined below:
+
 $$
 cm'= \mathsf{CM.Rerand}(cm; r')
 $$
+
 via 
+
 $$
 \sigma' = \mathsf{RS.Rerand}(\sigma, r', u')
 $$
+
 as follows:
 
 $$
