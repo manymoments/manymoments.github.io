@@ -184,9 +184,13 @@ $$
 and only sign the $cm$ part as:
 
 $$
-u \gets \mathsf{Rand}(\mathbb{F})\\
+u \gets \mathsf{Rand}(\mathbb{F})
+$$
+
+$$
 \sigma = \mathsf{RS}.\mathsf{Sign}_{\mathbf{ck}}(sk, cm; u) \stackrel{\mathsf{def}}{=} (g^u, (sk \cdot cm)^u) \stackrel{\mathsf{def}}{=} (\sigma_1, \sigma_2)
 $$
+
 Crucially, the commitment $cm$ must be computed under the same  $\mathbf{ck}$ commitment key from the verification key above.
 
 To verify a signature $\sigma=(\sigma_1,\sigma_2)$ for a dual commitment $(cm,\widetilde{cm})$, the  verification algorithm $\mathsf{RS}.\mathsf{Verify}_{\mathbf{ck}}(vk, (cm,\widetilde{cm}), \sigma)$ needs $\widetilde{cm}\in\widetilde{\mathbb{G}}$ and, of course, the *verification key* $vk =\widetilde{X}$.
@@ -257,7 +261,7 @@ e\left(\sigma_1^{u'}, \left(\widetilde{X} \cdot \widetilde{cm} \cdot \tilde{g}^{
 %
 e\left(\sigma_1, \left(\widetilde{X} \cdot \widetilde{cm} \cdot \tilde{g}^{r'}\right)\right) = e\left( \sigma_2 \cdot (\sigma_1)^{r'}, \tilde{g}\right)\Leftrightarrow\\
 %
-e\left(\sigma_1, \widetilde{X} \cdot \widetilde{cm} \right) e\left(\sigma_1, \tilde{g}^{r'}\right) = e\left(\sigma_2, \tilde{g}\right)\cdot e\left((\sigma_1)^{r'}, \tilde{g}\right)\Leftrightarrow\\
+e\left(\sigma_1, \widetilde{X} \cdot \widetilde{cm} \right) e\left(\sigma_1, \widetilde{g}^{r'}\right) = e\left(\sigma_2, \widetilde{g}\right)\cdot e\left((\sigma_1)^{r'}, \tilde{g}\right)\Leftrightarrow\\
 %
 e\left(\sigma_1, \widetilde{X} \cdot \widetilde{cm} \right)  = e\left(\sigma_2, \tilde{g}\right)
 $$
