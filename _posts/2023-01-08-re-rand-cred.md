@@ -82,10 +82,14 @@ Pedersen commitments have amazing properties:
     * the new commitment is uniformly, independently distributed in $\mathbb{G}$ (in particular, independent of $cm$)
 
 Re-randomization of a Pedersen commitment is easy:
+
 $$
 r' \gets \mathsf{Rand}(\mathbb{F})\\
 cm' \gets cm \cdot g^ {r'}
-$$and denote this operation as
+$$
+
+and denote this operation as
+
 $$
 cm' \gets \mathsf{CM.Rerand}(cm; r')
 $$
