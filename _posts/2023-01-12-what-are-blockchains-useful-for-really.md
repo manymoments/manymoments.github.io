@@ -14,11 +14,11 @@ In a previous [post](https://decentralizedthoughts.github.io/2022-09-05-what-is-
 
 1. **Decentralized cryptocurrency.** Cryptocurrency is a poster child example use of a blockchain. A large part of the world today thinks of the two interchangeably. The use case is natural; cryptocurrencies attempt to bypass the centralized institutional trust. Many large vendors today, such as Amazon, PayPal, Overstock, AT&T, and CheapAir accept cryptocurrencies in some form as a payment method. However, at the time of writing, the average transaction fee for Ethereum and Bitcoin are > \$2 USD and > \$1 USD, respectively, which may be expensive for many transactions.
 
-    Questions: 1. Do you believe payments would be a primary use case a decade from now?
+    Question: 1a. Do you believe payments would be a primary use case a decade from now?
 
 2. **Web3.** There are *multiple* definitions of what Web3 means today, and I am not attempting to precisely define it either. But it does appear that one aspect of Web3 can benefit from the use of blockchains compared to Web2. Today, with Web2, companies such as Twitter, Google, and Facebook hold a lot of individual data; moreover, they control the ability of individuals to access this data. The creation of walled data gardens provide a disproportionate amount of power to these companies. As an example, the order in which my Twitter feed or Facebook Newsfeed appear is entirely controlled by the respective companies and the algorithms they design. With Web3, the hope is that the data would be democratized so that the entire ecosystem can benefit from it. Thus, while we may still have a single agreed-upon dataset, there can be multiple applications that allow accessing this dataset differently.
 
-    Questions: 1. Privacy is essential for most users in such systems. Currently, we rely on the service provider, e.g., Facebook, to maintain the privacy of our data. What is the proposed mechanism to obtain privacy in Web3?
+    Question: 2a. Privacy is essential for most users in such systems. Currently, we rely on the service provider, e.g., Facebook, to maintain the privacy of our data. What is the proposed mechanism to obtain privacy in Web3?
     
 3. **Non-fungible tokens (NFTs): Maintaining documents such as land records, university transcripts, and concert tickets.** Many news articles talk about NFTs as selling a piece of digital art for millions of dollars. At the outset, the value proposition of such an NFT is not clear (to me). However, there are many other examples where the concept of NFTs would be instrumental. I discuss three different use cases.
 
@@ -30,7 +30,7 @@ In a previous [post](https://decentralizedthoughts.github.io/2022-09-05-what-is-
     
     We note that in these examples, the blockchain does not prevent uploading of incorrect data if the primary party uploading the information is faulty. For instance, a government employee may incorrectly change the ownership state of a piece of land. However, the change would be recorded and transparent, which may be sufficient in practice.
     
-    Questions: 1. What are other similar examples in this space?
+    Question: 3a. What are other similar examples in this space?
 
 4. **Decentralized Finance (DeFi).** There is a lot of excitement around decentralized finance where there is a separation between *who builds a financial product* and *who needs to be trusted*. In traditional finance, both of these are the same entity; in addition, the entity is subject to a regulatory compliance. Due to the amount of work involved in the process, this may be restricted to a few large entities. With DeFi, the necessary trust can be borrowed from the underlying blockchain, allowing any party to build these financial products. 
  
