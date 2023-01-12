@@ -1,12 +1,10 @@
 ---
 title: What are Blockchains Useful for, Really?
 date: 2023-01-12 00:00:00 -05:00
-author: Kartik Nayak
 tags:
 - blockchain
+author: Kartik Nayak
 ---
-
-
 
 Blockchains, or the decentralized ledger, are touted as the next big disruptive technology, as big as the Internet was in the 90s. What are these blockchains useful for really? In my experience, while there are relevant use cases, many examples people use that are either far too academic to be useful or are scenarios where blockchains are not the right solution in the first place. Thus, in this post, I am trying to compile a list of use cases where blockchains or the idea of decentralized trust would be helpful, say, a decade from now, if not earlier. The use cases should be conceptually sensible even if they may or may not have been implemented correctly today. Many of these examples are based on conversations with others in the space in the past few years.
 
