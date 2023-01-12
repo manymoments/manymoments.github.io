@@ -1,0 +1,45 @@
+---
+title: What are Blockchains Useful for, Really?
+date: 2023-01-12 00:00:00 -05:00
+author: Kartik Nayak
+tags:
+- blockchain
+---
+
+
+
+Blockchains, or the decentralized ledger, are touted as the next big disruptive technology, as big as the Internet was in the 90s. What are these blockchains useful for really? In my experience, while there are relevant use cases, many examples people use that are either far too academic to be useful or are scenarios where blockchains are not the right solution in the first place. Thus, in this post, I am trying to compile a list of use cases where blockchains or the idea of decentralized trust would be helpful, say, a decade from now, if not earlier. The use cases should be conceptually sensible even if they may or may not have been implemented correctly today. Many of these examples are based on conversations with others in the space in the past few years.
+
+*Generally, a post on Decentralized Thoughts attempts to explain a concept lucidly. Contrary to that, I hope to capture *decentralized thoughts* on this topic in one post. I will start by explaining some thoughts that I have. Through discussions on Twitter, I hope we can refine these thoughts and add more use cases.*
+
+In a previous [post](https://decentralizedthoughts.github.io/2022-09-05-what-is-a-blockchain/), we said blockchains decentralize trust by relying on multiple parties, incentivizing them correctly to take the right actions, and having the ability to audit them for misbehavior externally. Moreover, many blockchains embrace openness in participation, be it maintaining the ledger or reading and writing. In what situations are these properties beneficial?
+
+1. **Decentralized cryptocurrency.** Cryptocurrency is a poster child example use of a blockchain. A large part of the world today thinks of the two interchangeably. The use case is natural; cryptocurrencies attempt to bypass the centralized institutional trust. Many large vendors today, such as Amazon, PayPal, Overstock, AT&T, and CheapAir accept cryptocurrencies in some form as a payment method. However, at the time of writing, the average transaction fee for Ethereum and Bitcoin are > $2 USD and > $1 USD, respectively, which may be expensive for many transactions.
+
+    Questions: 1. Do you believe payments would be a primary use case a decade from now?
+
+2. **Web3.** There are *multiple* definitions of what Web3 means today, and I am not attempting to precisely define it either. But it does appear that one aspect of Web3 can benefit from the use of blockchains compared to Web2. Today, with Web2, companies such as Twitter, Google, and Facebook hold a lot of individual data; moreover, they control the ability of individuals to access this data. The creation of walled data gardens provide a disproportionate amount of power to these companies. As an example, the order in which my Twitter feed or Facebook Newsfeed appear is entirely controlled by the respective companies and the algorithms they design. With Web3, the hope is that the data would be democratized so that the entire ecosystem can benefit from it. Thus, while we may still have a single agreed-upon dataset, there can be multiple applications that allow accessing this dataset differently.
+
+    Questions: 1. Privacy is essential for most users in such systems. Currently, we rely on the service provider, e.g., Facebook, to maintain the privacy of our data. What is the proposed mechanism to obtain privacy in Web3?
+    
+3. **Non-fungible tokens (NFTs): Maintaining documents such as land records, university transcripts, and concert tickets.** Many news articles talk about NFTs as selling a piece of digital art for millions of dollars. At the outset, the value proposition of such an NFT is not clear (to me). However, there are many other examples where the concept of NFTs would be instrumental. I discuss three different use cases.
+
+    In many developing countries like India, land records are maintained with a stamp-paper as the proof-of-ownership. The proof can be easily counterfeited, making it challenging to identify the true owner. While the (trusted) government can maintain records in an opaque database, it is hard to avoid potential fraudulent transactions by some employees. The use of blockchains can help provide the necessary degree of transparency; users can have a timestamped record of the transfer of ownership of a piece of land over a given time period, and thus the record is indisputable. Consequently, they would reduce the load on civil courts to resolve conflicts. [Andhra Pradesh](https://www.cnbc.com/2017/10/10/this-indian-state-wants-to-use-blockchain-to-fight-land-ownership-fraud.html), [Maharashtra](https://economictimes.indiatimes.com/industry/services/property-/-cstruction/maharashtra-govt-starts-property-e-registrations-to-also-introduce-blockchain/articleshow/94034462.cms) and [Telangana](https://www.livemint.com/Politics/4IOMVhyOuK6k0LwSVGikZL/Telangana-govt-to-use-blockchain-tech-for-securing-land-reco.html) state governments in India have mentioned that they will use blockchains for maintaining land records.
+    
+    A related example in the same vein is the potential for fraud with university transcripts. Often, there is not an easy way to determine whether a given transcript or a diploma is genuine. Blockchains, as a means to storing these transcripts, can ensure that it has been issued by the correct entity (appropriate university), it has been issued to the individual that indeed earned them, and it has not been modified (e.g., revoked) since it has been issued. [Blockcerts](https://www.blockcerts.org/guide/) and [EduCTX](https://eductx.org/) are a couple of example applications used for maintaining transcripts on blockchains.
+    
+    Finally, a third use case is to eliminate fraud in concert tickets. Artists may sell concert tickets for a relatively low price. However, if there is significant demand for a given show, they are bought by intermediaries and resold at a much higher price. For one, the artists do not reap the benefits of reselling. Secondly, the buyer of a secondary ticket may not know if they are buying a legitimate ticket, and perhaps end up in the [Champions Leage Final without a seat](https://www.nytimes.com/2022/06/01/sports/soccer/champions-league-final-tickets.html). Using NFTs to track the ownership of a ticket has the potential to solve both of these concerns.
+    
+    We note that in these examples, the blockchain does not prevent uploading of incorrect data if the primary party uploading the information is faulty. For instance, a government employee may incorrectly change the ownership state of a piece of land. However, the change would be recorded and transparent, which may be sufficient in practice.
+    
+    Questions: 1. What are other similar examples in this space?
+
+4. **Decentralized Finance (DeFi).** There is a lot of excitement around decentralized finance where there is a separation between *who builds a financial product* and *who needs to be trusted*. In traditional finance, both of these are the same entity; in addition, the entity is subject to a regulatory compliance. Due to the amount of work involved in the process, this may be restricted to a few large entities. With DeFi, the necessary trust can be borrowed from the underlying blockchain, allowing any party to build these financial products. 
+ 
+    This has a couple of advantages. First, blockchains provide transparency. We now do not need to trust a centralized entity to follow the rules. Second, reducing the barrier to entry and opening up the system to everyone spurs innovation. In a world with fewer entities, there isn't an incentive to innovate. At the same time, there are some challenges to reaching an ideal world situation. As an example, a potential concern with centralized exchanges is their outright ability to order transactions in a given order. This concern is valid in a decentralized world, too; due to the potential of gaining stake if transactions are ordered in a certain way, a form of Miner Extractable Value (MEV), parties are incentivized to maximize their own gains. Moreover, while many parties can build financial products encoded as smart contracts, the verification of the correctness of this new software falls on the users.
+
+5. **The use case that we missed?**
+
+### Acknowledgment
+
+I learned about most of these use cases through discussions with several other researchers and practitioners in this space. Notably, I have had direct conversations with [Sreeram Kannan](https://people.ece.uw.edu/kannan_sreeram/), [Pramod Viswanath](https://web3.princeton.edu/), [Matt Weinberg](https://www.cs.princeton.edu/~smattw/), [Fan Zhang](https://www.fanzhang.me/), and also learned from an [episode](https://freakonomics.com/podcast/are-n-f-t-s-all-scams/) in Freakonomics.
