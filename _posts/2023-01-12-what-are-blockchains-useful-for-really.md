@@ -38,6 +38,8 @@ In a previous [post](https://decentralizedthoughts.github.io/2022-09-05-what-is-
 
 5. **The use case that we missed?**
 
+Do add your thoughts and responses to these questions on Twitter!
+
 ### Acknowledgment
 
 I learned about most of these use cases through discussions with several other researchers and practitioners in this space. Notably, I have had direct conversations with [Sreeram Kannan](https://people.ece.uw.edu/kannan_sreeram/), [Pramod Viswanath](https://web3.princeton.edu/), [Matt Weinberg](https://www.cs.princeton.edu/~smattw/), [Fan Zhang](https://www.fanzhang.me/), and also learned from an [episode](https://freakonomics.com/podcast/are-n-f-t-s-all-scams/) in Freakonomics.
