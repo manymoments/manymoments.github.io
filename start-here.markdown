@@ -134,7 +134,7 @@ Some important tools:
 
 - [Cryptographic hash functions](/2020-08-28-what-is-a-cryptographic-hash-function/).
 
-- [Merkle Ttrees](https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/).
+- [Merkle trees](https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/).
 
 - A lightweight mathematical intro to [Polynomials over a finite field](/2020-07-17-the-marvels-of-polynomials-over-a-field/).
 
