@@ -6,7 +6,7 @@ date: 2020-09-21 09:34:00 -04:00
 {: .box-note}
 This page contains material for a graduate course on Blockchains and Distributed Computing with a dash of Cryptography (stay tuned for more). Or read [posts chronologically](https://decentralizedthoughts.github.io/).
 
-We would love to get your feedback. If you find a post useful, or have a suggestion to improve, drop us a comment on [Twitter](https://twitter.com/ittaia/status/1421066572207169544?s=20).
+We would love to get your feedback. If you find a post helpful or have a suggestion to improve, drop us a comment on [Twitter](https://twitter.com/ittaia/status/1421066572207169544?s=20).
 
 
 # Basics, Foundations, and Classics
@@ -14,11 +14,11 @@ We would love to get your feedback. If you find a post useful, or have a suggest
 Start with the definition of [Consensus and Agreement](/2019-06-27-defining-consensus/). Then learn about the [network model](/2019-06-01-2019-5-31-models/), the [threshold adversary](/2019-06-17-the-threshold-adversary/) model, and the [power of the adversary](/2019-06-07-modeling-the-adversary/). Many protocols need a [trusted setup phase](/2019-07-19-setup-assumptions/).
 The [consensus cheat sheet](https://decentralizedthoughts.github.io/2021-10-29-consensus-cheat-sheet/) gives a quick overview of what is possible and impossible. You can build half a course just from the upper bounds and lower bounds linked from it. 
 
-## Variants of consensus and broadcast 
+## Variants of Consensus and Broadcast 
 
 [Approximate agreement](https://decentralizedthoughts.github.io/2022-06-07-approx-agreement-one/) is a variation that considers rational input values.
 
-This post cover several [relaxations of Broadcast](/2019-10-22-flavours-of-broadcast/).
+This post covers several [relaxations of Broadcast](/2019-10-22-flavours-of-broadcast/).
 
 
 
@@ -26,11 +26,11 @@ This post cover several [relaxations of Broadcast](/2019-10-22-flavours-of-broad
 
 The Synchronous model is a good place to start because protocols are simpler. 
 
-For a simple and classic Synchronous Byzantine agreement protocol, checkout [Phase-King](https://decentralizedthoughts.github.io/2022-06-09-phase-king-via-gradecast/).
+For a simple and classic synchronous Byzantine agreement protocol, checkout [Phase-King](https://decentralizedthoughts.github.io/2022-06-09-phase-king-via-gradecast/).
 
 Under synchrony, a classic Byzantine Broadcast protocol (with a PKI) is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/). 
 
-More recent State Machine Replication protocols such as [Sync HotStuff](/2019-11-12-Sync-HotStuff/), an [optimal optimistically responsive synchronous protocol](/2020-06-12-optimal-optimistic-responsiveness/), and simple streamlined synchronous protocol called [Streamlet](/2020-05-14-streamlet/). This post provides a survey of [authenticated protocols under the synchrony assumption](/2019-11-11-authenticated-synchronous-bft/).
+More recent State Machine Replication protocols such as [Sync HotStuff](/2019-11-12-Sync-HotStuff/), an [optimal optimistically responsive synchronous protocol](/2020-06-12-optimal-optimistic-responsiveness/), and a simple, streamlined synchronous protocol called [Streamlet](/2020-05-14-streamlet/). This post provides a survey of [authenticated protocols under the synchrony assumption](/2019-11-11-authenticated-synchronous-bft/).
 
 For a simple non-equivocation protocol, see [Crusader Broadcast](https://decentralizedthoughts.github.io/2022-06-19-crusader-braodcast/). 
 
@@ -39,7 +39,7 @@ For a simple non-equivocation protocol, see [Crusader Broadcast](https://decentr
 
 [Partial synchrony](/2019-09-14-flavours-of-partial-synchrony/) is one of the most used models in real word systems today.
 
-Modern variants of the classic protocols of Paxos and Raft are covered in [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/) and [Simplifing Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/). [Log Paxos](https://decentralizedthoughts.github.io/2021-09-30-distributed-consensus-made-simple-for-real-this-time/) is a modern take on multi-Paxos. It's both surprisingly simple and concretely efficient. 
+Modern variants of the classic protocols of Paxos and Raft are covered in [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/) and [Simplifing Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/). [Log Paxos](https://decentralizedthoughts.github.io/2021-09-30-distributed-consensus-made-simple-for-real-this-time/) is a modern take on multi-Paxos. It is both surprisingly simple and concretely efficient. 
 
 An important building block is [provable broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
 
@@ -70,11 +70,11 @@ Series on Asynchronous Agreement:
 
 # State Machine Replication
 
-This post defines [state machine replication](/2019-10-15-consensus-for-state-machine-replication/) (SMR). There are several different levels of [SMR fault tolerance](/2019-10-25-flavours-of-state-machine-replication/). 
+This post defines [state machine replication](/2019-10-15-consensus-for-state-machine-replication/) (SMR). There are several levels of [SMR fault tolerance](/2019-10-25-flavours-of-state-machine-replication/). 
 
-This post gives a formal definition of the [ideal state machine model and Linearizability](https://decentralizedthoughts.github.io/2021-10-16-the-ideal-state-machine-model-multiple-clients-and-linearizability/). 
+This post formally defines the [ideal state machine model and Linearizability](https://decentralizedthoughts.github.io/2021-10-16-the-ideal-state-machine-model-multiple-clients-and-linearizability/). 
 
-The scalability and performance of a State Machine Replication system is not just about [consensus, but also about data and execution](/2019-12-06-dce-the-three-scalability-bottlenecks-of-state-machine-replication/).
+The scalability and performance of a State Machine Replication system are not just about [consensus, but also about data and execution](/2019-12-06-dce-the-three-scalability-bottlenecks-of-state-machine-replication/).
 
 How [DAGs improve the performance of SMR](https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/).
 
@@ -98,7 +98,7 @@ Lower bounds give us powerful tools to understand the fundamental limitations an
 
 - Dolev and Reischuk 1982 ([DR](https://www.cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf)) lower bound: [Consensus often needs a quadratic number of messages](/2019-08-16-byzantine-agreement-needs-quadratic-messages/).
 
-- Fischer, Lynch, Paterson 1985 ([FLP](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf)) lower bound: Consensus must have some initial state that is [uncommitted](/2019-12-15-consensus-model-for-FLP/) and this imples [executions with at least $f+1$ rounds in Synchrony](/2019-12-15-synchrony-uncommitted-lower-bound/) and [non-terminating executions in Asynchrony](/2019-12-15-asynchrony-uncommitted-lower-bound/) (the FLP impossibility).
+- Fischer, Lynch, Paterson 1985 ([FLP](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf)) lower bound: Consensus must have some initial state that is [uncommitted](/2019-12-15-consensus-model-for-FLP/) and this implies [executions with at least $f+1$ rounds in Synchrony](/2019-12-15-synchrony-uncommitted-lower-bound/) and [non-terminating executions in Asynchrony](/2019-12-15-asynchrony-uncommitted-lower-bound/) (the FLP impossibility).
 
 -  Ben-Or, Kelmer, Rabin 1994 ([BKR](https://dl.acm.org/doi/10.1145/197917.198088)) lower bound: Asynchronous Verifiable Secret Sharing must have a [non-zero probability of not terminating](https://decentralizedthoughts.github.io/2020-07-15-asynchronous-fault-tolerant-computation-with-optimal-resilience/).
 
@@ -154,7 +154,7 @@ The [BGW88](https://inst.eecs.berkeley.edu/~cs276/fa20/notes/BGW88.pdf) protocol
 
 Chaum’s [Dining Cryptographers](https://users.ece.cmu.edu/~adrian/731-sp04/readings/dcnets.html) and [the additivity of polynomial secret sharing](https://decentralizedthoughts.github.io/2022-08-25-dining-cryptographers-additive/).
 
-# Research oriented posts
+# Research Oriented Posts
 
 - [What is the difference between PBFT, Tendermint, SBFT, and HotStuff ?](/2019-06-23-what-is-the-difference-between/)
 
@@ -186,7 +186,7 @@ Chaum’s [Dining Cryptographers](https://users.ece.cmu.edu/~adrian/731-sp04/rea
 
 - [Consensus by Dfinity: in synchrony](https://decentralizedthoughts.github.io/2022-03-12-dfinity-synchrony/) and [Consensus by Dfinity - Part II (Internet Computer Consensus): in partial synchrony](https://decentralizedthoughts.github.io/2022-03-12-dfinity-partial-synchrony/) 
 
-- [Sandglass: Safe Permisionless Consensus](https://decentralizedthoughts.github.io/2022-06-21-sandglass/).
+- [Sandglass: Safe Permissionless Consensus](https://decentralizedthoughts.github.io/2022-06-21-sandglass/).
 
 - [DAG Meets BFT - The Next Generation of BFT Consensus](https://decentralizedthoughts.github.io/2022-06-28-DAG-meets-BFT/).
 
