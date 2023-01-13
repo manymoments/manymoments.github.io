@@ -13,6 +13,9 @@ Blockchains, or the decentralized ledger, are touted as the next big disruptive 
 In a previous [post](https://decentralizedthoughts.github.io/2022-09-05-what-is-a-blockchain/), we said blockchains decentralize trust by relying on multiple parties, incentivizing them correctly to take the right actions, and having the ability to externally audit them for misbehavior. Moreover, many blockchains embrace openness in participation, be it maintaining the ledger or reading and writing. In what situations are these properties beneficial?
 
 1. **Decentralized cryptocurrency.** Cryptocurrency is a poster child example use of a blockchain. A large part of the world today thinks of the two interchangeably. The use case is natural; cryptocurrencies attempt to bypass the centralized institutional trust. Many large vendors today, such as Amazon, PayPal, Overstock, AT&T, and CheapAir accept cryptocurrencies in some form as a payment method. However, at the time of writing, the average transaction fee for Ethereum and Bitcoin are > \$2 USD and > \$1 USD, respectively, which may be expensive for many transactions.
+$2 USD and > $1 USD
+\\$2 USD and > \\$1 USD
+$$2 USD and > $$1 USD
 
     Question: 1a. Do you believe payments would be a primary use case a decade from now?
 
@@ -36,7 +39,7 @@ In a previous [post](https://decentralizedthoughts.github.io/2022-09-05-what-is-
  
     This has a couple of advantages. First, blockchains provide transparency. We now do not need to trust a centralized entity to follow the rules. Second, reducing the barrier to entry and opening up the system to everyone spurs innovation. In a world with fewer entities, there isn't an incentive to innovate. At the same time, there are some challenges to reaching an ideal world situation. As an example, a potential concern with centralized exchanges is their outright ability to order transactions in a given order. This concern is valid in a decentralized world, too; due to the potential of gaining stake if transactions are ordered in a certain way, a form of Miner Extractable Value (MEV), parties are incentivized to maximize their own gains. Moreover, while many parties can build financial products encoded as smart contracts, the verification of the correctness of this new software falls on the users.
 
-5. **The use case that we missed?**
+5. **The most important use case that we missed?**
 
 Do add your thoughts and responses to these questions on Twitter!
 
