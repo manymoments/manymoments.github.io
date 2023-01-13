@@ -60,7 +60,7 @@ The multi-leader generalization of reliable broadcast is called [Reliable Gather
 
 Series on Asynchronous Agreement: 
 
-1. [define the problem](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/);
+1. [Define the problem](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-one-defining-the-problem/);
 2. present [Ben-Or's protocol](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-two-ben-ors-protocol/);
 3. provide a [modern version](https://decentralizedthoughts.github.io/2022-03-30-asynchronous-agreement-part-three-a-modern-version-of-ben-ors-protocol/);
 4. Introduce [Crusader Agreement and Binding Crusader Agreement](https://decentralizedthoughts.github.io/2022-04-05-aa-part-four-CA-and-BCA/); 
@@ -110,19 +110,23 @@ Lower bounds give us powerful tools to understand the fundamental limitations an
 
 What is a [blockchain?](https://decentralizedthoughts.github.io/2022-09-05-what-is-a-blockchain/)
 
-What was the [first blockchain (or how to timestamp a digital document)](/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/)?  
+What are [blockchains useful for, really](https://decentralizedthoughts.github.io/2023-01-12-what-are-blockchains-useful-for-really/)?
+
+What was the [first blockchain (or how to timestamp a digital document)](/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/)? 
+
+What is [Nakamoto Consensus](/2021-10-15-Nakamoto-Consensus/)? How do you [prove Nakamoto Consensus is secure](/2019-11-29-Analysis-Nakamoto/)?
 
 Do proof-of-work blockchains need any [setup assumptions?](/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/)?
 
-What does [checkpointing a blockchain](/2019-09-13-dont-trust-checkpoint/) mean?  
-
-What is [Nakamoto Consensus](/2021-10-15-Nakamoto-Consensus/)? 
-
-How do you [prove Nakamoto Consensus is secure](/2019-11-29-Analysis-Nakamoto/)? 
+What does [checkpointing a blockchain](/2019-09-13-dont-trust-checkpoint/) mean?
 
 What is the problem of [selfish mining](/2020-02-26-selfish-mining/)?
 
 The simplest L2 solution is a [payment channel](/2019-10-25-payment-channels-are-just-a-two-person-bfs-smr-systems/).
+
+What is player replaceability? A series:
+- [Defining the problem and achieving a committee-based sub-quadratic communication protocol](https://decentralizedthoughts.github.io/2023-01-05-player-replaceability-I/)
+- [Achieving adaptive security for the committee-based protocol](https://decentralizedthoughts.github.io/2023-01-05-player-replaceability-II/)
 
 # Cryptography
 
