@@ -46,6 +46,10 @@ In a previous [post](https://decentralizedthoughts.github.io/2022-09-05-what-is-
 
 Do add your thoughts and responses to these questions on Twitter!
 
+### Notes
+- An interesting blog post by Vitalik on Ethereum applications [here](https://vitalik.eth.limo/general/2022/12/05/excited.html).
+- A description of the NFT ecosystem for art and collectables [here](https://www.arijuels.com/wp-content/uploads/2022/04/NFTs__Primer_and_Outlook.pdf).
+
 ### Acknowledgment
 
-I learned about most of these use cases through discussions with several other researchers and practitioners in this space. Notably, I have had direct conversations with [Sreeram Kannan](https://people.ece.uw.edu/kannan_sreeram/), [Pramod Viswanath](https://web3.princeton.edu/), [Matt Weinberg](https://www.cs.princeton.edu/~smattw/), [Fan Zhang](https://www.fanzhang.me/), and also learned from an [episode](https://freakonomics.com/podcast/are-n-f-t-s-all-scams/) in Freakonomics.
+I learned about most of these use cases through discussions with several other researchers and practitioners in this space. Notably, I have had direct conversations with [Sreeram Kannan](https://people.ece.uw.edu/kannan_sreeram/), [Pramod Viswanath](https://web3.princeton.edu/), [Matt Weinberg](https://www.cs.princeton.edu/~smattw/), [Fan Zhang](https://www.fanzhang.me/), [Ittai Abraham](https://research.vmware.com/researchers/ittai-abraham) and also learned from an [episode](https://freakonomics.com/podcast/are-n-f-t-s-all-scams/) in Freakonomics.
