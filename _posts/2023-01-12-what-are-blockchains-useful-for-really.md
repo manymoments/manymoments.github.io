@@ -32,7 +32,11 @@ In a previous [post](https://decentralizedthoughts.github.io/2022-09-05-what-is-
     
     We note that in these examples, the blockchain does not prevent uploading of incorrect data if the primary party uploading the information is faulty. For instance, a government employee may incorrectly change the ownership state of a piece of land. However, the change would be recorded and transparent, which may be sufficient in practice.
     
-    Question: 3a. What are other similar examples in this space?
+    Questions:
+    
+    3a. What are other similar examples in this space?
+
+    3b. Although one party may own an NFT at a given time, it can be seen/accessed by everyone. Thus, if a digital art is stored as an NFT, the owner does not have exclusive access to it. What is the rationale behind paying large amounts of money for such NFTs? The best answer I have heard until now is social status or the ability to flip it for higher returns. Do you agree with the rationale? If not, is there a better reason?
 
 4. **Decentralized Finance (DeFi).** There is a lot of excitement around decentralized finance where there is a separation between *who builds a financial product* and *who needs to be trusted*. In traditional finance, both of these are the same entity; in addition, the entity is subject to a regulatory compliance. Due to the amount of work involved in the process, this may be restricted to a few large entities. With DeFi, the necessary trust can be borrowed from the underlying blockchain, allowing any party to build these financial products. 
  
