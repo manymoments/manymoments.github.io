@@ -8,7 +8,7 @@ author: Kartik Nayak
 
 Blockchains, or the decentralized ledger, are touted as the next big disruptive technology, as big as the Internet was in the 90s. What are these blockchains useful for, really? While there are relevant use cases, many examples people use that are either far too academic to be useful or are scenarios where blockchains are not the right solution in the first place. Thus, in this post, I am trying to compile a list of use cases where blockchains or the idea of decentralized trust would be helpful, say, a decade from now, if not earlier. The use cases should be conceptually sensible even if they may or may not have been implemented correctly today. They should be accessible to an undergraduate student starting to explore blockchains. Many of these examples are based on conversations with others in the space in the past few years.
 
-*Generally, a post on Decentralized Thoughts attempts to explain a concept lucidly. Contrary to that, I hope to capture decentralized thoughts on this topic in one post. I will start by explaining some thoughts that I have. Through discussions on Twitter, I hope we can refine these thoughts and add more use cases.*
+*Generally, a post on Decentralized Thoughts attempts to explain a concept lucidly. Contrary to that, I hope to capture decentralized thoughts on this topic in one post. I will start by explaining some thoughts that I have. Through discussions on [Twitter](https://twitter.com/kartik1507/status/1614314708101652488?s=20), I hope we can refine these thoughts and add more use cases.*
 
 In a previous [post](https://decentralizedthoughts.github.io/2022-09-05-what-is-a-blockchain/), we said blockchains decentralize trust by relying on multiple parties, incentivizing them correctly to take the right actions, and having the ability to externally audit them for misbehavior. Moreover, many blockchains embrace openness in participation, be it maintaining the ledger or reading and writing. In what situations are these properties beneficial?
 
@@ -44,7 +44,7 @@ In a previous [post](https://decentralizedthoughts.github.io/2022-09-05-what-is-
 
 5. **The most important use case that we missed?**
 
-Do add your thoughts and responses to these questions on Twitter!
+Do add your thoughts and responses to these questions on [Twitter](https://twitter.com/kartik1507/status/1614314708101652488?s=20)!
 
 ### Notes
 - It is not clear if all of these use cases are exclusive or not,e.g., are NFTs a part of DeFi or Web3 or neither?
