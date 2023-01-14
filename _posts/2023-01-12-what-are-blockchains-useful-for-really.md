@@ -6,7 +6,7 @@ tags:
 author: Kartik Nayak
 ---
 
-Blockchains, or the decentralized ledger, are touted as the next big disruptive technology, as big as the Internet was in the 90s. What are these blockchains useful for, really? While there are relevant use cases, many examples people use that are either far too academic to be useful or are scenarios where blockchains are not the right solution in the first place. Thus, in this post, I am trying to compile a list of use cases where blockchains or the idea of decentralized trust would be helpful, say, a decade from now, if not earlier. The use cases should be conceptually sensible even if they may or may not have been implemented correctly today. They should be accessible to an undergraduate/graduate student starting to explore blockchains. Many of these examples are based on conversations with others in the space in the past few years.
+Blockchains, or the decentralized ledger, are touted as the next big disruptive technology, as big as the Internet was in the 90s. What are these blockchains useful for, really? While there are relevant use cases, many examples people use that are either far too academic to be useful or are scenarios where blockchains are not the right solution in the first place. Thus, in this post, I am trying to compile a list of use cases where blockchains or the idea of decentralized trust would be helpful, say, a decade from now, if not earlier. The use cases should be conceptually sensible even if they may or may not have been implemented correctly today. They should be accessible to an undergraduate student starting to explore blockchains. Many of these examples are based on conversations with others in the space in the past few years.
 
 *Generally, a post on Decentralized Thoughts attempts to explain a concept lucidly. Contrary to that, I hope to capture decentralized thoughts on this topic in one post. I will start by explaining some thoughts that I have. Through discussions on Twitter, I hope we can refine these thoughts and add more use cases.*
 
@@ -47,7 +47,9 @@ In a previous [post](https://decentralizedthoughts.github.io/2022-09-05-what-is-
 Do add your thoughts and responses to these questions on Twitter!
 
 ### Notes
+- It is not clear if all of these use cases are exclusive or not,e.g., are NFTs a part of DeFi or Web3 or neither?
 - An interesting blog post by Vitalik on Ethereum applications [here](https://vitalik.eth.limo/general/2022/12/05/excited.html).
+- An interesting reading list on use cases by a16z [here](https://a16z.com/wp-content/uploads/2021/10/The-web3-Readlng-List.pdf).
 - A description of the NFT ecosystem for art and collectables [here](https://www.arijuels.com/wp-content/uploads/2022/04/NFTs__Primer_and_Outlook.pdf).
 
 ### Acknowledgment
