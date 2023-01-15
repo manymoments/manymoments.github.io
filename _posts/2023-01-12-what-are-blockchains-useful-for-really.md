@@ -49,11 +49,11 @@ In a previous [post](https://decentralizedthoughts.github.io/2022-09-05-what-is-
 Do add your thoughts and responses to these questions on [Twitter](https://twitter.com/kartik1507/status/1614314708101652488?s=20)!
 
 ### Notes
-- 
 - It is not clear if all of these use cases are exclusive or not,e.g., are NFTs a part of DeFi or Web3 or neither?
-- An interesting blog post by Vitalik on Ethereum applications [here](https://vitalik.eth.limo/general/2022/12/05/excited.html).
+- An interesting blog post by Vitalik on Ethereum applications [here](https://vitalik.eth.limo/general/2022/12/05/excited.html). A version from 2014 [here](https://ethereum.org/669c9e2e2027310b6b3cdce6e1c52962/Ethereum_Whitepaper_-_Buterin_2014.pdf).
 - An interesting reading list on use cases by a16z [here](https://a16z.com/wp-content/uploads/2021/10/The-web3-Readlng-List.pdf).
 - A description of the NFT ecosystem for art and collectables [here](https://www.arijuels.com/wp-content/uploads/2022/04/NFTs__Primer_and_Outlook.pdf).
+- A podcast episode on Web3:[Chris Dixon thinks web3 is the future of the internet — is it?](https://www.theverge.com/23020727/decoder-chris-dixon-web3-crypto-a16z-vc-silicon-valley-investing-podcast-interview)
 
 ### Acknowledgment
 
