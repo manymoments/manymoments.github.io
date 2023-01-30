@@ -128,7 +128,7 @@ Combining the previous properties and the fact that servers only commit commands
 
 ### Liveness
 
-Like Raft, Chained Raft guarantees liveness [after synchrony](https://decentralizedthoughts.github.io/2019-09-14-flavours-of-partial-synchrony/) provided at least a majority of servers are up and communicating reliably [(caveats apply)](https://decentralizedthoughts.github.io/2020-12-12-raft-liveness-full-omission/). 
+Like Raft, Chained Raft guarantees liveness [after synchrony](https://decentralizedthoughts.github.io/2019-09-13-flavours-of-partial-synchrony/) provided at least a majority of servers are up and communicating reliably [(caveats apply)](https://decentralizedthoughts.github.io/2020-12-12-raft-liveness-full-omission/). 
 
 The proof of liveness which we will skip for now is much the same for Raft and Chained Raft, however, the following idea is useful to note. From the leader append-only property we know that if two servers have the same last appended term then their heads are either the same or one head extends the other. This means that for any pair of servers at least one server could vote for the other and thus at least one server in any majority could be elected leader.
 

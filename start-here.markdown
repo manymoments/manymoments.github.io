@@ -37,7 +37,7 @@ For a simple non-equivocation protocol, see [Crusader Broadcast](https://decentr
 
 ## Partially Synchronous Protocols
 
-[Partial synchrony](/2019-09-14-flavours-of-partial-synchrony/) is one of the most used models in real word systems today.
+[Partial synchrony](/2019-09-13-flavours-of-partial-synchrony/) is one of the most used models in real word systems today.
 
 Modern variants of the classic protocols of Paxos and Raft are covered in [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/) and [Simplifing Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/). [Log Paxos](https://decentralizedthoughts.github.io/2021-09-30-distributed-consensus-made-simple-for-real-this-time/) is a modern take on multi-Paxos. It is both surprisingly simple and concretely efficient. 
 
