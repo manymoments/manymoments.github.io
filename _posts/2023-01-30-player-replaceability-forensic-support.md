@@ -56,4 +56,4 @@ For the second case, we first check the TC in round $r+1$ to identify any stale 
 
 In summary, by analyzing the fundamental relationship between player replaceability and forensic support in BFT protocols, we found that it is possible to achieve both properties simultaneously by tracking states transition. We also investigated how forensic support can be implemented in longest-chain protocols and studied the impact of player replaceability on forensic properties. Please check out the [paper](https://eprint.iacr.org/2022/1513) for more details.
 
-Do add your thoughts on [Twitter]().
+Do add your thoughts on [Twitter](https://twitter.com/kartik1507/status/1626611253551538179?s=20).
