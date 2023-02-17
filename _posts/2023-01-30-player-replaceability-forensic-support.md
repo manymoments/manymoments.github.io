@@ -56,10 +56,4 @@ For the second case, we first check the TC in round $r+1$ to identify any stale 
 
 In summary, by analyzing the fundamental relationship between player replaceability and forensic support in BFT protocols, we found that it is possible to achieve both properties simultaneously by tracking states transition. We also investigated how forensic support can be implemented in longest-chain protocols and studied the impact of player replaceability on forensic properties. Please check out the [paper](https://eprint.iacr.org/2022/1513) for more details.
 
-<!--## Forensics for Player-Replaceable Longest-Chain Protocols
-
-Longest-chain based protocols, such as Bitcoin and Ouroboros, differ from BFT protocols in their method of finalizing blocks with an implicit voting procedure, and there is no way to detect if an adversarial leader appends blocks to a shorter chain. As a result, the only type of culpable behavior that our forensic protocol can detect is when a leader double proposes blocks in a single round. This means that the forensic analysis for longest-chain protocols is limited to same-round behavior. 
-
-In our [paper](https://eprint.iacr.org/2022/1513), we examine how forensic support can be implemented in longest-chain protocols and analyze the influence of player-replaceability on forensic properties by studying the Ouroboros protocol family, including Ouroboros BFT (OBFT), Ouroboros (non-player-replaceable) and Ouroboros Praos (player-replaceable). The results show that player-replaceability can still negatively impact forensic analysis if multiple leaders are allowed to be elected in the same round. However, this impact is minimal when the confirmation depth is small in comparison to the total number of parties ($n$).--!>
-
 Do add your thoughts on [Twitter]().
