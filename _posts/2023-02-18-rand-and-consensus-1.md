@@ -1,10 +1,11 @@
 ---
-title: Randomization and Consensus - synchronous binary agreement for crash failures with a perfect common coin
+title: Randomization and Consensus - synchronous binary agreement for crash failures
+  with a perfect common coin
 date: 2023-02-18 04:00:00 -05:00
 tags:
 - dist101
 - randomness
-author: Ittai Abraham 
+author: Ittai Abraham
 ---
 
 The goal of this post is to try to show the simplest setting where **randomization** can help solve **consensus**. The model is *lock-step* (**synchrony**) with $f<n$ **crash** failures. We know that in the [worst case](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) reaching agreement takes at least $f+1$ rounds. This lower bound holds even if the protocol is randomized so the natural question is:
