@@ -1,12 +1,12 @@
 ---
-title: Randomization and Consensus - synchronous binary agreement for minority omission failures
+title: Randomization and Consensus - synchronous binary agreement for minority omission
+  failures
 date: 2023-02-19 04:00:00 -05:00
 tags:
 - dist101
 - randomness
-author: Ittai Abraham 
+author: Ittai Abraham
 ---
-
 
 Continuing the series on simple ways where randomization can help solve consensus. The model is **lock-step** (synchrony) with $f<n/2$ **omission** failures. We know that in the [worst case](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) reaching agreement takes at least $f+1$ rounds. Can randomization help reduce the expected number of rounds? In the post, we show a simple randomized consensus algorithm including a simple weak coin protocol.
 
