@@ -48,11 +48,11 @@ Once you see <decide value>,
 **Agreement**: consider the first round $v^\star$ where a party $I$ outputs $b$. So party $I$ did not crash before sending $b$ to all parties.  At the end of round $v^\star$ all parties heard the value $b$ from $I$ so will either use the coin to set their value to $b$ or keep the value $b$. Similar to the validity argument above,  in any round $> v^\star$, since all parties start with $b$ then they will leave with $b$. 
 
 
-**Expected Termination**: Conditioned on no party outputting a value in rounds $<j$, consider the first party to not crash in round $j$. With probability $1/2$ it will output its value. 
+**Expected Termination**: Conditioned on no party outputting a value in any round $<j$, consider the first party to not crash in round $j$. With probability $1/2$ it will output its value. 
 
 So we have shown that in expected 2 rounds there will be at least one party that outputs a value.
 
-Conditioned on a party outputting a value in round $<j'$, we know from agreement and validity that all parties enter round $j'$ with the value $b$. With probability $1/2$ all non-faulty parties will output their value. 
+Conditioned on a party outputting value $b$ in round $<j'$, we know from agreement and validity that all parties enter round $j'$ with the value $b$. With probability $1/2$ all non-faulty parties will output their value in round $j'$. 
 
 So we have shown that in expected 4 rounds all non-faulty parties output a value. So terminate in expected 5 rounds.
 
@@ -64,7 +64,7 @@ How did randomization help? we used the common coin as a *virtual leader*. To ma
 
 Finally, why does the protocol end in an expected 5 rounds? it's because we assumed the coin is unpredictable! If the adversary knew the coin values in advance it could force a $f+1$ round execution.
 
-In particular, by assuming the coin is unpredictable we implicitly assume there is a limit to the adaptive power of the adversary. In particular, it must send its round $j$ message before learning the round $j$ coin. In later posts, we will be even more explicit about the adaptive power of the adversary.
+By assuming the coin is unpredictable we implicitly assume there is a limit to the adaptive power of the adversary. It must send its round $j$ message before learning the round $j$ coin. In later posts, we will be even more explicit about the adaptive power of the adversary.
 
 
 *Exercise*: consider a *super adaptive adversary with future-vision* that at the beginning of round $j$ knows in advance the coin value and can decide what parties to crash in round $j$ based on this information. Show a strategy for this adversary that forces a $f+1$ round execution.
