@@ -76,6 +76,6 @@ The protocol relies heavily on assuming a perfect common coin. In the [next post
 Many thanks to Sravya Yandamuri and Naama Ben-David for insightful discussions and comments.
 
 
-Your thoughts (and solution to the exercise) on [Twitter]().
+Your thoughts (and solution to the exercise) on [Twitter](https://twitter.com/ittaia/status/1626993583986249728?s=20).
 
 
