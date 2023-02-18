@@ -1,14 +1,14 @@
 ---
 title: Randomization and Consensus - synchronous binary agreement for crash failures
   with a perfect common coin
-date: 2023-02-18 04:00:00 -05:00
+date: 2023-02-18 06:00:00 -05:00
 tags:
 - dist101
 - randomness
 author: Ittai Abraham
 ---
 
-The goal of this post is to try to show the simplest setting where **randomization** can help solve **consensus**. The model is *lock-step* (**synchrony**) with $f<n$ **crash** failures. We know that in the [worst case](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) reaching agreement takes at least $f+1$ rounds. This lower bound holds even if the protocol is randomized so the natural question is:
+What is the simplest setting where **randomization** can help solve **consensus**? Assume *lock-step* (**synchrony**) with $f<n$ **crash** failures. We know that in the [worst case](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) reaching agreement takes at least $f+1$ rounds. This lower bound holds even if the protocol is randomized so the natural question is:
 
 > Can randomization help reduce the *expected* number of rounds?
 
@@ -16,7 +16,7 @@ This post can be used as a prequel for our posts on how to use [randomness](http
 
 
 ### Perfect common coin
-Assume that in each round $j$, parties have access to a **perfect common coin**, ```coin_j```. The coin for round $j$ is *unpredictable* before the end of round $j$ and is *uniformly* distributed. A perfect coin is a strong assumption. We will show in later posts that it is not unreasonable. 
+Assume that in each round $j$, parties have access to a **perfect common coin**, ```coin_j```. The coin for round $j$ is *unpredictable* before the end of round $j$ and is *uniformly* distributed. A perfect coin is a strong assumption. We will show in later posts build it. 
 
 ### Binary agreement for crash failures with a perfect common coin
 
