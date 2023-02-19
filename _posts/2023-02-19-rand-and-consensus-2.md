@@ -1,19 +1,19 @@
 ---
 title: Randomization and Consensus - synchronous binary agreement for minority omission
   failures
-date: 2023-02-19 04:00:00 -05:00
+date: 2023-02-19 06:00:00 -05:00
 tags:
 - dist101
 - randomness
 author: Ittai Abraham
 ---
 
-Continuing the series on simple ways where randomization can help solve consensus. The model is **lock-step** (synchrony) with $f<n/2$ **omission** failures. We know that in the [worst case](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) reaching agreement takes at least $f+1$ rounds. Can randomization help reduce the expected number of rounds? In the post, we show a simple randomized consensus algorithm including a simple weak coin protocol.
+Continuing the series on [simple ways](https://decentralizedthoughts.github.io/2023-02-18-rand-and-consensus-1/) where randomization can help solve consensus. The model is **lock-step** (synchrony) with $f<n/2$ **omission** failures. We know that in the [worst case](https://decentralizedthoughts.github.io/2019-12-15-synchrony-uncommitted-lower-bound/) reaching agreement takes at least $f+1$ rounds. Can randomization help reduce the expected number of rounds? In the post, we show a simple randomized consensus algorithm including a simple weak coin protocol.
 
 
 ### Adaptive adversaries
 
-As in the [previous post]() and in any use of randomness, we need to make sure that the randomness is *unpredictable* and that the adversary can only *adapt* to the randomness when it's too late for it to matter.
+As in the [previous post](https://decentralizedthoughts.github.io/2023-02-18-rand-and-consensus-1/) for crash failures and in any use of randomness, we need to make sure that the randomness is *unpredictable* and that the adversary can only *adapt* to the randomness when it's too late for it to matter.
 
 Here we show how to build a weak common coin against a *weakly adaptive adversary*. 
 
@@ -29,7 +29,7 @@ A weak common coin for round $j$ has the following properties:
 
 **$\epsilon$-correct**: for any $b \in \{0,1\}$, with probability at least $\epsilon$, all parties output $b$. In particular, here we will aim for $1/4$-correct.
 
-The following one round protocol for $f<n/2$ omission faults:
+The following one round protocol for $f<n/2$ omission faults is a $1/4$ correct weak coin:
 ```
 Each party randomly chooses:
     a rank in [1,...,n^2]
@@ -47,7 +47,7 @@ With probability at least $1/2$, the maximum rank is obtained by a non-faulty pa
 
 Note that the argument above uses the fact that the adaptive power of the adversary is weak. Otherwise, it could have learned the value of the max rank and adaptively corrupted that party to potentially cause disagreement.
 
-*Excercise*: show how an adversary that can see all the random coins in round $j$ and then decide how to corrupt parties in round $j$ can cause an execution of $\Omega(f)$ rounds. Can you show $f+1$ rounds?
+*Exercise*: show how an adversary that can see all the random coins in round $j$ and then decide how to corrupt parties in round $j$ can cause an execution of $\Omega(f)$ rounds. Can you show $f+1$ rounds?
 
 
 Next, we build an agreement protocol from this simple $1/4$-correct weak random coin.
