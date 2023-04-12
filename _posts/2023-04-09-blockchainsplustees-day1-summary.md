@@ -1,11 +1,11 @@
 ---
 title: Blockchains + TEEs Day 1 Summary
-date: 2023-04-09 00:00:00 -05:00
-author: Kartik Nayak, Ittai Abraham, Aniket Kate
+date: 2023-04-09 01:00:00 -04:00
 tags:
 - blockchain
 - TEE
 - workshop
+author: Kartik Nayak, Ittai Abraham, Aniket Kate
 ---
 
 Our [workshop on Blockchains + TEEs](https://blockchainsplusx.github.io) concluded last week. We had a fantastic series of talks and discussions on both days of the workshop. In this two part post, we highlight some key takeaways from each of the days.
