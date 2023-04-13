@@ -21,7 +21,7 @@ In consensus, it is [known](http://news.cs.nyu.edu/~jinyang/fa08/papers/a2m.pdf)
 
 She then presents a FlexiTrust protocol that can achieve a high throughput per replica participating in the system. In fact, while still relying on 3f+1 replicas, they address the three issues discussed earlier and (i) reduce the number of phases of communication, and (ii) the communication cost in the protocol. 
 
-To learn more, you can find her talk [here](https://youtu.be/9-nhNQO5_Js?t=207) and the slides [here]().
+To learn more, you can find her talk [here](https://youtu.be/9-nhNQO5_Js?t=207) and the slides [here](https://blockchainsplusx.github.io/docs/tees/NatachaCrooks.pptx).
 
 #### Heidi Howard: Confidential Consortium Framework: Building Secure Multiparty Services in the Cloud
 
