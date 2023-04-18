@@ -33,7 +33,7 @@ Heidi discussed some properties of the Confidential Consortium Framework (CCF) i
 
 In all, CCF tightly couple TEEs and blockchains. First, it leverage TEEs to build better blockchains by fundamentally decoupling operators and consortium members. Second, it leverages blockchains to build better TEEs by enabling confidentiality, integrity and availability on untrusted infrastructure.
 
-Learn more about CCF [here](https://youtu.be/9-nhNQO5_Js?t=2290). Slides can be found [here]().
+Learn more about CCF [here](https://youtu.be/9-nhNQO5_Js?t=2290). Slides can be found [here](https://blockchainsplusx.github.io/docs/tees/HeidiHoward.pdf).
 
 #### Mic Bowman: Building Decentralized Trust with a Trusted Execution Environment
 
@@ -84,3 +84,5 @@ Given this background, Jonathan discussed the following key research questions:
 - Exploring how encrypted mempools can help solve some of these challenges.
 
 Learn more details about the challenges and research questions from Jonathan's talk [here](https://youtu.be/9-nhNQO5_Js?t=10870). Here are the [slides]() from the talk.
+
+Please add your thoughts on [Twitter]().
