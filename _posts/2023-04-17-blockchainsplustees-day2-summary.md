@@ -58,3 +58,5 @@ Guy then discussed the Secret architecture at a high level. One key aspect that 
 Finally, he discussed applications on Secret Network, such as NFTs and private messaging networks. Finally, he ended the talk by discussing some challenges faced by Secret Network.
 
 Listen to the talk [here](https://youtu.be/zIU3gFTb2PM?t=9020). His slides are available [here]().
+
+Please add your thoughts on [Twitter](https://twitter.com/kartik1507/status/1649041738810507264?s=20).
