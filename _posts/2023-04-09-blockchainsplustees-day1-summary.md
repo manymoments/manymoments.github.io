@@ -85,4 +85,4 @@ Given this background, Jonathan discussed the following key research questions:
 
 Learn more details about the challenges and research questions from Jonathan's talk [here](https://youtu.be/9-nhNQO5_Js?t=10870). Here are the [slides]() from the talk.
 
-Please add your thoughts on [Twitter]().
+Please add your thoughts on [Twitter](https://twitter.com/kartik1507/status/1649041738810507264?s=20).
