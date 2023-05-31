@@ -5,7 +5,7 @@ layout: page
 
 <img align="left" width="200" height="200" src="../img/ittai.jpg" hspace="20"> 
 
-Ittai is a Researcher at VMware Research.
+Ittai is a Researcher at Intel Labs.
 
 He does research in Algorithms and Distributed Computing.
 
