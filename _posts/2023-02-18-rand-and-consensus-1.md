@@ -45,14 +45,13 @@ Once you see <decide value>,
 
 **Validity**: clearly if all parties start with $b$ then they will never change their value. 
 
-**Agreement**: consider the first round $v^\star$ where a party $I$ outputs $b$. So party $I$ did not crash before sending $b$ to all parties.  At the end of round $v^\star$ all parties heard the value $b$ from $I$ so will either use the coin to set their value to $b$ or keep the value $b$. Similar to the validity argument above,  in any round $> v^\star$, since all parties start with $b$ then they will leave with $b$. 
+**Agreement**: consider the first round $v^\star$ where some party $i$ outputs $b$. So party $i$ did not crash before sending $b$ to all parties and the coin in round $v^\star$ is $b$.  At the end of round $v^\star$ all parties heard the value $b$ from $i$ so will either use the coin to set their value to $b$ or keep the value $b$. Similar to the validity argument above,  in any round $> v^\star$, since all parties start with $b$ then they will leave with $b$.
 
-
-**Expected Termination**: Conditioned on no party outputting a value in any round $<j$, consider the first party to not crash in round $j$. With probability $1/2$ it will output its value. 
+**Expected Termination**: Conditioned on no party outputting a value in any round $<j$, consider the first party to not crash in round $j$. With probability $1/2$ the coin will be equal to its values and it will output its value.
 
 So we have shown that in expected 2 rounds there will be at least one party that outputs a value.
 
-Conditioned on a party outputting value $b$ in round $<j'$, we know from agreement and validity that all parties enter round $j'$ with the value $b$. With probability $1/2$ all non-faulty parties will output their value in round $j'$. 
+Conditioned on a party outputting value $b$ in round $<j'$, we know from agreement and validity that all parties enter round $j'$ with the value $b$. With probability $1/2$ the coin in round $j'$ will be $b$ and all non-faulty parties will output their value in round $j'$. 
 
 So we have shown that in expected 4 rounds all non-faulty parties output a value. So terminate in expected 5 rounds.
 
@@ -60,22 +59,17 @@ In other words, given a perfect common coin, for any $f<n$ the expected number o
 
 
 ### Zooming out
-How did randomization help? we used the common coin as a *virtual leader*. To maintain *validity*, we only listen to the virtual leader when we hear both 0 and 1. For *safety* we decide only when the condition ```coin_j = value``` is true, this guarntees all other parties assign ```coin_j = value```.
+How did randomization help? we used the common coin as a *virtual leader*. To maintain *validity*, we only listen to the virtual leader when we hear both 0 and 1. For *safety* we decide only when the condition ```coin_j = value``` is true, this guarantees all other parties assign ```coin_j = value```.
 
 Finally, why does the protocol end in an expected 5 rounds? it's because we assumed the coin is unpredictable! If the adversary knew the coin values in advance it could force a $f+1$ round execution.
 
 By assuming the coin is unpredictable we implicitly assume there is a limit to the adaptive power of the adversary. It must send its round $j$ message before learning the round $j$ coin. In later posts, we will be even more explicit about the adaptive power of the adversary.
 
-
 *Exercise*: consider a *super adaptive adversary with future-vision* that at the beginning of round $j$ knows in advance the coin value and can decide what parties to crash in round $j$ based on this information. Show a strategy for this adversary that forces a $f+1$ round execution.
 
-The protocol relies heavily on assuming a perfect common coin. In the [next post](..), we will solve consensus for omission failures without this assumption by building a weak common coin.
-
+The protocol relies heavily on assuming a perfect common coin. In the [next post](https://decentralizedthoughts.github.io/2023-02-19-rand-and-consensus-2/), we will solve consensus for omission failures without this assumption by building a weak common coin.
 ## Acknowledgments
 
 Many thanks to Sravya Yandamuri and Naama Ben-David for insightful discussions and comments.
 
-
 Your thoughts (and solution to the exercise) on [Twitter](https://twitter.com/ittaia/status/1626993583986249728?s=20).
-
-
