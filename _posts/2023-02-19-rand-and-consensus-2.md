@@ -118,5 +118,5 @@ How did randomization help? we used the common coin as a *virtual leader*. To ma
 Many thanks to Sravya Yandamuri and Naama Ben-David for insightful discussions and comments.
 
 
-Your thoughts on [Twitter]().
+Your thoughts on [Twitter](https://twitter.com/ittaia/status/1627375659889704962?s=20).
 
