@@ -47,6 +47,8 @@ To prove the Knowledge of Agreement property, we first prove a Weak Agreement pr
 *Proof of Knowledge of Agreement:* If an honest party has grade 2, then it sees at least $n-t$ round 2 messages, hence all honest parties see at least $n-2t=t+1$ round 2 messages. Moreover, from the Weak Agreement property, we know that there cannot be $t+1$ round 2 messages for any other value.
 
 
+*Note*: If we ran the protocol for just one round (instead of two rounds) we would not get Knowledge of Agreement. One honest party may see $n-t$ for value $b$, but another honest party may see $t+1$ for value $1-b$ (in addition to seeing $t+1$ for value $b$) so would not know which value to choose from.
+
 ### The Phase-King protocol in the lens of Gradecast
 
 In this protocol each party has an input $v \in \{V\}$ and needs to decide on a value such that:
@@ -72,7 +74,7 @@ End of round 3(t+1):
 
 *Proof of Validity:* This follows from the Validity property of Gradecast and the fact that, in each phase, the grade will be 2, meaning that the king's value will be ignored.
 
-*Proof of Agreement:* Consider the first phase with an honest king. From the Knowledge of Agreement property, all honest parties will either switch to the king's value, or already have that value with grade 2.
+*Proof of Agreement:* Consider the first phase with an honest king. If any honest party has a value with grade 2, then from the Knowledge of Agreement property, this is the king's value and the value of any honest with grade 2, so all honest parties will either switch to the king's value, or already have that value with grade 2. Otherwise, all honest have grade $< 2$, so they will switch to the king's value. In either case at the end of this phase all honest have the same value and similar to Validity, will keep this value to the end and ignore all later kings.
 
 This concludes the proof for the Phase-King protocol. In the next post, we will show how to use it recursively to reduce the bit complexity to the optimal $O(n^2)$.
 
