@@ -52,8 +52,9 @@ To prove the Knowledge of Agreement property, we first prove a Weak Agreement pr
 ### The Phase-King protocol in the lens of Gradecast
 
 In this protocol each party has an input $v \in \{V\}$ and needs to decide on a value such that:
-**(Validity):** If all honest parties have the same input value, then all of them decide this value.
-**(Agreement):** All honest decide on the same value.
+
+* **(Validity):** If all honest parties have the same input value, then all of them decide this value.
+* **(Agreement):** All honest decide on the same value.
 
 Using Gradecast the Phase-King protocol is rather simple. We consider $t+1$ phases, each of which consists of three rounds. In the first two rounds of each phase $i$, we run an instance of Gradecast. In the last round of phase $i$, we consider $P_i$ to be 'king'. The role of the king is to establish agreement in the case that honest parties are split between different values. The king sends their value to all parties, who change their value to $P_i$'s value unless their grade is 2: 
 
