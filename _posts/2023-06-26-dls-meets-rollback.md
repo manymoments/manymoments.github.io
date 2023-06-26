@@ -1,6 +1,6 @@
 ---
 title: "$3f+1$ is needed in Partial Synchrony even against a Rollback adversary"
-date: 2023-06-26 06:00:00 -05:00
+date: 2023-06-26 07:00:00 -04:00
 tags:
 - lowerbound
 - dist101
