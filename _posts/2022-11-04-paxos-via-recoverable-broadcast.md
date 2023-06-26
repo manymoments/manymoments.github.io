@@ -11,25 +11,11 @@ There are so many ways to learn about the [Paxos](https://lamport.azurewebsites.
 
 This post has embedded a set of 11 simple exercises - try to go over them and [post your answers](https://twitter.com/ittaia/status/1599150007697182720?s=20&t=JiegXa5IVUUcfNM6ZietBA).
 
-The model is [partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) with $f<n/2$ [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) and the goal is [consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/) (see below for exact details). 
+The goal is [consensus](https://decentralizedthoughts.github.io/2019-06-27-defining-consensus/), the model is [partial synchrony](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/) where the maximum message delay after GST is known to be  $\Delta$. In addition to controlling the network delays and setting the GST, the adversary can inflict $f<n/2$ [omission failures](https://decentralizedthoughts.github.io/2019-06-07-modeling-the-adversary/) witch is the [best one can hope for](
+https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/).  
+
 
 >  The Paxon parliament’s protocol provides a new way of implementing the state-machine approach to the design of distributed systems. [Lamport, The Part-Time Parliament](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf).
-
-
-We approach Paxos by starting with two major simplifications:
-
-1. Use a *simple revolving primary* strategy based on the assumptions of perfectly synchronized clocks. A later posts shows how to extend to a *stable leader*, how to rotate leaders with *responsiveness*, and how not to rely on clock synchronization.
-2. Focus on a *single-shot* consensus. A [later post](https://decentralizedthoughts.github.io/2022-11-19-from-single-shot-to-smr/) shows how to extend to *multi-shot* consensus and *state machine replication*.
-
-
-
-
-## View-based protocol with simple revolving primary
-
-The protocol progresses in **views**, each view has a designated **primary** party. The role of the primary is rotated. For simplicity, the primary of view $v$ is party $v \bmod n$. 
-
-Clocks are perfectly synchronized, and $\Delta$ (the maximum message delay after GST) is known. View $v$ is set to be the time interval $[v(10 \Delta),(v+1)(10 \Delta))$. In other words, each $10\Delta$ clock ticks each party triggers a **view change** and increments the view by one. Clocks are assumed to be perfectly synchronized, so all parties move in and out of each view in complete synchrony (lock step).
-
 
 ## Single-shot consensus
 
@@ -40,6 +26,81 @@ In this setting, each party has some *input value* and the goal is to *output a 
 **Termination**: all non-faulty parties eventually output a value and terminate. Note that this is a strictly stronger property than **Liveness** which just requires that all non-faulty parties eventually output a value.
 
 **Validity**: the output is an input of one of the parties. Note that this is a strictly stronger property than **Weak Validity** which just requires that if *all* parties have the same input value then this is the output value.
+
+## Attempt 1: Obviously wrong
+
+Its good to start with an obviously wrong protocol:
+``` 
+output your input and terminate
+```
+*Exercise 1: Prove that attempt 1 obtains Termination and Validity but not Agreement.*
+
+The problem is that inputs may differ... so lets do the obvious next step, which is to decide that party 1 is the primary and we all listen to them.
+
+## Attempt 2: Coordinate via a primary!
+
+Our first distributed protocol:
+
+``` 
+Party 1 sends <input> to all
+
+Upon receiving <value>,
+    output value
+```
+*Exercise 2: Prove that attempt 2 obtains Uniform Agreement and Validity, but not Liveness.*
+
+The problem is that party 1 may be faulty... Note that if we can guarantee that party 1 is failure free then this is a great way to solve consensus and in fact many systems end up using this approach (essentially assuming a trusted third party).
+
+Our next step is a bit subtle. We know that party 1 may be faulty so we cannot wait for it forever. So lets give it some time (say $10\Delta$) and after that we can all switch to party 2 being the primary. A few observations about this path:
+1. Since party 2 may also be faulty, we need to generlize this, so that each primary gets $10\Delta$ and then we move to the next primary.
+2. Due to partial synchrony, we cannot just rotate the primary $f+1$ times, because any number of primaries may time out not because they are faulty but because of initial asynchrony.  So the path we take is to rotate the primary again and again, when the last primary timeouts, we switch again to the first primary.
+3. We could optimize the wait time to be less than $10\Delta$ - think about this as a parameter that we can later tune.
+
+## Attempt 3: Rotating coordinator!
+
+This is the famous "view based approach". The protocol progresses in **views**, each view has a designated **primary** party. The role of the primary is rotated, the most natural way, adopted here is well: the primary of view $v$ is party $v \bmod n$. 
+
+We will also assume that all clocks are perfectly synchronized, and $\Delta$ (the maximum message delay after GST) is known. View $v$ is set to be the time interval $[v(10 \Delta),(v+1)(10 \Delta))$. In other words, each $10\Delta$ clock ticks each party triggers a **view change** and increments the view by one. Clocks are assumed to be perfectly synchronized, so all parties move in and out of each view in complete synchrony (lock step).
+
+
+
+
+
+
+
+## Attempt 4: Simple view based protocol
+
+
+
+```
+Primary of view v sends <propose(v, input)> to all
+
+Upon receiving <propose(v, value)>,
+    output value
+```
+One obvious problem 
+
+One obvious problem is that due to initial asynchrony, different parties may hear from different primaries of different views.
+
+*Exercise 1: Prove that attempt 1 obtains Termination and Validity but not Agreement.*
+
+Lets fix this by making sure you only listen to the Primary of view $v$ if you are still in view $v$. 
+
+## Attempt 2
+
+
+```
+Primary of view v sends <propose(v, input)> to all
+
+Upon receiving <propose(v, value)> from primary,
+    if myview = v then send <echo(v,p)> to all
+    output value
+```
+
+
+
+
+
 
 ## Recoverable Broadcast protocol
 
