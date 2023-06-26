@@ -6,6 +6,7 @@ tags:
 - dist101
 author: Ittai Abraham
 ---
+
 We covered the classic [DLS88 split brain](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) impossibility result against a Byzantine adversary in a previous post:
 **[DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf):** (Theorem 4.4) It is impossible to solve  [Agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) under partial synchrony against a ***Byzantine adversary*** if $f \geq n/3$.
 In a follow up, we discussed how [CJKR12](https://decentralizedthoughts.github.io/2021-06-14-neither-non-equivocation-nor-transferability-alone-is-enough-for-tolerating-minority-corruptions-in-asynchrony/) strengthen this result by observing that it holds even if the adversary is weaker in that it must faithfully transfer messages. 
