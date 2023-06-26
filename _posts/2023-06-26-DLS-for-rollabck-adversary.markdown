@@ -1,11 +1,12 @@
 ---
-title: $3f+1$ is needed in Partial Synchrony even against a Rollback adversary
+title: "$3f+1$ is needed in Partial Synchrony even against a Rollback adversary"
 date: 2023-06-26 10:46:00 -04:00
 tags:
 - lowerbound
 - dist101
-author: Ittai Abraham 
+author: Ittai Abraham
 ---
+
 We covered the classic [DLS88 split brain](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) impossibility result against a Byzantine adversary in a previous post:
 
 **[DLS88](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf):** (Theorem 4.4) It is impossible to solve  [Agreement](https://ittaiab.github.io/2019-06-27-defining-consensus/) under partial synchrony against a ***Byzantine adversary*** if $f \geq n/3$.
