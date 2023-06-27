@@ -15,9 +15,12 @@ In a follow up, we discussed how [CJKR12](https://decentralizedthoughts.github.i
 In this post we strengthen this result yet again by observing that it holds even against a much weaker **Rollback adversary**  suggested by [Matetic, Kostiainen,  Dhar,  Sommer, Gervais, Juels, Capkun 2017](https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-matetic.pdf):
 
 **DLS88:** (modern version) It is impossible to solve Agreement under partial synchrony against a ***Rollback adversary*** if $f \geq n/3$.
+
 ### The Rollback Adversary
+
 Recall that an *omission adversary* can block any message sent to or from a corrupted party, but it must run the correct protocol, from its correct beginning state, in an honest manner even on a corrupted party. In contrast, a *Byzantine adversary* can run any protocol on a corrupted party. 
-A **Rollback adversary** has slightly more power than an omission adversary: 
+A **Rollback adversary** has slightly more power than an omission adversary:
+
 1. Can block any message sent to or from a corrupted party.
 2. Only run the correct protocol, from its correct beginning state, even on a corrupted party.
 3. On a corrupted party, can rollback the protocol to its beginning state and re-run it again.
@@ -38,13 +41,16 @@ We also need to assume the adversary has access to two different inputs, in this
 
 This concludes the observation that the main "split brain" world can be conducted by a rollback adversary. The reminder of the proof follows exactly as in [our blog post about the DLS88 lower bound](https://decentralizedthoughts.github.io/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) showing that Agreement is impossible in Partial Synchrony.
 
-### Extension to Braodcast
+### Extension to Broadcast
+
 As in [this post](https://decentralizedthoughts.github.io/2021-06-14-neither-non-equivocation-nor-transferability-alone-is-enough-for-tolerating-minority-corruptions-in-asynchrony/), the lower bound also holds for [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/), in fact it even holds for [Provable Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/). In the state machine replication setting, this implies that the lower bound holds if the client can be malicious and may have (at least) two different values to output. In particular it holds for [write once objects](https://decentralizedthoughts.github.io/2022-12-27-set-replication/) in this setting.
 
 ### ROTE: Rollback Protection for Trusted Execution
+
 [Matetic etal 2017](https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-matetic.pdf) suggest a system called **Rote** that provides rollback protection. Rote uses $n=f+2u+1$ severs to overcome $f$ malicious servers and to provide liveness when there are $u$ unresponsive servers. With $f$ malicious servers that can also be unresponsive, Rote would need $u=f$ and hence $n=3f+1$ servers to obtain safety and liveness (not circumventing the lower bound). Setting $u$ < $f$ would imply that Rote is not live if $f$ servers are unresponsive and hence any protocol relying on it would not obtain liveness so would not solve Agreement (again not circumventing the lower bound).
 
 ### Acknowledgments
+
 Many thanks to Andrew Miller and Guy Gueta for insightful discussions.
 
-Your comments on [Twitter]().
+Your comments on [Twitter](https://twitter.com/ittaia/status/1673476144996261889?s=20).
