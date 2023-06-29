@@ -47,7 +47,7 @@ As in [this post](https://decentralizedthoughts.github.io/2021-06-14-neither-non
 
 ### ROTE: Rollback Protection for Trusted Execution
 
-[Matetic etal 2017](https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-matetic.pdf) suggest a system called **Rote** that provides rollback protection. Rote uses $n=f+2u+1$ severs to overcome $f$ malicious servers and to provide liveness when there are $u$ unresponsive servers. With $f$ malicious servers that can also be unresponsive, Rote would need $u=f$ and hence $n=3f+1$ servers to obtain safety and liveness (not circumventing the lower bound). Setting $u$ < $f$ would imply that Rote is not live if $f$ servers are unresponsive and hence any protocol relying on it would not obtain liveness so would not solve Agreement (again not circumventing the lower bound).
+[Matetic etal 2017](https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-matetic.pdf) suggest a system called **ROTE** that provides rollback protection. ROTE uses $n=f+2u+1$ severs to overcome $f$ malicious servers and to provide liveness when there are $u$ unresponsive servers. With $f$ malicious servers that can also be unresponsive, Rote would need $u=f$ and hence $n=3f+1$ servers to obtain safety and liveness (not circumventing the lower bound). Setting $u$ < $f$ would imply that ROTE is not live if $f$ servers are unresponsive and hence any protocol relying on it would not obtain liveness so would not solve Agreement (again not circumventing the lower bound).
 
 ### Acknowledgments
 
