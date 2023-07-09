@@ -1,5 +1,5 @@
 ---
-title: Primary-Backup for Two Servers and One Omission Failure is Impossible
+title: State Machine Replication for Two Servers and One Omission Failure is Impossible even in a lock-step model
 date: 2019-11-02 14:12:00 -04:00
 tags:
 - lowerbound
