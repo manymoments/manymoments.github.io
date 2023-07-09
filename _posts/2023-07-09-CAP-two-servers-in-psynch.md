@@ -1,5 +1,6 @@
 ---
-title: The CAP theorem and why State Machine Replication for Two Servers and One Crash Failure is Impossible in Partial Synchrony
+title: The CAP theorem and why State Machine Replication for Two Servers and One Crash
+  Failure is Impossible in Partial Synchrony
 date: 2023-07-09 14:00:00 -04:00
 tags:
 - lowerbound
