@@ -37,6 +37,7 @@ Note that partition tolerance is different than safety and liveness, its more of
 
 > The CAP Theorem, in this light, is simply one example of the fundamental fact that you cannot achieve both *safety* and *liveness* in an unreliable distributed system.
 
+Another example of this tension between safety and liveness occurs in the [blockchain unsized setting](https://decentralizedthoughts.github.io/2022-03-03-blockchain-resource-pools-and-a-cap-esque-impossibility-result/).
 
 ### Fox and Brewer's categorization
 
@@ -44,7 +45,7 @@ Due to this impossibility, Fox and Brewer categorized all solutions into three b
 
 1. **CA**: Consistent and Available - but not partition tolerant. The trivial solution is a centralized system. As there is no resilience to partitions, its not clear this is an interesting choice.
 
-2. **AP**: Available even during Partitions - but not always consistent. This is the space of [weak consistency](http://www.bailis.org/blog/safety-and-liveness-eventual-consistency-is-not-safe/) and [eventual consistency](https://dl.acm.org/doi/pdf/10.1145/224056.224070) that is common for some applications (HTTP Web caching is a great example). This [approach](https://www.usenix.org/conference/osdi-04/secure-untrusted-data-repository-sundr), in the Byzantine setting, has several important [use cases](https://www.youtube.com/watch?v=UKdLJ7-0iFM) and connections to [Eclipse attacks](https://decentralizedthoughts.github.io/2022-08-14-new-DR-LB/) that will be a topic of future posts.
+2. **AP**: Available even during Partitions - but not always consistent. This is the space of [weak consistency](http://www.bailis.org/blog/safety-and-liveness-eventual-consistency-is-not-safe/) and [eventual consistency](https://dl.acm.org/doi/pdf/10.1145/224056.224070) that is common for some applications (HTTP Web caching is a great example). This [approach](https://www.usenix.org/conference/osdi-04/secure-untrusted-data-repository-sundr), in the Byzantine setting, has several important [use cases](https://www.youtube.com/watch?v=UKdLJ7-0iFM) and connections to [Eclipse attacks](https://decentralizedthoughts.github.io/2022-08-14-new-DR-LB/) that will be a topic of future posts. [Bitcoin's consensus protocol](https://bitcointalk.org/index.php?topic=9399.0) is an example of AP.
 
 3. **CP**: Consistent even during Partitions - but not always available. The systems is always consistent, but a partition may cause a lose of availability. The trivial solution is a centralized system. A more interesting solution is [Two Phase Commit](https://cs.brown.edu/courses/csci1380/s19/lectures/Day13_2019.pdf)  which allows replication and obtains consistency at the cost of loosing availability for partitions. Many distributed systems and databases use this approach, but even one failed/partitioned server can block the system. Can we get slightly better availability?
 
@@ -60,7 +61,7 @@ This is exactly what [Paxos](https://www.microsoft.com/en-us/research/publicatio
 * Always safe.
 * Maintains availability, after [GST](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/), for the majority partition.
 
-In fact, requiring just the majority part (or super majority part, like $2/3$) to be available during a partition  is the path that many modern blockchains protocols use (Bitcoin, Ethereum 2.0, etc).
+In fact, requiring just the majority part (or super majority part, like $2/3$) to be available during a partition  is the path that many modern blockchains protocols use (Bitcoin, Ethereum 2.0, etc). 
 
 ### A lower bound for both CAP and CP-MAJ-A
 
@@ -103,7 +104,7 @@ So in world C, the two clients will see conflicting states and this is a violati
 
 The proof captures the essence of the inability to tell the difference between a crash and a delay in partial synchrony.
 
-Perhaps the slight difference between this version and previous formulations is the explicit separation to servers and client.  
+Perhaps the slight difference between this version and previous formulations is the explicit separation to servers and clients.  
 
 Its a good exercise to extend this proof to any $f \geq n/2$.
 
@@ -111,9 +112,6 @@ Abadi extends the CAP theorem to [PACELC](https://www.cs.umd.edu/~abadi/papers/a
 
 ### Acknowledgments
 
-Many thanks to Kartik Nayak and Seth Gilbert for insightful comments.
+Many thanks to Kartik Nayak and Seth Gilbert for insightful comments and feedback.
 
-
-Please leave comments on [Twitter](...)
-
-
+Please leave comments on [Twitter](https://twitter.com/ittaia/status/1678517296157843456?s=20).
