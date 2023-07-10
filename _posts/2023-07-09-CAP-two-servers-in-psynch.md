@@ -13,8 +13,6 @@ In 1999, Fox and Brewer published a paper on the [*CAP principle*](https://s3.am
 
 > **Strong CAP Principle.** Strong Consistency, High Availability, Partition-resilience: Pick at most 2.
 
-Yes, its a [trilemma](https://en.wikipedia.org/wiki/Trilemma). Yes, in [hindsight](https://twitter.com/el33th4xor/status/1191820205456023552?s=20&t=RcutJw0wQUsTmrO0OXzpXw), Brewer says that "2 of 3" is [misleading](https://ieeexplore.ieee.org/document/6133253).
-
 At [PODC 2000](https://www.podc.org/podc2000/brewer.html),  Brewer gave an invited talk where he popularized the [*CAP theorem*](https://sites.cs.ucsb.edu/~rich/class/cs293-cloud/papers/Brewer_podc_keynote_2000.pdf) (an unproven conjecture at the time), which was later formalized into a lower bound by [Gilbert and Lynch, 2002](https://www.comp.nus.edu.sg/~gilbert/pubs/BrewersConjecture-SigAct.pdf). In this post we will state and prove a slightly stronger result whose essence appeared as early as PODC 1984 by [DLS84 Theorem 5](https://groups.csail.mit.edu/tds/papers/Lynch/podc84-DLS.pdf):
 
 **Theorem:** *It is impossible to implement [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) with $n$ replicas for at least two clients and an adversary that can cause crash failures to $f\geq n/2$ replicas (and any number of crash failures to clients) in the partial synchrony model.* 
@@ -49,10 +47,10 @@ Due to this impossibility, Fox and Brewer categorized all solutions into three b
 
 3. **CP**: Consistent even during Partitions - but not always available. The systems is always consistent, but a partition may cause a lose of availability. The trivial solution is a centralized system. A more interesting solution is [Two Phase Commit](https://cs.brown.edu/courses/csci1380/s19/lectures/Day13_2019.pdf)  which allows replication and obtains consistency at the cost of loosing availability for partitions. Many distributed systems and databases use this approach, but even one failed/partitioned server can block the system. Can we get slightly better availability?
 
-
+Yes, its a [trilemma](https://en.wikipedia.org/wiki/Trilemma). Yes, in [hindsight](https://twitter.com/el33th4xor/status/1191820205456023552?s=20&t=RcutJw0wQUsTmrO0OXzpXw), Brewer says that "2 of 3" is [misleading](https://ieeexplore.ieee.org/document/6133253) mainly because there are more nuanced properties that CAP does not capture. We highlight one such nuance and its deep connections to the lower impossibility proof. 
 ### CP-MAJ-A
 
-A powerful approach to address the CAP theorem is to obtain Consistency even during partitions and in addition a *majority partition availability (MAJ-A)* property:
+A powerful approach to address the CAP theorem is to obtain consistency even during partitions and in addition a *majority partition availability (MAJ-A)* property:
 
 **Majority partition availability (MAJ-A)**: A partition that has *the majority of the replicas* can continue to have availability (in partial synchrony).
 
