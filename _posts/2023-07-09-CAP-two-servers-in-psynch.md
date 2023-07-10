@@ -33,9 +33,10 @@ A system cannot have all three properties: **Consistency**, **Availability**, an
 
 **Partition Tolerance**: this typically refers to the property that even if the adversary creates a partition of the system, each part will continue to provide the desired safety and/or liveness (consistency and/or availability). We will show how using crash failures and asynchrony we can essentially create such partitions.
 
-As [Gilbert and Lynch, 2012](https://groups.csail.mit.edu/tds/papers/Gilbert/Brewer2.pdf) conclude:
+Note that partition tolerance is different than safety and liveness, its more of a failure model or adversary model.  As [Gilbert and Lynch, 2012](https://groups.csail.mit.edu/tds/papers/Gilbert/Brewer2.pdf) conclude:
 
 > The CAP Theorem, in this light, is simply one example of the fundamental fact that you cannot achieve both *safety* and *liveness* in an unreliable distributed system.
+
 
 ### Fox and Brewer's categorization
 
@@ -47,7 +48,7 @@ Due to this impossibility, Fox and Brewer categorized all solutions into three b
 
 3. **CP**: Consistent even during Partitions - but not always available. The systems is always consistent, but a partition may cause a lose of availability. The trivial solution is a centralized system. A more interesting solution is [Two Phase Commit](https://cs.brown.edu/courses/csci1380/s19/lectures/Day13_2019.pdf)  which allows replication and obtains consistency at the cost of loosing availability for partitions. Many distributed systems and databases use this approach, but even one failed/partitioned server can block the system. Can we get slightly better availability?
 
-Yes, its a [trilemma](https://en.wikipedia.org/wiki/Trilemma). Yes, in [hindsight](https://twitter.com/el33th4xor/status/1191820205456023552?s=20&t=RcutJw0wQUsTmrO0OXzpXw), Brewer says that "2 of 3" is [misleading](https://ieeexplore.ieee.org/document/6133253) mainly because there are more nuanced properties that CAP does not capture. We highlight one such nuance and its deep connections to the lower impossibility proof. 
+Yes, its a [trilemma](https://en.wikipedia.org/wiki/Trilemma). Yes, in [hindsight](https://twitter.com/el33th4xor/status/1191820205456023552?s=20&t=RcutJw0wQUsTmrO0OXzpXw), Brewer says that "2 of 3" is [misleading](https://ieeexplore.ieee.org/document/6133253) because there are more nuanced properties that CAP does not capture. We highlight one such nuance and its deep connections to the impossibility proof. 
 ### CP-MAJ-A
 
 A powerful approach to address the CAP theorem is to obtain consistency even during partitions and in addition a *majority partition availability (MAJ-A)* property:
@@ -58,6 +59,8 @@ This is exactly what [Paxos](https://www.microsoft.com/en-us/research/publicatio
 
 * Always safe.
 * Maintains availability, after [GST](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/), for the majority partition.
+
+In fact, requiring just the majority part (or super majority part, like $2/3$) to be available during a partition  is the path that many modern blockchains protocols use (Bitcoin, Ethereum 2.0, etc).
 
 ### A lower bound for both CAP and CP-MAJ-A
 
@@ -80,7 +83,7 @@ Assume a protocol that is [safe and live](https://decentralizedthoughts.github.i
 Client $1$ sends command $C1$, and the adversary crashes server $2$ and client $2$ (or causes a partition between $1$ and $2$). All messages arrive immediately. Since the protocol is safe and live, the system must notify client $1$ that command $C1$ is the only committed command.
 
 ### World B:
-Client $2$ sends command $C2$, and the adversary crashes server $1$ and client $2$ (or causes a partition between $1$ and $2$). All messages arrive immediately. Since the protocol is safe and live, the system must notify client $2$ that command $C2$ is the only committed command.
+Client $2$ sends command $C2$, and the adversary crashes server $1$ and client $1$ (or causes a partition between $1$ and $2$). All messages arrive immediately. Since the protocol is safe and live, the system must notify client $2$ that command $C2$ is the only committed command.
 
 ### World C:
 Client $1$ sends command $C1$, and client $2$ sends command $C2$. Using partial synchrony, the adversary delays all communication between:
@@ -100,11 +103,15 @@ So in world C, the two clients will see conflicting states and this is a violati
 
 The proof captures the essence of the inability to tell the difference between a crash and a delay in partial synchrony.
 
+Perhaps the slight difference between this version and previous formulations is the explicit separation to servers and client.  
+
 Its a good exercise to extend this proof to any $f \geq n/2$.
+
+Abadi extends the CAP theorem to [PACELC](https://www.cs.umd.edu/~abadi/papers/abadi-pacelc.pdf) to highlight the importance of *latency* (a quantitative measure) not just availability (a binary measure) and the importance of latency even when there are no partitions.
 
 ### Acknowledgments
 
-Many thanks to Kartik Nayak for insightful comments
+Many thanks to Kartik Nayak and Seth Gilbert for insightful comments.
 
 
 Please leave comments on [Twitter](...)
