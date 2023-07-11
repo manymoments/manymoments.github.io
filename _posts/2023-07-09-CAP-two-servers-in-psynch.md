@@ -65,7 +65,7 @@ This is exactly what [Paxos](https://www.microsoft.com/en-us/research/publicatio
 * Always safe.
 * Maintains availability, after [GST](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/), for the majority partition.
 
-In fact, requiring just the majority part (or super majority part, like $2/3$) to be available during a partition  is the path that many modern blockchains protocols use (Bitcoin, Ethereum 2.0, etc). 
+In fact, requiring just the majority part (or super majority part, like $2/3$) to be available during a partition  is the path that many BFT protocols use (PBFT). 
 
 ### A lower bound for both CAP and CP-MAJ-A
 
