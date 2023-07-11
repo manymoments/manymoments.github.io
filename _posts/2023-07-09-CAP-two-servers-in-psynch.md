@@ -71,7 +71,7 @@ In fact, requiring just the majority part (or super majority part, like $2/3$) t
 
 In one lower bound we prove:
 
-* It is impossible to get both consistency and availability for a system with two servers that can be partitioned (via an adversary controlling one server failure and partial synchrony).
+* Impossible to get both safety and liveness (aka, consistency and availability) for a system with two servers that can be partitioned (via an adversary controlling one server failure and partial synchrony).
 
 This impossibility has two implications:
 
