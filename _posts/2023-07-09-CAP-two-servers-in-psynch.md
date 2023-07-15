@@ -15,7 +15,7 @@ In 1999, Fox and Brewer published a paper on the [*CAP principle*](https://s3.am
 
 At [PODC 2000](https://www.podc.org/podc2000/brewer.html),  Brewer gave an invited talk where he popularized the [*CAP theorem*](https://sites.cs.ucsb.edu/~rich/class/cs293-cloud/papers/Brewer_podc_keynote_2000.pdf) (an unproven conjecture at the time), which was later formalized into a lower bound by [Gilbert and Lynch, 2002](https://www.comp.nus.edu.sg/~gilbert/pubs/BrewersConjecture-SigAct.pdf). In this post we will state and prove a slightly stronger result whose essence appeared as early as PODC 1984 by [DLS84 Theorem 5](https://groups.csail.mit.edu/tds/papers/Lynch/podc84-DLS.pdf):
 
-**Theorem:** *It is impossible to implement [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) with $n$ replicas for at least two clients and an adversary that can cause crash failures to $f\geq n/2$ replicas (and any number of crash failures to clients) in the partial synchrony model.* 
+**Theorem:** *It is impossible to implement [State Machine Replication](https://decentralizedthoughts.github.io/2019-10-15-consensus-for-state-machine-replication/) with safety and liveness given $n$ replicas for at least two clients and an adversary that can cause crash failures to $f\geq n/2$ replicas (and any number of crash failures to clients) in the partial synchrony model.* 
 
 The consensus version of this theorem appears in [DLS88 Theorem 4.3](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf), the shared memory version in [Lynch96, Theorem 17.6](https://dl.acm.org/doi/book/10.5555/2821576), and the SMR version in [Gilbert and Lynch, 2002](https://www.comp.nus.edu.sg/~gilbert/pubs/BrewersConjecture-SigAct.pdf).
 
@@ -23,7 +23,7 @@ In hindsight, here is my interpretation of this impossibility:
 
 * *Any system, in the face of a perceived 50-50 split, can either maintain **safety** or **liveness**, but not **both**.*
 
-In a [previous post](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/), we showed a similar result: that $f \geq n/2$  *omission failures* is impossible in the *lock step* (synchronous) model.
+In a [previous post](https://decentralizedthoughts.github.io/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/), we showed a similar result: that $f \geq n/2$  *omission failures* is impossible to obtain both safety and liveness in the *lock step* (synchronous) model.
 
 Before we show the (rather simple) proof, lets connect this to the CAP theorem.
 
@@ -65,7 +65,7 @@ This is exactly what [Paxos](https://www.microsoft.com/en-us/research/publicatio
 * Always safe.
 * Maintains availability, after [GST](https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/), for the majority partition.
 
-In fact, requiring just the majority part (or super majority part, like $2/3$) to be available during a partition  is the path that many BFT protocols use (PBFT). 
+In fact, requiring just the majority part (or super majority part, like $2/3$) to be available during a partition  is the path that many BFT protocols use (for example, PBFT). 
 
 ### A lower bound for both CAP and CP-MAJ-A
 
@@ -106,7 +106,7 @@ So in world C, the two clients will see conflicting states and this is a violati
 
 ### Notes
 
-The proof captures the essence of the inability to tell the difference between a crash and a delay in partial synchrony.
+The proof captures the essence of the inability to tell the difference between a *crash* and a *delay* in partial synchrony.
 
 Perhaps the slight difference between this version and previous formulations is the explicit separation to servers and clients.  
 
