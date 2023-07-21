@@ -34,6 +34,8 @@ More recent State Machine Replication protocols such as [Sync HotStuff](/2019-11
 
 For a simple non-equivocation protocol, see [Crusader Broadcast](https://decentralizedthoughts.github.io/2022-06-19-crusader-braodcast/). 
 
+Use of randomization in synchronous agreement protocols. For [crash](https://decentralizedthoughts.github.io/2023-02-18-rand-and-consensus-1/) and for [omission](https://decentralizedthoughts.github.io/2023-02-19-rand-and-consensus-2/) failures.
+
 
 ## Partially Synchronous Protocols
 
@@ -50,13 +52,12 @@ For Byzantine adversaries, see [Information Theoretic HotStuff](https://decentra
 
 ## Asynchronous Protocols
 
-One of the core challenges of distributed computing is tolerating failures in an asynchronous network. The classic [FLP lower bound](/2019-12-15-consensus-model-for-FLP/) is a fundamental result showing the impossibility of consensus under even one crash fault. 
+Fundamental lower bound in asynchrony: The  [FLP lower bound](/2019-12-15-consensus-model-for-FLP/) showing the impossibility of consensus under even one crash fault. 
 
-A basic building block in asynchrony is the [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/) protocol. 
-
-How do you measure [round complexity in asynchrony](https://decentralizedthoughts.github.io/2021-09-29-the-round-complexity-of-reliable-broadcast/) (and can you improve the round complexity of reliable broadcast)? 
-
-The multi-leader generalization of reliable broadcast is called [Reliable Gather](https://decentralizedthoughts.github.io/2021-03-26-living-with-asynchrony-the-gather-protocol/). 
+Important building blocks in asynchrony:
+1. The [Reliable Broadcast](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/) protocol. 
+2. The [Reliable Gather](https://decentralizedthoughts.github.io/2021-03-26-living-with-asynchrony-the-gather-protocol/) is a multi-leader generalization of reliable broadcast.
+3. We discusses how to measure [round complexity in asynchrony](https://decentralizedthoughts.github.io/2021-09-29-the-round-complexity-of-reliable-broadcast/) and also improved round complexity for reliable broadcast. 
 
 Series on Asynchronous Agreement: 
 
@@ -88,7 +89,9 @@ In partial synchrony, [Log Paxos](https://decentralizedthoughts.github.io/2021-0
 
 Lower bounds give us powerful tools to understand the fundamental limitations and model assumptions. 
 
-- Folklore (aka CAP theorem): [Consensus with Omission failures](/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) requires $f<n/2$.
+- Folklore (aka CAP theorem for synchrony): [Consensus with Omission failures](/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) requires $f<n/2$.
+
+- The [CAP theorem](https://decentralizedthoughts.github.io/2023-07-09-CAP-two-servers-in-psynch/): Any system, in the face of a perceived 50-50 split, can either maintain safety or liveness, but not both.
 
 - Dwork, Lynch, Stockmeyer 1988 ([DLS](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf)) lower bound: [Byzantine Consensus in Partial Synchrony](/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) requires $f<n/3$.
 
@@ -105,6 +108,8 @@ Lower bounds give us powerful tools to understand the fundamental limitations an
 - Raft does not guarantee liveness under [omission faults](https://decentralizedthoughts.github.io/2020-12-12-raft-liveness-full-omission/).
 
 - CJKR lower bound: Neither Non-equivocation nor Transferability alone is enough for [tolerating minority corruptions in asynchrony](https://decentralizedthoughts.github.io/2021-06-14-neither-non-equivocation-nor-transferability-alone-is-enough-for-tolerating-minority-corruptions-in-asynchrony/).
+
+- $3f+1$ is needed in Partial Synchrony [even against a Rollback adversary](https://decentralizedthoughts.github.io/2023-06-26-dls-meets-rollback/).
 
 # Blockchains
 
