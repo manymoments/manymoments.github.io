@@ -32,7 +32,7 @@ An *asynchronous validity predicate* has the following properties:
 
 Given an asynchronous validity predicate, $valid_i(j)$, a protocol solving ACS has each party $i$ output a set $S_i \subseteq [n]$ with the following properties:
 
-* **ACS Validity:** If an honest party $i$ outputs $S_i$, then $\left|S_i\right|\geq n-f$ and eventually $valid_i(j)=1$ for every $j\in S_i$.
+* **ACS Validity:** If an honest party $i$ outputs $S_i$, then $\|S_i\|\geq n-f$ and eventually $valid_i(j)=1$ for every $j\in S_i$.
 * **Agreement.** Honest parties output the same set $S$ from the protocol.
 * **Termination.** All honest parties eventually complete the protocol and output a set.
 
