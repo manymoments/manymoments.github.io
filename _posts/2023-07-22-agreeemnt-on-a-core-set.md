@@ -1,6 +1,6 @@
 ---
 title: Asynchronous Agreement on a Core Set
-date: 2023-07-22 18:00:00 -04:00
+date: 2023-07-22 8:00:00 -04:00
 tags:
 - consensus
 - MPC
@@ -8,7 +8,7 @@ author: Gilad Stern, Ittai Abraham
 ---
 
 A challenging step in many *asynchronous* protocols is agreeing on a set of parties that completed some task. For example, an asynchronous protocol might start off with parties [reliably broadcasting](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/) a value. Due to asynchrony and having $\leq f$ corruptions, honest parties can only wait for $n-f$ parties to complete the task.
-Parties may need to **agree** on a core set of $n-f$ such broadcasts and use them in the next rounds. In Asynchronous Secure Multi Party Computation (MPC) parties need to agree on a set of $n-f$ parties whose input value (often shared using Verifiable Secret Sharing) is used to compute the desired functionality. The task of agreeing on a set of parties that completed a task was called **agreement on a core set**, or **ACS**, in 1993 by Ben-Or, Canetti, and Goldreich [BCG93](https://dl.acm.org/doi/pdf/10.1145/167088.167109).
+Parties may need to **agree** on a core set of $n-f$ such broadcasts and use them in the next rounds. In Asynchronous Secure Multi Party Computation (MPC) parties need to agree on a set of at least $n-f$ parties whose input value (often shared using Verifiable Secret Sharing) is used to compute the desired functionality. The task of agreeing on a set of parties that completed a task was called **agreement on a core set**, or **ACS**, in 1993 by Ben-Or, Canetti, and Goldreich [BCG93](https://dl.acm.org/doi/pdf/10.1145/167088.167109).
  
 In asynchrony, some parties may see that a given party completed its task very early, while other parties may see this much later.  
 
