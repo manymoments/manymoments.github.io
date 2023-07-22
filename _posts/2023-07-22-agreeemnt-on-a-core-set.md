@@ -36,6 +36,7 @@ Given an asynchronous validity predicate, $valid_i(j)$, a protocol solving ACS h
 * **Agreement.** Honest parties output the same set $S$ from the protocol.
 * **Termination.** All honest parties eventually complete the protocol and output a set.
 
+ACS is a an important building block, used in asynchronous [BFT protocols](https://eprint.iacr.org/2016/199.pdf), asynchronous [DKG protocols](https://eprint.iacr.org/2021/1591.pdf), and of course asynchronous MPC protocols. 
 
 Note that some of the choices above are somewhat arbitrary. We could have also chosen to agree on a $S\subseteq V$ for a general $V$, and not only on indices in $[n]$. We could have also generalized the size of the set to be $k$ and not necessarily $n-f$ (and we would need to also assume that parties are guaranteed to have at least $k$ valid values). Since the case of agreeing on $n-f$ "good" parties is so ubiquitous we focus on this task with these parameters.
 
