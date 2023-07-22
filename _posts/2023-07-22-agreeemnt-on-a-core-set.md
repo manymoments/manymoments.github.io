@@ -8,10 +8,10 @@ author: Gilad Stern, Ittai Abraham
 ---
 
 A challenging step in many *asynchronous* protocols is agreeing on a set of parties that completed some task. For example, an asynchronous protocol might start off with parties [reliably broadcasting](https://decentralizedthoughts.github.io/2020-09-19-living-with-asynchrony-brachas-reliable-broadcast/) a value. Due to asynchrony and having $\leq f$ corruptions, honest parties can only wait for $n-f$ parties to complete the task.
-Parties may need to **agree** on a core set of $n-f$ such broadcasts and use them in the next rounds. In Asynchronous Secure Multi Party Computation (MPC) parties need to agree on a set of at least $n-f$ parties whose input value (often shared using Verifiable Secret Sharing) is used to compute the desired functionality. The task of agreeing on a set of parties that completed a task was called **agreement on a core set**, or **ACS**, in 1993 by Ben-Or, Canetti, and Goldreich [BCG93](https://dl.acm.org/doi/pdf/10.1145/167088.167109).
- 
-In asynchrony, some parties may see that a given party completed its task very early, while other parties may see this much later.  
+Parties may need to **agree** on a core set of $n-f$ such broadcasts and use them in the next rounds. This is challenging because in asynchrony, some parties may see that a given party completed its task very early, while other parties may see this much later. 
 
+In *asynchronous secure multi party computation* (MPC) parties need to agree on a set of at least $n-f$ parties whose input value (often shared using *verifiable secret sharing* (VSS)) is used to compute the desired functionality. The task of agreeing on a set of parties that completed a task was called **agreement on a core set**, or **ACS**, in 1993 by Ben-Or, Canetti, and Goldreich [BCG93](https://dl.acm.org/doi/pdf/10.1145/167088.167109).
+ 
 ACS is similar to [gather](https://decentralizedthoughts.github.io/2021-03-26-living-with-asynchrony-the-gather-protocol/). In *gather*, parties output sets that *include* the same common core of size $n-f$ of parties that completed a task, but parties don't know which of their output values are in the common core and which aren't (so gather does not implement agreement directly). In ACS parties all agree on the same common core set.
 
 We start by defining ACS, then show the canonical construction from 1994 by Ben-Or, Kelmer, and Rabin, [BKR94](https://dl.acm.org/doi/pdf/10.1145/197917.198088).
@@ -30,7 +30,7 @@ An *asynchronous validity predicate* has the following properties:
 
 ### Agreement on a Core Set
 
-Given an asynchronpus validity predicate, $valid_i(j)$, a protocol solving ACS has each party $i$ output a set $S_i \subseteq [n]$ with the following properties:
+Given an asynchronous validity predicate, $valid_i(j)$, a protocol solving ACS has each party $i$ output a set $S_i \subseteq [n]$ with the following properties:
 
 * **ACS Validity:** If an honest party $i$ outputs $S_i$, then $\left|S_i\right|\geq n-f$ and eventually $valid_i(j)=1$ for every $j\in S_i$.
 * **Agreement.** Honest parties output the same set $S$ from the protocol.
@@ -106,7 +106,7 @@ The protocol requires running $n$ instances of binary byzantine agreement for an
 
 We do not know how to get $O(1)$ expected round complexity using O(n) binary agreements and it seems that the observation above is a natural barrier when using a linear number of independent instances.
 
-We note that back in 1994, BKR94 did claim that using techniques of Ben-Or and El-Yaniv (BOEY03) it is possible to get $O(1)$ expected round complexity. However, the 2003 paper from Ben-Or and El-Yaniv does not mention ACS at all. Moreover,  while BOEY03 solves several important multi-valued agreement problems, we are not aware of any direct way to use them to solve ACS.
+We note that back in 1994, BKR94 did claim that using techniques of Ben-Or and El-Yaniv (BOEY03) it is possible to get $O(1)$ expected round complexity. However, the [2003 paper](https://csaws.cs.technion.ac.il/~rani/papers/interactive-consistency.pdf) from Ben-Or and El-Yaniv does not mention ACS at all. Moreover,  while BOEY03 solves several important multi-valued agreement problems, we are not aware of any direct way to use them to solve ACS.
 
 In the next post, we will show how to use a single instance of multi-valued asynchronously validated agreement protocol to get to the asymptotically optimal $O(1)$ expected time.
 
