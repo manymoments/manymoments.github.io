@@ -36,7 +36,7 @@ Given an asynchronous validity predicate, $valid_i(j)$, a protocol solving ACS h
 * **Agreement.** Honest parties output the same set $S$ from the protocol.
 * **Termination.** All honest parties eventually complete the protocol and output a set.
 
-ACS is a an important building block, used in asynchronous [BFT protocols](https://eprint.iacr.org/2016/199.pdf), asynchronous [DKG protocols](https://eprint.iacr.org/2021/1591.pdf), and of course asynchronous [MPC protocols](https://crypto.ethz.ch/publications/files/BeeHir07.pdf). 
+ACS is a an important building block, used in asynchronous BFT protocols (example [here](https://www.shoup.net/papers/ckps.pdf) and [here](https://eprint.iacr.org/2016/199.pdf)), asynchronous [DKG protocols](https://eprint.iacr.org/2021/1591.pdf), and of course asynchronous [MPC protocols](https://crypto.ethz.ch/publications/files/BeeHir07.pdf). 
 
 Note that some of the choices above are somewhat arbitrary. We could have also chosen to agree on a $S\subseteq V$ for a general $V$, and not only on indices in $[n]$. We could have also generalized the size of the set to be $k$ and not necessarily $n-f$ (and we would need to also assume that parties are guaranteed to have at least $k$ valid values). Since the case of agreeing on $n-f$ "good" parties is so ubiquitous we focus on this task with these parameters.
 
@@ -105,7 +105,7 @@ The protocol requires running $n$ instances of binary byzantine agreement for an
 
 ### Getting ACS with a constant expected number of rounds
 
-We do not know how to get $O(1)$ expected round complexity using O(n) binary agreements and it seems that the observation above is a natural barrier when using a linear number of independent instances.
+We do not know how to get $O(1)$ expected round complexity using a linear number of binary agreements in the information theoretic setting and it seems that the observation above is a natural barrier when using a linear number of independent binary agreement instances.
 
 We note that back in 1994, BKR94 did claim that using techniques of Ben-Or and El-Yaniv (BOEY03) it is possible to get $O(1)$ expected round complexity. However, the [2003 paper](https://csaws.cs.technion.ac.il/~rani/papers/interactive-consistency.pdf) from Ben-Or and El-Yaniv does not mention ACS at all. Moreover,  while BOEY03 solves several important multi-valued agreement problems, we are not aware of any direct way to use them to solve ACS.
 
