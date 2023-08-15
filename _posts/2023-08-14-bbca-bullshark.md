@@ -30,9 +30,9 @@ We first describe how to reduce Bullshark latency in three steps.
 
 ### Step 1. Using BBCA for Leader-Blocks
 
-By peeking inside the CBC protocol, we can observe that it already has multiple rounds of messages similar to a consensus protocol. [BBCA](https://blog.chain.link/bbca-chain-single-broadcast-consensus-on-a-dag/) adds a thin shim on top of CBC, that add reliability and allows "peeking" into the local state of the broadcast protocol. More details on implementing BBCA on top of CBC are provided later below.
+By peeking inside the CBC protocol, we can observe that it already has multiple rounds of messages similar to a consensus protocol. [BBCA](https://blog.chain.link/bbca-chain-single-broadcast-consensus-on-a-dag/) adds a thin shim on top of CBC, that add reliability and allows "peeking" into the local state of the broadcast protocol. The key new feature property is a *Commit-Adopt* API: If a value is delivered by a BBCA broadcast, then a quorum peeking via `BBCA-probe()` would adopt it. Importantly, it is implemented on top of reliable broadcast completely locally without incurring additional communication. More details on implementing BBCA on top of CBC are provided later below.
 
-Therefore, the first step is to replace the CBC primitive by which leader-blocks are sent with a BBCA broadcast. 
+The first step is to replace the CBC primitive by which leader-blocks are sent with a BBCA broadcast. This step achieves a one-broadcast consensus protocol, as well as reduces latency to reach consensus decisions.  
 
 We also need to modify how a node "complains" if it times-out waiting in a "voting" layer for a leader-block: it first invokes a local `BBCA-probe()`, and then it embeds the result (`BBCA-adopt` or `BBCA-noadopt`) in its complaint broadcast (the one that doesn't follow the leader proposal).
 
@@ -48,8 +48,6 @@ This change reduces the latency to commit a **leader-block** from $2 \times$ CBC
 * In a linear protocol, $2 \times$ CBC takes 6 trips and BBCA 5.
 
 All commits (both leader and non-leader blocks) depend on the latency for leader-block commits, hence this save $1$ network trip to commit every block on the DAG.
-
-We remark that because there is only one BBCA broadcast per layer, it might make sense to implement it via an all-all protocol and avoid signatures. Starting with a Bullshark implementation with a linear CBC, this would improve latency to commit a leader-block from 6 to 3. 
 
 ### Step 2. Getting Rid of Specialized Layers
 
@@ -111,7 +109,7 @@ We now describe how to convert CBC into BBCA. In order to implement BBCA on top 
 1. `BBCA-adopt(`$b$`)` if the node obtained an aggregate signature for block $b$
 2. `BBCA-noadopt()` otherwise.
 
-We remark that a similar implementation of BBCA can be constructed over an all-all "Bracha-style" CBC, adding one network trip.
+We remark that a similar implementation of BBCA can be constructed over an all-all "Bracha-style" CBC, adding one network trip. Because there is only one BBCA broadcast per layer, it might make sense to implement it via an all-all protocol and avoid signatures.
 
 ## Relaxing the Structured-DAG Layering
 
