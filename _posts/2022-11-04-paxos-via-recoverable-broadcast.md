@@ -71,7 +71,9 @@ For simplicity, the leader also acts as a regular party. So it also sends ```<p>
 ### Broadcast properties
 
 **Validity**: If a party outputs a value in Broadcast then it's the leader's input value.
+
 **Weak Termination of Broadcast**: If the leader is non-faulty then all non-faulty parties output a value and terminate.
+
 **Recoverability**: If some party outputs $p$ then at least $n-f$ parties received '''<echo, p>'''
 
 *Exercise 1: prove these properties. Explain where you used the assumption that there are at most $f$ omission failures.*
@@ -176,11 +178,13 @@ So all that remains is to combine the two protocols to make sure the primary use
 ```Paxos```: 
 
 For view 1, the primary of view 1 with input $val$: 
+
 ```
 Broadcast-in-view (1,val)
 ```
 
 For view $v>1$, the primary of view $v$ with input $val$:
+
 ```
 p := Recover-Max(v)
 
@@ -189,8 +193,6 @@ if p = bot then
 otherwise 
  Broadcast-in-view (v,p)
 ```
-
-
 
 In words: the primary will first try to recover the maximal echo. If no echo is seen, the primary is free to choose its own input. Otherwise, it must propose the value associated with the highest view in which it heard there was an echo.
 
@@ -201,7 +203,6 @@ This completes the description of Paxos. Let's prove that the three properties o
 **Lemma 2**: Let $v^{\star}$ be the first view with $n-f$ echos of $ (v^\star, x)$, then for any view $v>v^\star$ the proposal value of ```Broadcast-in-view (v,x)``` must be $x$.
 
 *Exercise 7: Prove the Agreement property follows from Lemma 2.* Hint: Assume two parties decide on different values. Prove they could not have decided in the same view, so ... apply Lemma 2.
-
 
 We now prove Lemma 2, which is the essence of Paxos.
 
@@ -232,9 +233,7 @@ Consider the view $v^+$ with the *first* non-faulty primary that started after G
 
 This concludes the liveness proof.
 
-
 *Exercise 8: Show that there is no liveness (via an infinite execution) if view $v$ is set to be the time interval $[v(2 \Delta),(v+1)(2 \Delta))$. In other words, each $2\Delta$ clock ticks each party triggers an increment of the view by one.*
-
 
 *Exercise 9: What is the minimal $\alpha$ such that the liveness property holds if view $v$ is set to be the time interval $[v(\alpha \Delta),(v+1)(\alpha \Delta))$. In other words, each $\alpha \Delta$ clock ticks each party triggers increments the view by one. What is the best time complexity you can get (see below)?*
 
@@ -255,8 +254,8 @@ Upon receiving n-f <decide, p>
  Terminate
 
 ``` 
-*Exercise 10: Prove termination - that the termination gadget causes all non-faulty parties to eventually terminate.*
 
+*Exercise 10: Prove termination - that the termination gadget causes all non-faulty parties to eventually terminate.*
 
 ### Validity
 
@@ -264,8 +263,7 @@ Observe that Validity is trivial in these protocols. By induction, the only valu
 
 What if a party has several different values (for example it received several different values from several different clients)? This is an example of how the standard validity of consensus does not address the challenges of MEV. More on that in later posts. 
 
-
-### Time and Message Complexity
+d Message Complexity
 
 Note that the time and number of messages before GST can be both unbounded. So for this post, we will measure the time and message complexity after GST.
 
@@ -274,7 +272,6 @@ Note that the time and number of messages before GST can be both unbounded. So f
 **Message Complexity**: since each round has an all-to-all message exchange, the total number of messages sent after GST is $O((f+1) \times n^2) = O(n^3)$. We show [here](https://decentralizedthoughts.github.io/2019-08-16-byzantine-agreement-needs-quadratic-messages/) that $O(n^2)$ is the best you can hope for (for deterministic protocols or against strongly adaptive adversaries).
 
 *Exercise 11: Modify the protocol above to use just $O(n)$ messages per view (so total of $O(n^2)$ after GST). Explain why the proof still works, in particular, detail the Liveness proof and the Time complexity. Can you get the same bound as in Exercise 9?*
-
 
 ## Acknowledgments
 Many thanks to Kartik Nayak for insightful comments.
