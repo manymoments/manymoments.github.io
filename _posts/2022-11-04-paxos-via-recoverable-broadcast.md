@@ -172,10 +172,7 @@ This protocol needs only send messages to the primary. Here is the core property
 
 *Exercise 5: Prove Lemma 1.*
 
-So all that remains is to combine the two protocols to make sure the primary uses the result of ```Recover-Max``` if its output is not $\bot$. This is the outer shell protocol:
-
-
-```Paxos```: 
+So all that remains is to combine the two protocols to make sure the primary uses the result of ```Recover-Max``` if its output is not $\bot$. This is the outer shell ```Paxos``` protocol: 
 
 For view 1, the primary of view 1 with input $val$: 
 
