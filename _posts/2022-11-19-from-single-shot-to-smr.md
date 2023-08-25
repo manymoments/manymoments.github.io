@@ -11,7 +11,7 @@ In this post we explore the path from *Single-Shot Agreement*, via *Write-Once R
 
 ### (Single-Shot) Agreement
 
-In *Agreement* (interchangeably called *Consensus*) there are $n$ parties that each have an input value, and the goal is to output a value such that:
+In *Agreement* (interchangeably called *Consensus*) there are $n$ parties. A minority of the servers may have omission failures. Each party has an input value, and its goal is to output a value such that:
 
 **Uniform Agreement**: Any two parties that output values, these values are equal. 
 (*) In the Byzantine case **Agreement**: Any two non-faulty parties output the same value.
@@ -19,7 +19,7 @@ In *Agreement* (interchangeably called *Consensus*) there are $n$ parties that e
 **Termination**: All non-faulty parties eventually output a value and terminate.
 
 **Validity**: The output is an input of one of the parties.
-(*) In the authenticated Byzantine case **External Validity**: The output is externally valid.
+(*) In the authenticated Byzantine case **External Validity**: The output is externally valid (for example signed by the client).
 
 
 
@@ -54,7 +54,7 @@ An alternative way to define a Write-Once Register is that it abstracts an *idea
 
 ### Log Replication
 
-The setting is the same as above: some clients and $n$ servers. Clients can make two types of requests: ```read``` which now returns a **log of values** (or $\bot$ for the empty log)  as a response; and ```write(v)``` which gets an input value and also returns a response that is a log of values.
+The setting is the same as above: some clients and $n$ servers and same fault model. Clients can make two types of requests: ```read``` which now returns a **log of values** (or $\bot$ for the empty log)  as a response; and ```write(v)``` which gets an input value and also returns a response that is a log of values.
 
 Clients can have multiple input values at different times. 
 
@@ -73,22 +73,19 @@ An alternative way to define Log Replication is that it abstracts an *ideal func
 
 ### State Machine Replication
 
-There is a state machine which is a function that takes input and current state and returns the output and the next state:
+There is a state machine which is a function that takes input $cmd$ and current state $S$ and returns the output $out$ and the next state $S'$:
 
 $$
 SM(cmd, S)=(out,S')
 $$
 
-The state machine has some *genesis state* $S_0$.
-Note that this is a very general definition. Clients can submit requests  ```cmd``` (can define ```read``` and ```write``` commands via the state machine).  Given a log $L=c_1,\dots,c_k$, naturally define $SM(L)=(out,S)$ as the sequential application of the log of commands $L$ on $SM$ starting with $S_0$. 
+The state machine has some *genesis state* $S_0$. Note that this is a very general definition. Clients can submit requests  ```cmd``` (can define ```read``` and ```write``` commands via the state machine).  Given a log $L=c_1,\dots,c_k$, naturally define $SM(L)=(out,S)$ as the sequential application of the log of commands $L$ on $SM$ starting with $S_0$. 
 
 The core difference (in terms of what the client sees) between Log replication and SMR replication is that instead of returning a log of values $L$, the client library returns the output of $SM(L)$. So the servers (or the client library) need to execute state machine transactions based on the command log.
 
 The properties of Termination, Agreement, Validity, and Correctness are all as in Log Replication but on the induced log:
 
-
 **Termination**: If a non-faulty client issues a *request* then it eventually gets a *response*.
-
 
 **SMR Agreement**: If two requests return outputs $out_1$ and $out_2$ then there are two logs $L_1$ and $L_2$ such that one is a prefix of the,  $out_1$ is the output of $SM(L_1)$, and $out_2$ is the output of $SM(L_2)$.
 
