@@ -195,15 +195,18 @@ This protocol needs only send messages to the primary. Here is the core property
 
 So all that remains is to combine the two protocols to make sure the primary uses the result of ```Recover-Max``` if its output is not $\bot$. This is the outer shell ```Paxos``` protocol: 
 
-For view 1, the primary of view 1 with input $val$: 
+## The Paxos outer shell protocol (repeated from above for readability)
+
+This outer shell protocol is rather simple. The main thing to note is that if the ```Recover-Max(v)``` protocol returns a non-$\bot$ value then the primary must adopt it.
 
 ```
+For view 1, the primary of view 1 with input val: 
 Broadcast-in-view (1,val)
 ```
 
-For view $v>1$, the primary of view $v$ with input $val$:
-
 ```
+For view v>1, the primary of view v with input val:
+
 p := Recover-Max(v)
 
 if p = bot then 
