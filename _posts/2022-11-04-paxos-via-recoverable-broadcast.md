@@ -46,9 +46,30 @@ To avoid this despite both asynchrony and minority omission corruptions, Paxos t
 
 In this post we *decompose* Paxos into an inner *recoverable broadcast protocol* that fixes this problem and the outer view-based protocol.
 
+## The Paxos outer shell protocol
+
+This outer shell protocol is rather simple. The main thing to note is that if the ```Recover-Max(v)``` protocol returns a non-$\bot$ value then the primary must adopt it.
+
+```
+For view 1, the primary of view 1 with input val: 
+Broadcast-in-view (1,val)
+```
+
+```
+For view v>1, the primary of view v with input val:
+
+p := Recover-Max(v)
+
+if p = bot then 
+ Broadcast-in-view (v,val)
+otherwise 
+ Broadcast-in-view (v,p)
+```
+
+We now proceed to define ```Broadcast-in-view``` and ```Recover-Max``` which are variants of a simple **recoverable broadcast protocol**.
 ## Recoverable Broadcast protocol for $f<n/2$ omission corruptions
 
-Recoverable Broadcast is a pair of protocols: ```Broadcast``` and ```Recover```. 
+The basic Recoverable Broadcast is a pair of protocols: ```Broadcast``` and ```Recover```. 
 
 ### Broadcast protocol
 
