@@ -14,7 +14,7 @@ All this wonder and more can be traced back to a very useful fact about polynomi
 **Theorem: any non-trivial polynomial over a field of degree at most $d$ has at most $d$ roots**
 
 Let's unpack this statement.
-Let $K$ be a [field](https://en.wikipedia.org/wiki/Field_(mathematics)) and let $p_0,...,p_m \in K$ be _coefficients_.
+Let $K$ be a [field](https://en.wikipedia.org/wiki/Field_(mathematics)) and let $p_0,...,p_m \in K$ be *coefficients*.
 A polynomial over $K$ is an element of $K[X]$. Here is an example of one:
 
 $$
@@ -23,7 +23,7 @@ $$
 
 Recall that a field supports both multiplication and division (i.e., every non-zero element has a unique multiplicative inverse). An important property of fields is that the additive and multiplicative inverses are *unique*.  Note that the set of [polynomials](https://en.wikipedia.org/wiki/Polynomial_ring) $K[X]$ is a [ring](https://en.wikipedia.org/wiki/Ring_(mathematics)), so it supports multiplication, but not every element has a multiplicative inverse (more on division in $K[X]$ later).
 
-A polynomial is *non-trivial* if some coefficient of it is non-zero. Then, we define the *degree* of $P$, denoted $deg(p)$, to be the maximal $i$ such that $p_i \neq 0$. Observe that $deg(P+Q)\leq \max\{deg(P),deg(Q)\}$. It is natural to define the degree of the trivial polynomial to be $- \infty$. This way $deg(P  Q) = \deg(P) + \deg(Q)$ always holds.
+A polynomial is *non-trivial* if some coefficient of it is non-zero. Then, we define the *degree* of $P$, denoted $deg(P)$, to be the maximal $i$ such that $p_i \neq 0$. Observe that $deg(P+Q)\leq \max\{deg(P),deg(Q)\}$. It is natural to define the degree of the trivial polynomial to be $- \infty$. This way $deg(P  Q) = \deg(P) + \deg(Q)$ always holds.
 
 We say that $a \in K$ is a *root* of $P \in K[X]$ if $P(a)=0$ and say that $P$ has *at most $d$ roots* if there are at most $d$ elements in $K$ that are a root of $P$. 
 
@@ -35,11 +35,14 @@ Note that if instead of a field $K=\mathbb{Z}\_7$ we chose the _ring_ $K=\mathbb
 ## Proof
 To prove the theorem, we prove an important claim:
 
-**Claim: If $deg(P)\geq 1$ and $P(a)=0$ then there exists $Q$ such that $P=(X-a)Q$ and $deg(Q)<deg(P)$.**
+**Claim: If $deg(P)\geq 1$ and $P(a)=0$ then there exists polynomial $Q$ such that $P=(X-a)Q$ and $deg(Q)<deg(P)$.**
 
-The proof is by induction on $d$. For $d=1$, we again use the fact that $K$ is a field and can set $a= (p_0) (p_1)^{-1}$ and $Q=p_1$ is a non-trivial degree zero polynomial such that $P=(X-a) Q$.
+The proof is by induction on $d$. 
+
+For the base case $d=1$, $P$'s coefficients are $p_0,p_1$ and $p_1\neq 0$. Let $a= -(p_0) (p_1)^{-1}$ (this is well defined since $K$ is a field) and let $Q=p_1$. Note that $Q$ is a non-trivial degree zero polynomial. It is easy to check that indeed $(X-a) Q = p_1 X + p_0 = P$.
 
 For $d>1$, define a new polynomial $P' = P - p_d X^{d-1} (X-a)$, note that $p_d$ is the largest coefficient of $P$. Lets make a few observations:
+
 1. The degree of $P'$ is smaller than $d$. This is because the $d$th coefficient of $p_d X^{d-1} (X-a)$ equals $p_d$, so it will cancel out.
 2. $P'$ has the property that $P'(a)=0$. This is because $P(a)=0$ and because $p_d X^{d-1} (X-a)$ also has a root at $a$.
 
@@ -60,11 +63,10 @@ $$
 Hence, we have proved that:
 
 $$
-P = (X-a)Q\ \text{with}\ Q=Q'+
+P = (X-a)Q\ \text{with}\ Q=Q'+ p_d X^{d-1}
 $$
 
 Since $deg(Q) \leq \max \{ deg(Q'), deg(p_d X^{d-1})\}$ then $Q$ has degree at most $d-1$. This completes the proof of the claim.
-
 
 **Proof of the Theorem**
 
@@ -78,14 +80,13 @@ If $P$ has no roots, then we are done.
 Otherwise, let $a \in K$ be such that $P(a)=0$. Using the claim above, there exists a polynomial $Q$ of degree $<d$ such that $P=(X-a) Q$. Since $deg(Q)<d$ we use the induction hypothesis on $Q$. So $P$ can have at most $d-1$ roots from $Q$ and at most one more root (at $a$) from the degree one polynomial $(X-a)$.
 
 ### Discussion
+
 In the next posts, we will use this very useful fact about roots of polynomials over finite fields.
 First, we will use it as the foundation for [secret sharing](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis) and then as the foundation for Zero Knowledge Proofs.
 
 A significantly more general result about polynomials over a field views them as a special case of a [unique factorization domain](https://en.wikipedia.org/wiki/Unique_factorization_domain). This view exposes deep connections between the natural numbers, polynomials over a field, and the [fundamental theorem of Arithmetic](https://www.maths.tcd.ie/pub/Maths/Courseware/Primality/Primality.pdf).  
 
-
 **Acknowledgment.** Thanks to [Alin](https://research.vmware.com/researchers/alin-tomescu) for helpful feedback on this post.
-
 
 Please leave comments on [Twitter](https://twitter.com/ittaia/status/1283904819019886592).
 
