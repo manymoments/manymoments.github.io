@@ -250,7 +250,8 @@ When a party sees a proposal chain from the view $v$ primary it checks:
 4. That all the blocks after the lock-cert of the proposed chain contain externally valid commands;
 5. That the lock-cert of the proposed chain has a view that is at least as high as the view of the lock-cert of ```my-chain```.
 6. If all these checks pass, then:
-    1. If the proposed chain has a commit-cert for a higher view than that of  ```my-chain``` then execute the blocks in between the previous commit-cert and the new commit-cert.
+    1. If the proposed chain has a commit-cert for a higher view than that of  ```my-chain``` then 
+        execute the blocks in between the previous commit-cert and the new commit-cert.
     2. Update ```my-chain``` to the new proposed chain so it will be signed as part of the "start view" of view $v+1$.
 
 ```   
@@ -298,11 +299,11 @@ An example of this violation, members of $S_1 \cap L$ signed in view 2 on both $
 (Genesis,0)<-(c1,1)<-(c4,2)
                      
 (B1,B2) = Commit-cert on (c2,2)<-(c3,3)
-L = Lock cert on (c4,2)
+B' = Lock cert on (c4,2)
 ```
 
 
-The second case is if $v^- = v^\star +1$. This case is identical to the first case but with the sets $S2$ and $L$. There are at least $n-2f \geq f+1$ parties in the intersection of $S_2 \cap L$ that must have violated the protocol by signing two different blocks in the same view $v^\star +1$.
+The second case is if $v^- = v^\star +1$. This case is identical to the first case but with the sets $S2$ (signers of $B_2$) and $L$ (signers of $B'$). There are at least $n-2f \geq f+1$ parties in the intersection of $S_2 \cap L$ that must have violated the protocol by signing two different blocks in the same view $v^\star +1$.
 
 An example of this violation, members of $S_2 \cap L$ signed in view 3 on both $c3$ and $c4$.
 ```
@@ -310,11 +311,11 @@ An example of this violation, members of $S_2 \cap L$ signed in view 3 on both $
 (Genesis,0)<-(c1,1)<-(c4,3)
                      
 (B1,B2) = Commit-cert on (c2,2)<-(c3,3)
-L = Lock cert on (c4,3)
+B' = Lock cert on (c4,3)
 ```
 
 
-The third case is if $v^- > v^\star + 1$, here we use the minimality assumption on $v^-$ to ensure the only blocks with a lock-cert that do not contain $B_1$  must be for a view that is less than $v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_2 \cap L$ that must have violated the protocol by signing on a proposal chain in view $v^- > v^\star +1$ that has a lock-cert whose view is smaller than $v^\star$, but as members of $S_2$, they previously signed (in view $v^\star +1$) that they had a valid chain with a lock-cert of a block of view $v^\star$. The delivery certificate from $S_2$ and the lock certificate from $L$ contain irrefutable cryptographic evidence of their misbehavior.
+The third case is if $v^- > v^\star + 1$, here we use the minimality assumption on $v^-$ to ensure the only blocks with a lock-cert that do not contain $B_1$  must be for a view that is less than $v^\star$. In this case due to quorum intersection, there are at least $n-2f \geq f+1$ parties in the intersection of $S_2 \cap L$ that must have violated the protocol by signing on a proposal chain in view $v^- > v^\star +1$ that has a lock-cert whose view is *smaller* than $v^\star$, but as members of $S_2$, they previously signed (in view $v^\star +1$) that they had a valid chain with a lock-cert of a block of view $v^\star$. This is a violation of ```Check that chain.lock-cert.view >= my-chain.lock-cert.view```. The delivery certificate from $S_2$ and the lock certificate from $L$ contain irrefutable cryptographic evidence of their misbehavior.
 
 
 An example of this violation, the members of $L \cap S_2$: in view $3$ they declared their highest lock-cert is from view 2, but in view 5 they signed a proposed chain that has a strictly lower view lock-cert (either 0 or block-cert on view 1) that created a lock-cert on a view 5 block at view 6.
@@ -323,7 +324,7 @@ An example of this violation, the members of $L \cap S_2$: in view $3$ they decl
 (Genesis,0)<-(c1,1)<-(c5,5)
                      
 (B1,B2) = Commit-cert on (c2,2)<-(c3,3)
-L = Lock cert on (c5,5)
+B' = Lock cert on (c5,5)
 ```
 
 
