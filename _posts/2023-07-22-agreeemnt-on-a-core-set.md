@@ -64,7 +64,7 @@ Upon completing all BA instances,
     output the set S_i of parties whose BA_j had output 1
 ```
 
-### Proof of BKS's ACS protocol
+### Proof of BKR94's ACS protocol
 
 **Agreement:** Follows directly from the agreement property of each binary agreement.
 
@@ -95,7 +95,7 @@ Recall that the number of rounds of an execution is the total time till terminat
 
 Ben-Or and El-Yaniv make the following observation in [their paper](https://csaws.cs.technion.ac.il/~rani/papers/interactive-consistency.pdf) from 2003:
 
-**Observation:** Let $X_1,X_2,\dots,X_n$ be independant random variables such that for every $i, \Pr[X_i > j] =q^j$ (for some $0<q<1$). If $Y=\max\{X_i\}$, then $E[Y]= \Theta(\log n)$.
+**Observation:** Let $X_1,X_2,\dots,X_n$ be independent random variables such that for every $i, \Pr[X_i > j] =q^j$ (for some $0<q<1$). If $Y=\max\{X_i\}$, then $E[Y]= \Theta(\log n)$.
 
 Indeed, the most efficient binary $BA$ protocols that we are aware of have round complexities distributed like the $X_i$ variables described above. While for each $i$, the expected round complexity is constant, $E(i)=O(1)$, the ACS protocol terminates only when the **last** BA instance terminates. This means, that the round complexity of the ACS protocol is $Y=\max\{X_i\}$, so the expected round complexity for all instances to terminate is $E[Y]= \Theta(\log n)$.
 
