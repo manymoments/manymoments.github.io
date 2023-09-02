@@ -85,7 +85,7 @@ We note that this proof can be extended even to the case that the termination co
 
 Note on termination: it is easy to require a slightly stronger termination condition, where $valid_i(k)=1$ holds for every $k\in S_i$ at the time of termination by waiting for that event before outputting a value (follows from the eventual consistency property).
 
-### BKS's ACS Round Complexity
+### BKR94's ACS Round Complexity
 
 {: .box-note}
 TLDR: the expected round complexity of the BKR ACS is $O(\log n)$.
