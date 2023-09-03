@@ -15,7 +15,7 @@ The model is [partial synchrony](https://decentralizedthoughts.github.io/2019-06
 
 > The Paxon parliament’s protocol provides a new way of implementing the state-machine approach to the design of distributed systems. [Lamport, The Part-Time Parliament](https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf).
 
-We approach Paxos by starting with two major simplifications:
+Our exploration of Paxos begins with two simplifications:
 
 1. Use a *simple revolving primary* strategy based on the assumptions of perfectly synchronized clocks. A later post shows how to extend to a *stable leader*, how to rotate leaders with *responsiveness*, and how not to rely on clock synchronization.
 2. Focus on a *single-shot* consensus. A [later post](https://decentralizedthoughts.github.io/2022-11-19-from-single-shot-to-smr/) shows how to extend to *multi-shot* consensus and *state machine replication*.
@@ -46,30 +46,30 @@ To avoid this despite both asynchrony and minority omission corruptions, Paxos t
 
 In this post we *decompose* Paxos into an inner *recoverable broadcast protocol* that fixes this problem and the outer view-based protocol.
 
-## The Paxos outer shell protocol
+## The Paxos Outer Shell Protocol
 
 This outer shell protocol is rather simple. The main thing to note is that if the ```Recover-Max(v)``` protocol returns a non-$\bot$ value then the primary must adopt it.
 
 ```
 For view 1, the primary of view 1 with input val: 
-Broadcast-in-view (1,val)
+Broadcast-in-view(1, val)
 ```
 
 ```
-For view v>1, the primary of view v with input val:
+For view v > 1, the primary of view v with input val:
 
 p := Recover-Max(v)
 
 if p = bot then 
- Broadcast-in-view (v,val)
-otherwise 
- Broadcast-in-view (v,p)
+    Broadcast-in-view(v, val)
+else 
+    Broadcast-in-view(v, p)
 ```
 
-We now proceed to define ```Broadcast-in-view``` and ```Recover-Max``` which are variants of a simple **recoverable broadcast protocol**.
-## Recoverable Broadcast protocol for $f<n/2$ omission corruptions
+We'll next define ```Broadcast-in-view``` and ```Recover-Max``` which are variations of a simple **recoverable broadcast protocol**.
+## Recoverable Broadcast Protocol for $f<n/2$ Omission Corruptions
 
-The basic Recoverable Broadcast is a pair of protocols: ```Broadcast``` and ```Recover```. 
+The basic *recoverable broadcast protocol* consists of a pair of protocols: ```Broadcast``` and ```Recover```. 
 
 ### Broadcast protocol
 
@@ -284,7 +284,7 @@ Observe that Validity is trivial in these protocols. By induction, the only valu
 
 What if a party has several different values (for example it received several different values from several different clients)? This is an example of how the standard validity of consensus does not address the challenges of MEV. More on that in later posts. 
 
-d Message Complexity
+### Message Complexity
 
 Note that the time and number of messages before GST can be both unbounded. So for this post, we will measure the time and message complexity after GST.
 
