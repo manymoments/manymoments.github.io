@@ -30,37 +30,42 @@ The modern interpretation of these lower bounds is the following:
 ### Definitions
 
 #### The goal: Binary Agreement with crash failures
-We assume $n$ parties. Each party is a state machine that has some *initial input* $\in \{0,1\}$. The state machine has a special *decide* action that irrevocably sets its *decision* $\in \{0,1\}$.
+There are $n$ parties. Each party is a state machine that has some *initial input* $\in \{0,1\}$. The state machine has a special *decide* action that irrevocably sets its *decision* $\in \{0,1\}$.
 
 We say that a protocol $\mathcal{P}$ solves *agreement against $t$ crash failures* if in any execution with at most $t$ crash failures:
+
 1. **Termination**: all non-faulty parties eventually decide.
 2. **Agreement**: all non-faulty parties decide on the same value.
 3. **Validity**: if all non-faulty parties have the same input value, then this is the decision value. 
 
 #### Parties as State Machines
+
 We model each party as a deterministic state machine, and model randomness by giving the state machine read-only access to a tape of random bits.
 Each state machine has access to an immutable *input* register, a read-only *incoming-messages* queue, and a write-only *outgoing-messages* queue. At any given moment, the *local state* of a party is fully defined by the state of its state machine and the content of it input register and local message queues. A **protocol**, $\mathcal{P}$, for $n$ parties is a set of $n$ state machines.
 
 #### Message passing
+
 When a party wishes to send a message $m$ to a recipient party $p$, it locally writes $(m,p)$ on its outgoing-messages queue. The system then adds this event $e=(m,p)$ to a *global* set of *pending messages*. Once an event enters the pending messages set, the adversary can divide when to *deliver* the message (with some constraints that depend on the network model: synchrony or asynchrony). When event $e=(m,p)$ is delivered, the system adds the message $m$ to the local incoming-messages queue of party $p$.
 
 
 #### Configuration
+
 Given a protocol $\mathcal{P}$, a **configuration** of a system is just the state of all the parties and the set of all pending, undelivered messages. More formally, a configuration $C$ is a vector of *local states* and a set $C_M$ of pending messages. We say that $e\in C_M$ is a pending message and $e=(m,p)$ if the configuration $C$ has a pending message $m$ sent to a party $p$ that party $p$ did not receive yet.
 
 #### Initial Configuration
+
 Given a protocol $\mathcal{P}$, the **initial configuration** of the system is fully described by the vector of inputs. 
 
 #### Deciding Configuration
+
 **$C$ is a *deciding* configuration**:  if all non-faulty parties have decided in $C$. We say that $C$ is  *1-deciding* if the common decision value is 1, and similarly that $C$ is *0-deciding* if the decision is 0.
 
 Note that it's easy to check if a configuration is deciding - just look at the local state of each non-faulty party.
-
-
 #### Committed Configuration (informal)
-The goal of a consensus protocol is for the system to eventually reach a deciding configuration (despite the adversary's control of the asynchrony and ability to corrupt parties). The *magic moment* of any consensus protocol is when the system reaches a *committed configuration*. This is a configuration where no matter what the adversary does from this point onwards, the eventual decision value is already *fixed*. Note that there is no obvious externally observable way to know if a configuration is indeed committed. In particular, parties need to learn that this is the case before they decide.
 
-We choose to use new names to these definitions, which we feel provide a more intuitive and modern viewpoint. The classical name for a committed configuration is *univalent configuration*  and for an uncommitted configuration is  *bivalent configuration*.
+The goal of a consensus protocol is for the system to eventually reach a deciding configuration (despite the adversary's control of the asynchrony and ability to corrupt parties). The *magic moment* of any consensus protocol is when the system reaches a *committed configuration*. This is a configuration where no matter what the adversary does from this point onwards, the eventual decision value is already *fixed*. Note that there is no obvious externally observable way to know if a configuration is indeed a committed configuration or is still uncommitted. In particular, parties need to learn that they are in a committed configuration before they decide.
+
+We choose to use new names to these definitions, which we feel provide a more intuitive and modern viewpoint. The classical name for a committed configuration is *univalent configuration*  and for an uncommitted configuration is *bivalent configuration*.
 
 #### Transitioning from one configuration to another
 
@@ -71,6 +76,7 @@ When a pending message $e=(m,p)$ is delivered, then party $p$ receives message $
 We write **$C \xrightarrow{T, e=(p,m)} C'$** when we are explicit about the event $e$ causing the transition, and write **$C \xrightarrow{e=(p,m)} C'$** when $T=0$ and **$C \xrightarrow{T} C'$** when only $T$ time passes.
 
 The differences between $C$ and $C'$ are:
+
 1. The local state of party $p$ includes the message $e$;
 2. The set of pending messages $C'_M$ of configuration $C'$:
     1. $e$ is removed from $C'_M$; 
@@ -86,10 +92,8 @@ For a sequence of delays and events $\pi=T_1,e_1,\dots,T_{k}, e_{k}$ we write $C
 
 **Discussion**: Note that in [FLP JACM 85](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf) a step is defined as a receiving of an event $e$ and immediately sending a finite set of messages. This model does not explicitly allow using timeouts or sending an unbounded number of messages over time. We assume a global clock model and model a step as first an amount of global time $T$ that passes and then the receiving event $e$. This explicitly captures the use of timeouts. Note that this means that during a transition $C \xrightarrow{T} C''$ the state of all parties may change and the proof needs to take this into account when arguing for indistinguishability. 
 
-
-
-
 #### Uncommitted Configuration
+
 **$C$ is an *uncommitted* configuration**:  if it has a future 0-deciding configuration and a future 1-deciding configuration. There exists $C \rightsquigarrow D_0$ and $C \rightsquigarrow D_1$ such that $D_0$ is 0-deciding  and $D_1$ is 1-deciding.
 
 Said differently, an *uncommitted configuration* is a configuration where the adversary still has control over the decision value. There are some adversary actions (crash events, message delivery order) that will cause the parties to decide 0 and some adversary actions that will cause the parties to decide 1.
@@ -98,6 +102,7 @@ An uncommitted configuration is a state of a system as a whole, not something th
 
 
 #### Committed Configuration
+
 **$C$ is a *committed* configuration**: if every future deciding configuration $D$ (such that $C \rightsquigarrow D$) is deciding on the *same* value. We say that $C$ is *1-committed* if every future ends in a 1-deciding configuration, and similarly that $C$ is *0-committed* if every future ends in a 0-deciding configuration.
 
 Said differently, a *committed configuration* is a configuration where the adversary has no control over the decision value. When a configuration is committed to $v$, no matter what the adversary does, the decision value will eventually be $v$.
@@ -130,16 +135,16 @@ A recurring  **proof pattern** for showing the existence of an uncommitted confi
 
 This proves that any protocol $\mathcal{P}$ must have some initial uncommitted configuration. The next two posts will use the existence of an initial uncommitted configuration and extend it to more rounds!
 
-
 **Proof by example for n=3**:
 Consider the 4 initial configurations $(1,1,1), (0,1,1),(0,0,1),(0,0,0)$. By validity, configuration $(1,1,1)$ must be 1-committed and configuration $(0,0,0)$ must be 0-committed. Seeking a contradiction, let's assume none of the 4 initial configurations is uncommitted. So both $(0,1,1)$ and $(0,0,1)$ are committed. Since all 4 initial configurations are committed there must be two adjacent configurations that are committed to different values. Without loss of generality, assume that $(0,1,1)$ is 1-committed and $(0,0,1)$ is 0-committed. Now suppose that in both configurations, party 2 crashes right at the start of the protocol. Observe that both configurations look like $(1,CRASH,0)$. So both worlds must decide the same, but this is a contradiction because one is 1-committed and the other is 0-committed.  
 
 
 #### Minimal validity condition
+
 Note that all this proof required was the existence of one 1-committed initial configuration and one 0-committed initial configuration. 
 
-
 ### Acknowledgment
+
 Many thanks to thank Kartik Nayak for valuable feedback on this post.
 
 
