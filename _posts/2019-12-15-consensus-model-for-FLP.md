@@ -11,9 +11,9 @@ In this series of three posts, we discuss two of the most important consensus lo
 1. [Lamport, Fischer \[1982\]](https://lamport.azurewebsites.net/pubs/trans.pdf): any protocol solving consensus in the *synchronous* model that is resilient to $t$ crash failures must have an execution with at least $t+1$ rounds.
 2. [Fischer, Lynch, and Patterson \[1983, 1985\]](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf): any protocol solving consensus in the *asynchronous* model that is resilient to even one crash failure must have an infinite execution.
 
-The modern interpretation of these lower bounds is the following:
-* **Bad news**: Without using randomness, asynchronous consensus is *impossible*, and synchronous consensus is *slow*.
-* **Good news**: With randomization, consensus (both in synchrony and in asynchrony) is possible in a *constant expected number of rounds*. Randomness does not circumvent the lower bounds; it just reduces the probability of bad events implied by the lower bounds. In synchrony, the probability of slow executions can be made exponentially small. In asynchrony, termination happens  [almost surely](https://en.wikipedia.org/wiki/Almost_surely). Formally, the *probability measure* of the complement of the event of terminating in some finite number of rounds is zero.
+The modern interpretation of these lower bounds highlights the importance of *randomness*:
+* **Bad news**: Without randomness, asynchronous consensus is *impossible*, and synchronous consensus is *slow*.
+* **Good news**: With randomness, consensus (both in synchrony and in asynchrony) is possible in a *constant expected number of rounds*. Randomness does not circumvent the lower bounds; it just reduces the probability of bad events implied by the lower bounds. In synchrony, the probability of slow executions can be made exponentially small. In asynchrony, termination happens  [almost surely](https://en.wikipedia.org/wiki/Almost_surely). Formally, the *probability measure* of the complement of the event of terminating in some finite number of rounds is zero.
 
 
 ### The plan: three posts
@@ -45,7 +45,7 @@ Each state machine has access to an immutable *input* register, a read-only *inc
 
 #### Message passing
 
-When a party wishes to send a message $m$ to a recipient party $p$, it locally writes $(m,p)$ on its outgoing-messages queue. The system then adds this event $e=(m,p)$ to a *global* set of *pending messages*. Once an event enters the pending messages set, the adversary can divide when to *deliver* the message (with some constraints that depend on the network model: synchrony or asynchrony). When event $e=(m,p)$ is delivered, the system adds the message $m$ to the local incoming-messages queue of party $p$.
+When a party wishes to send a message $m$ to a recipient party $p$, it locally writes $(m,p)$ on its outgoing-messages queue. The system then adds this event $e=(m,p)$ to a *global* set of *pending messages*. Once an event enters the pending messages set, the adversary can decide when to *deliver* the event (with some constraints that depend on the network model: synchrony or asynchrony). When event $e=(m,p)$ is delivered, the system adds the message $m$ to the local incoming-messages queue of party $p$.
 
 
 #### Configuration
@@ -117,26 +117,30 @@ Note that there is no simple way to know if a configuration is committed or unco
 
 ### The existence of an initial uncommitted configuration
 
-With the new definitions, one way to state the validity property is: if all non-faulty parties have the same input $b$ then that initial configuration must be $b$-committed.
+With these definitions, we can re-state the validity property as: 
 
-So perhaps all initial configurations are either 1-committed or 0-committed? The following lemma shows that this is not the case: every protocol that can tolerate even one crash failure must have some initial configuration that is *uncommitted*.
+**Validity**: if all non-faulty parties have the same input $b$ then that initial configuration must be $b$-committed.
+
+Are all initial configurations are either 1-committed or 0-committed? The following lemma shows that this is not the case: every protocol that can tolerate even one crash failure must have some initial configuration that is *uncommitted*.
 
 **Lemma 1 ([Lemma 2 of FLP85](https://lamport.azurewebsites.net/pubs/trans.pdf))**: If $\mathcal{P}$ solves agreement against at least one crash failure, then $\mathcal{P}$ has an initial *uncommitted* configuration.
 
 A recurring  **proof pattern** for showing the existence of an uncommitted configuration will appear many times in these three posts. We start by stating it in an abstract manner:
+
 1. Proof by *contradiction*: assume all configurations are either 1-committed or 0-committed.
 2. Define a notion of *local adjacency* that differ by just one party. Find *two adjacent* configurations $C$ and $C'$ such that $C$ is 1-committed and $C'$ is 0-committed.
 3. Reach a contradiction due to an indistinguishability argument between the two adjacent configurations $C$ and $C'$. The adjacency allows the adversary to cause indistinguishability via *crashing of just one* party.
 
 **Proof of the Lemma 1** follows the proof pattern above:
+
 1. Seeking a contradiction, assume there is no initial configuration that is uncommitted. So all initial configurations are either 1-committed or 0-committed.
-2. Define two initial configurations as *$i$-adjacent* if the initial value of all parties other than party $i$ are the same. Consider the sequence (or path) of $n+1$ adjacent initial configurations: $(1,\dots,1),(0,1,\dots,1),(0,0,1\dots,1),\dots,(0,\dots,0)$. Clearly, the leftmost is 1-committed and the rightmost is 0-committed. Obviously, there must be some party $i$ such that the two $i$-adjacent configurations $C,C'$ are 1-committed and 0-committed, respectively.
+2. Define two initial configurations as *$i$-adjacent* if the initial value of all parties other than party $i$ are the same. Consider the sequence (or path) of $n+1$  initial configurations: $(1,\dots,1),(0,1,\dots,1),(0,0,1,\dots,1),\dots,(0,\dots,0,1), (0,\dots,0)$. By the validity property, the leftmost is 1-committed and the rightmost is 0-committed. So there must be some party $i$ such that the two $i$-adjacent configurations $C,C'$ are 1-committed and 0-committed, respectively.
 3. Now consider in both configurations $C$ and $C'$ the execution where party $i$ crashes right at the start of the protocol. We now have two configurations $\hat{C}, \hat{C'}$. Observe that these two configurations are indistinguishable for all non-faulty parties. So the non-faulty parties must decide the same value in any future of $\hat{C}$ and $\hat{C'}$. This is a contradiction to the assumption that $C$ is 1-committed and ,$C'$ is 0-committed.
 
 This proves that any protocol $\mathcal{P}$ must have some initial uncommitted configuration. The next two posts will use the existence of an initial uncommitted configuration and extend it to more rounds!
 
 **Proof by example for n=3**:
-Consider the 4 initial configurations $(1,1,1), (0,1,1),(0,0,1),(0,0,0)$. By validity, configuration $(1,1,1)$ must be 1-committed and configuration $(0,0,0)$ must be 0-committed. Seeking a contradiction, let's assume none of the 4 initial configurations is uncommitted. So both $(0,1,1)$ and $(0,0,1)$ are committed. Since all 4 initial configurations are committed there must be two adjacent configurations that are committed to different values. Without loss of generality, assume that $(0,1,1)$ is 1-committed and $(0,0,1)$ is 0-committed. Now suppose that in both configurations, party 2 crashes right at the start of the protocol. Observe that both configurations look like $(1,CRASH,0)$. So both worlds must decide the same, but this is a contradiction because one is 1-committed and the other is 0-committed.  
+For $n=3$ parties consider the 4 initial configurations $(1,1,1), (0,1,1),(0,0,1),(0,0,0)$. By validity, configuration $(1,1,1)$ must be 1-committed and configuration $(0,0,0)$ must be 0-committed. Seeking a contradiction, let's assume none of the 4 initial configurations is uncommitted. So both $(0,1,1)$ and $(0,0,1)$ are committed. Since all 4 initial configurations are committed there must be two adjacent configurations that are committed to different values. Without loss of generality, assume that $(0,1,1)$ is 1-committed and $(0,0,1)$ is 0-committed. Now suppose that in both configurations, party 2 crashes right at the start of the protocol. Observe that both configurations look like $(1,CRASH,0)$. So both worlds must decide the same, but this is a contradiction because one is 1-committed and the other is 0-committed.  
 
 
 #### Minimal validity condition

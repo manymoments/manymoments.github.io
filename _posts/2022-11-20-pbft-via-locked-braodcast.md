@@ -8,7 +8,7 @@ author: Ittai Abraham
 
 [PBFT](https://pmg.csail.mit.edu/bft/) is a foundational multi-year project lead by [Barbara Liskov](https://pmg.csail.mit.edu/~liskov/) and her students, obtaining major advances in both the theory and practice of Byzantine Fault Tolerance. The PBFT [conference version](https://pmg.csail.mit.edu/papers/osdi99.pdf), [journal version](https://pmg.csail.mit.edu/papers/bft-tocs.pdf), Castro's [thesis](https://pmg.csail.mit.edu/~castro/thesis.pdf), Liskov's [talk](https://www.youtube.com/watch?v=Uj638eFIWg8), and follow up work on [BASE](http://www.sosp.org/2001/papers/rodrigues.pdf) are all required reading for anyone who wants to deeply understand BFT systems.
 
-In this post we describe a variation of the authenticated version of [PBFT](https://pmg.csail.mit.edu/papers/osdi99.pdf) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous post on [Paxos using Recoverable Broadcast](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/). I call this protocol **linear PBFT** because the number of messages per view is linear. However, the size of the view change message in the worst case is large. We will impove this in later post on [Two Round HotStuff](https://arxiv.org/pdf/1803.05069v1.pdf) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) and [Three Round HotStuff](https://arxiv.org/pdf/1803.05069.pdf) using [Keyed Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
+In this post we describe a variation of the authenticated version of [PBFT](https://pmg.csail.mit.edu/papers/osdi99.pdf) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) that follows a similar path as our previous post on [Paxos using Recoverable Broadcast](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/). I call this protocol **linear PBFT** because the number of messages per view is linear. However, the size of the view change message in the worst case is large. We will improve this in later post on [Two Round HotStuff](https://arxiv.org/pdf/1803.05069v1.pdf) using [Locked Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) and [Three Round HotStuff](https://arxiv.org/pdf/1803.05069.pdf) using [Keyed Broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
 
 Variants of the linear PBFT protocol are used by [SBFT](https://arxiv.org/pdf/1804.01626.pdf), [Tusk](https://arxiv.org/pdf/2105.11827.pdf), [Jolteon](https://arxiv.org/pdf/2106.10362.pdf), [DiemBFTv4](https://developers.diem.com/papers/diem-consensus-state-machine-replication-in-the-diem-blockchain/2021-08-17.pdf), and [Aptos](https://github.com/aptos-labs/aptos-core/blob/main/developer-docs-site/static/papers/whitepaper.pdf).
 
@@ -71,7 +71,7 @@ Upon receiving a valid <decide, x, dc>
 ``` 
 In words, the primary first tries to recover the lock-certificate with the maximal view. If no lock-certificate is seen, the primary is free to choose its own externally valid input, but even in that case, it adds the proof from the Recover-Max-Lock protocol. Otherwise, it proposes the output value from the Recover-Max-Lock along with its proof.  Note the deep similarity to the Paxos protocol variant of the [previous post](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/).
 
-So now we need to define  *Locked-Broadcast* and *Recover-Max-Lock*.
+We now define  *Locked-Broadcast* and *Recover-Max-Lock*.
 ## Locked Broadcast 
 
 [Locked broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/) is the application of two provable broadcasts with an *external validity function*, $EV_{\text{LB}}$, which obtains the following properties:
@@ -83,7 +83,7 @@ So now we need to define  *Locked-Broadcast* and *Recover-Max-Lock*.
 
 Note that Locked Broadcast needs to define an external validity function $EV_{\text{LB}}$, which controls what outputs are allowed. $EV_{\text{LB}}$ is different from $EV_{\text{consensus}}$ (the external validity function of the underlying consensus protocol). 
 
-Before we define $EV_{\text{LB-PBFT}}$ for the Locked-Broadcast protocol in PBFT, we detail the Recover-Max-Lock protocol. Similar to [Recover-Max of this Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/), the Recover-Max-Lock protocol returns the highest lock-certificate it sees. Unlike Paxos is also returns a ```proof``` that the primary chose this lock honestly. Intuitively this proof contains a way to validate that the primary did indeed choose the highest lock-certificate it saw out of a set of $n{-}f$ distinct lock-certificated it received. The external validity $EV_{\text{LB-PBFT}}$ of the locked-broadcast will check this proof.
+Before we define $EV_{\text{LB-PBFT}}$ for the Locked-Broadcast protocol in PBFT, we detail the Recover-Max-Lock protocol. Similar to [Recover-Max of this Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/), the Recover-Max-Lock protocol returns the highest lock-certificate it sees. Unlike Paxos is also returns a ```proof``` that the primary chose this lock honestly. Intuitively this proof contains a way to validate that the primary did indeed choose the highest lock-certificate it saw out of a set of $n{-}f$ distinct lock-certificates it received. The external validity $EV_{\text{LB-PBFT}}$ of the locked-broadcast will check this proof.
 
 ### Recover-Max-Lock for PBFT based protocols
 
@@ -96,12 +96,12 @@ Party i upon start of view v
     If it does not have any lock-certificate   
        send <echoed-max(v, bot)>_i to primary 
     Otherwise let  v' be the highest view with a lock-certificate
-        let LC(v',p) be this lock certificate for value p
-        send <echoed-max(v, v', p, LC(v',p) )> to primary
+        let LC(v',p') be this lock certificate for value p'
+        send <echoed-max(v, v', p', LC(v',p') )> to primary
 
 Primary waits for n-f valid <echoed-max(v,*)>
     Let R be this set
-    If all value in R are bot then output (bot, R)
+    If all values in R are bot then output (bot, R)
     otherwise, output (p, R) 
         where p is the value associated with the highest view in R
 ```

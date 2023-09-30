@@ -6,15 +6,15 @@ date: 2020-09-21 09:34:00 -04:00
 {: .box-note}
 This page contains material for a graduate course on Blockchains and Distributed Computing with a dash of Cryptography (stay tuned for more). Or read [posts chronologically](https://decentralizedthoughts.github.io/).
 
-We would love to get your feedback. If you find a post helpful or have a suggestion to improve, drop us a comment on [Twitter](https://twitter.com/ittaia/status/1421066572207169544?s=20).
+We would love to get your feedback. If you find a post helpful, have a suggestion to improve, or any other comment: [drop us a comment](https://twitter.com/ittaia/status/1421066572207169544?s=20) or send us email - your feedback is very valuable.
 
 
-# Basics, Foundations, and Classics
+## Basics, Foundations, and Classics
 
 Start with the definition of [Consensus and Agreement](/2019-06-27-defining-consensus/). Then learn about the [network model](/2019-06-01-2019-5-31-models/), the [threshold adversary](/2019-06-17-the-threshold-adversary/) model, and the [power of the adversary](/2019-06-07-modeling-the-adversary/). Many protocols need a [trusted setup phase](/2019-07-19-setup-assumptions/).
 The [consensus cheat sheet](https://decentralizedthoughts.github.io/2021-10-29-consensus-cheat-sheet/) gives a quick overview of what is possible and impossible. You can build half a course just from the upper bounds and lower bounds linked from it. 
 
-## Variants of Consensus and Broadcast 
+### Variants of Consensus and Broadcast 
 
 [Approximate agreement](https://decentralizedthoughts.github.io/2022-06-07-approx-agreement-one/) is a variation that considers rational input values.
 
@@ -26,29 +26,44 @@ This post covers several [relaxations of Broadcast](/2019-10-22-flavours-of-broa
 
 The Synchronous model is a good place to start because protocols are simpler. 
 
-For a simple and classic synchronous Byzantine agreement protocol, checkout [Phase-King](https://decentralizedthoughts.github.io/2022-06-09-phase-king-via-gradecast/).
+- Classic Byzantine agreement protocol for $f\leq n/2$: the [Phase-King](https://decentralizedthoughts.github.io/2022-06-09-phase-king-via-gradecast/).
 
-Under synchrony, a classic Byzantine Broadcast protocol (with a PKI) is the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/). 
+- Classic Byzantine Broadcast protocol (with a PKI) for $f < n$: the [Dolev-Strong Authenticated Broadcast protocol](/2019-12-22-dolev-strong/). 
 
-More recent State Machine Replication protocols such as [Sync HotStuff](/2019-11-12-Sync-HotStuff/), an [optimal optimistically responsive synchronous protocol](/2020-06-12-optimal-optimistic-responsiveness/), and a simple, streamlined synchronous protocol called [Streamlet](/2020-05-14-streamlet/). This post provides a survey of [authenticated protocols under the synchrony assumption](/2019-11-11-authenticated-synchronous-bft/).
+- A non-equivocation protocol (with a PKI) for  $f < n$: [Crusader Broadcast](https://decentralizedthoughts.github.io/2022-06-19-crusader-braodcast/). 
 
-For a simple non-equivocation protocol, see [Crusader Broadcast](https://decentralizedthoughts.github.io/2022-06-19-crusader-braodcast/). 
+More recent State Machine Replication protocols:
+- [Sync HotStuff](/2019-11-12-Sync-HotStuff/).
+- An [optimal optimistically responsive synchronous protocol](/2020-06-12-optimal-optimistic-responsiveness/).
+- A simple, streamlined synchronous protocol called [Streamlet](/2020-05-14-streamlet/). 
+- Survey of [authenticated protocols under the synchrony assumption](/2019-11-11-authenticated-synchronous-bft/).
 
-Use of randomization in synchronous agreement protocols. For [crash](https://decentralizedthoughts.github.io/2023-02-18-rand-and-consensus-1/) and for [omission](https://decentralizedthoughts.github.io/2023-02-19-rand-and-consensus-2/) failures.
+
+Use of randomization in synchronous agreement protocols:
+- For [crash failures](https://decentralizedthoughts.github.io/2023-02-18-rand-and-consensus-1/).
+- For [omission failures](https://decentralizedthoughts.github.io/2023-02-19-rand-and-consensus-2/).
 
 
 ## Partially Synchronous Protocols
 
 [Partial synchrony](/2019-09-13-flavours-of-partial-synchrony/) is one of the most used models in real word systems today.
 
-Modern variants of the classic protocols of Paxos and Raft are covered in [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/) and [Simplifing Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/). [Log Paxos](https://decentralizedthoughts.github.io/2021-09-30-distributed-consensus-made-simple-for-real-this-time/) is a modern take on multi-Paxos. It is both surprisingly simple and concretely efficient. 
 
-An important building block is [provable broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
+Single shot [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/).
 
 
-Single shot [Paxos](https://decentralizedthoughts.github.io/2022-11-04-paxos-via-recoverable-broadcast/), followed by single shot [PBFT](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/), followed by [Two Round HotStuff](https://decentralizedthoughts.github.io/2022-11-24-two-round-HS/). The path from single shot to SMR is covered [here](https://decentralizedthoughts.github.io/2022-11-19-from-single-shot-to-smr/).
+Taking ideas from the Byzantine setting and applying them to the benign setting:
+ -  [Benign Hotstuff](https://decentralizedthoughts.github.io/2021-04-02-benign-hotstuff/).
+ -  [Simplifing Raft with Chaining](https://decentralizedthoughts.github.io/2021-07-17-simplifying-raft-with-chaining/). 
+ -  [Log Paxos](https://decentralizedthoughts.github.io/2021-09-30-distributed-consensus-made-simple-for-real-this-time/) is a modern take on multi-Paxos. 
 
-For Byzantine adversaries, see [Information Theoretic HotStuff](https://decentralizedthoughts.github.io/2021-09-20-information-theoretic-hotstuff-it-hs-part-one/).
+The Byzantine setting:
+
+- An important building block: [provable broadcast](https://decentralizedthoughts.github.io/2022-09-10-provable-broadcast/).
+- Single shot [PBFT](https://decentralizedthoughts.github.io/2022-11-20-pbft-via-locked-braodcast/).
+- [Two Round HotStuff](https://decentralizedthoughts.github.io/2022-11-24-two-round-HS/) with SMR and accountability. 
+- Single shot to SMR is covered [here](https://decentralizedthoughts.github.io/2022-11-19-from-single-shot-to-smr/).
+- [Information Theoretic HotStuff](https://decentralizedthoughts.github.io/2021-09-20-information-theoretic-hotstuff-it-hs-part-one/).
 
 ## Asynchronous Protocols
 
@@ -67,13 +82,15 @@ Series on Asynchronous Agreement:
 4. Introduce [Crusader Agreement and Binding Crusader Agreement](https://decentralizedthoughts.github.io/2022-04-05-aa-part-four-CA-and-BCA/); 
 5. use BCA to efficiently solve [Binary Byzantine Agreement from a strong common coin](https://decentralizedthoughts.github.io/2022-04-05-aa-part-five-ABBA/).
  
+Reaching [Asynchronous Agreement on a Core Set](https://decentralizedthoughts.github.io/2023-07-22-agreeemnt-on-a-core-set/).
 
+## State Machine Replication
 
-# State Machine Replication
+Define [state machine replication](/2019-10-15-consensus-for-state-machine-replication/) (SMR). 
 
-This post defines [state machine replication](/2019-10-15-consensus-for-state-machine-replication/) (SMR). There are several levels of [SMR fault tolerance](/2019-10-25-flavours-of-state-machine-replication/). 
+Levels of [SMR fault tolerance](/2019-10-25-flavours-of-state-machine-replication/). 
 
-This post formally defines the [ideal state machine model and Linearizability](https://decentralizedthoughts.github.io/2021-10-16-the-ideal-state-machine-model-multiple-clients-and-linearizability/). 
+The [ideal state machine model and Linearizability](https://decentralizedthoughts.github.io/2021-10-16-the-ideal-state-machine-model-multiple-clients-and-linearizability/). 
 
 The scalability and performance of a State Machine Replication system are not just about [consensus, but also about data and execution](/2019-12-06-dce-the-three-scalability-bottlenecks-of-state-machine-replication/).
 
@@ -82,36 +99,51 @@ How [DAGs improve the performance of SMR](https://decentralizedthoughts.github.i
 To learn about upper bounds, start with a [simple SMR for crash failures](/2019-11-01-primary-backup/). Then extend SMR to omission failures: [First via single shot](/2020-09-13-synchronous-consensus-omission-faults/) and then via the [lock-commit](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/) paradigm to [multi-shot consensus](https://decentralizedthoughts.github.io/2020-11-30-the-lock-commit-paradigm-multi-shot-and-mixed-faults/).
 
 
-In partial synchrony, [Log Paxos](https://decentralizedthoughts.github.io/2021-09-30-distributed-consensus-made-simple-for-real-this-time/) shows how to extend Paxos to multi-Paxos in a straightforward and efficient manner.
 
 
-# Lower Bounds
+## Lower Bounds
 
 Lower bounds give us powerful tools to understand the fundamental limitations and model assumptions. 
 
+### Lower bounds on the size of the adversary:
+
 - Folklore (aka CAP theorem for synchrony): [Consensus with Omission failures](/2019-11-02-primary-backup-for-2-servers-and-omission-failures-is-impossible/) requires $f<n/2$.
 
-- The [CAP theorem](https://decentralizedthoughts.github.io/2023-07-09-CAP-two-servers-in-psynch/): Any system, in the face of a perceived 50-50 split, can either maintain safety or liveness, but not both.
+- The [CAP theorem for partial synchrony](https://decentralizedthoughts.github.io/2023-07-09-CAP-two-servers-in-psynch/): Any system, in the face of a perceived 50-50 split, can either maintain safety or liveness, but not both.
 
-- Dwork, Lynch, Stockmeyer 1988 ([DLS](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf)) lower bound: [Byzantine Consensus in Partial Synchrony](/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) requires $f<n/3$.
+- Split brain attacks:
+  - Dwork, Lynch, Stockmeyer 1988 ([DLS](https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf)) lower bound: [Byzantine Consensus in Partial Synchrony](/2019-06-25-on-the-impossibility-of-byzantine-agreement-for-n-equals-3f-in-partial-synchrony/) requires $f<n/3$.
+  - CJKR lower bound: Neither Non-equivocation nor Transferability alone is enough for [tolerating minority corruptions in asynchrony](https://decentralizedthoughts.github.io/2021-06-14-neither-non-equivocation-nor-transferability-alone-is-enough-for-tolerating-minority-corruptions-in-asynchrony/).
+  - TEEs without state need $3f+1$ in Partial Synchrony because of the [rollback adversary](https://decentralizedthoughts.github.io/2023-06-26-dls-meets-rollback/).
 
-- Fischer, Lynch, Merritt ([FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf))lower bound: [Byzantine Consensus with no PKI](/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) (or more generally when the adversary can simulate) requires $f<n/3$. 
+- Fischer, Lynch, Merritt ([FLM](https://groups.csail.mit.edu/tds/papers/Lynch/FischerLynchMerritt-dc.pdf)) lower bound: [Byzantine Consensus with no PKI](/2019-08-02-byzantine-agreement-is-impossible-for-$n-slash-leq-3-f$-is-the-adversary-can-easily-simulate/) (or more generally when the adversary can simulate) requires $f<n/3$. 
 
-- Strengthening the FLM lower bound: [Crusader Agreement with $\leq 1/3$ Error is Impossible for $n\leq 3f$ if the Adversary can Simulate](https://decentralizedthoughts.github.io/2021-10-04-crusader-agreement-with-dollars-slash-leq-1-slash-3$-error-is-impossible-for-$n-slash-leq-3f$-if-the-adversary-can-simulate/).
+- Strengthening the FLM lower bound with randomization and a weaker problem: [Crusader Agreement with $\leq 1/3$ error is impossible for $n\leq 3f$ if the adversary can simulate](https://decentralizedthoughts.github.io/2021-10-04-crusader-agreement-with-dollars-slash-leq-1-slash-3$-error-is-impossible-for-$n-slash-leq-3f$-if-the-adversary-can-simulate/).
 
-- Dolev and Reischuk 1982 ([DR](https://www.cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf)) lower bound: [Consensus often needs a quadratic number of messages](/2019-08-16-byzantine-agreement-needs-quadratic-messages/).
 
-- Fischer, Lynch, Paterson 1985 ([FLP](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf)) lower bound: Consensus must have some initial state that is [uncommitted](/2019-12-15-consensus-model-for-FLP/) and this implies [executions with at least $f+1$ rounds in Synchrony](/2019-12-15-synchrony-uncommitted-lower-bound/) and [non-terminating executions in Asynchrony](/2019-12-15-asynchrony-uncommitted-lower-bound/) (the FLP impossibility).
+### Lower bounds on the number of messages
+
+- Dolev and Reischuk 1982 ([DR](https://www.cs.huji.ac.il/~dolev/pubs/p132-dolev.pdf)) lower bound: [Consensus (even with omission failures) needs a quadratic number of messages](/2019-08-16-byzantine-agreement-needs-quadratic-messages/).
+- Extending Dolev and Reischuk to [Byzantine crusader broadcast](https://decentralizedthoughts.github.io/2022-08-14-new-DR-LB/).
+
+### Lower bounds on the round complexity
+
+- Fischer, Lynch, Paterson 1985 ([FLP](https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf)) lower bound, three part series: 
+  - Consensus must have some initial state that is [uncommitted](/2019-12-15-consensus-model-for-FLP/):
+  - This implies [executions with at least $f+1$ rounds in Synchrony](/2019-12-15-synchrony-uncommitted-lower-bound/).
+  - The FLP result: [non-terminating executions in Asynchrony](/2019-12-15-asynchrony-uncommitted-lower-bound/).
+
+
+### Lower bounds due to privacy requirements
 
 -  Ben-Or, Kelmer, Rabin 1994 ([BKR](https://dl.acm.org/doi/10.1145/197917.198088)) lower bound: Asynchronous Verifiable Secret Sharing must have a [non-zero probability of not terminating](https://decentralizedthoughts.github.io/2020-07-15-asynchronous-fault-tolerant-computation-with-optimal-resilience/).
 
+### Liveness attacks
+
 - Raft does not guarantee liveness under [omission faults](https://decentralizedthoughts.github.io/2020-12-12-raft-liveness-full-omission/).
 
-- CJKR lower bound: Neither Non-equivocation nor Transferability alone is enough for [tolerating minority corruptions in asynchrony](https://decentralizedthoughts.github.io/2021-06-14-neither-non-equivocation-nor-transferability-alone-is-enough-for-tolerating-minority-corruptions-in-asynchrony/).
 
-- $3f+1$ is needed in Partial Synchrony [even against a Rollback adversary](https://decentralizedthoughts.github.io/2023-06-26-dls-meets-rollback/).
-
-# Blockchains
+## Blockchains
 
 What is a [blockchain?](https://decentralizedthoughts.github.io/2022-09-05-what-is-a-blockchain/)
 
@@ -133,35 +165,39 @@ What is player replaceability? A series:
 - [Defining the problem and achieving a committee-based sub-quadratic communication protocol](https://decentralizedthoughts.github.io/2023-01-05-player-replaceability-I/)
 - [Achieving adaptive security for the committee-based protocol](https://decentralizedthoughts.github.io/2023-01-05-player-replaceability-II/)
 
-# Cryptography
+## Cryptography
 
-Some important tools:
 
 - [Cryptographic hash functions](/2020-08-28-what-is-a-cryptographic-hash-function/).
 
 - [Merkle trees](https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/).
 
-- A lightweight mathematical intro to [Polynomials over a finite field](/2020-07-17-the-marvels-of-polynomials-over-a-field/).
-
-- The basics of [Polynomial secret sharing](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/).
-
 - A glimpse at [Zero knowledge proofs](https://decentralizedthoughts.github.io/2020-12-08-a-simple-and-succinct-zero-knowledge-proof/)
 
 - [Bilinear accumulators](/2020-04-02-bilinear-accumulators-for-cryptocurrency/) from polynomial commitments.
 
-- [range proofs](/2020-03-03-range-proofs-from-polynomial-commitments-reexplained/) from polynomial commmitments.
+- [range proofs](/2020-03-03-range-proofs-from-polynomial-commitments-reexplained/) from polynomial commitments.
 
 - Private set intersection: [part 1](/2020-03-29-private-set-intersection-a-soft-introduction/) and [part 2](/2020-07-26-private-set-intersection-2/). Apple is using PSI for [CSAM detection](https://decentralizedthoughts.github.io/2021-08-29-the-private-set-intersection-psi-protocol-of-the-apple-csam-detection-system/).
 
-## Secret Sharing
+### Polynomials
+
+- A lightweight mathematical intro to [Polynomials over a finite field](/2020-07-17-the-marvels-of-polynomials-over-a-field/).
+
+- The basics of [Polynomial secret sharing](/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/).
+
+- [The Fast Fourier Transform over finite fields](https://decentralizedthoughts.github.io/2023-09-01-FFT/).
+
+### Secret Sharing and MPC
 
 Polynomial secret sharing is a base for deep connections between cryptography and distributed computing.
 
-Polynomial secret sharing agains a [passive adversary](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/), against a [crash adversary](https://decentralizedthoughts.github.io/2022-08-17-secret-sharing-with-crash/).
+- Polynomial secret sharing against a [passive adversary](https://decentralizedthoughts.github.io/2020-07-17-polynomial-secret-sharing-and-the-lagrange-basis/)
+- Against a [crash adversary](https://decentralizedthoughts.github.io/2022-08-17-secret-sharing-with-crash/).
 
-The [BGW88](https://inst.eecs.berkeley.edu/~cs276/fa20/notes/BGW88.pdf) protocol for [Verifiable Secret Sharing](https://decentralizedthoughts.github.io/2022-08-24-BGW-secret-sharing/).
+- The [BGW88](https://inst.eecs.berkeley.edu/~cs276/fa20/notes/BGW88.pdf) protocol for [Verifiable Secret Sharing](https://decentralizedthoughts.github.io/2022-08-24-BGW-secret-sharing/).
 
-Chaum’s [Dining Cryptographers](https://users.ece.cmu.edu/~adrian/731-sp04/readings/dcnets.html) and [the additivity of polynomial secret sharing](https://decentralizedthoughts.github.io/2022-08-25-dining-cryptographers-additive/).
+- Chaum’s [Dining Cryptographers](https://users.ece.cmu.edu/~adrian/731-sp04/readings/dcnets.html) and [the additivity of polynomial secret sharing](https://decentralizedthoughts.github.io/2022-08-25-dining-cryptographers-additive/).
 
 # Research Oriented Posts
 
