@@ -94,7 +94,7 @@ For simplicity, the primary also acts as a regular party. So it also sends ```<v
 
 **Weak Termination**: If the primary of view ```v``` is non-faulty and all non-faulty are in view ```v``` then all non-faulty parties output a value and terminate.
 
-**Recoverability**: If some party outputs ```Z``` in view ```v``` then at least $n-f$ parties sent ```<"echo", v, Z>``` 
+**Recoverability**: If some party outputs ```Z``` in view ```v``` then at least $n-f$ parties sent ```<"echo", v, Z>```.
 
 #### Proof of recoverable-broadcast properties
 
@@ -204,7 +204,7 @@ The agreement property follows from the safety lemma:
 
 Before we prove the lemma, lets see why it implies uniform agreement.
 
-*Proof of uniform agreement property given the lemma*: consider any party that outputs a value $X'$ in view $v'$.  It cannot be that $v' < v^\star$ because outputting a value requires seeing at least $n-f$ echo messages $(v',X')$. So it must be that $v' \geq v^\star$ and hence $X'=W$ because the only values that are sent in recoverable-broadcast for these views is with the value $W$.
+*Proof of uniform agreement property given the safety lemma*: consider any party that outputs a value $X'$ in view $v'$.  It cannot be that $v' < v^\star$ because outputting a value requires seeing at least $n-f$ echo messages $(v',X')$, but by definition $v^{\star}$ is the first such view. So it must be that $v' \geq v^\star$ and hence $X'=W$ because the only values that are sent in recoverable-broadcast for these views is with the value $W$.
 
 We now prove the lemma, which is the essence of Paxos safety.
 
@@ -212,15 +212,15 @@ We now prove the lemma, which is the essence of Paxos safety.
 
 For $u=v^\star$ lemma is true by definition.
 
-By induction, assume the lemma is true for all views $v^\star \le v<u$, to prove the lemma for view $u$ just use the **recover-max after recoverable-broadcast** property: the output in view $u$ is a value from view $y$ with $v^\star \le y$. 
+By induction, assume the lemma is true for all views $v$ such that $v^\star \le v<u$. To prove the lemma for view $u$, use the **recover-max after recoverable-broadcast** property: the output in view $u$ is a value from view $y$ with $v^\star \le y$. 
 
-1. From the induction hypothesis, all views $v^\star le v<u$ the value is $W$;
-2. During recover-max for view $u$ there are no recoverable-broadcast for view $u$ or higher, so there are no echoes for view $u$ or higher. 
+1. From the induction hypothesis, in all views $v^\star \le v<u$ the proposal value of ```recoverable-broadcast(v, W)``` is $W$;
+2. During recover-max for view $u$ there are no recoverable-broadcast for view $u$ or higher views, so there are no echoes for view $u$ or higher. 
 Hence the value of recover-max in view $u$ must be $W \neq \bot$, so the value of recoverable-broadcast in view $u$ must be $W$ as well. This concludes the induction argument with concludes the proof of the safety Lemma.
 
 ### Liveness
 
-We proved agreement, now let's prove that eventually, after GST, all *non-faulty* parties output a value.
+We proved (uniform) agreement, now let's prove that eventually, after GST, all *non-faulty* parties output a value.
 
 Consider the view $v^+$ with the *first* non-faulty primary that starts after GST. Denote this start time as $T$. Since we are after GST, then on or before time $T+ \Delta$ the primary will receive ```<"recover", v+, *)>``` from all non-faulty parties (at least $n-f$). Hence the primry will start a ```recoverable-broadcast(v+,Z)>``` that will arrive at all non-faulty parties on or before time $T+2\Delta$. Hence all non-faulty parties will send ```<"echo", v+, Z>``` (because they are still in view $v^+$). So all non-faulty parties will hear $n-f$ ```<"echo", v+, Z>``` on or before time $T+3\Delta$. So all non-faulty will decide $Z$ because they are still in view $v^+$.
 
