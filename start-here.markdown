@@ -151,7 +151,7 @@ What are [blockchains useful for, really](https://decentralizedthoughts.github.i
 
 What was the [first blockchain (or how to timestamp a digital document)](/2020-07-05-the-first-blockchain-or-how-to-time-stamp-a-digital-document/)? 
 
-What is [Nakamoto Consensus](/2021-10-15-Nakamoto-Consensus/)? How do you [prove Nakamoto Consensus is secure](/2019-11-29-Analysis-Nakamoto/)?
+What is [Nakamoto Consensus](/2021-10-15-Nakamoto-Consensus/)? How do you [prove Nakamoto Consensus is secure](/2023-10-30-Analysis-Nakamoto/)?
 
 Do proof-of-work blockchains need any [setup assumptions?](/2019-07-18-do-bitcoin-and-ethereum-have-any-trusted-setup-assumptions/)?
 
