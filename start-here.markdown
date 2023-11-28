@@ -1,6 +1,6 @@
 ---
 title: Program
-date: 2020-09-21 09:34:00 -04:00
+subtitle: Conference Program - will be updated
 ---
 
 {: .box-note}
