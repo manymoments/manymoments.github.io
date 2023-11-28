@@ -4,6 +4,8 @@ layout: page
 ---
 
 _**ALL DISCUSSION FORMATS AND KEYNOTES ARE FREE!**_
+
+
 In order to bring as many people together as possible, all discussion formats & keynotes are free of charge. 
 
 
