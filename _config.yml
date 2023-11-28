@@ -23,7 +23,7 @@ defaults:
     path: ''
   values:
     layout: page
-    show-avatar: false
+    show-avatar: true
 url: https://personorientedmethods.github.io
 baseurl: 
 description: Person-oriented methods
