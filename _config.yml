@@ -1,5 +1,5 @@
 ---
-title: Decentralized Thoughts
+title: Conference for person-oriented methods
 timezone: America/New_York
 collections:
   authors:
@@ -24,20 +24,20 @@ defaults:
   values:
     layout: page
     show-avatar: true
-url: https://decentralizedthoughts.github.io
+url: https://personorientedmethods.github.io
 baseurl: 
-description: Decentralized thoughts about decentralization
+description: Person-oriented methods
 navbar-links:
-  Authors:
-  - Ittai Abraham: about-ittai
-  - Ittay Eyal: about-ittay
-  - Heidi Howard: about-heidi
-  - Kartik Nayak: about-kartik
-  - Ling Ren: about-ling
-  - Alin Tomescu: about-alin
-  - Avishay Yanai: about-avishay
-  Videos: videos
-  Start Here: start-here
+  About the Conference:
+  - What is this conference about: about-ittai
+  - How to submit an abstract: about-ittay
+  - Where?: about-heidi
+  - When?: about-kartik
+  - How long?: about-ling
+  - Costs: about-alin
+  - Further information: about-avishay
+  Contact: videos
+  Program: start-here
   Course: course
 avatar: "/img/DTblog.png"
 navbar-col: "#F5F5F5"
@@ -50,11 +50,12 @@ footer-col: "#F5F5F5"
 footer-text-col: "#777777"
 footer-link-col: "#404040"
 author:
-  name: Decentralized Thinkers
+  name: Conference for person-oriented methods by Julia Moeller and Committee
 social-network-links:
-  twitter: ittaia
+  twitter: 
+  instagram:
 share-links-active:
-  twitter: true
+  twitter: false
   facebook: false
   google: false
   linkedin: false
