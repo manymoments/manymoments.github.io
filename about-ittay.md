@@ -1,12 +1,8 @@
 ---
-title: Ittay Eyal
+title: How to submit an abstract
 layout: page
 ---
 
-<img align="left" width="200" height="200" src="../img/ittayEyal.jpg" hspace="20">
+We kindly ask for your participation in and your submissions to the first conference of the Society of Person-Orientated Research. The first conference is entitled _"discussion on the validity of person- and variable-oriented methods"_ and will take place **online**.
+Submissions are possible via the following email adresse: person-oriented-research@uni-leipzig.de from now onwards and until 15.02.2024. As this is an international conference, abstracts and titles should be submitted in English. The presentation should also be held in English.
 
-Ittay Eyal is an associate professor in the faculty of Electrical and Computer Engineering at the Technion.
-
-He studies the security of distributed and decentralized systems.
-
-[Webpage](https://ittayeyal.github.io/) \| [Google Scholar](https://scholar.google.ch/citations?user=1oUGY7cAAAAJ&hl=en&oi=ao)
