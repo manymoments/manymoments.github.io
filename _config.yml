@@ -7,7 +7,7 @@ collections:
     output: true
   posts:
     title: Posts
-    output: true
+    output: false
   uploads:
     title: Uploads
     output: true
@@ -23,7 +23,7 @@ defaults:
     path: ''
   values:
     layout: page
-    show-avatar: true
+    show-avatar: false
 url: https://personorientedmethods.github.io
 baseurl: 
 description: Person-oriented methods
