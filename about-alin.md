@@ -14,7 +14,7 @@ In order to bring as many people together as possible, all discussion formats & 
 	
 - Profs: 100 € - 150 €, 
 - Postdocs: 50 €, 
-- Doctoral candidates and students: € 20
+- PhD students and undergraduates: € 20
 	
 
 
