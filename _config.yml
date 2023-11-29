@@ -40,7 +40,7 @@ navbar-links:
   Program: start-here
   Course: course
 avatar: "/img/CPOM2.png"
-navbar-col: "#00457F"
+navbar-col: "#B0E0E6"
 navbar-text-col: "#00008B"
 navbar-children-col: "#F0FFFF"
 page-col: "#FFFFFF"
