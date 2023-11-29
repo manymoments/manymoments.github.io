@@ -41,8 +41,8 @@ navbar-links:
   Course: course
 avatar: "/img/CPOM.png"
 navbar-col: "#00457F"
-navbar-text-col: "#00457F"
-navbar-children-col: "#00457F"
+navbar-text-col: "#F0FFFF"
+navbar-children-col: "#F0FFFF"
 page-col: "#FFFFFF"
 link-col: "#008AFF"
 hover-col: "#0085A1"
