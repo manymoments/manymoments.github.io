@@ -40,7 +40,7 @@ navbar-links:
   Program: start-here
   Course: course
 avatar: "/img/CPOM2.png"
-navbar-col: "#CAE1FF"
+navbar-col: "#BCD2EE"
 navbar-text-col: "#00008B"
 navbar-children-col: "#F0FFFF"
 page-col: "#FFFFFF"
@@ -52,6 +52,7 @@ footer-link-col: "#404040"
 author:
   name: Conference for person-oriented methods by Julia Moeller and Committee
 social-network-links:
+email: person-oriented-research@uni-leipzig.dep
   twitter: 
   instagram:
 share-links-active:
