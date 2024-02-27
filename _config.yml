@@ -29,7 +29,7 @@ baseurl:
 description: ManyMoments
 navbar-links:
   About the project:
-  - What is this project about: about-ittai
+  - What is this project about: what is this project about
   - Our papers: about-ittay
   - Current data analysis: about-heidi
   - Current data collection: about-kartik
