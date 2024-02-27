@@ -1,5 +1,5 @@
 ---
-title: Conference for person-oriented methods
+title: The ManyMoments Project
 timezone: America/New_York
 collections:
   authors:
@@ -24,22 +24,22 @@ defaults:
   values:
     layout: page
     show-avatar: true
-url: https://personorientedmethods.github.io
+url: https://manymoments.github.io
 baseurl: 
-description: Person-oriented methods
+description: ManyMoments
 navbar-links:
-  About the Conference:
-  - What is this conference about: about-ittai
-  - How to submit an abstract: about-ittay
-  - Formats: about-heidi
-  - Where&When?: about-kartik
-  - How long?: about-ling
-  - Costs: about-alin
-  - Further information: about-avishay
+  About the project:
+  - What is this project about: about-ittai
+  - Our papers: about-ittay
+  - Current data analysis: about-heidi
+  - Current data collection: about-kartik
+  - How to join the current data collection: about-ling
+  - Q&A: about-alin
+  - Further information and documents: about-avishay
   Contact: videos
-  Program: start-here
+  News: start-here
   Literature: course
-avatar: "/img/CPOM2.png"
+avatar: "/img/ManyMom.png"
 navbar-col: "#BCD2EE"
 navbar-text-col: "#00008B"
 navbar-children-col: "#F0FFFF"
@@ -50,9 +50,9 @@ footer-col: "#F5F5F5"
 footer-text-col: "#777777"
 footer-link-col: "#404040"
 author:
-  name: Conference for person-oriented methods by Julia Moeller and Committee
+  name: ManyMoments project by Julia Moeller and Committee
 social-network-links:
-  email: person-oriented-research@uni-leipzig.de
+  email: manymoments@uni-leipzig.de
   twitter: 
   instagram:
 share-links-active:
