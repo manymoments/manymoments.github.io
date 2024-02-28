@@ -3,5 +3,5 @@ title: Our current data collection
 layout: page
 ---
 
-##Current Data Collection##
+_**Current Data Collection**_
 
