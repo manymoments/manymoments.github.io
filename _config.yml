@@ -30,9 +30,9 @@ description: ManyMoments
 navbar-links:
   About the project:
   - What is this project about: what is this project about
-  - Our papers: about-ittay
-  - Current data analysis: about-heidi
-  - Current data collection: about-kartik
+  - Our papers: ourpapers
+  - Current data analysis: dataanalysis
+  - Current data collection: datacollection
   - How to join the current data collection: about-ling
   - Q&A: about-alin
   - Further information and documents: about-avishay
