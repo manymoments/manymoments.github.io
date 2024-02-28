@@ -40,7 +40,7 @@ navbar-links:
   News: News
   Literature: Literature
 avatar: "/img/ManyMom.png"
-navbar-col: "#BCD2EE"
+navbar-col: "#FFE4E1"
 navbar-text-col: "#00008B"
 navbar-children-col: "#F0FFFF"
 page-col: "#FFFFFF"
