@@ -1,10 +1,9 @@
 ---
-title: Program
-subtitle: Conference Program - will be updated
+title: News
+subtitle: News 
 ---
 
-{: .box-note}
-The Program will be available after the review-process.
+
 
 
 
