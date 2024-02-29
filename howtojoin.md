@@ -3,6 +3,8 @@ title: How to join the current data collection
 layout: page
 ---
 _**How you can participate in our study**_
+
+
 If you are teaching lectures or seminars, we would like to record learning motivation and academic emotions in your courses over the semester.
 _How you can benefit from your participation_:
 
