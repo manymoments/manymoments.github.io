@@ -1,5 +1,5 @@
 ---
-title: Q&Q
+title: Q&A
 layout: page
 ---
 
